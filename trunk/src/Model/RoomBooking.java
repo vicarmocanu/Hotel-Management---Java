@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class RoomBooking {
 	private int id;
 	private String arrivalDate;
@@ -8,6 +10,7 @@ public class RoomBooking {
 	private int numberOfChildren;
 	
 	private Guest guest;
+	private ArrayList<Room> rooms;
 
 	//Constructor
 	public RoomBooking()
@@ -19,13 +22,15 @@ public class RoomBooking {
 	}
 	
 	public RoomBooking(int id, String arrivalDate, String departureDate,
-			String status, int numberOfChildren, Guest guest) {
+			String status, int numberOfChildren) {
 		this.id = id;
 		this.arrivalDate = arrivalDate;
 		this.departureDate = departureDate;
 		this.status = status;
 		this.numberOfChildren = numberOfChildren;
-		this.guest = guest;
+		
+		this.guest = new Guest();
+		this.rooms = new ArrayList<Room>();
 	}
 
 //Getters and setters
