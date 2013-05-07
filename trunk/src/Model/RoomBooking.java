@@ -33,7 +33,7 @@ public class RoomBooking {
 		this.rooms = new ArrayList<Room>();
 	}
 
-//Getters and setters
+	//Getters and setters
 	public int getId() {
 		return id;
 	}
@@ -80,6 +80,14 @@ public class RoomBooking {
 
 	public void setGuest(Guest guest) {
 		this.guest = guest;
+	}
+
+	public ArrayList<Room> getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(ArrayList<Room> rooms) {
+		this.rooms = rooms;
 	}
 //end getters setters
 }
