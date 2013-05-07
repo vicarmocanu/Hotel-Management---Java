@@ -14,8 +14,8 @@ public class Guest extends Person{
 	}
 	
 	public Guest(int id, String name, String address, int zipcode, String city,
-			String country, String phoneNo, String email, String type) {
-		super(id, name, address, zipcode, city, country, phoneNo, email);
+			String country, String phoneNo, String email, String password, String type) {
+		super(id, name, address, zipcode, city, country, phoneNo, email, password);
 		this.type = type;
 	}
 

@@ -9,6 +9,7 @@ public class Person {
 	private String country;
 	private String phoneNo;
 	private String email;
+	private String password;
 		
 	//Constructor 
 	public Person()
@@ -20,7 +21,7 @@ public class Person {
 	}
 	
 	public Person(int id, String name, String address, int zipcode,
-			String city, String country, String phoneNo, String email) {
+			String city, String country, String phoneNo, String email,String password) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -29,9 +30,10 @@ public class Person {
 		this.country = country;
 		this.phoneNo = phoneNo;
 		this.email = email;
+		this.password=password;
 	}
 
-//Getters and setters
+	//Getters and setters
 	//ID
 	public int getId() {
 		return id;
@@ -96,5 +98,13 @@ public class Person {
 		this.email = email;
 	}
 	
+	//password
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 //end getters and setters
 }

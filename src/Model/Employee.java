@@ -5,8 +5,8 @@ public class Employee extends Person {
 
 	//Constructor
 	public Employee(int id, String name, String address, int zipcode,
-			String city, String country, String phoneNo, String email, double salary) {
-		super(id, name, address, zipcode, city, country, phoneNo, email);		
+			String city, String country, String phoneNo, String email, String password, double salary) {
+		super(id, name, address, zipcode, city, country, phoneNo, email, password);		
 		this.salary = salary;
 	}
 
