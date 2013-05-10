@@ -9,7 +9,7 @@ public class RoomBooking {
 	private String status;//booked,checked-in,payed,checked-out;
 	private int numberOfChildren;
 	
-	private Guest guest;
+	private ArrayList<Guest> guests;
 	private ArrayList<Room> rooms;
 
 	//Constructor
@@ -29,7 +29,7 @@ public class RoomBooking {
 		this.status = status;
 		this.numberOfChildren = numberOfChildren;
 		
-		this.guest = new Guest();
+		this.guests = new ArrayList<Guest>();
 		this.rooms = new ArrayList<Room>();
 	}
 
@@ -74,12 +74,12 @@ public class RoomBooking {
 		this.numberOfChildren = numberOfChildren;
 	}
 
-	public Guest getGuest() {
-		return guest;
+	public ArrayList<Guest> getGuests() {
+		return guests;
 	}
 
-	public void setGuest(Guest guest) {
-		this.guest = guest;
+	public void setGuests(ArrayList<Guest> guests) {
+		this.guests = guests;
 	}
 
 	public ArrayList<Room> getRooms() {
