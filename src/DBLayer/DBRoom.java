@@ -25,8 +25,8 @@ public class DBRoom implements IFDBRoom {
 	@Override
 	public ArrayList<Room> findAvailableRooms(String arrival, String departure,
 			String type, boolean retrieveAssociation) {
-		return miscWhere("(SELECT roomNo FROM RoomBooking WHERE arrivalDate='"+arrival+
-				"' AND departureDate='"+departure+"')<>number AND roomType='"+type+"'", retrieveAssociation);
+		return miscWhere("(SELECT roomNo FROM Booking_Guest_Room WHERE booking=(SELECT id FROM RoomBooking WHERE " +
+				"arrivalDate>='"+arrival+"' AND rb.departureDate<='"+departure+"'))<>number AND roomType='"+type+"'", retrieveAssociation);
 	}
 	//end interface methods
 	
