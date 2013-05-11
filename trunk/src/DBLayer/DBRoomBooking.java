@@ -16,37 +16,37 @@ public class DBRoomBooking implements IFDBRoomBooking {
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	@Override
+	
 	public RoomBooking findRoomBooking(int id, boolean retrieveAssociation) {
 		return singleWhere("id='"+id+"'", retrieveAssociation);
 	}
 
-	@Override
+	
 	public ArrayList<RoomBooking> findRoomBookingsByArrival(String arrival,
 			boolean retrieveAssociation) {
 		return miscWhere("arrivalDate='"+arrival+"'", retrieveAssociation);
 	}
 
-	@Override
+	
 	public ArrayList<RoomBooking> findRoomBookingsByDeparture(String departure,
 			boolean retrieveAssociation) {
 		return miscWhere("departureDate='"+departure+"'", retrieveAssociation);
 	}
 
-	@Override
+	
 	public ArrayList<RoomBooking> findRoomBookingsByStatus(String status,
 			boolean retrieveAssociation) {
 		return miscWhere("status='"+status+"'", retrieveAssociation);
 	}
 
-	@Override
+	
 	public ArrayList<RoomBooking> findRoomBookingsForRoom(int roomNo,
 			boolean retrieveAssociation) {
 		return miscWhere("id=(SELECT booking FROM Booking_Guest_Room WHERE roomNo='"+roomNo+"'",
 				retrieveAssociation);
 	}
 	
-	@Override
+	
 	public ArrayList<RoomBooking> findRoomBookingsForGuest(int guestId,
 			boolean retrieveAssociation) {
 		return miscWhere("id=(SELECT booking FROM Booking_Guest_Room WHERE guestId='"
@@ -54,7 +54,7 @@ public class DBRoomBooking implements IFDBRoomBooking {
 	}
 
 
-	@Override
+	
 	public int insertRoomBooking(RoomBooking rb) throws Exception {
 		String query = "INSERT INTO RoomBooking(arrivalDate, departureDate, status, numberOfChildren)" +
 				" VALUES('" +
@@ -78,7 +78,7 @@ public class DBRoomBooking implements IFDBRoomBooking {
 		return rc;
 	}
 
-	@Override
+	
 	public int updateRoomBooking(RoomBooking rb) {
 		RoomBooking roomBooking = rb;
 		int rc = -1;
@@ -104,7 +104,7 @@ public class DBRoomBooking implements IFDBRoomBooking {
 
 	}
 
-	@Override
+	
 	public int deleteRoomBooking(int roomBookingId) {
 		int rc=-1;
 		  
@@ -185,7 +185,7 @@ public class DBRoomBooking implements IFDBRoomBooking {
 	private ArrayList<RoomBooking> miscWhere(String wClause, boolean retrieveAssiciation)
 	{
 		ResultSet results;
-		ArrayList<RoomBooking> list = new ArrayList<>();
+		ArrayList<RoomBooking> list = new ArrayList<RoomBooking>();
 		String query = buildQuery(wClause);
 		
 		try {

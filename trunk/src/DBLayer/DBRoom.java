@@ -17,12 +17,10 @@ public class DBRoom implements IFDBRoom {
 	}
 
 	//Interface methods
-	@Override
 	public Room findRoom(int number, boolean retrieveAssociation) {
 		return singleWhere("number='"+number+"'",retrieveAssociation);
 	}
 
-	@Override
 	public ArrayList<Room> findAvailableRooms(String arrival, String departure,
 			String type, boolean retrieveAssociation) {
 		return miscWhere("(SELECT roomNo FROM Booking_Guest_Room WHERE booking=(SELECT id FROM RoomBooking WHERE " +
@@ -96,7 +94,7 @@ public class DBRoom implements IFDBRoom {
 	public ArrayList<Room> miscWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
-		ArrayList<Room> roomList = new ArrayList<>();
+		ArrayList<Room> roomList = new ArrayList<Room>();
 		String query = buildQuery(wClause);
 		System.out.println("DBRoom Query: " + query);
 		
