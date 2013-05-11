@@ -14,7 +14,6 @@ public class DBRoomType implements IFDBRoomType {
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	@Override
 	public RoomType findRoomTypeByCategory(String category) {
 		return singleWhere("category='"+category+"'", false);
 	}

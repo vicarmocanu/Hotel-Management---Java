@@ -1,8 +1,25 @@
 package DBLayer;
-
 import Model.Guest;
+import java.util.ArrayList;
 
 public interface IFDBGuest {
-	//find a guest by id
-	public Guest findGuestById(int id, boolean retrieveAssociation);
+	
+	  //get all customers
+    public ArrayList<Guest> getAllGuest(boolean retrieveAssociation);
+   
+    //find customer by name
+    public Guest searchGuestByName(String name, boolean retrieveAssociation);
+    
+    //find customer by ID
+    public Guest searchGuestById(int id, boolean retrieveAssociation);
+    
+    //insert new Customer
+    public int insertGuest(Guest cust) throws Exception;
+    
+    //update informations for one Customer
+    public int updateGuest(Guest cust);
+    
+    //delete Customer by Id    
+    public int deleteGuest(int id);
+
 }

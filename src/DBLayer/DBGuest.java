@@ -2,22 +2,101 @@ package DBLayer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import Model.Guest;
 
-public class DBGuest implements IFDBGuest {
-	private Connection con;
+public class DBGuest implements IFDBGuest{
+	
+private Connection con;
 	
 	public DBGuest()
 	{
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	@Override
-	public Guest findGuestById(int id, boolean retrieveAssociation) {
-		return singleWhere("personId='"+id+"'", retrieveAssociation);
+	public int insertGuest(Guest gt) throws Exception {
+		String query = "INSERT INTO Guest(id, name, address, zipcode, city, country, phoneNo, email, password, type)" +
+				" VALUES('" +
+				gt.getId()+"','"+
+				gt.getName()+"','"+
+				gt.getAddress()+"','"+
+				gt.getZipCode()+ "')"+
+				gt.getCity()+","+
+				gt.getCountry()+","+
+				gt.getPhoneNo()+","+
+				gt.getEmail()+","+
+				gt.getPassword()+","+
+				gt.getType();
+		
+		int rc = -1;
+		System.out.println("insert: " + query);
+		try {
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			rc = stmt.executeUpdate(query);
+			stmt.close();
+		} catch (SQLException ex) {
+			System.out.println("Guest is not inserted");
+	        throw new Exception ("Guest is not inserted correctly!");
+		}
+		
+		return rc;
 	}
+
+	
+	public int updateGuest(Guest gst) {
+		Guest guest = gst;
+		int rc = -1;
+		
+		String query = "UPDATE Guest SET " +
+				"id='" + guest.getId() +"', "+
+				"name='"+guest.getName()+"', "+
+				"address='"+guest.getAddress()+"', "+
+				"zipcode='"+guest.getZipCode()+"' "+
+				"city='"+guest.getCity()+"' "+
+				"country='"+guest.getCountry()+"' "+
+				"phoneNo='"+guest.getPhoneNo()+"' "+
+				"email='"+guest.getEmail()+"' "+
+				"password='"+guest.getPassword()+"' "+
+				"type='"+guest.getType()+"' "+
+						"WHERE id='" +guest.getId()+"'";
+		System.out.println("Update query: " + query);
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			rc=stmt.executeUpdate(query);
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println("Update exception in Guest: " + e);
+		}
+		
+		return rc;
+
+	}
+
+	
+	public int deleteGuest(int guestId) {
+		int rc=-1;
+		  
+	  	String query="DELETE FROM Guest WHERE id = '" +
+				guestId + "'";
+                System.out.println(query);
+	  	try{ 
+	 		Statement stmt = con.createStatement();
+	 		stmt.setQueryTimeout(5);
+	 	  	rc = stmt.executeUpdate(query);
+	 	  	stmt.close();
+  		}
+   	    catch(Exception ex){
+	 	  	System.out.println("Delete exception in Guest: "+ex);
+   	    }
+		return(rc);
+	}
+	
 	
 	private String buildQuery(String wClause)
 	{
@@ -33,23 +112,30 @@ public class DBGuest implements IFDBGuest {
 	
 	private Guest buildGuest(ResultSet results)
 	{
-		Guest guestObj = new Guest();
+		Guest rbObj = new Guest();		
 		
 		try {
-			guestObj.setId(results.getInt("personId"));
-			guestObj.setType(results.getString("type"));
+			rbObj.setId(results.getInt("id"));
+			rbObj.setName(results.getString("name"));
+			rbObj.setAddress(results.getString("address"));
+			rbObj.setZipCode(results.getInt("zipcode"));
+			rbObj.setCity(results.getString("city"));
+			rbObj.setCountry(results.getString("country"));
+			rbObj.setPhoneNo(results.getString("phoneNo"));
+			rbObj.setEmail(results.getString("email"));
+			rbObj.setPassword(results.getString("password"));
+			rbObj.setType(results.getString("type"));
 		} catch (Exception e) {
-			// create object: handle exception
-			System.out.println("Error in building the Guest object.");
+			System.out.println("Error in building the Guest object!");
 		}
 		
-		return guestObj;
+		return rbObj;
 	}
 	
 	private Guest singleWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
-		Guest guestObj = new Guest();
+		Guest rbObj = new Guest();
 		String query = buildQuery(wClause);
 		System.out.println("Query: "+query);
 		
@@ -59,17 +145,61 @@ public class DBGuest implements IFDBGuest {
 			results = stmt.executeQuery(query);
 			
 			if (results.next()) {
-				guestObj = buildGuest(results);
+				rbObj = buildGuest(results);
+				System.out.println("Guest build successfully!");
 				stmt.close();
 			}
 			else
 			{
-				guestObj = null;
+				rbObj = null;
 			}			
 		} catch (Exception e) {
-			// select guest: handle exception
+			System.out.println("Query exception - select Guest : "+e);
+			e.printStackTrace();
 		}
 		
-		return guestObj;
+		return rbObj;
 	}
+	
+	private ArrayList<Guest> miscWhere(String wClause, boolean retrieveAssiciation)
+	{
+		ResultSet results;
+		ArrayList<Guest> list = new ArrayList<Guest>();
+		String query = buildQuery(wClause);
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);
+			while(results.next())
+			{
+				Guest rbObj = new Guest();
+				rbObj = buildGuest(results);
+				list.add(rbObj);
+			}
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println("Query exception - select Guest : "+e);
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public ArrayList<Guest> getAllGuest(boolean retriveAssociation) {
+		return miscWhere("", retriveAssociation);
+	}
+
+	public Guest searchGuestById(int id,
+			boolean retriveAssociation) {
+		String wClause = "  Guest ID: = '" + id + "'";
+		return singleWhere(wClause, retriveAssociation);
+	}
+
+	
+	public Guest searchGuestByName(String name, boolean retriveAssociation) {
+		String wClause = "Name: " + name + ",";
+		System.out.println("Guest " + wClause);
+		return singleWhere(wClause, retriveAssociation);
+	}
+
 }
