@@ -2,9 +2,6 @@
  * 
  */
 package DBLayer;
-
-import java.util.ArrayList;
-
 import Model.Guest;
 import java.util.LinkedList;
 
