@@ -18,6 +18,13 @@ public class ActivityType
 		this.id=id;
 	}
 	
+	public ActivityType(String name, String description, int maxParticipants)
+	{
+		this.name=name;
+		this.description=description;
+		this.maxParticipants=maxParticipants;
+	}
+	
 	public ActivityType(int id, String name, String description, int maxParticipants)
 	{
 		this.id=id;
