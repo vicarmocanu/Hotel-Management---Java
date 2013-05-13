@@ -1,6 +1,7 @@
 package Model;
 
-public class ActivityBooking {
+public class ActivityBooking 
+{
 	private int id;
 	private String date;
 	private String startHour;
@@ -10,6 +11,8 @@ public class ActivityBooking {
 	private String place;
 	
 	private Guest guest;
+	private ActivityType activityType;
+	private Instructor instructor;
 	
 	//Constructor
 	public ActivityBooking()
@@ -21,7 +24,9 @@ public class ActivityBooking {
 	}
 	
 	public ActivityBooking(int id, String date, String startHour, String endHour,
-			String status, int numberOfParticipants, String place) {
+			String status, int numberOfParticipants, String place, 
+			Guest guest, ActivityType activityType, Instructor instructor)
+	{
 		this.id = id;
 		this.date = date;
 		this.startHour = startHour;
@@ -29,74 +34,101 @@ public class ActivityBooking {
 		this.status = status;
 		this.numberOfParticipants = numberOfParticipants;
 		this.place = place;
-		
-		guest = new Guest();
+	
+		this.guest=guest;
+		this.activityType=activityType;
+		this.instructor=instructor;
 	}
 
-//Getters and setters
+	//Getters and setters
+	
 	public int getId()
 	{
 		return id;
 	}
-	
 	public void setId(int id)
 	{
 		this.id = id;
 	}
 	
-	public String getDate() {
+	public String getDate()
+	{
 		return date;
 	}
-
-	public void setDate(String date) {
+	public void setDate(String date)
+	{
 		this.date = date;
 	}
 
-	public String getStartHour() {
+	public String getStartHour()
+	{
 		return startHour;
 	}
-
-	public void setStartHour(String startHour) {
+	public void setStartHour(String startHour)
+	{
 		this.startHour = startHour;
 	}
 
-	public String getEndHour() {
+	public String getEndHour()
+	{
 		return endHour;
 	}
-
-	public void setEndHour(String endHour) {
+	public void setEndHour(String endHour)
+	{
 		this.endHour = endHour;
 	}
 
-	public String getStatus() {
+	public String getStatus()
+	{
 		return status;
 	}
-
-	public void setStatus(String status) {
+	public void setStatus(String status)
+	{
 		this.status = status;
 	}
 
-	public int getNumberOfParticipants() {
+	public int getNumberOfParticipants()
+	{
 		return numberOfParticipants;
 	}
-
-	public void setNumberOfParticipants(int numberOfParticipants) {
+	public void setNumberOfParticipants(int numberOfParticipants)
+	{
 		this.numberOfParticipants = numberOfParticipants;
 	}
 
-	public String getPlace() {
+	public String getPlace()
+	{
 		return place;
 	}
-
-	public void setPlace(String place) {
+	public void setPlace(String place)
+	{
 		this.place = place;
 	}
 	
-	public Guest getGuest() {
+	public Instructor getInstructor()
+	{
+		return instructor;
+	}	
+	public void setInstructor(Instructor instructor)
+	{
+		this.instructor=instructor;
+	}
+	
+	public ActivityType getActivity()
+	{
+		return activityType;
+	}	
+	public void setActivity(ActivityType activityType)
+	{
+		this.activityType=activityType;
+	}
+	
+	public Guest getGuest() 
+	{
 		return guest;
 	}
-
-	public void setGuest(Guest guest) {
+	public void setGuest(Guest guest)
+	{
 		this.guest = guest;
 	}
 //end getters and setters
