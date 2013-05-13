@@ -9,6 +9,8 @@ public class Instructor extends Employee {
 		super(id, name, address, zipcode, city, country, phoneNo, email, password, salary);
 		this.price = price;
 	}
+	
+	
 //Getters and setters
 	//Instructor's price
 	public double getPrice() {
