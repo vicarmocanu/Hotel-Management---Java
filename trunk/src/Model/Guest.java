@@ -1,12 +1,12 @@
 package Model;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Iterator;
 
 
 public class Guest extends Person{
 	private String type;
-	private ArrayList<ActivityBooking> activityBookings;
-	private ArrayList<RoomBooking> roomBookings;
+	private LinkedList<ActivityBooking> activityBookings;
+	private LinkedList<RoomBooking> roomBookings;
 
 	public Guest()
 	{
@@ -150,7 +150,7 @@ public class Guest extends Person{
 		        return activityBooking;
 		 }
 	
-	public void setActivtyBooking(ArrayList<ActivityBooking> activityBooking){
+	public void setActivtyBooking(LinkedList<ActivityBooking> activityBooking){
 		this.activityBookings= activityBooking;
 	}
 	
@@ -179,7 +179,7 @@ public class Guest extends Person{
 		        return roomBooking;
 		 }
 	
-	public void setRoomBooking(ArrayList<RoomBooking> roomBooking){
+	public void setRoomBooking(LinkedList<RoomBooking> roomBooking){
 		this.roomBookings= roomBooking;
 	}
 	
