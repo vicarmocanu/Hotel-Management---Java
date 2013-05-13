@@ -1,13 +1,13 @@
 package DBLayer;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import Model.Person;
 
 public interface IFDBPerson {
 	
 	//get all customers
-    public ArrayList<Person> getAllPerson(boolean retrieveAssociation);
+    public LinkedList<Person> getAllPerson(boolean retrieveAssociation);
    
     //find customer by name
     public Person searchPersonByName(String name, boolean retrieveAssociation);

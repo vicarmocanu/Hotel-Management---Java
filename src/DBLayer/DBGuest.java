@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import Model.Guest;
 
@@ -161,10 +161,10 @@ private Connection con;
 		return rbObj;
 	}
 	
-	private ArrayList<Guest> miscWhere(String wClause, boolean retrieveAssiciation)
+	private LinkedList<Guest> miscWhere(String wClause, boolean retrieveAssiciation)
 	{
 		ResultSet results;
-		ArrayList<Guest> list = new ArrayList<Guest>();
+		LinkedList<Guest> list = new LinkedList<Guest>();
 		String query = buildQuery(wClause);
 		
 		try {
@@ -185,7 +185,7 @@ private Connection con;
 		return list;
 	}
 	
-	public ArrayList<Guest> getAllGuest(boolean retriveAssociation) {
+	public LinkedList<Guest> getAllGuest(boolean retriveAssociation) {
 		return miscWhere("", retriveAssociation);
 	}
 
