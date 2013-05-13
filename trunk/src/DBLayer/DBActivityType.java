@@ -129,14 +129,14 @@ public class DBActivityType implements IFDBActivityType
 	}
 	
 	//insert a new activity type into the database
-	public int insertActivityType(ActivityType activityTypeObj) throws Exception
+	public int insertActivityType(ActivityType newActivityType) throws Exception
 	{
 		int result = -1;
 		
 		String query = "INSERT INTO ActivityType(name, description, maxParticipants) VALUES ('" +
-				activityTypeObj.getName() + "','" +
-				activityTypeObj.getDescription() + "','" +
-				activityTypeObj.getMaxParticipants() + "',')";
+				newActivityType.getName() + "','" +
+				newActivityType.getDescription() + "','" +
+				newActivityType.getMaxParticipants() + "',')";
 		
 		System.out.println("Insertion query: " + query);
 	    try
