@@ -1,6 +1,13 @@
+/**
+ * 
+ */
 package DBLayer;
+
+import java.util.ArrayList;
+
 import Model.Guest;
 import java.util.LinkedList;
+
 
 public interface IFDBGuest {
 	
@@ -21,5 +28,6 @@ public interface IFDBGuest {
     
     //delete Customer by Id    
     public int deleteGuest(int id);
+
 
 }
