@@ -14,7 +14,7 @@ public interface IFDBActivityType
 	public ActivityType getActivityTypeByName(String name, boolean retrieveAssociation);
 	
 	//insert activity type
-	public int insertActivityType(ActivityType newActivityType) throws Exception;
+	public int insertActivityType(ActivityType activityTypeObj) throws Exception;
 	
 	//update activity type
 	public int updateActivityType(ActivityType activityTypeObj);
