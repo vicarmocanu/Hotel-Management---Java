@@ -108,13 +108,14 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//get all activity types
+	@Override
 	public LinkedList<ActivityType> getAllActivityTypes(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
 
 	//get an activity type by id
-
+	@Override
 	public ActivityType getActivityTypeByID(int id, boolean retrieveAssociation)
 	{
 		String wClause = "  id= '" + id + "'";
@@ -122,6 +123,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//get an activity type by name
+	@Override
 	public ActivityType getActivityTypeByName(String name, boolean retrieveAssociation)
 	{
 		String wClause = " name= '" + name + "'";
@@ -129,14 +131,15 @@ public class DBActivityType implements IFDBActivityType
 	}
 	
 	//insert a new activity type into the database
-	public int insertActivityType(ActivityType newActivityType) throws Exception
+	@Override
+	public int insertActivityType(ActivityType activityTypeObj) throws Exception
 	{
 		int result = -1;
 		
 		String query = "INSERT INTO ActivityType(name, description, maxParticipants) VALUES ('" +
-				newActivityType.getName() + "','" +
-				newActivityType.getDescription() + "','" +
-				newActivityType.getMaxParticipants() + "',')";
+				activityTypeObj.getName() + "','" +
+				activityTypeObj.getDescription() + "','" +
+				activityTypeObj.getMaxParticipants() + "',')";
 		
 		System.out.println("Insertion query: " + query);
 	    try
@@ -155,6 +158,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//method to update an activity type
+	@Override
 	public int updateActivityType(ActivityType activityTypeObj)
 	{
 		ActivityType activityTypeNewObj=activityTypeObj;
@@ -183,6 +187,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//method to delete an activity type by its id
+	@Override
 	public int deleteActivityTypeByID(int id)
 	{
 		int result=-1;
@@ -205,6 +210,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//method to delete an activity type by its name
+	@Override
 	public int deleteActivityTypeByName(String name)
 	{
 		int result=-1;
