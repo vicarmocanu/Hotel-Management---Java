@@ -8,9 +8,7 @@ public class RoomBooking {
 	private String departureDate;
 	private String status;//booked,checked-in,payed,checked-out;
 	private int numberOfChildren;
-	
-	private ArrayList<Guest> guests;
-	private ArrayList<Room> rooms;
+	private Guest guest;
 
 	//Constructor
 	public RoomBooking()
@@ -29,8 +27,7 @@ public class RoomBooking {
 		this.status = status;
 		this.numberOfChildren = numberOfChildren;
 		
-		this.guests = new ArrayList<Guest>();
-		this.rooms = new ArrayList<Room>();
+		this.guest = new Guest();
 	}
 
 	//Getters and setters
@@ -74,20 +71,12 @@ public class RoomBooking {
 		this.numberOfChildren = numberOfChildren;
 	}
 
-	public ArrayList<Guest> getGuests() {
-		return guests;
+	public Guest getGuests() {
+		return guest;
 	}
 
-	public void setGuests(ArrayList<Guest> guests) {
-		this.guests = guests;
-	}
-
-	public ArrayList<Room> getRooms() {
-		return rooms;
-	}
-
-	public void setRooms(ArrayList<Room> rooms) {
-		this.rooms = rooms;
+	public void setGuests(Guest guest) {
+		this.guest = guest;
 	}
 //end getters setters
 }
