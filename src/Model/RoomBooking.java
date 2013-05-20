@@ -1,14 +1,11 @@
 package Model;
 
-import java.util.ArrayList;
-
 public class RoomBooking {
 	private int id;
 	private String arrivalDate;
 	private String departureDate;
 	private String status;//booked,checked-in,payed,checked-out;
 	private int numberOfChildren;
-	private Guest guest;
 
 	//Constructor
 	public RoomBooking()
@@ -26,8 +23,6 @@ public class RoomBooking {
 		this.departureDate = departureDate;
 		this.status = status;
 		this.numberOfChildren = numberOfChildren;
-		
-		this.guest = new Guest();
 	}
 
 	//Getters and setters
@@ -69,14 +64,6 @@ public class RoomBooking {
 
 	public void setNumberOfChildren(int numberOfChildren) {
 		this.numberOfChildren = numberOfChildren;
-	}
-
-	public Guest getGuests() {
-		return guest;
-	}
-
-	public void setGuests(Guest guest) {
-		this.guest = guest;
 	}
 //end getters setters
 }
