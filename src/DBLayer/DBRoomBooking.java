@@ -37,24 +37,9 @@ public class DBRoomBooking implements IFDBRoomBooking {
 	public ArrayList<RoomBooking> findRoomBookingsByStatus(String status,
 			boolean retrieveAssociation) {
 		return miscWhere("status='"+status+"'", retrieveAssociation);
-	}
-
+	}	
 	
-	public ArrayList<RoomBooking> findRoomBookingsForRoom(int roomNo,
-			boolean retrieveAssociation) {
-		return miscWhere("id=(SELECT booking FROM Booking_Guest_Room WHERE roomNo='"+roomNo+"'",
-				retrieveAssociation);
-	}
-	
-	
-	public ArrayList<RoomBooking> findRoomBookingsForGuest(int guestId,
-			boolean retrieveAssociation) {
-		return miscWhere("id=(SELECT booking FROM Booking_Guest_Room WHERE guestId='"
-			+guestId+"'", retrieveAssociation);
-	}
-
-
-	
+	//insert
 	public int insertRoomBooking(RoomBooking rb) throws Exception {
 		String query = "INSERT INTO RoomBooking(arrivalDate, departureDate, status, numberOfChildren)" +
 				" VALUES('" +

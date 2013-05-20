@@ -13,10 +13,6 @@ public interface IFDBRoomBooking {
 	public ArrayList<RoomBooking> findRoomBookingsByDeparture(String departure, boolean retrieveAssociation);
 	//find all bookings with a status
 	public ArrayList<RoomBooking> findRoomBookingsByStatus(String status, boolean retrieveAssociation);
-	//find the room bookings that a guest made
-	public ArrayList<RoomBooking> findRoomBookingsForGuest(int guestId, boolean retrieveAssociation);
-	//find all bookings for a room
-	public ArrayList<RoomBooking> findRoomBookingsForRoom(int roomNo, boolean retrieveAssociation);
 	
 	//insert room booking 
 	public int insertRoomBooking(RoomBooking rb) throws Exception;
