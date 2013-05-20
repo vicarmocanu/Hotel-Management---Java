@@ -201,5 +201,11 @@ private Connection con;
 		System.out.println("Guest " + wClause);
 		return singleWhere(wClause, retriveAssociation);
 	}
+	
+	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation)
+	{
+		return singleWhere("personId=(SELECT guestId FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking" +
+				"WHERE arrivalDate<='"+date+" AND departureDate>='"+date+") AND roomNo='"+roomNo+"')", retrieveAssociation);
+	}
 
 }

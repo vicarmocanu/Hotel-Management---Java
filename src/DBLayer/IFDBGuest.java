@@ -17,6 +17,9 @@ public interface IFDBGuest {
     //find customer by ID
     public Guest searchGuestById(int id, boolean retrieveAssociation);
     
+    //find guest who was in this room on that date
+	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation);
+    
     //insert new Customer
     public int insertGuest(Guest cust) throws Exception;
     
