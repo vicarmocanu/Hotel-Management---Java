@@ -36,7 +36,6 @@ public class DBActivityType implements IFDBActivityType
 		{
 			activityTypeObj.setID(results.getInt("id"));
 			activityTypeObj.setName(results.getString("name"));
-			activityTypeObj.setDescription(results.getString("description"));
 			activityTypeObj.setMaxParticipants(results.getInt("maxParticipants"));
 		}
 		catch(Exception e)
@@ -138,7 +137,6 @@ public class DBActivityType implements IFDBActivityType
 		
 		String query = "INSERT INTO ActivityType(name, description, maxParticipants, price) VALUES ('" +
 				activityTypeObj.getName() + "','" +
-				activityTypeObj.getDescription() + "','" +
 				activityTypeObj.getMaxParticipants() +  "')";
 		
 		System.out.println("Insertion query: " + query);
@@ -165,7 +163,6 @@ public class DBActivityType implements IFDBActivityType
 		
 		String query="UPDATE ActivityType SET " +
 		"name= '" + activityTypeNewObj.getName() + "', " +
-				"description= '" + activityTypeNewObj.getDescription() + "' " + 
 		"maxParticipants= '" + activityTypeNewObj.getMaxParticipants() + "'";
 		
 		int result=-1;
