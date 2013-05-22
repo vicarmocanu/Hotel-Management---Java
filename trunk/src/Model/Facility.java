@@ -5,7 +5,6 @@ public class Facility
 	//attributes
 	private int id;
 	private String name;
-	private String description;
 	private ActivityType activity;
 	private String status;
 	
@@ -14,11 +13,10 @@ public class Facility
 	public Facility()
 	{}
 	
-	public Facility(int id, String name, String description, ActivityType activity, String status)
+	public Facility(int id, String name, ActivityType activity, String status)
 	{
 		this.id=id;
 		this.name=name;
-		this.description=description;
 		this.activity=activity;
 		this.status=status;
 	}
@@ -46,15 +44,6 @@ public class Facility
 	public void setName(String name)
 	{
 		this.name=name;
-	}
-	
-	public String getDescription()
-	{
-		return this.description;
-	}
-	public void setDescription(String description)
-	{
-		this.description=description;
 	}
 	
 	public ActivityType getActivity()
