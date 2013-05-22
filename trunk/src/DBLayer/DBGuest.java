@@ -152,8 +152,9 @@ private Connection con;
 			else
 			{
 				rbObj = null;
-			}			
-		} catch (Exception e) {
+			}
+		}
+		catch (Exception e) {
 			System.out.println("Query exception - select Guest : "+e);
 			e.printStackTrace();
 		}
