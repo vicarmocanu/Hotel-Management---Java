@@ -2,12 +2,11 @@ package Model;
 
 public class ActivityType 
 {
-	//Atributes
+	//Attributes
 	private int id;
 	private String name;
 	private String description;
-	private int maxParticipants;
-	private double price;
+	private int maxParticipants;	
 	
 	//Constructor
 	
@@ -19,21 +18,19 @@ public class ActivityType
 		this.id=id;
 	}
 	
-	public ActivityType(String name, String description, int maxParticipants, double price)
+	public ActivityType(String name, String description, int maxParticipants)
 	{
 		this.name=name;
 		this.description=description;
 		this.maxParticipants=maxParticipants;
-		this.price=price;
 	}
 	
-	public ActivityType(int id, String name, String description, int maxParticipants, double price)
+	public ActivityType(int id, String name, String description, int maxParticipants)
 	{
 		this.id=id;
 		this.name=name;
 		this.description=description;
 		this.maxParticipants=maxParticipants;
-		this.price=price;
 	}
 	
 	//Getters and setters
@@ -76,15 +73,5 @@ public class ActivityType
 	public void setMaxParticipants(int maxParticipants)
 	{
 		this.maxParticipants=maxParticipants;
-	}
-	
-	//price
-	public double getPrice()
-	{
-		return this.price;
-	}
-	public void setPrice(double price)
-	{
-		this.price=price;
 	}
 }
