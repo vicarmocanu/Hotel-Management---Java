@@ -2,7 +2,6 @@ package DBLayer;
 
 import java.util.LinkedList;
 
-import Model.Guest;
 import Model.Team;
 
 public interface IFDBTeam
@@ -15,9 +14,6 @@ public interface IFDBTeam
 	
 	//get team by leader id
 	public Team getTeamByLeaderId(int leaderId, boolean retrieveAssociation);
-	
-	//get team participants
-	public LinkedList<Guest> getTeamParticipants(int id, boolean retrieveAssociation);
 	
 	//insert team
 	public int insertTeam(Team team) throws Exception;
