@@ -5,7 +5,6 @@ public class ActivityType
 	//Attributes
 	private int id;
 	private String name;
-	private String description;
 	private int maxParticipants;	
 	
 	//Constructor
@@ -18,18 +17,16 @@ public class ActivityType
 		this.id=id;
 	}
 	
-	public ActivityType(String name, String description, int maxParticipants)
+	public ActivityType(String name, int maxParticipants)
 	{
 		this.name=name;
-		this.description=description;
 		this.maxParticipants=maxParticipants;
 	}
 	
-	public ActivityType(int id, String name, String description, int maxParticipants)
+	public ActivityType(int id, String name, int maxParticipants)
 	{
 		this.id=id;
 		this.name=name;
-		this.description=description;
 		this.maxParticipants=maxParticipants;
 	}
 	
@@ -54,17 +51,6 @@ public class ActivityType
 	{
 		this.name=name;
 	}
-	
-	//description
-	public String getDescription()
-	{
-		return this.description;
-	}
-	public void setDescription(String description)
-	{
-		this.description=description;
-	}
-	
 	//maxParticipants
 	public int getMaxParticipants()
 	{
