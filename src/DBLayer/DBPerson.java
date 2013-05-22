@@ -135,7 +135,8 @@ private Connection con;
 		String query = buildQuery(wClause);
 		System.out.println("Query: "+query);
 		
-		try {
+		try 
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			results = stmt.executeQuery(query);
@@ -148,8 +149,9 @@ private Connection con;
 			else
 			{
 				rbObj = null;
-			}			
-		} catch (Exception e) {
+			}
+		}
+		catch (Exception e) {
 			System.out.println("Query exception - select Person : "+e);
 			e.printStackTrace();
 		}
@@ -157,13 +159,14 @@ private Connection con;
 		return rbObj;
 	}
 	
-	private LinkedList<Person> miscWhere(String wClause, boolean retrieveAssiciation)
+	private LinkedList<Person> miscWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
 		LinkedList<Person> list = new LinkedList<Person>();
 		String query = buildQuery(wClause);
 		
-		try {
+		try 
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			results = stmt.executeQuery(query);
@@ -174,7 +177,9 @@ private Connection con;
 				list.add(rbObj);
 			}
 			stmt.close();
-		} catch (Exception e) {
+			
+		}
+		catch (Exception e) {
 			System.out.println("Query exception - select Person : "+e);
 			e.printStackTrace();
 		}
