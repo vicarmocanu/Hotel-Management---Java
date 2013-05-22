@@ -1,18 +1,17 @@
 package Model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ActivityBooking 
 {
-	private int id;
-	private String date;
-	private String startHour;
-	private String endHour;
-	private String status;//booked, done, waitingList
-	private int numberOfParticipants;
-	private String place;
+	SimpleDateFormat days=new SimpleDateFormat("mm-dd-yyyy");
 	
+	private int id;
+	private Date date;
+	private String status;//booked, done, waitingList
 	private Guest guest;
-	private ActivityType activityType;
-	private Instructor instructor;
+	private Team team;
 	
 	//Constructor
 	public ActivityBooking()
@@ -23,21 +22,22 @@ public class ActivityBooking
 		this.id = id;
 	}
 	
-	public ActivityBooking(int id, String date, String startHour, String endHour,
-			String status, int numberOfParticipants, String place, 
-			Guest guest, ActivityType activityType, Instructor instructor)
+	public ActivityBooking(int id, String date, String status, Guest guest, Team team)
 	{
 		this.id = id;
-		this.date = date;
-		this.startHour = startHour;
-		this.endHour = endHour;
+		
+		try
+		{
+			this.date=days.parse(date);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Cannot create activity booking. Problem with date input.");
+		}
+		
 		this.status = status;
-		this.numberOfParticipants = numberOfParticipants;
-		this.place = place;
-	
 		this.guest=guest;
-		this.activityType=activityType;
-		this.instructor=instructor;
+		this.team=team;
 	}
 
 	//Getters and setters
@@ -50,33 +50,6 @@ public class ActivityBooking
 	{
 		this.id = id;
 	}
-	
-	public String getDate()
-	{
-		return date;
-	}
-	public void setDate(String date)
-	{
-		this.date = date;
-	}
-
-	public String getStartHour()
-	{
-		return startHour;
-	}
-	public void setStartHour(String startHour)
-	{
-		this.startHour = startHour;
-	}
-
-	public String getEndHour()
-	{
-		return endHour;
-	}
-	public void setEndHour(String endHour)
-	{
-		this.endHour = endHour;
-	}
 
 	public String getStatus()
 	{
@@ -85,42 +58,6 @@ public class ActivityBooking
 	public void setStatus(String status)
 	{
 		this.status = status;
-	}
-
-	public int getNumberOfParticipants()
-	{
-		return numberOfParticipants;
-	}
-	public void setNumberOfParticipants(int numberOfParticipants)
-	{
-		this.numberOfParticipants = numberOfParticipants;
-	}
-
-	public String getPlace()
-	{
-		return place;
-	}
-	public void setPlace(String place)
-	{
-		this.place = place;
-	}
-	
-	public Instructor getInstructor()
-	{
-		return instructor;
-	}	
-	public void setInstructor(Instructor instructor)
-	{
-		this.instructor=instructor;
-	}
-	
-	public ActivityType getActivity()
-	{
-		return activityType;
-	}	
-	public void setActivity(ActivityType activityType)
-	{
-		this.activityType=activityType;
 	}
 	
 	public Guest getGuest() 
@@ -131,5 +68,35 @@ public class ActivityBooking
 	{
 		this.guest = guest;
 	}
-//end getters and setters
+	
+	public Team getTeam()
+	{
+		return this.team;
+	}
+	public void setTeam(Team team)
+	{
+		this.team=team;
+	}
+	
+	public Date getDate()
+	{
+		return this.date;
+	}
+	public String getStringDate()
+	{
+		String date=days.format(getDate());
+		return date;
+	}
+	public void setDate(String date)
+	{
+		try
+		{
+			this.date=days.parse(date);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Cannot create activity booking. Problem with date input.");
+		}
+	}
+
 }
