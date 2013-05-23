@@ -41,7 +41,7 @@ public class DBRoomBooking implements IFDBRoomBooking {
 	
 	//insert
 	public int insertRoomBooking(RoomBooking rb) throws Exception {
-		String query = "INSERT INTO RoomBooking(arrivalDate, departureDate, status, numberOfChildren)" +
+		String query = "INSERT INTO RoomBooking(arrivalDate, departureDate, stts, numberOfChildren)" +
 				" VALUES('" +
 				rb.getArrivalDate()+"','"+
 				rb.getDepartureDate()+"','"+
@@ -56,8 +56,8 @@ public class DBRoomBooking implements IFDBRoomBooking {
 			rc = stmt.executeUpdate(query);
 			stmt.close();
 		} catch (SQLException ex) {
-			System.out.println("SalesOrder is not inserted");
-	        throw new Exception ("SalesOrder is not inserted correctly!");
+			System.out.println("RoomBooking is not inserted");
+	        throw new Exception ("RoomBooking is not inserted correctly!");
 		}
 		
 		return rc;
@@ -71,7 +71,7 @@ public class DBRoomBooking implements IFDBRoomBooking {
 		String query = "UPDATE RoomBooking SET " +
 				"arrivalDate='" + roomBooking.getArrivalDate() +"', "+
 				"departureDate='"+roomBooking.getDepartureDate()+"', "+
-				"status='"+roomBooking.getStatus()+"', "+
+				"stts='"+roomBooking.getStatus()+"', "+
 				"numberOfChildren='"+roomBooking.getNumberOfChildren()+"' "+
 						"WHERE id='" + roomBooking.getId()+"'";
 		System.out.println("Update query: " + query);
@@ -129,7 +129,7 @@ public class DBRoomBooking implements IFDBRoomBooking {
 			rbObj.setId(results.getInt("id"));
 			rbObj.setArrivalDate(results.getString("arrivalDate"));
 			rbObj.setDepartureDate(results.getString("departureDate"));
-			rbObj.setStatus(results.getString("status"));
+			rbObj.setStatus(results.getString("stts"));
 			rbObj.setNumberOfChildren(results.getInt("numberOfChildren"));
 		} catch (Exception e) {
 			System.out.println("Error in building the RoomBooking object!");
