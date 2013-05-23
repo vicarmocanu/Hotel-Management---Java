@@ -46,6 +46,10 @@ public class Team
 		this.numberOfParticipants=this.participants.size();
 		return numberOfParticipants;
 	}
+	public void setNumberOfParticipants(int numberOfParticipants)
+	{
+		this.numberOfParticipants=numberOfParticipants;
+	}
 	
 	public void setParticipants(LinkedList<Guest> participants)
 	{
@@ -102,4 +106,5 @@ public class Team
 			participants.remove(wantedParticipant);
 		}
 	}
+	
 }
