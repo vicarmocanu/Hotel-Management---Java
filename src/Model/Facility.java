@@ -21,6 +21,13 @@ public class Facility
 		this.status=status;
 	}
 	
+	public Facility(String name, ActivityType activity, String status)
+	{
+		this.name=name;
+		this.activity=activity;
+		this.status=status;
+	}
+	
 	public Facility(int id)
 	{
 		this.id=id;
