@@ -214,7 +214,7 @@ public class DBFacility implements IFDBFacility
 		int result=-1;
 		  
 	  	String query="DELETE FROM Facility WHERE id= '" + id + "'";
-	  	System.out.println("Delete by id query: " + query);
+	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
 	  		Statement stmt = con.createStatement();
