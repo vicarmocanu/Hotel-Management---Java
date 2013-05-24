@@ -204,7 +204,7 @@ public class DBTeam implements IFDBTeam
 		int result=-1;
 		  
 	  	String query="DELETE FROM Team WHERE leaderId= '" + leaderId + "'";
-	  	System.out.println("Delete by id query: " + query);
+	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
 	  		Statement stmt = con.createStatement();
@@ -226,7 +226,7 @@ public class DBTeam implements IFDBTeam
 		int result=-1;
 		  
 	  	String query="DELETE FROM Team WHERE id= '" + id + "'";
-	  	System.out.println("Delete by id query: " + query);
+	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
 	  		Statement stmt = con.createStatement();
