@@ -190,7 +190,7 @@ public class DBActivityType implements IFDBActivityType
 		int result=-1;
 		  
 	  	String query="DELETE FROM ActivityType WHERE id= '" + id + "'";
-	  	System.out.println("Delete by id query: " + query);
+	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
 	  		Statement stmt = con.createStatement();
@@ -213,7 +213,7 @@ public class DBActivityType implements IFDBActivityType
 		int result=-1;
 		  
 	  	String query="DELETE FROM ActivityType WHERE name= '" + name + "'";
-	  	System.out.println("Delete by name query: " + query);
+	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
 	  		Statement stmt = con.createStatement();
