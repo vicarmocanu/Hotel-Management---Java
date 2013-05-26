@@ -39,6 +39,22 @@ public class ActivityBooking
 		this.guest=guest;
 		this.team=team;
 	}
+	
+	public ActivityBooking(String date, String status, Guest guest, Team team)
+	{
+		try
+		{
+			this.date=days.parse(date);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Cannot create activity booking. Problem with date input.");
+		}
+		
+		this.status = status;
+		this.guest=guest;
+		this.team=team;
+	}
 
 	//Getters and setters
 	
