@@ -23,6 +23,13 @@ public class RoomBookingCtr {
 		
 	}
 	
+	public RoomBooking findRoomBookingByID(int bookingId)
+	{
+		IFDBRoomBooking dbrb = new DBRoomBooking();
+		RoomBooking rb = dbrb.findRoomBooking(bookingId, false);
+		return rb;
+	}
+	
 	public ArrayList<RoomLine> findRoomLinesForBooking(int bookingId)
 	{
 		IFDBRoomLine dbrl = new DBRoomLine();
@@ -63,7 +70,7 @@ public class RoomBookingCtr {
 		System.out.println("Line created.");
 	}
 	
-	public int createNewBooking(String arrival, String departure, String status, int children)
+	public void createNewBooking(String arrival, String departure, String status, int children)
 	{
 		RoomBooking rb = new RoomBooking();
 		
@@ -80,8 +87,7 @@ public class RoomBookingCtr {
 		} catch (Exception e) {
 			DBConnection1.rollbackTransaction();
 		}
-		System.out.println("Booking created.");
-		return rb.getId();
+		System.out.println("Booking created: "+rb.getId());
 	}
 	
 	public int updateBooking(int id, String arrival, String departure, String status, int children)
