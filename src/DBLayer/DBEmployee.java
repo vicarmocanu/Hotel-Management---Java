@@ -1,9 +1,11 @@
 package DBLayer;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
-
 import Model.Employee;
+import Model.Location;
 
 public class DBEmployee implements IFDBEmployee
 {
@@ -15,7 +17,6 @@ public class DBEmployee implements IFDBEmployee
 		con=DBConnection1.getInstance().getDBcon();
 	}
 	
-	//method to build the query
 	private String buildQuery(String wClause)
 	{
 		String query="SELECT * FROM Employee";
@@ -27,7 +28,6 @@ public class DBEmployee implements IFDBEmployee
 		return query;
 	}
 	
-	//method to build an activity type object
 	private Employee buildEmployee(ResultSet results)
 	{
 		Employee employeeObj= new Employee();
@@ -40,7 +40,7 @@ public class DBEmployee implements IFDBEmployee
 		}
 		catch(Exception e)
 		{
-			System.out.println("Exception in building the activity type object: " +e);
+			System.out.println("Exception in building the employee object: " +e);
 		}
 		
 		return employeeObj;
@@ -50,8 +50,7 @@ public class DBEmployee implements IFDBEmployee
 	private Employee singleWhere (String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
-		Employee employeeObj=new Employee();
-		
+		Employee employeeObj=new Employee();		
 		String query = buildQuery(wClause);
 		System.out.println(query);
 		
@@ -65,6 +64,18 @@ public class DBEmployee implements IFDBEmployee
 			{
 				employeeObj = buildEmployee(results);
 				stmt.close();
+			}
+			if(retrieveAssociation)
+			{//location selection
+				IFDBLocation dbLocation = new DBLocation();
+				Location location = new Location();
+				location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
+				employeeObj.setZipcode(location.getZipCode());
+				employeeObj.setCountry(location.getCountry());
+			}
+			else
+			{
+				employeeObj = null;
 			}
 		}
 		catch(Exception e)
@@ -97,6 +108,17 @@ public class DBEmployee implements IFDBEmployee
 			}
 			
 			stmt.close();
+			if(retrieveAssociation)
+			{
+				IFDBLocation dbLocation = new DBLocation();
+				for(Employee employeeObj : employeeList)
+				{
+					Location location = new Location();
+					location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
+					employeeObj.setZipcode(location.getZipCode());
+					employeeObj.setCountry(location.getCountry());
+				}
+			}
 		}
 		catch(Exception e)
 		{
@@ -107,32 +129,18 @@ public class DBEmployee implements IFDBEmployee
 		return employeeList;
 	}
 
-	//get all activity types
-	
 	public LinkedList<Employee> getAllEmployees(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
-
-	//get an activity type by id
 	
 	public Employee getEmployeeById(int id, boolean retrieveAssociation)
 	{
 		String wClause = "  id= '" + id + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
-
-	//get an activity type by name
 	
-	public Employee getEmployeeByName(String name, boolean retrieveAssociation)
-	{
-		String wClause = " name= '" + name + "'";
-		return singleWhere(wClause, retrieveAssociation);
-	}
-	
-	//insert a new activity type into the database
-	
-	public int inseryEmployee(Employee employeeObj) throws Exception
+	public int insertEmployee(Employee employeeObj) throws Exception
 	{
 		int result = -1;
 		
@@ -155,8 +163,6 @@ public class DBEmployee implements IFDBEmployee
 	    
 	    return(result);
 	}
-
-	//method to update an activity type
 	
 	public int updateEmployee(Employee employeeObj)
 	{
@@ -165,7 +171,7 @@ public class DBEmployee implements IFDBEmployee
 		String query="UPDATE Employee SET " +
 		"salary= '" + employeeNewObj.getSalary() + "', " +
 		"employeeType= '" + employeeNewObj.getEmployeeType() + "' " + 
-		"WHERE id= '" + employeeNewObj.getId() + "'";
+		"WHERE personId= '" + employeeNewObj.getId() + "'";
 		
 		int result=-1;
 		System.out.println("Update query: " + query);
@@ -184,14 +190,12 @@ public class DBEmployee implements IFDBEmployee
 		
 		return(result);
 	}
-
-	//method to delete an activity type by its id
 	
 	public int deleteEmployeeById(int id)
 	{
 		int result=-1;
 		  
-	  	String query="DELETE FROM Employee WHERE id= '" + id + "'";
+	  	String query="DELETE FROM Employee WHERE personId= '" + id + "'";
 	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
@@ -203,11 +207,7 @@ public class DBEmployee implements IFDBEmployee
 	  	catch(SQLException e)
 	  	{
 	  		System.out.println("Delete exception: " + e);
-	  	}
-	  	
+	  	}	  	
 	  	return(result);
 	}
-
-	//method to delete an activity type by its name
-	
 }
