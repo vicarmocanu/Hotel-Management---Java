@@ -3,12 +3,12 @@ package Model;
 public class Person {
 	private int id;
 	private String name;
-	private String address;
 	private int zipcode;
-	private String city;
 	private String country;
+	private String address;
 	private String phoneNo;
 	private String email;
+	private String personType;
 	private String password;
 		
 	//Constructor 
@@ -21,15 +21,15 @@ public class Person {
 	}
 	
 	public Person(int id, String name, String address, int zipcode,
-			String city, String country, String phoneNo, String email,String password) {
+			String city, String country, String phoneNo, String email, String personType, String password) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.zipcode = zipcode;
-		this.city = city;
 		this.country = country;
 		this.phoneNo = phoneNo;
 		this.email = email;
+		this.personType = personType;
 		this.password=password;
 	}
 
@@ -66,14 +66,6 @@ public class Person {
 		this.zipcode = zipcode;
 	}
 	
-	//City
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
 	//Country
 	public String getCountry() {
 		return country;
@@ -105,6 +97,15 @@ public class Person {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getPersonType()
+	{
+		return this.personType;
+	}
+	public void setPersonType(String personType)
+	{
+		this.personType = personType;
 	}
 //end getters and setters
 }
