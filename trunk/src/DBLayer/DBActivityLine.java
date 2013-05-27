@@ -171,15 +171,14 @@ public class DBActivityLine implements IFDBActivityLine
 	{
 		ActivityLine activityLineObj = activityLine;
 		
-		String query="UPDATE ActivityLine SET " + 
-		" activityId= '" + activityLineObj.getActivity().getID() + "'," +
+		String query="UPDATE ActivityLine SET " +
 		" instructorId= '" + activityLineObj.getInstructor().getId() + "'," + 
 		" date= '" + activityLineObj.getDate() + "'," + 
 		" startHour= '" + activityLineObj.getStartHour() + "'," +
 		" endHour= '" + activityLineObj.getEndHour() + "'," +
 		" facilityId= '" + activityLineObj.getFacility().getId() + "'," +
-		" bookingId= '" + activityLineObj.getActivityBooking().getId() + "'";
-		
+		" bookingId= '" + activityLineObj.getActivityBooking().getId() + "' " +
+		" WHERE activityId= '" + activityLineObj.getActivity().getID() + "'";
 		int result=-1;
 		System.out.println("Update query: " + query);
 		
