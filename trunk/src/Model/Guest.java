@@ -4,7 +4,8 @@ import java.util.Iterator;
 
 
 public class Guest extends Person{
-	private String type;
+	private String guestType;
+	private TravelAgency travelAgency;
 	private LinkedList<ActivityBooking> activityBookings;
 	private LinkedList<RoomBooking> roomBookings;
 
@@ -18,20 +19,34 @@ public class Guest extends Person{
 		super(id);
 	}
 	
-	public Guest(int id, String name, String address, int zipcode, String city,
-			String country, String phoneNo, String email, String password, String type) {
-		super(id, name, address, zipcode, city, country, phoneNo, email, password);
-		this.type = type;
+	public Guest(int id, String name, String address, int zipcode,
+			String city, String country, String phoneNo, String email, String personType, String password, String guestType, 
+			TravelAgency travelAgency)
+	{
+		super(id, name, address, zipcode, country, phoneNo, email, personType, password);
+		this.guestType = guestType;
+		this.travelAgency = travelAgency;
 	}
 
 //Getters and setters
 	//type
-	public String getType() {
-		return type;
+	
+	public TravelAgency getTravelAgency()
+	{
+		return this.travelAgency;
 	}
-
-	public void setType(String type) {
-		this.type = type;
+	public void setTravelAgency(TravelAgency travelAgency)
+	{
+		this.travelAgency = travelAgency;
+	}
+	
+	public String getGuestType()
+	{
+		return this.guestType;
+	}
+	public void setGuestType(String guestType)
+	{
+		this.guestType = guestType;
 	}
 	
 	public void setId(int id)
@@ -53,16 +68,6 @@ public class Guest extends Person{
 	{
 		return super.getName();
 		
-	}
-	
-	public void setCity(String city)
-	{
-		super.setCity(city);
-	}
-	
-	public String getCity()
-	{
-		return super.getCity();
 	}
 	
 	public void setCountry(String country)
