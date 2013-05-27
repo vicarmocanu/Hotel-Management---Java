@@ -20,8 +20,8 @@ public class Person {
 		this.id = id;
 	}
 	
-	public Person(int id, String name, String address, int zipcode,
-			String city, String country, String phoneNo, String email, String personType, String password) {
+	public Person(int id, String name, String address, int zipcode,	String country, String phoneNo, 
+			String email, String personType, String password) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
