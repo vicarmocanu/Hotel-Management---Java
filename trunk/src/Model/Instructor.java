@@ -9,6 +9,8 @@ public class Instructor extends Employee {
 		this.price = price;
 	}
 	
+	public Instructor(){}
+	
 	
 //Getters and setters
 	//Instructor's price
