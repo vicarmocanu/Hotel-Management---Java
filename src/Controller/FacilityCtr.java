@@ -31,12 +31,12 @@ public class FacilityCtr
 		return facilityList;
 	}
 	
-	public Facility getFacilityForActivity(int activityId)
+	public LinkedList<Facility> getFacilityForActivity(int activityId)
 	{
 		IFDBFacility dbFacility = new DBFacility();
-		Facility facilityObj = new Facility();
-		facilityObj = dbFacility.getFacilityForActivity(activityId, true);
-		return facilityObj;
+		LinkedList<Facility> facilityList = new LinkedList<Facility>();
+		facilityList = dbFacility.getFacilitiesForActivity(activityId, true);
+		return facilityList;
 	}
 	
 	public Facility getFacilityByName(String name)
