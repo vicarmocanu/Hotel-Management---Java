@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
+import Model.Location;
 import Model.Person;
 
 public class DBPerson implements IFDBPerson{
@@ -17,57 +18,63 @@ private Connection con;
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	public int insertPerson(Person prs) throws Exception {
-		String query = "INSERT INTO Person(id, name, address, zipcode, city, country, phoneNo, email, password)" +
+	public int insertPerson(Person prs) throws Exception
+	{
+		String query = "INSERT INTO Person(id, name, zipcode, country, address, phoneNo, email, personType, password)" +
 				" VALUES('" +
 				prs.getId()+"','"+
 				prs.getName()+"','"+
-				prs.getAddress()+"','"+
 				prs.getZipcode()+ "')"+
-				prs.getCity()+","+
 				prs.getCountry()+","+
+				prs.getAddress()+"','"+
 				prs.getPhoneNo()+","+
 				prs.getEmail()+","+
+				prs.getPersonType()+","+
 				prs.getPassword()+",";
 		
 		int rc = -1;
-		System.out.println("insert: " + query);
-		try {
+		System.out.println("Insert query: " + query);
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			rc = stmt.executeUpdate(query);
 			stmt.close();
-		} catch (SQLException ex) {
+		}
+		catch (SQLException ex)
+		{
 			System.out.println("Person is not inserted");
 	        throw new Exception ("Person is not inserted correctly!");
 		}
-		
 		return rc;
 	}
-
 	
-	public int updatePerson(Person prs) {
+	public int updatePerson(Person prs)
+	{
 		int rc = -1;
 		
 		String query = "UPDATE Person SET " +
 				"id='" + prs.getId() +"', "+
 				"name='"+prs.getName()+"', "+
-				"address='"+prs.getAddress()+"', "+
 				"zipcode='"+prs.getZipcode()+"' "+
-				"city='"+prs.getCity()+"' "+
 				"country='"+prs.getCountry()+"' "+
+				"address='"+prs.getAddress()+"', "+
 				"phoneNo='"+prs.getPhoneNo()+"' "+
 				"email='"+prs.getEmail()+"' "+
+				"personType='" + prs.getPersonType() + 
 				"password='"+prs.getPassword()+"' "+
 						"WHERE id='" +prs.getId()+"'";
 		System.out.println("Update query: " + query);
 		
-		try {
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			rc=stmt.executeUpdate(query);
 			stmt.close();
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			System.out.println("Update exception in Person: " + e);
 		}
 		
@@ -76,7 +83,8 @@ private Connection con;
 	}
 
 	
-	public int deletePerson(int prsId) {
+	public int deletePerson(int prsId)
+	{
 		int rc=-1;
 		  
 	  	String query="DELETE FROM Person WHERE id = '" +
@@ -114,14 +122,16 @@ private Connection con;
 		try {
 			rbObj.setId(results.getInt("id"));
 			rbObj.setName(results.getString("name"));
-			rbObj.setAddress(results.getString("address"));
 			rbObj.setZipcode(results.getInt("zipcode"));
-			rbObj.setCity(results.getString("city"));
 			rbObj.setCountry(results.getString("country"));
+			rbObj.setAddress(results.getString("address"));
 			rbObj.setPhoneNo(results.getString("phoneNo"));
 			rbObj.setEmail(results.getString("email"));
+			rbObj.setPersonType(results.getString("personType"));
 			rbObj.setPassword(results.getString("password"));
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			System.out.println("Error in building the Person object!");
 		}
 		
@@ -146,12 +156,21 @@ private Connection con;
 				System.out.println("Person build successfully!");
 				stmt.close();
 			}
+			if(retrieveAssociation)
+			{//location selection
+				IFDBLocation dbLocation = new DBLocation();
+				Location location = new Location();
+				location = dbLocation.searchLocationByZipCode(rbObj.getZipcode(), false);
+				rbObj.setZipcode(location.getZipCode());
+				rbObj.setCountry(location.getCountry());
+			}
 			else
 			{
 				rbObj = null;
 			}
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			System.out.println("Query exception - select Person : "+e);
 			e.printStackTrace();
 		}
@@ -177,6 +196,17 @@ private Connection con;
 				list.add(rbObj);
 			}
 			stmt.close();
+			if(retrieveAssociation)
+			{
+				IFDBLocation dbLocation = new DBLocation();
+				for(Person personObj : list)
+				{
+					Location location = new Location();
+					location = dbLocation.searchLocationByZipCode(personObj.getZipcode(), false);
+					personObj.setZipcode(location.getZipCode());
+					personObj.setCountry(location.getCountry());
+				}
+			}
 			
 		}
 		catch (Exception e) {
@@ -192,13 +222,13 @@ private Connection con;
 
 	public Person searchPersonById(int id,
 			boolean retriveAssociation) {
-		String wClause = "  Guest ID: = '" + id + "'";
+		String wClause = " id= '" + id + "'";
 		return singleWhere(wClause, retriveAssociation);
 	}
 
 	
 	public Person searchPersonByName(String name, boolean retriveAssociation) {
-		String wClause = "Name: " + name + ",";
+		String wClause = " name= " + name + ",";
 		System.out.println("Person " + wClause);
 		return singleWhere(wClause, retriveAssociation);
 	}
