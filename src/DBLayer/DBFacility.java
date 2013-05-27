@@ -43,7 +43,7 @@ public class DBFacility implements IFDBFacility
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in building the facility object.");
+			System.out.println("Exception in building the facility object: " + e);
 		}
 		return facilityObj;
 	}
@@ -91,6 +91,7 @@ public class DBFacility implements IFDBFacility
 		ResultSet results;
 		LinkedList<Facility> facilityList=new LinkedList<Facility>();
 		String query =  buildQuery(wClause);
+		System.out.println(query);
 		
 		try
 		{
@@ -139,10 +140,10 @@ public class DBFacility implements IFDBFacility
 	}
 
 	@Override
-	public Facility getFacilityForActivity(int activityId, boolean retrieveAssociation)
+	public LinkedList<Facility> getFacilitiesForActivity(int activityId, boolean retrieveAssociation)
 	{
 		String wClause = "  forActivity= '" + activityId + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause, retrieveAssociation);
 	}
 
 	@Override
@@ -157,11 +158,10 @@ public class DBFacility implements IFDBFacility
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO Facility(id, name, forActivity, status) VALUES ('" +
-		facility.getId() + "','" +
+		String query = "INSERT INTO Facility(name, forActivity, status) VALUES ('" +
 				facility.getName() + "','" +
 		facility.getActivity().getID() + "','" +
-				facility.getStatus() + "')'";
+				facility.getStatus() + "')";
 		
 		System.out.println("Insertion query: " + query);
 	    try
@@ -173,7 +173,7 @@ public class DBFacility implements IFDBFacility
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Facility has not been inserted correctly. Exception: " + e);
+	    	System.out.println("Insert exception: " + e);
 	    }
 	    
 	    return(result);
@@ -185,10 +185,10 @@ public class DBFacility implements IFDBFacility
 		Facility facilityObj=facility;
 		
 		String query="UPDATE Facility SET " + 
-		"id= '" + facilityObj.getId() + "', " + 
 		"name= '" + facilityObj.getName() + "', " +
 		"forActivity= '" + facilityObj.getActivity().getID() + "', " +
-		"status= '" + facilityObj.getStatus() + "'";
+		"status= '" + facilityObj.getStatus() + "' " + 
+		"WHERE id= '" + facilityObj.getId() + "'";
 		
 		int result=-1;
 		System.out.println("Update query: " + query);
@@ -202,7 +202,7 @@ public class DBFacility implements IFDBFacility
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Facility has not been updated correctly. Exception: " + e);
+			System.out.println("Update exception: " + e);
 		}
 		
 		return(result);
@@ -224,7 +224,7 @@ public class DBFacility implements IFDBFacility
 	  	}
 	  	catch(SQLException e)
 	  	{
-	  		System.out.println("Facility has not been deleted successfully. Exception: " + e);
+	  		System.out.println("Delete exception: " + e);
 	  	}
 	  	
 	  	return(result);

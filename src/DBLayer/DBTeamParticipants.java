@@ -43,7 +43,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in building the team participant object.");
+			System.out.println("Exception in building the team participant object: " + e);
 		}
 		return teamParticipantObj;
 	}
@@ -53,6 +53,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		ResultSet results;
 		LinkedList<Participant> participantList=new LinkedList<Participant>();
 		String query =  buildQuery(wClause);
+		System.out.println("Query: "+query);
 		
 		try
 		{
@@ -108,7 +109,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 				teamParticipant.getTeam().getId() + "','" +
 				teamParticipant.getParticipant().getId() + "')";
 		
-		System.out.println("Insertion query: " + query);
+		System.out.println("Inserti query: " + query);
 	    try
 	    {
 	    	Statement stmt = con.createStatement();
@@ -118,7 +119,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Participant has not been inserted correctly. Exception: " + e);
+	    	System.out.println("Insert exception: " + e);
 	    }
 	    return(result);
 	}
@@ -128,7 +129,8 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 	{
 		int result=-1;
 		  
-	  	String query="DELETE FROM TeamParticipants WHERE teamId= '" + teamId + "'" + " AND participantId= '" + participantId + "'";
+	  	String query="DELETE FROM TeamParticipants WHERE teamId= '" + teamId + "'" + 
+	  	" AND participantId= '" + participantId + "'";
 	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
@@ -139,7 +141,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 	  	}
 	  	catch(SQLException e)
 	  	{
-	  		System.out.println("Participant has not been deleted successfully. Exception: " + e);
+	  		System.out.println("Delete exception: " + e);
 	  	}
 	  	
 	  	return(result);

@@ -7,96 +7,91 @@ import java.sql.Statement;
 import java.util.LinkedList;
 
 import Model.Guest;
+import Model.Location;
+import Model.Person;
+import Model.TravelAgency;
 
-public class DBGuest implements IFDBGuest{
-	
-private Connection con;
+public class DBGuest implements IFDBGuest
+{
+	private Connection con;
 	
 	public DBGuest()
 	{
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	public int insertGuest(Guest gt) throws Exception {
-		String query = "INSERT INTO Guest(id, name, address, zipcode, city, country, phoneNo, email, password, type)" +
-				" VALUES('" +
-				gt.getId()+"','"+
-				gt.getName()+"','"+
-				gt.getAddress()+"','"+
-				gt.getZipCode()+ "')"+
-				gt.getCity()+","+
-				gt.getCountry()+","+
-				gt.getPhoneNo()+","+
-				gt.getEmail()+","+
-				gt.getPassword()+","+
-				gt.getType();
+	public int insertGuest(Guest gt) throws Exception
+	{
+		String query = "INSERT INTO Guest(personId, guestType, travelAgency) VALUES('" +
+				gt.getId() + "','" + 
+				gt.getGuestType() + "','" +
+				gt.getTravelAgency().getCVR() + "')";
 		
 		int rc = -1;
-		System.out.println("insert: " + query);
-		try {
+		System.out.println("Insertion query: " + query);
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			rc = stmt.executeUpdate(query);
 			stmt.close();
-		} catch (SQLException ex) {
-			System.out.println("Guest is not inserted");
-	        throw new Exception ("Guest is not inserted correctly!");
+		}
+		catch (SQLException ex)
+		{
+			System.out.println("Insertion exception: " + ex);
 		}
 		
 		return rc;
 	}
 
 	
-	public int updateGuest(Guest gst) {
+	public int updateGuest(Guest gst)
+	{
 		Guest guest = gst;
 		int rc = -1;
 		
 		String query = "UPDATE Guest SET " +
-				"id='" + guest.getId() +"', "+
-				"name='"+guest.getName()+"', "+
-				"address='"+guest.getAddress()+"', "+
-				"zipcode='"+guest.getZipCode()+"' "+
-				"city='"+guest.getCity()+"' "+
-				"country='"+guest.getCountry()+"' "+
-				"phoneNo='"+guest.getPhoneNo()+"' "+
-				"email='"+guest.getEmail()+"' "+
-				"password='"+guest.getPassword()+"' "+
-				"type='"+guest.getType()+"' "+
-						"WHERE id='" +guest.getId()+"'";
+		"guestType= '" + guest.getGuestType() + "', " +
+				"travelAgency= '" + guest.getTravelAgency() + "' " +
+		"WHERE personId= '" + guest.getId() + "'";		
 		System.out.println("Update query: " + query);
 		
-		try {
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			rc=stmt.executeUpdate(query);
 			stmt.close();
-		} catch (Exception e) {
-			System.out.println("Update exception in Guest: " + e);
+		}
+		catch (SQLException e)
+		{
+			System.out.println("Update exception: " + e);
 		}
 		
 		return rc;
-
 	}
-
 	
-	public int deleteGuest(int guestId) {
+	public int deleteGuest(int guestId)
+	{
 		int rc=-1;
 		  
-	  	String query="DELETE FROM Guest WHERE id = '" +
+	  	String query="DELETE FROM Guest WHERE guestId= '" +
 				guestId + "'";
-                System.out.println(query);
-	  	try{ 
-	 		Statement stmt = con.createStatement();
+	  	System.out.println("Delete query: " + query);
+	  	
+	  	try
+	  	{
+	  		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
 	 	  	rc = stmt.executeUpdate(query);
 	 	  	stmt.close();
   		}
-   	    catch(Exception ex){
-	 	  	System.out.println("Delete exception in Guest: "+ex);
+   	    catch(SQLException ex)
+   	    {
+	 	  	System.out.println("Delete exception: "+ex);
    	    }
 		return(rc);
 	}
-	
 	
 	private String buildQuery(String wClause)
 	{
@@ -112,21 +107,20 @@ private Connection con;
 	
 	private Guest buildGuest(ResultSet results)
 	{
-		Guest rbObj = new Guest();		
+		Guest rbObj = new Guest();
+		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
+		TravelAgency travelAgencyObj = new TravelAgency();
 		
-		try {
-			rbObj.setId(results.getInt("id"));
-			rbObj.setName(results.getString("name"));
-			rbObj.setAddress(results.getString("address"));
-			rbObj.setZipCode(results.getInt("zipcode"));
-			rbObj.setCity(results.getString("city"));
-			rbObj.setCountry(results.getString("country"));
-			rbObj.setPhoneNo(results.getString("phoneNo"));
-			rbObj.setEmail(results.getString("email"));
-			rbObj.setPassword(results.getString("password"));
-			rbObj.setType(results.getString("type"));
-		} catch (Exception e) {
-			System.out.println("Error in building the Guest object!");
+		try
+		{
+			rbObj.setId(results.getInt("personId"));
+			travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(results.getInt("travelAgency"), false);
+			rbObj.setTravelAgency(travelAgencyObj);
+			rbObj.setGuestType(results.getString("guestType"));
+		}
+		catch (Exception e)
+		{
+			System.out.println("Exception in building the guest object: " + e);
 		}
 		
 		return rbObj;
@@ -139,36 +133,47 @@ private Connection con;
 		String query = buildQuery(wClause);
 		System.out.println("Query: "+query);
 		
-		try {
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			results = stmt.executeQuery(query);
 			
-			if (results.next()) {
+			if (results.next())
+			{
 				rbObj = buildGuest(results);
-				System.out.println("Guest build successfully!");
 				stmt.close();
+			}
+			if(retrieveAssociation)
+			{//location selection
+				IFDBLocation dbLocation = new DBLocation();
+				Location location = new Location();
+				location = dbLocation.searchLocationByZipCode(rbObj.getZipcode(), false);
+				rbObj.setZipcode(location.getZipCode());
+				rbObj.setCountry(location.getCountry());
 			}
 			else
 			{
 				rbObj = null;
 			}
 		}
-		catch (Exception e) {
-			System.out.println("Query exception - select Guest : "+e);
+		catch (Exception e)
+		{
+			System.out.println("Single selection query exception: " + e);
 			e.printStackTrace();
 		}
 		
 		return rbObj;
 	}
 	
-	private LinkedList<Guest> miscWhere(String wClause, boolean retrieveAssiciation)
+	private LinkedList<Guest> miscWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
 		LinkedList<Guest> list = new LinkedList<Guest>();
 		String query = buildQuery(wClause);
 		
-		try {
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			results = stmt.executeQuery(query);
@@ -179,33 +184,47 @@ private Connection con;
 				list.add(rbObj);
 			}
 			stmt.close();
-		} catch (Exception e) {
-			System.out.println("Query exception - select Guest : "+e);
+			if(retrieveAssociation)
+			{
+				IFDBLocation dbLocation = new DBLocation();
+				for(Person personObj : list)
+				{
+					Location location = new Location();
+					location = dbLocation.searchLocationByZipCode(personObj.getZipcode(), false);
+					personObj.setZipcode(location.getZipCode());
+					personObj.setCountry(location.getCountry());
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Multiiple selection query exception: "+e);
 			e.printStackTrace();
 		}
 		return list;
 	}
 	
-	public LinkedList<Guest> getAllGuest(boolean retriveAssociation) {
+	public LinkedList<Guest> getAllGuests(boolean retriveAssociation)
+	{
 		return miscWhere("", retriveAssociation);
 	}
 
-	public Guest searchGuestById(int id,
-			boolean retriveAssociation) {
-		String wClause = "  Guest ID: = '" + id + "'";
+	public Guest searchGuestById(int personId, boolean retriveAssociation)
+	{
+		String wClause = " personId= '" + personId + "'";
 		return singleWhere(wClause, retriveAssociation);
 	}
 
 	
-	public Guest searchGuestByName(String name, boolean retriveAssociation) {
-		String wClause = "Name: " + name + ",";
-		System.out.println("Guest " + wClause);
+	public Guest searchGuestByName(String name, boolean retriveAssociation)
+	{
+		String wClause = " name= '" + name + "'";
 		return singleWhere(wClause, retriveAssociation);
 	}
 	
 	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation)
 	{
-		return singleWhere("personId=(SELECT guestId FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking" +
+		return singleWhere("personId=(SELECT guestId FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking " +
 				"WHERE arrivalDate<='"+date+" AND departureDate>='"+date+") AND roomNo='"+roomNo+"')", retrieveAssociation);
 	}
 

@@ -15,7 +15,7 @@ public interface IFDBGuest {
     public Guest searchGuestByName(String name, boolean retrieveAssociation);
     
     //find customer by ID
-    public Guest searchGuestById(int id, boolean retrieveAssociation);
+    public Guest searchGuestById(int personId, boolean retrieveAssociation);
     
     //find guest who was in this room on that date
 	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation);

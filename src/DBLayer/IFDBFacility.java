@@ -13,7 +13,7 @@ public interface IFDBFacility
 	public LinkedList<Facility> getAllFacilities(boolean retrieveAssociation);
 	
 	//get facility by activity type
-	public Facility getFacilityForActivity(int activityId, boolean retrieveAssociation);
+	public LinkedList<Facility> getFacilitiesForActivity(int activityId, boolean retrieveAssociation);
 	
 	//get facility by name
 	public Facility getFacilityByName(String name, boolean retrieveAssociation);

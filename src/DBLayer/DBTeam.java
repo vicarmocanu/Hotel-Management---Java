@@ -30,19 +30,18 @@ public class DBTeam implements IFDBTeam
 	
 	private Team buildTeam(ResultSet results)
 	{
-		Team teamObj=new Team();
-		
+		Team teamObj=new Team();		
 		IFDBGuest dbGuest=new DBGuest();
 		
 		try
 		{
 			teamObj.setId(results.getInt("id"));
 			teamObj.setLeader(dbGuest.searchGuestById(results.getInt("leaderId"), false));
-			teamObj.setNumberOfParticipants(results.getInt("number_participants"));
+			teamObj.setNumberOfParticipants(results.getInt("numberOfParticipants"));
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in building the team type object.");
+			System.out.println("Exception in building the team object: " + e);
 		}
 		return teamObj;
 	}
@@ -50,10 +49,9 @@ public class DBTeam implements IFDBTeam
 	private Team singleWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
-		Team teamObj=new Team();
-		
+		Team teamObj=new Team();		
 		String query = buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -90,6 +88,7 @@ public class DBTeam implements IFDBTeam
 		ResultSet results;
 		LinkedList<Team> teamList=new LinkedList<Team>();
 		String query =  buildQuery(wClause);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -133,14 +132,14 @@ public class DBTeam implements IFDBTeam
 	@Override
 	public Team getTeamById(int id, boolean retrieveAssociation)
 	{
-		String wClause = "  id= '" + id + "'";
+		String wClause = " id= '" + id + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
 	@Override
 	public Team getTeamByLeaderId(int leaderId, boolean retrieveAssociation)
 	{
-		String wClause = "  leaderId= '" + leaderId + "'";
+		String wClause = " leaderId= '" + leaderId + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
@@ -149,7 +148,7 @@ public class DBTeam implements IFDBTeam
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO Team(id, leaderId, number_participants) VALUES ('" +
+		String query = "INSERT INTO Team(id, leaderId, numberOfParticipants) VALUES ('" +
 				team.getId() + "','" + 
 				team.getLeader().getId() + "','" + 
 				team.getNumberOfParticipants() + "')";
@@ -164,7 +163,7 @@ public class DBTeam implements IFDBTeam
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Team has not been inserted correctly. Exception: " + e);
+	    	System.out.println("Insert exception: " + e);
 	    }
 	    
 	    return(result);
@@ -176,9 +175,9 @@ public class DBTeam implements IFDBTeam
 		Team teamObj=team;
 		
 		String query="UPDATE Team SET " + 
-		"id= '" + teamObj.getId() + "', " + 
 				"leaderId= '" + teamObj.getLeader().getId() + "', " +
-		"number_participants= '" + teamObj.getNumberOfParticipants() + "'";
+		"numberOfParticipants= '" + teamObj.getNumberOfParticipants() + "' " +
+				"WHERE id= '" + teamObj.getId() + "'";
 		
 		int result=-1;
 		System.out.println("Update query: " + query);
@@ -192,7 +191,7 @@ public class DBTeam implements IFDBTeam
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Team has not been updated correctly. Exception: " + e);
+			System.out.println("Update exception: " + e);
 		}
 		
 		return(result);
@@ -214,7 +213,7 @@ public class DBTeam implements IFDBTeam
 	  	}
 	  	catch(SQLException e)
 	  	{
-	  		System.out.println("Team has not been deleted successfully. Exception: " + e);
+	  		System.out.println("Delete exception: " + e);
 	  	}
 	  	
 	  	return(result);
@@ -236,11 +235,9 @@ public class DBTeam implements IFDBTeam
 	  	}
 	  	catch(SQLException e)
 	  	{
-	  		System.out.println("Team has not been deleted successfully. Exception: " + e);
+	  		System.out.println("Delete exception: " + e);
 	  	}
 	  	
 	  	return(result);
 	}
-	
-
 }

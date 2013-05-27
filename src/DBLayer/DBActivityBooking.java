@@ -46,7 +46,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in building the activity booking object.");
+			System.out.println("Exception in building the activity booking object: " + e);
 		}
 		
 		try
@@ -55,7 +55,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in setting the team for the activity booking.");
+			System.out.println("Exceptin in setting the team for the activity booking: " + e);
 		}
 		return activityBookingObj;
 	}
@@ -196,8 +196,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		String query = new String();
 		if(teamObj !=null )
 		{
-			query = "INSERT INTO Team(id, guestId, teamId, date, status) VALUES ('" +
-					acticityBookingObj.getId() + "','" + 
+			query = "INSERT INTO Team(guestId, teamId, date, status) VALUES ('" +
 					acticityBookingObj.getGuest().getId() + "','" + 
 					teamObj.getId() + "','" + 
 					acticityBookingObj.getStringDate() +"','" + 
@@ -206,7 +205,6 @@ public class DBActivityBooking implements IFDBActivityBooking
 		else
 		{
 			query = "INSERT INTO Team(id, guestId, teamId, date, status) VALUES ('" +
-				acticityBookingObj.getId() + "','" + 
 				acticityBookingObj.getGuest().getId() + "', 'NULL', '" + 
 				acticityBookingObj.getStringDate() +"','" + 
 				acticityBookingObj.getStatus() +"')";
@@ -222,7 +220,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Activity booking has not been inserted correctly. Exception: " + e);
+	    	System.out.println("Insertio exception: " + e);
 	    }
 	    
 	    return(result);
@@ -238,20 +236,18 @@ public class DBActivityBooking implements IFDBActivityBooking
 		if(teamObj !=null)
 		{
 			query="UPDATE ActivityBooking SET " + 
-		" id= '" + activityBookingObj.getId() + "', " + 
-					" guestId= '" + activityBookingObj.getGuest().getId() + "', " + 
-		" teamId= '" + activityBookingObj.getTeam().getId() + ", " + 
-					" date= '" + activityBookingObj.getDate() + ", " + 
-		" status= '" + activityBookingObj.getStatus() + "'";
+					" teamId= '" + activityBookingObj.getTeam().getId() + "', " + 
+		" date= '" + activityBookingObj.getDate() + "', " + 
+					" status= '" + activityBookingObj.getStatus() + "' " + 
+		"WHERE id= '" + activityBookingObj.getId() + "'";
 		}
 		else
 		{
 			query="UPDATE ActivityBooking SET " + 
-		" id= '" + activityBookingObj.getId() + "', " + 
-					" guestId= '" + activityBookingObj.getGuest().getId() + "', " + 
 		" teamId= 'NULL'" + ", " + 
 								" date= '" + activityBookingObj.getDate() + "', " + 
-					" status= '" + activityBookingObj.getStatus() + "'";
+					" status= '" + activityBookingObj.getStatus() + "' " +
+			"WHERE id= '" + activityBookingObj.getId() + "'";
 		}
 		
 		int result=-1;
@@ -266,7 +262,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Activity booking has not been updated correctly. Exception: " + e);
+			System.out.println("Update exception: " + e);
 		}
 		return(result);
 	}
@@ -287,7 +283,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 	  	}
 	  	catch(SQLException e)
 	  	{
-	  		System.out.println("Activity booking has not been deleted successfully. Exception: " + e);
+	  		System.out.println("Delete exception: " + e);
 	  	}	  	
 	  	return(result);
 	}
