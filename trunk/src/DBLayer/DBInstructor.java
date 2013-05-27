@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import Model.ActivityType;
-import Model.Employee;
 import Model.Instructor;
 import Model.Location;
 
@@ -73,12 +72,19 @@ public class DBInstructor implements IFDBInstructor
 				stmt.close();
 			}
 			if(retrieveAssociation)
-			{//location selection
+			{//location and activity selection
 				IFDBLocation dbLocation = new DBLocation();
 				Location location = new Location();
 				location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
 				instructorObj.setZipcode(location.getZipCode());
 				instructorObj.setCountry(location.getCountry());
+				System.out.println("Location selected.");
+				
+				IFDBActivityType dbActivityType = new DBActivityType();
+				ActivityType activityTypeObj = new ActivityType();
+				activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
+				instructorObj.setActivityType(activityTypeObj);
+				System.out.println("Activity selected.");
 			}
 			else
 			{
@@ -117,12 +123,19 @@ public class DBInstructor implements IFDBInstructor
 			if(retrieveAssociation)
 			{
 				IFDBLocation dbLocation = new DBLocation();
+				IFDBActivityType dbActivityType = new DBActivityType();
 				for(Instructor instructorObj : instructorList)
 				{
 					Location location = new Location();
 					location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
 					instructorObj.setZipcode(location.getZipCode());
 					instructorObj.setCountry(location.getCountry());
+					System.out.println("Location selected.");
+					
+					ActivityType activityTypeObj = new ActivityType();
+					activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
+					instructorObj.setActivityType(activityTypeObj);
+					System.out.println("Activity selected.");
 				}
 			}
 		}
@@ -140,7 +153,7 @@ public class DBInstructor implements IFDBInstructor
 		return miscWhere("", retrieveAssociation);
 	}
 	
-	public Employee getInstructorById(int employeeId, boolean retrieveAssociation)
+	public Instructor getInstructorById(int employeeId, boolean retrieveAssociation)
 	{
 		String wClause = "  employeeId= '" + employeeId + "'";
 		return singleWhere(wClause, retrieveAssociation);
