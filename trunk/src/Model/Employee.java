@@ -5,6 +5,9 @@ public class Employee extends Person {
 	private String employeeType;
 
 	//Constructor
+	public Employee()
+	{}
+	
 	public Employee(int id, String name, String address, int zipcode,	String country, String phoneNo, 
 			String email, String personType, String password, double salary, String employeeType)
 	{
