@@ -17,70 +17,76 @@ private Connection con;
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	public int insertLocation(Location loc) throws Exception {
-		String query = "INSERT INTO Location(zipcode,country, city)" +
-				" VALUES('" +
+	public int insertLocation(Location loc) throws Exception
+	{
+		String query = "INSERT INTO Location(zipcode, country, city) VALUES('" +
 				loc.getZipCode()+ "','"+
 				loc.getCountry()+"','"+
 				loc.getCity()+"')";
-				
-				
 		
 		int rc = -1;
-		System.out.println("insert: " + query);
-		try {
+		System.out.println("Insert query: " + query);
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			rc = stmt.executeUpdate(query);
 			stmt.close();
-		} catch (SQLException ex) {
-			System.out.println("Location is not inserted");
-	        throw new Exception ("Location is not inserted correctly!");
+		}
+		catch (SQLException ex)
+		{
+			System.out.println("Insert exception: " + ex);
 		}
 		
 		return rc;
 	}
 
 	
-	public int updateLocation(Location loc) {
+	public int updateLocation(Location loc)
+	{
 		int rc = -1;
 		
 		String query = "UPDATE Location SET " +
 				"zipCode= '"+loc.getZipCode()+"', "+
-				"country= '"+loc.getCountry()+"', "+
 				"city= '"+loc.getCity()+"' "+
-						"WHERE zipCode= '" +loc.getZipCode()+"'";
+						"WHERE country= '" +loc.getCountry()+"'";
 		System.out.println("Update query: " + query);
 		
-		try {
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			rc=stmt.executeUpdate(query);
 			stmt.close();
-		} catch (Exception e) {
-			System.out.println("Update exception in Location: " + e);
+		}
+		catch (Exception e) {
+			System.out.println("Update exception: " + e);
 		}
 		
 		return rc;
-
 	}
 
 	
-	public int deleteLocation(int loczipCode) {
+	public int deleteLocation(int loczipCode)
+	{
 		int rc=-1;
 		  
-	  	String query="DELETE FROM Location WHERE zipCode = '" +
-				loczipCode + "'";
-                System.out.println(query);
-	  	try{ 
+	  	String query="DELETE FROM Location WHERE zipCode = '" + loczipCode + "'";
+	  	System.out.println("Delete query: " + query);
+	  	
+	  	try
+	  	{
 	 		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
 	 	  	rc = stmt.executeUpdate(query);
 	 	  	stmt.close();
   		}
-   	    catch(Exception ex){
-	 	  	System.out.println("Delete exception in Location: "+ex);
+   	    catch(Exception ex)
+   	    {
+   	    
+	 	  	System.out.println("Delete exception: "+ex);
    	    }
+	
 		return(rc);
 	}
 	
@@ -106,8 +112,10 @@ private Connection con;
 			rbObj.setCountry(results.getString("country"));
 			rbObj.setCity(results.getString("city"));
 			
-		} catch (Exception e) {
-			System.out.println("Error in building the Location object!");
+		}
+		catch (Exception e)
+		{
+			System.out.println("Exception in building the location object: " + e);
 		}
 		
 		return rbObj;
@@ -120,22 +128,25 @@ private Connection con;
 		String query = buildQuery(wClause);
 		System.out.println("Query: "+query);
 		
-		try {
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			results = stmt.executeQuery(query);
 			
-			if (results.next()) {
+			if (results.next())
+			{
 				rbObj = buildLocation(results);
-				System.out.println("Location build successfully!");
 				stmt.close();
 			}
 			else
 			{
 				rbObj = null;
 			}			
-		} catch (Exception e) {
-			System.out.println("Query exception - select Location : "+e);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Single selection query exception: "+e);
 			e.printStackTrace();
 		}
 		
@@ -147,11 +158,14 @@ private Connection con;
 		ResultSet results;
 		LinkedList<Location> list = new LinkedList<Location>();
 		String query = buildQuery(wClause);
+		System.out.println("Query: "+query);
 		
-		try {
+		try
+		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			results = stmt.executeQuery(query);
+			
 			while(results.next())
 			{
 				Location rbObj = new Location();
@@ -159,28 +173,30 @@ private Connection con;
 				list.add(rbObj);
 			}
 			stmt.close();
-		} catch (Exception e) {
-			System.out.println("Query exception - select Location : "+e);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Multiple selection query exception: "+e);
 			e.printStackTrace();
 		}
 		return list;
 	}
 	
-	public LinkedList<Location> getAllLocation(boolean retriveAssociation) {
+	public LinkedList<Location> getAllLocation(boolean retriveAssociation)
+	{
 		return miscWhere("", retriveAssociation);
 	}
 
-	public Location searchLocationByZipCode(int zipCode,
-			boolean retriveAssociation) {
+	public Location searchLocationByZipCode(int zipCode, boolean retriveAssociation)
+	{
 		String wClause = " zipCode= '" + zipCode + "'";
 		return singleWhere(wClause, retriveAssociation);
 	}
 
 	
-	public Location searchLocationByCity(String city, boolean retriveAssociation) {
-		String wClause = "city= " + city + ",";
-		System.out.println("Location " + wClause);
+	public Location searchLocationByCity(String city, boolean retriveAssociation)
+	{
+		String wClause = "city= '" + city + "'";
 		return singleWhere(wClause, retriveAssociation);
 	}
-
 }

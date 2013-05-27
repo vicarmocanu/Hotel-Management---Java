@@ -24,13 +24,13 @@ private Connection con;
 				" VALUES('" +
 				prs.getId()+"','"+
 				prs.getName()+"','"+
-				prs.getZipcode()+ "')"+
-				prs.getCountry()+","+
+				prs.getZipcode()+ "','"+
+				prs.getCountry()+"','"+
 				prs.getAddress()+"','"+
-				prs.getPhoneNo()+","+
-				prs.getEmail()+","+
-				prs.getPersonType()+","+
-				prs.getPassword()+",";
+				prs.getPhoneNo()+"','"+
+				prs.getEmail()+"','"+
+				prs.getPersonType()+"','"+
+				prs.getPassword()+"')";
 		
 		int rc = -1;
 		System.out.println("Insert query: " + query);
@@ -54,16 +54,15 @@ private Connection con;
 		int rc = -1;
 		
 		String query = "UPDATE Person SET " +
-				"id='" + prs.getId() +"', "+
 				"name='"+prs.getName()+"', "+
-				"zipcode='"+prs.getZipcode()+"' "+
-				"country='"+prs.getCountry()+"' "+
+				"zipcode='"+prs.getZipcode()+"', "+
+				"country='"+prs.getCountry()+"', "+
 				"address='"+prs.getAddress()+"', "+
-				"phoneNo='"+prs.getPhoneNo()+"' "+
-				"email='"+prs.getEmail()+"' "+
-				"personType='" + prs.getPersonType() + 
+				"phoneNo='"+prs.getPhoneNo()+"', "+
+				"email='"+prs.getEmail()+"', "+
+				"personType='" + prs.getPersonType() + "', " +
 				"password='"+prs.getPassword()+"' "+
-						"WHERE id='" +prs.getId()+"'";
+						"WHERE id='" + prs.getId() + "'";
 		System.out.println("Update query: " + query);
 		
 		try
@@ -87,7 +86,7 @@ private Connection con;
 	{
 		int rc=-1;
 		  
-	  	String query="DELETE FROM Person WHERE id = '" +
+	  	String query="DELETE FROM Person WHERE id= '" +
 				prsId + "'";
                 System.out.println(query);
 	  	try{ 

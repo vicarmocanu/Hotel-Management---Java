@@ -40,7 +40,7 @@ public class DBActivityType implements IFDBActivityType
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in building the activity type object.");
+			System.out.println("Exception in building the activity type object: " +e);
 		}
 		
 		return activityTypeObj;
@@ -81,6 +81,7 @@ public class DBActivityType implements IFDBActivityType
 		ResultSet results;
 		LinkedList<ActivityType> activityTypeList=new LinkedList<ActivityType>();
 		String query =  buildQuery(wClause);
+		System.out.println(query);
 		
 		try
 		{
@@ -135,11 +136,11 @@ public class DBActivityType implements IFDBActivityType
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO ActivityType(name, description, maxParticipants, price) VALUES ('" +
+		String query = "INSERT INTO ActivityType(name, maxParticipants) VALUES ('" +
 				activityTypeObj.getName() + "','" +
 				activityTypeObj.getMaxParticipants() +  "')";
 		
-		System.out.println("Insertion query: " + query);
+		System.out.println("Insert query: " + query);
 	    try
 	    {
 	    	Statement stmt = con.createStatement();
@@ -149,7 +150,7 @@ public class DBActivityType implements IFDBActivityType
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Activity type has not been inserted correctly. Exception: " + e);
+	    	System.out.println("Insert exception: " + e);
 	    }
 	    
 	    return(result);
@@ -163,7 +164,8 @@ public class DBActivityType implements IFDBActivityType
 		
 		String query="UPDATE ActivityType SET " +
 		"name= '" + activityTypeNewObj.getName() + "', " +
-		"maxParticipants= '" + activityTypeNewObj.getMaxParticipants() + "'";
+		"maxParticipants= '" + activityTypeNewObj.getMaxParticipants() + "' " + 
+		"WHERE id= '" + activityTypeNewObj.getID() + "'";
 		
 		int result=-1;
 		System.out.println("Update query: " + query);
@@ -177,7 +179,7 @@ public class DBActivityType implements IFDBActivityType
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Activity type has not been updated correctly. Exception: " + e);
+			System.out.println("Update exception: " + e);
 		}
 		
 		return(result);
@@ -200,7 +202,7 @@ public class DBActivityType implements IFDBActivityType
 	  	}
 	  	catch(SQLException e)
 	  	{
-	  		System.out.println("Activity type has not been deleted successfully. Exception: " + e);
+	  		System.out.println("Delete exception: " + e);
 	  	}
 	  	
 	  	return(result);
@@ -223,7 +225,7 @@ public class DBActivityType implements IFDBActivityType
 	  	}
 	  	catch(SQLException e)
 	  	{
-	  		System.out.println("Activity type has not been deleted successfully. Exception: " + e);
+	  		System.out.println("Delete exception: " + e);
 	  	}
 	  	
 	  	return(result);
