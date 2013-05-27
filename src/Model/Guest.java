@@ -20,7 +20,7 @@ public class Guest extends Person{
 	}
 	
 	public Guest(int id, String name, String address, int zipcode,
-			String city, String country, String phoneNo, String email, String personType, String password, String guestType, 
+			String country, String phoneNo, String email, String personType, String password, String guestType, 
 			TravelAgency travelAgency)
 	{
 		super(id, name, address, zipcode, country, phoneNo, email, personType, password);
