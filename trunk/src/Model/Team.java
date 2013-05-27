@@ -80,9 +80,9 @@ public class Team
 	{
 		return participants;
 	}
-	public void updateParticipantById(int id, String name, String address, int zipcode, 
-			String city, String country, String phoneNo, String email, String password,
-			String type)
+	public void updateParticipantById(int id, String name, String address, int zipcode,
+			String country, String phoneNo, String email, String personType, String password, String guestType, 
+			TravelAgency travelAgency)
 	{
 		Guest wantedParticipant=getParticipantById(id);
 		if(wantedParticipant!=null)
@@ -90,12 +90,13 @@ public class Team
 			wantedParticipant.setName(name);
 			wantedParticipant.setAddress(address);
 			wantedParticipant.setZipCode(zipcode);
-			wantedParticipant.setCity(city);
 			wantedParticipant.setCountry(country);
 			wantedParticipant.setPhoneNo(phoneNo);
 			wantedParticipant.setEmail(email);
+			wantedParticipant.setPersonType(personType);
 			wantedParticipant.setPassword(password);
-			wantedParticipant.setType(type);
+			wantedParticipant.setGuestType(guestType);
+			wantedParticipant.setTravelAgency(travelAgency);
 		}
 	}
 	public void removeParticipantById(int id)
