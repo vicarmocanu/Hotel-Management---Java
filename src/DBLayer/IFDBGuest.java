@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public interface IFDBGuest {
 	
 	  //get all customers
-    public LinkedList<Guest> getAllGuest(boolean retrieveAssociation);
+    public LinkedList<Guest> getAllGuests(boolean retrieveAssociation);
    
     //find customer by name
     public Guest searchGuestByName(String name, boolean retrieveAssociation);
