@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import Model.ActivityType;
 import Model.Employee;
 import Model.Instructor;
+import Model.Location;
 
 public class DBInstructor implements IFDBInstructor
 {
@@ -31,16 +33,21 @@ public class DBInstructor implements IFDBInstructor
 	private Instructor buildInstructor(ResultSet results)
 	{
 		Instructor instructorObj= new Instructor();
+		IFDBActivityType dbActivivityType = new DBActivityType();
+		ActivityType activityTypeObj = new ActivityType();
 		
 		try
 		{
 			instructorObj.setId(results.getInt("employeeId"));
-			instructorObj.setActivityType(results.getString("activityType"));
+			
+			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"), false);			
+			instructorObj.setActivityType(activityTypeObj);
+			
 			instructorObj.setPrice(results.getDouble("price"));
 		}
 		catch(Exception e)
 		{
-			System.out.println("Exception in building the employee object: " +e);
+			System.out.println("Exception in building the instructor object: " +e);
 		}
 		
 		return instructorObj;
@@ -64,7 +71,14 @@ public class DBInstructor implements IFDBInstructor
 			{
 				instructorObj = buildInstructor(results);
 				stmt.close();
-			
+			}
+			if(retrieveAssociation)
+			{//location selection
+				IFDBLocation dbLocation = new DBLocation();
+				Location location = new Location();
+				location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
+				instructorObj.setZipcode(location.getZipCode());
+				instructorObj.setCountry(location.getCountry());
 			}
 			else
 			{
@@ -99,8 +113,18 @@ public class DBInstructor implements IFDBInstructor
 				instructorObj =buildInstructor(results);
 				instructorList.add(instructorObj);
 			}
-			
 			stmt.close();
+			if(retrieveAssociation)
+			{
+				IFDBLocation dbLocation = new DBLocation();
+				for(Instructor instructorObj : instructorList)
+				{
+					Location location = new Location();
+					location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
+					instructorObj.setZipcode(location.getZipCode());
+					instructorObj.setCountry(location.getCountry());
+				}
+			}
 		}
 		catch(Exception e)
 		{
@@ -116,9 +140,9 @@ public class DBInstructor implements IFDBInstructor
 		return miscWhere("", retrieveAssociation);
 	}
 	
-	public Employee getInstructorById(int id, boolean retrieveAssociation)
+	public Employee getInstructorById(int employeeId, boolean retrieveAssociation)
 	{
-		String wClause = "  id= '" + id + "'";
+		String wClause = "  employeeId= '" + employeeId + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 	
@@ -173,11 +197,11 @@ public class DBInstructor implements IFDBInstructor
 		return(result);
 	}
 	
-	public int deleteInstructorById(int id)
+	public int deleteInstructorById(int employeeId)
 	{
 		int result=-1;
 		  
-	  	String query="DELETE FROM Instructor WHERE employeeId= '" + id + "'";
+	  	String query="DELETE FROM Instructor WHERE employeeId= '" + employeeId + "'";
 	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
