@@ -11,6 +11,7 @@ import Model.ActivityBooking;
 import Model.ActivityLine;
 import Model.ActivityType;
 import Model.Facility;
+import Model.Instructor;
 
 public class DBActivityLine implements IFDBActivityLine
 {
@@ -36,7 +37,7 @@ public class DBActivityLine implements IFDBActivityLine
 		ActivityLine activityLineObj=new ActivityLine();
 		
 		IFDBActivityType dbActivityType=new DBActivityType();
-		//IFDBInstructor dbInstructo = new DBInstructor();
+		IFDBInstructor dbInstructor = new DBInstructor();
 		IFDBFacility dbFacility = new DBFacility();
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		
@@ -58,8 +59,9 @@ public class DBActivityLine implements IFDBActivityLine
 			facilityObj = dbFacility.getFacilityById(results.getInt("facilityId"), true);
 			activityLineObj.setFacility(facilityObj);
 			
-			
-			
+			Instructor instructorObj =new Instructor();
+			instructorObj = dbInstructor.getInstructorById(results.getInt("instructorId"), true);
+			activityLineObj.setInstructor(instructorObj);
 		}
 		catch(Exception e)
 		{
@@ -107,7 +109,11 @@ public class DBActivityLine implements IFDBActivityLine
 				activityLineObj.setFacility(facilityObj);
 				System.out.println("Facility is selected.");
 				
-				
+				IFDBInstructor dbInstructor = new DBInstructor();
+				Instructor instructorObj = new Instructor();
+				instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId(), true);
+				activityLineObj.setInstructor(instructorObj);
+				System.out.println("Instructor is selected.");
 			}
 			else
 			{
@@ -144,7 +150,7 @@ public class DBActivityLine implements IFDBActivityLine
 			if(retrieveAssociation)
 			{//activity booking, instructor, facility and activity type reference
 				IFDBActivityType dbActivityType = new DBActivityType();
-				//IFDBInstructor dbInstructor = new DBInstructor();
+				IFDBInstructor dbInstructor = new DBInstructor();
 				IFDBFacility dbFacility = new DBFacility();
 				IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 				for(ActivityLine activityLineObj : activityLineList)
@@ -164,7 +170,10 @@ public class DBActivityLine implements IFDBActivityLine
 					activityLineObj.setFacility(facilityObj);
 					System.out.println("Facility is selected.");
 					
-					
+					Instructor instructorObj = new Instructor();
+					instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId(), true);
+					activityLineObj.setInstructor(instructorObj);
+					System.out.println("Instructor is selected.");
 				}
 			}
 		}
