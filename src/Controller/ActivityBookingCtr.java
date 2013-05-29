@@ -210,7 +210,7 @@ public class ActivityBookingCtr
 		return check;
 	}
 	
-	private int performInstanceCheck(int bookingId, String date, String startHour)
+	public int performInstanceCheck(int bookingId, String date, String startHour)
 	{
 		int instances = 0;
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
