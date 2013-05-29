@@ -4,17 +4,22 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import javax.swing.JPasswordField;
+
+import Controller.LoginCtr;
 
 public class LoginMenu {
 
 	private JFrame frame;
 	private JTextField textField;
-	private JTextField textField_1;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -42,45 +47,89 @@ public class LoginMenu {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize()
+	{
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setUndecorated(true);//with/o border
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnLogin = new JButton("Login");
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnLogin.addActionListener(new ActionListener()
+		{
+			
+			public void actionPerformed(ActionEvent arg0)
+			{
+				LoginCtr loginCtr = new LoginCtr();
+				String password = String.valueOf(passwordField.getPassword());
+				if(textField.getText().equals("")==true || password.equals("")==true)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert both the id and the password.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				else
+				{
+					int id = Integer.parseInt(textField.getText());
+					
+					
+					//test case
+					if(id == 99999 && password.equals("aardvark")) 
+					{
+						JOptionPane.showMessageDialog(null, "The aardvark is a mammal.", "The aardvark", JOptionPane.OK_OPTION);
+					}
+					if(loginCtr.checkPassword(id, password)==false)
+					{
+						JOptionPane.showMessageDialog(null, "Incorect id/password. Please insert correct id/password.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						if(loginCtr.checkGuest(id)==true)
+						{
+								//open the main menu reserved to the guest
+							//to be filled once other menus are complete
+						}				
+					}
+				}
 			}
 		});
-		btnLogin.setBounds(74, 193, 89, 23);
+		btnLogin.setBounds(130, 157, 89, 23);
 		frame.getContentPane().add(btnLogin);
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(239, 193, 89, 23);
+		JButton btnCancel = new JButton("Close");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				frame.dispose();
+			}
+		});
+		btnCancel.setBounds(239, 157, 89, 23);
 		frame.getContentPane().add(btnCancel);
 		
 		JLabel lblId = new JLabel("ID");
-		lblId.setBounds(74, 83, 46, 14);
+		lblId.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblId.setBounds(84, 80, 50, 17);
 		frame.getContentPane().add(lblId);
 		
 		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textField.setBounds(130, 80, 198, 20);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(74, 132, 46, 14);
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblPassword.setBounds(42, 129, 100, 17);
 		frame.getContentPane().add(lblPassword);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(130, 129, 198, 20);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
-		
 		JLabel lblLogin = new JLabel("Login");
-		lblLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblLogin.setBounds(74, 28, 57, 23);
+		lblLogin.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblLogin.setBounds(84, 28, 74, 23);
 		frame.getContentPane().add(lblLogin);
+		
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		passwordField.setBounds(130, 129, 198, 20);
+		frame.getContentPane().add(passwordField);
 	}
 }
