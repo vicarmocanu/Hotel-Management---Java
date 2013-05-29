@@ -45,11 +45,17 @@ public class DBActivityLine implements IFDBActivityLine
 		{
 			ActivityType activityTypeObj = new ActivityType();
 			activityTypeObj = dbActivityType.getActivityTypeByID(results.getInt("activityId"), false);
-			activityLineObj.setActivity(activityTypeObj);
+			if(activityTypeObj != null)
+			{
+				activityLineObj.setActivity(activityTypeObj);
+			}
 			
 			ActivityBooking activityBookingObj = new ActivityBooking();
 			activityBookingObj = dbActivityBooking.getActivityBookingById(results.getInt("bookingId"), true);
-			activityLineObj.setActivityBooking(activityBookingObj);
+			if(activityBookingObj != null)
+			{
+				activityLineObj.setActivityBooking(activityBookingObj);
+			}
 			
 			activityLineObj.setDate(results.getString("date"));
 			activityLineObj.setStartHour(results.getString("startHour"));
@@ -57,11 +63,17 @@ public class DBActivityLine implements IFDBActivityLine
 			
 			Facility facilityObj = new Facility();
 			facilityObj = dbFacility.getFacilityById(results.getInt("facilityId"), true);
-			activityLineObj.setFacility(facilityObj);
+			if(facilityObj != null)
+			{
+				activityLineObj.setFacility(facilityObj);
+			}
 			
 			Instructor instructorObj =new Instructor();
 			instructorObj = dbInstructor.getInstructorById(results.getInt("instructorId"), true);
-			activityLineObj.setInstructor(instructorObj);
+			if(instructorObj != null)
+			{
+				activityLineObj.setInstructor(instructorObj);
+			}
 		}
 		catch(Exception e)
 		{
@@ -94,26 +106,38 @@ public class DBActivityLine implements IFDBActivityLine
 				IFDBActivityType dbActivityType = new DBActivityType();
 				ActivityType activityTypeObj = new ActivityType();
 				activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID(), false);
-				activityLineObj.setActivity(activityTypeObj);
-				System.out.println("Activity type is selected.");
+				if(activityTypeObj != null)
+				{
+					activityLineObj.setActivity(activityTypeObj);
+					System.out.println("Activity type is selected.");
+				}
 				
 				IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 				ActivityBooking activityBookingObj = new ActivityBooking();
 				activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId(), true);
-				activityLineObj.setActivityBooking(activityBookingObj);
-				System.out.println("Activity booking is selected.");
+				if(activityBookingObj != null)
+				{
+					activityLineObj.setActivityBooking(activityBookingObj);
+					System.out.println("Activity booking is selected.");
+				}
 				
 				IFDBFacility dbFacility = new DBFacility();
 				Facility facilityObj = new Facility();
 				facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId(), true);
-				activityLineObj.setFacility(facilityObj);
-				System.out.println("Facility is selected.");
+				if(facilityObj != null)
+				{
+					activityLineObj.setFacility(facilityObj);
+					System.out.println("Facility is selected.");
+				}
 				
 				IFDBInstructor dbInstructor = new DBInstructor();
 				Instructor instructorObj = new Instructor();
 				instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId(), true);
-				activityLineObj.setInstructor(instructorObj);
-				System.out.println("Instructor is selected.");
+				if(instructorObj != null)
+				{
+					activityLineObj.setInstructor(instructorObj);
+					System.out.println("Instructor is selected.");
+				}
 			}
 			else
 			{
@@ -157,23 +181,35 @@ public class DBActivityLine implements IFDBActivityLine
 				{
 					ActivityType activityTypeObj = new ActivityType();
 					activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID(), false);
-					activityLineObj.setActivity(activityTypeObj);
-					System.out.println("Activity type is selected.");
+					if(activityTypeObj != null)
+					{
+						activityLineObj.setActivity(activityTypeObj);
+						System.out.println("Activity type is selected.");
+					}
 					
 					ActivityBooking activityBookingObj = new ActivityBooking();
 					activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId(), true);
-					activityLineObj.setActivityBooking(activityBookingObj);
-					System.out.println("Activity booking is selected.");
+					if(activityBookingObj != null)
+					{
+						activityLineObj.setActivityBooking(activityBookingObj);
+						System.out.println("Activity booking is selected.");
+					}
 					
 					Facility facilityObj = new Facility();
 					facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId(), true);
-					activityLineObj.setFacility(facilityObj);
-					System.out.println("Facility is selected.");
+					if(facilityObj != null)
+					{
+						activityLineObj.setFacility(facilityObj);
+						System.out.println("Facility is selected.");
+					}
 					
 					Instructor instructorObj = new Instructor();
 					instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId(), true);
-					activityLineObj.setInstructor(instructorObj);
-					System.out.println("Instructor is selected.");
+					if(instructorObj != null)
+					{
+						activityLineObj.setInstructor(instructorObj);
+						System.out.println("Instructor is selected.");
+					}
 				}
 			}
 		}
@@ -186,63 +222,106 @@ public class DBActivityLine implements IFDBActivityLine
 		return activityLineList;
 	}
 	
-	
-	
+	@Override
 	public ActivityLine getActivityLineById(int activityId,	int activityBookingId, boolean retrieveAssociation)
 	{
 		String wClause = " activityId= '" + activityId + "'" + " AND activityBookingId= '" + activityBookingId + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	
+	@Override
 	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int activityBookingId, boolean retrieveAssociation)
 	{
 		String wClause = " activityBookingId= '" + activityBookingId + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	
+	@Override
 	public int insertActivityLine(ActivityLine activityLine) throws Exception
 	{
 		int result = -1;
+		String query = new String();
 		
-		String query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId, instructorId) VALUES ('" +
-				activityLine.getActivity().getID() + "','" + 
-				activityLine.getActivityBooking().getId() + "','" +
-				activityLine.getDate() + "','" + 
-				activityLine.getStartHour() + "','" +
-				activityLine.getEndHour() + "','" +
-				activityLine.getFacility().getId() + "','" +
-				activityLine.getInstructor().getId() + "')";
+		ActivityType activityType = activityLine.getActivity();
+		ActivityBooking activityBooking = activityLine.getActivityBooking();
+		Facility facility = activityLine.getFacility();
+		Instructor instructor = activityLine.getInstructor();
 		
-		System.out.println("Insertion query: " + query);
-	    try
-	    {
-	    	Statement stmt = con.createStatement();
-	    	stmt.setQueryTimeout(5);
-	    	result = stmt.executeUpdate(query);
-	    	stmt.close();
-	    }
-	    catch(SQLException e)
-	    {
-	    	System.out.println("Insert exception: " + e);
-	    }
-	    return(result);
+		if(activityType != null && activityBooking !=null && facility != null && instructor !=null)
+		{
+			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId, instructorId) VALUES ('" +
+					activityLine.getActivity().getID() + "','" + 
+					activityLine.getActivityBooking().getId() + "','" +
+					activityLine.getDate() + "','" + 
+					activityLine.getStartHour() + "','" +
+					activityLine.getEndHour() + "','" +
+					activityLine.getFacility().getId() + "','" +
+					activityLine.getInstructor().getId() + "')";
+			
+			System.out.println("Insertion query: " + query);
+		}
+		
+		if(activityType != null && activityBooking !=null && facility != null && instructor ==null)
+		{
+			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId) VALUES ('" +
+					activityLine.getActivity().getID() + "','" + 
+					activityLine.getActivityBooking().getId() + "','" +
+					activityLine.getDate() + "','" + 
+					activityLine.getStartHour() + "','" +
+					activityLine.getEndHour() + "','" +
+					activityLine.getFacility().getId() + "')";
+			
+			System.out.println("Insertion query: " + query);
+		}
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Insert exception: " + e);
+		}
+		return(result);
 	}
 
-	
+	@Override
 	public int updateActivityLine(ActivityLine activityLine)
 	{
 		ActivityLine activityLineObj = activityLine;
+		String query = new String();
 		
-		String query="UPDATE ActivityLine SET " +
-		" instructorId= '" + activityLineObj.getInstructor().getId() + "', " + 
-		" date= '" + activityLineObj.getDate() + "', " + 
-		" startHour= '" + activityLineObj.getStartHour() + "', " +
-		" endHour= '" + activityLineObj.getEndHour() + "', " +
-		" facilityId= '" + activityLineObj.getFacility().getId() + "', " +
-		" bookingId= '" + activityLineObj.getActivityBooking().getId() + "', " +
-		" WHERE activityId= '" + activityLineObj.getActivity().getID() + "'";
+		ActivityType activityType = activityLine.getActivity();
+		ActivityBooking activityBooking = activityLine.getActivityBooking();
+		Facility facility = activityLine.getFacility();
+		Instructor instructor = activityLine.getInstructor();
+		
+		if(activityType != null && activityBooking !=null && facility != null && instructor !=null)
+		{
+			query="UPDATE ActivityLine SET " +
+					" instructorId= '" + activityLineObj.getInstructor().getId() + "', " + 
+					" date= '" + activityLineObj.getDate() + "', " + 
+					" startHour= '" + activityLineObj.getStartHour() + "', " +
+					" endHour= '" + activityLineObj.getEndHour() + "', " +
+					" facilityId= '" + activityLineObj.getFacility().getId() + "', " +
+					" bookingId= '" + activityLineObj.getActivityBooking().getId() + "', " +
+					" WHERE activityId= '" + activityLineObj.getActivity().getID() + "'";
+		}
+		
+		if(activityType != null && activityBooking !=null && facility != null && instructor ==null)
+		{
+			query="UPDATE ActivityLine SET " +
+					" date= '" + activityLineObj.getDate() + "', " + 
+					" startHour= '" + activityLineObj.getStartHour() + "', " +
+					" endHour= '" + activityLineObj.getEndHour() + "', " +
+					" facilityId= '" + activityLineObj.getFacility().getId() + "', " +
+					" bookingId= '" + activityLineObj.getActivityBooking().getId() + "', " +
+					" WHERE activityId= '" + activityLineObj.getActivity().getID() + "'";
+		}
+		
 		int result=-1;
 		System.out.println("Update query: " + query);
 		
@@ -261,7 +340,7 @@ public class DBActivityLine implements IFDBActivityLine
 		return(result);
 	}
 
-	
+	@Override
 	public int deleteActivityLine(int activityId, int activityBookingId, Date startHour)
 	{
 		int result=-1;
@@ -284,7 +363,7 @@ public class DBActivityLine implements IFDBActivityLine
 	  	return(result);
 	}
 	
-	
+	@Override
 	public int getActivityLineInstances(int bookingId, String date, String startHour)
 	{
 		int instances = 0;		
@@ -308,7 +387,7 @@ public class DBActivityLine implements IFDBActivityLine
 		return instances;		
 	}
 	
-	
+	@Override
 	public int getNumberOfActivityLinesForBooking(int bookingId, String date)
 	{
 		int number = 0;
