@@ -39,9 +39,11 @@ public class DBInstructor implements IFDBInstructor
 		{
 			instructorObj.setId(results.getInt("employeeId"));
 			
-			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"), false);			
-			instructorObj.setActivityType(activityTypeObj);
-			
+			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"), false);	
+			if(activityTypeObj != null)
+			{
+			instructorObj.setActivityType(activityTypeObj);	
+			}
 			instructorObj.setPrice(results.getDouble("price"));
 		}
 		catch(Exception e)
@@ -76,15 +78,23 @@ public class DBInstructor implements IFDBInstructor
 				IFDBLocation dbLocation = new DBLocation();
 				Location location = new Location();
 				location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
-				instructorObj.setZipcode(location.getZipCode());
-				instructorObj.setCountry(location.getCountry());
-				System.out.println("Location selected.");
+				if(location != null)
+				{
+				    instructorObj.setZipcode(location.getZipCode());
+					instructorObj.setCountry(location.getCountry());
+					System.out.println("Location selected.");
+				}
+				
 				
 				IFDBActivityType dbActivityType = new DBActivityType();
 				ActivityType activityTypeObj = new ActivityType();
 				activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
+				if(activityTypeObj != null)
+				{
 				instructorObj.setActivityType(activityTypeObj);
 				System.out.println("Activity selected.");
+				}
+				
 			}
 			else
 			{
@@ -163,9 +173,10 @@ public class DBInstructor implements IFDBInstructor
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO Instructor(activityType, price) VALUES ('" +
+		String query = "INSERT INTO Instructor(activityType, price, status) VALUES ('" +
 				instructorObj.getActivityType() + "','" +
-				instructorObj.getPrice() +  "')";
+				instructorObj.getPrice() + "','" +
+				instructorObj.getStatus() + "')";
 		
 		System.out.println("Insert query: " + query);
 	    try
@@ -189,7 +200,8 @@ public class DBInstructor implements IFDBInstructor
 		
 		String query="UPDATE Instructor SET " +
 		"activityType= '" + instructorNewObj.getActivityType() + "', " +
-		"price= '" + instructorNewObj.getPrice() + "' " + 
+		"price= '" + instructorNewObj.getPrice() + "' " +
+		"status= '" + instructorNewObj.getStatus() + "' " +
 		"WHERE employeeId= '" + instructorNewObj.getId() + "'";
 		
 		int result=-1;
