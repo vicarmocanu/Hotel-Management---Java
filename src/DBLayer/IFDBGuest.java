@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package DBLayer;
 import Model.Guest;
 import java.util.LinkedList;
@@ -21,10 +19,10 @@ public interface IFDBGuest {
 	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation);
     
     //insert new Customer
-    public int insertGuest(Guest cust) throws Exception;
+    public int insertGuest(Guest guest) throws Exception;
     
     //update informations for one Customer
-    public int updateGuest(Guest cust);
+    public int updateGuest(Guest gst);
     
     //delete Customer by Id    
     public int deleteGuest(int id);
