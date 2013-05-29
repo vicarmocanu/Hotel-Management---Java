@@ -20,12 +20,11 @@ public class DBGuest implements IFDBGuest
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	public int insertGuest(Guest gt) throws Exception
+	public int insertGuest(Guest guest) throws Exception
 	{
-		String query = "INSERT INTO Guest(personId, guestType, travelAgency) VALUES('" +
-				gt.getId() + "','" + 
-				gt.getGuestType() + "','" +
-				gt.getTravelAgency().getCVR() + "')";
+		String query = "INSERT INTO Guest(guestType, travelAgency) VALUES('" + 
+				guest.getGuestType() + "','" +
+				guest.getTravelAgency().getCVR() + "')";
 		
 		int rc = -1;
 		System.out.println("Insertion query: " + query);
@@ -52,7 +51,7 @@ public class DBGuest implements IFDBGuest
 		
 		String query = "UPDATE Guest SET " +
 		"guestType= '" + guest.getGuestType() + "', " +
-				"travelAgency= '" + guest.getTravelAgency() + "' " +
+		"travelAgency= '" + guest.getTravelAgency() + "' " +
 		"WHERE personId= '" + guest.getId() + "'";		
 		System.out.println("Update query: " + query);
 		
@@ -115,7 +114,11 @@ public class DBGuest implements IFDBGuest
 		{
 			rbObj.setId(results.getInt("personId"));
 			travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(results.getInt("travelAgency"), false);
+			
+			if(travelAgencyObj != null)
+			{
 			rbObj.setTravelAgency(travelAgencyObj);
+			}
 			rbObj.setGuestType(results.getString("guestType"));
 		}
 		catch (Exception e)
@@ -149,8 +152,11 @@ public class DBGuest implements IFDBGuest
 				IFDBLocation dbLocation = new DBLocation();
 				Location location = new Location();
 				location = dbLocation.searchLocationByZipCode(rbObj.getZipcode(), false);
-				rbObj.setZipcode(location.getZipCode());
-				rbObj.setCountry(location.getCountry());
+				if(location != null)
+				{
+					rbObj.setZipcode(location.getZipCode());
+					rbObj.setCountry(location.getCountry());
+				}
 			}
 			else
 			{
@@ -191,8 +197,11 @@ public class DBGuest implements IFDBGuest
 				{
 					Location location = new Location();
 					location = dbLocation.searchLocationByZipCode(personObj.getZipcode(), false);
-					personObj.setZipcode(location.getZipCode());
-					personObj.setCountry(location.getCountry());
+					if(location != null)
+					{
+						personObj.setZipcode(location.getZipCode());
+						personObj.setCountry(location.getCountry());
+					}
 				}
 			}
 		}
