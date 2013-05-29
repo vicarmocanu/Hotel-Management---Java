@@ -34,12 +34,30 @@ public class DBActivityBooking implements IFDBActivityBooking
 	{
 		ActivityBooking activityBookingObj = new ActivityBooking();		
 		IFDBGuest dbGuest = new DBGuest();
+		Guest guestObj = new Guest();
+		
 		IFDBTeam dbTeam = new DBTeam();
+		Team teamObj = new Team();
+		
+		
 		
 		try
 		{
 			activityBookingObj.setId(results.getInt("id"));
-			activityBookingObj.setGuest(dbGuest.searchGuestById(results.getInt("guestId"), false));
+			
+			int guestId = results.getInt("guestId");
+			guestObj = dbGuest.searchGuestById(guestId, false);
+			if(guestObj != null)
+			{
+				activityBookingObj.setGuest(guestObj);
+			}
+			
+			int teamId = results.getInt("teamId");
+			teamObj = dbTeam.getTeamById(teamId, true);
+			if(teamObj != null)
+			{
+				activityBookingObj.setTeam(teamObj);
+			}
 			
 			activityBookingObj.setDate(results.getString("date"));
 			activityBookingObj.setStatus(results.getString("status"));
