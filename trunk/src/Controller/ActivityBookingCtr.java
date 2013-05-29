@@ -95,5 +95,7 @@ public class ActivityBookingCtr
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		return dbActivityBooking.deleteActivityBooking(id);
 	}
+	
+	
 
 }
