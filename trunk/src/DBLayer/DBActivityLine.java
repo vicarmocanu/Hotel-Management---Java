@@ -195,7 +195,7 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 
 	@Override
-	public LinkedList<ActivityLine> getActivityLineForActivityBooking(int activityBookingId, boolean retrieveAssociation)
+	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int activityBookingId, boolean retrieveAssociation)
 	{
 		String wClause = " activityBookingId= '" + activityBookingId + "'";
 		return miscWhere(wClause, retrieveAssociation);
@@ -282,6 +282,54 @@ public class DBActivityLine implements IFDBActivityLine
 	  	}
 	  	
 	  	return(result);
+	}
+	
+	@Override
+	public int getActivityLineInstances(int bookingId, String date, String startHour)
+	{
+		int instances = 0;		
+		ResultSet results;
+		String query = "SELECT COUNT(bookingId, date, startHour) AS activityLineInstances FROM ActivityLine " + 
+		" WHERE bookingId='" + bookingId + "' AND date='" +  date + "' AND startHour='" + startHour + "'";		
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);			
+			instances = results.getInt("activityLineInstances");
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity line instance count: " + e);
+		}
+		return instances;		
+	}
+	
+	@Override
+	public int getNumberOfActivityLinesForBooking(int bookingId, String date)
+	{
+		int number = 0;
+		ResultSet results;
+		String query = "SELECT COUNT(bookingId, date) AS numberOfActivityLinesPerBooking FROM ActivityLine " + 
+		" WHERE bookingId='" + bookingId + "' AND date='" +  date + "'";		
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);			
+			number = results.getInt("numberOfActivityLinesPerBooking");
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity line instance count: " + e);
+		}
+		return number;	
 	}
 
 }
