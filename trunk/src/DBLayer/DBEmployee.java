@@ -69,8 +69,11 @@ public class DBEmployee implements IFDBEmployee
 				IFDBLocation dbLocation = new DBLocation();
 				Location location = new Location();
 				location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
+				if(location != null)
+				{
 				employeeObj.setZipcode(location.getZipCode());
 				employeeObj.setCountry(location.getCountry());
+				}
 			}
 			else
 			{
@@ -114,8 +117,11 @@ public class DBEmployee implements IFDBEmployee
 				{
 					Location location = new Location();
 					location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
+					if(location != null)
+					{
 					employeeObj.setZipcode(location.getZipCode());
 					employeeObj.setCountry(location.getCountry());
+					}
 				}
 			}
 		}
