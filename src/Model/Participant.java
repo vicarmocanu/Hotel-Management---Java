@@ -4,13 +4,13 @@ public class Participant
 {
 	//attributes
 	private Team team;
-	private Guest participant;
+	private Guest guest;
 	
 	//constructor
-	public Participant(Team team, Guest participant)
+	public Participant(Team team, Guest guest)
 	{
 		this.team=team;
-		this.participant=participant;
+		this.guest=guest;
 	}
 	
 	public Participant()
@@ -27,12 +27,12 @@ public class Participant
 		return this.team;
 	}
 	
-	public void setParticipant(Guest participant)
+	public void setGuest(Guest guest)
 	{
-		this.participant=participant;
+		this.guest=guest;
 	}
-	public Guest getParticipant()
+	public Guest getGuest()
 	{
-		return this.participant;
+		return this.guest;
 	}
 }
