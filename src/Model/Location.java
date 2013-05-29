@@ -7,11 +7,12 @@ public class Location
 	private String city;
 	
 	
-public Location(int zipCode,String city, String country)
+public Location(int zipCode, String country, String city)
 {
 	this.zipCode = zipCode;
-	this.city = city;
 	this.country = country;
+	this.city = city;
+	
 	
 }
 	
