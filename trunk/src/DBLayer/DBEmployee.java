@@ -36,7 +36,6 @@ public class DBEmployee implements IFDBEmployee
 		{
 			employeeObj.setId(results.getInt("personId"));
 			employeeObj.setSalary(results.getDouble("salary"));
-			employeeObj.setEmployeeType(results.getString("employeeType"));
 		}
 		catch(Exception e)
 		{
@@ -144,9 +143,8 @@ public class DBEmployee implements IFDBEmployee
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO Employee(salary, employeeType) VALUES ('" +
-				employeeObj.getSalary() + "','" +
-				employeeObj.getEmployeeType() +  "')";
+		String query = "INSERT INTO Employee(salary) VALUES ('" +
+				employeeObj.getSalary() +   "')";
 		
 		System.out.println("Insert query: " + query);
 	    try
@@ -169,8 +167,7 @@ public class DBEmployee implements IFDBEmployee
 		Employee employeeNewObj=employeeObj;
 		
 		String query="UPDATE Employee SET " +
-		"salary= '" + employeeNewObj.getSalary() + "', " +
-		"employeeType= '" + employeeNewObj.getEmployeeType() + "' " + 
+		"salary= '" + employeeNewObj.getSalary() + "', " +		
 		"WHERE personId= '" + employeeNewObj.getId() + "'";
 		
 		int result=-1;
