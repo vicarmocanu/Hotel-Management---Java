@@ -48,7 +48,7 @@ public class TeamCtr
 		teamObj.setLeader(teamLeader);
 		
 		try
-		 {
+		{
 			 DBConnection1.startTransaction();
 			 DBTeam dbTeam = new DBTeam();
 			 dbTeam.insertTeam(teamObj);
@@ -92,8 +92,7 @@ public class TeamCtr
 	public void insertTeamParticipant(int teamId, int participantId)
 	{
 		IFDBTeam dbTeam=new DBTeam();
-		IFDBGuest dbGuest=new DBGuest();
-		
+		IFDBGuest dbGuest=new DBGuest();		
 		
 		Team teamObj = dbTeam.getTeamById(teamId, false);
 		Guest guestObj = dbGuest.searchGuestById(participantId, false);
@@ -105,6 +104,7 @@ public class TeamCtr
 			 IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 			 dbTeamParticipants.insertTeamParticipant(participantObj);
 			 DBConnection1.commitTransaction();
+			 teamObj.addParticipant(participantObj);
 		 }
 		 catch(Exception e)
 		 {
@@ -116,6 +116,12 @@ public class TeamCtr
 	{
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 		return dbTeamParticipants.deleteTeamParticipant(teamId, participantId);
+	}
+	
+	public int deleteTeamParticipants(int teamId)
+	{
+		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
+		return dbTeamParticipants.deleteTeamParticipants(teamId);
 	}
 
 }
