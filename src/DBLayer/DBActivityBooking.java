@@ -177,34 +177,34 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return activityBookingList;
 	}
 
-	@Override
+	
 	public LinkedList<ActivityBooking> getAllActivityBookings(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
 
-	@Override
+	
 	public ActivityBooking getActivityBookingById(int id, boolean retrieveAssociation)
 	{
 		String wClause = "  id= '" + id + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public LinkedList<ActivityBooking> getActivityBookingsByDate(Date date,	boolean retrieveAssociation)
 	{
 		String wClause = "  date= '" + date + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public LinkedList<ActivityBooking> getActivityBookingsForGuest(int guestId, boolean retrieveAssociation)
 	{
 		String wClause = "  guestId= '" + guestId + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public int insertActivityBookig(ActivityBooking activityBooking) throws Exception
 	{
 		ActivityBooking acticityBookingObj = activityBooking;
@@ -244,7 +244,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 	    return(result);
 	}
 
-	@Override
+	
 	public int updateActivityBooking(ActivityBooking activityBooking)
 	{
 		ActivityBooking activityBookingObj = activityBooking;
@@ -285,7 +285,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return(result);
 	}
 
-	@Override
+	
 	public int deleteActivityBooking(int id)
 	{
 		int result=-1;
