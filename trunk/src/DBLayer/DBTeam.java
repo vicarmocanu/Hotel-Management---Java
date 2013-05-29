@@ -123,27 +123,27 @@ public class DBTeam implements IFDBTeam
 		return teamList;
 	}
 
-	@Override
+	
 	public LinkedList<Team> getAllTeams(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
 
-	@Override
+	
 	public Team getTeamById(int id, boolean retrieveAssociation)
 	{
 		String wClause = " id= '" + id + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public Team getTeamByLeaderId(int leaderId, boolean retrieveAssociation)
 	{
 		String wClause = " leaderId= '" + leaderId + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public int insertTeam(Team team) throws Exception
 	{
 		int result = -1;
@@ -169,7 +169,7 @@ public class DBTeam implements IFDBTeam
 	    return(result);
 	}
 
-	@Override
+	
 	public int updateTeam(Team team) 
 	{
 		Team teamObj=team;
@@ -197,7 +197,7 @@ public class DBTeam implements IFDBTeam
 		return(result);
 	}
 
-	@Override
+	
 	public int deleteTeamByLeader(int leaderId)
 	{
 		int result=-1;
@@ -219,7 +219,7 @@ public class DBTeam implements IFDBTeam
 	  	return(result);
 	}
 
-	@Override
+	
 	public int deleteTeamById(int id)
 	{
 		int result=-1;
