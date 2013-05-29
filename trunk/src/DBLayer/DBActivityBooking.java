@@ -32,14 +32,13 @@ public class DBActivityBooking implements IFDBActivityBooking
 	
 	private ActivityBooking buildActivityBooking(ResultSet results)
 	{
-		ActivityBooking activityBookingObj = new ActivityBooking();		
+		ActivityBooking activityBookingObj = new ActivityBooking();
+		
 		IFDBGuest dbGuest = new DBGuest();
 		Guest guestObj = new Guest();
 		
 		IFDBTeam dbTeam = new DBTeam();
 		Team teamObj = new Team();
-		
-		
 		
 		try
 		{
@@ -81,8 +80,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 	private ActivityBooking singleWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
-		ActivityBooking activityBookingObj=new ActivityBooking();
-		
+		ActivityBooking activityBookingObj=new ActivityBooking();		
 		String query = buildQuery(wClause);
 		System.out.println(query);
 		
@@ -101,8 +99,11 @@ public class DBActivityBooking implements IFDBActivityBooking
 			{//the guest and the team are selected as well
 				IFDBGuest dbGuest = new DBGuest();
 				Guest guestObj=dbGuest.searchGuestById(activityBookingObj.getGuest().getId(), false);
-				System.out.println("Guest is selected.");
-				activityBookingObj.setGuest(guestObj);
+				if(guestObj != null)
+				{
+					System.out.println("Guest is selected.");
+					activityBookingObj.setGuest(guestObj);
+				}
 				
 				IFDBTeam dbTeam = new DBTeam();
 				Team teamObj = dbTeam.getTeamById(activityBookingObj.getTeam().getId(), false);
@@ -111,7 +112,10 @@ public class DBActivityBooking implements IFDBActivityBooking
 					System.out.println("Team is selected.");
 					activityBookingObj.setTeam(teamObj);
 				}
-				System.out.println("No team selection.");
+				else
+				{
+					System.out.println("No team selection.");
+				}
 			}
 			else
 			{
@@ -121,6 +125,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		catch(Exception e)
 		{
 			System.out.println("Single selection query exception: " + e);
+			e.printStackTrace();
 		}
 		return activityBookingObj;
 	}
@@ -130,6 +135,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		ResultSet results;
 		LinkedList<ActivityBooking> activityBookingList = new LinkedList<ActivityBooking>();
 		String query =  buildQuery(wClause);
+		System.out.println(query);
 		
 		try
 		{
@@ -152,8 +158,11 @@ public class DBActivityBooking implements IFDBActivityBooking
 				for(ActivityBooking activityBookingObj : activityBookingList)
 				{
 					Guest guestObj=dbGuest.searchGuestById(activityBookingObj.getGuest().getId(), false);
-					System.out.println("Guest is selected.");
-					activityBookingObj.setGuest(guestObj);
+					if(guestObj != null)
+					{
+						System.out.println("Guest is selected.");
+						activityBookingObj.setGuest(guestObj);
+					}
 					
 					Team teamObj = dbTeam.getTeamById(activityBookingObj.getTeam().getId(), false);
 					if(teamObj != null)
@@ -177,34 +186,34 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return activityBookingList;
 	}
 
-	
+	@Override
 	public LinkedList<ActivityBooking> getAllActivityBookings(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
 
-	
+	@Override
 	public ActivityBooking getActivityBookingById(int id, boolean retrieveAssociation)
 	{
-		String wClause = "  id= '" + id + "'";
+		String wClause = " id= '" + id + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	
+	@Override
 	public LinkedList<ActivityBooking> getActivityBookingsByDate(Date date,	boolean retrieveAssociation)
 	{
-		String wClause = "  date= '" + date + "'";
+		String wClause = " date= '" + date + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	
+	@Override
 	public LinkedList<ActivityBooking> getActivityBookingsForGuest(int guestId, boolean retrieveAssociation)
 	{
-		String wClause = "  guestId= '" + guestId + "'";
+		String wClause = " guestId= '" + guestId + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	
+	@Override
 	public int insertActivityBookig(ActivityBooking activityBooking) throws Exception
 	{
 		ActivityBooking acticityBookingObj = activityBooking;
@@ -222,8 +231,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		}
 		else
 		{
-			query = "INSERT INTO Team(id, guestId, teamId, date, status) VALUES ('" +
-				acticityBookingObj.getGuest().getId() + "', 'NULL', '" + 
+			query = "INSERT INTO Team(guestId, date, status) VALUES ('" +
 				acticityBookingObj.getStringDate() +"','" + 
 				acticityBookingObj.getStatus() +"')";
 		}
@@ -238,13 +246,13 @@ public class DBActivityBooking implements IFDBActivityBooking
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Insertio exception: " + e);
+	    	System.out.println("Insertion exception: " + e);
 	    }
 	    
 	    return(result);
 	}
 
-	
+	@Override
 	public int updateActivityBooking(ActivityBooking activityBooking)
 	{
 		ActivityBooking activityBookingObj = activityBooking;
@@ -262,10 +270,9 @@ public class DBActivityBooking implements IFDBActivityBooking
 		else
 		{
 			query="UPDATE ActivityBooking SET " + 
-		" teamId= 'NULL'" + ", " + 
-								" date= '" + activityBookingObj.getDate() + "', " + 
+		" date= '" + activityBookingObj.getDate() + "', " +
 					" status= '" + activityBookingObj.getStatus() + "' " +
-			"WHERE id= '" + activityBookingObj.getId() + "'";
+		"WHERE id= '" + activityBookingObj.getId() + "'";
 		}
 		
 		int result=-1;
@@ -285,24 +292,24 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return(result);
 	}
 
-	
+	@Override
 	public int deleteActivityBooking(int id)
 	{
 		int result=-1;
-		  
-	  	String query="DELETE FROM ActivityBooking WHERE id= '" + id + "'";
-	  	System.out.println("Delete query: " + query);
-	  	try
+		
+		String query="DELETE FROM ActivityBooking WHERE id= '" + id + "'";
+		System.out.println("Delete query: " + query);
+		try
 	  	{
 	  		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
 	 	  	result = stmt.executeUpdate(query);
-	 	  	stmt.close();	  		
-	  	}
-	  	catch(SQLException e)
-	  	{
-	  		System.out.println("Delete exception: " + e);
-	  	}	  	
-	  	return(result);
+	 	  	stmt.close();
+	 	}
+		catch(SQLException e)
+		{
+			System.out.println("Delete exception: " + e);
+		}
+		return(result);
 	}
 }
