@@ -6,7 +6,7 @@ public class Team
 	//attributes
 	private int id;
 	private Guest leader;
-	private LinkedList<Guest> participants;
+	private LinkedList<Participant> participants;
 	private int numberOfParticipants;
 	
 	//constructor
@@ -15,7 +15,10 @@ public class Team
 	{
 		this.id=id;
 		this.leader=leader;
-		LinkedList<Guest> participants = new LinkedList<Guest>();
+		
+		LinkedList<Participant> participants = new LinkedList<Participant>();
+		Participant participant = new Participant(this, leader);
+		participants.add(participant);
 		this.numberOfParticipants=participants.size();
 	}
 	
@@ -38,7 +41,11 @@ public class Team
 	}
 	public void setLeader(Guest leader)
 	{
+		Participant oldLeader = getParticipant(this.getId(), leader.getId());
+		this.removeParticipant(this.getId(), oldLeader.getGuest().getId());
 		this.leader=leader;
+		Participant newLeader = new Participant(this, leader);
+		this.addParticipant(newLeader);
 	}
 	
 	public int getNumberOfParticipants()
@@ -51,20 +58,20 @@ public class Team
 		this.numberOfParticipants=numberOfParticipants;
 	}
 	
-	public void setParticipants(LinkedList<Guest> participants)
+	public void setParticipants(LinkedList<Participant> participants)
 	{
 		this.participants=participants;
 	}
-	public void addParticipant(Guest participant)
+	public void addParticipant(Participant participant)
 	{
 		participants.add(participant);
 	}
-	public Guest getParticipantById(int id)
+	public Participant getParticipant(int teamId, int guestId)
 	{
-		Guest wantedParticipant = null;
-		for(Guest participant : participants)
+		Participant wantedParticipant = null;
+		for(Participant participant : participants)
 		{
-			if(participant.getId()==id)
+			if((participant.getGuest().getId() == guestId) && (participant.getTeam().getId() == teamId))
 			{
 				wantedParticipant=participant;
 				break;
@@ -72,36 +79,18 @@ public class Team
 		}
 		if(wantedParticipant==null)
 		{
-			System.out.println("There is no such participant by this id. Please insert a valid guest id.");
+			System.out.println("There is no such participant by these parameteres. Please insert a valid team and guest id.");
 		}
 		return wantedParticipant;
 	}
-	public LinkedList<Guest> getParticipants()
+	public LinkedList<Participant> getParticipants()
 	{
 		return participants;
 	}
-	public void updateParticipantById(int id, String name, String address, int zipcode,
-			String country, String phoneNo, String email, String personType, String password, String guestType, 
-			TravelAgency travelAgency)
+	
+	public void removeParticipant(int teamId, int guestId)
 	{
-		Guest wantedParticipant=getParticipantById(id);
-		if(wantedParticipant!=null)
-		{
-			wantedParticipant.setName(name);
-			wantedParticipant.setAddress(address);
-			wantedParticipant.setZipCode(zipcode);
-			wantedParticipant.setCountry(country);
-			wantedParticipant.setPhoneNo(phoneNo);
-			wantedParticipant.setEmail(email);
-			wantedParticipant.setPersonType(personType);
-			wantedParticipant.setPassword(password);
-			wantedParticipant.setGuestType(guestType);
-			wantedParticipant.setTravelAgency(travelAgency);
-		}
-	}
-	public void removeParticipantById(int id)
-	{
-		Guest wantedParticipant=getParticipantById(id);
+		Participant wantedParticipant = getParticipant(teamId, guestId);
 		if(wantedParticipant!=null)
 		{
 			participants.remove(wantedParticipant);
