@@ -13,5 +13,8 @@ public interface IFDBTeamParticipants
 	public int insertTeamParticipant(Participant teamParticipant) throws Exception;
 	
 	//method to remove a participant from the team based on team id and participant id
-	public int deleteTeamParticipant(int teamId, int participantId);
+	public int deleteTeamParticipant(int teamId, int guestId);
+	
+	//method to delete all participants from a team
+	public int deleteTeamParticipants(int teamId);
 }
