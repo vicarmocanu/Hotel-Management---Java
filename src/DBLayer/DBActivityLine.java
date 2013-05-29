@@ -187,21 +187,21 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 	
 	
-	@Override
+	
 	public ActivityLine getActivityLineById(int activityId,	int activityBookingId, boolean retrieveAssociation)
 	{
 		String wClause = " activityId= '" + activityId + "'" + " AND activityBookingId= '" + activityBookingId + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int activityBookingId, boolean retrieveAssociation)
 	{
 		String wClause = " activityBookingId= '" + activityBookingId + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public int insertActivityLine(ActivityLine activityLine) throws Exception
 	{
 		int result = -1;
@@ -230,7 +230,7 @@ public class DBActivityLine implements IFDBActivityLine
 	    return(result);
 	}
 
-	@Override
+	
 	public int updateActivityLine(ActivityLine activityLine)
 	{
 		ActivityLine activityLineObj = activityLine;
@@ -261,7 +261,7 @@ public class DBActivityLine implements IFDBActivityLine
 		return(result);
 	}
 
-	@Override
+	
 	public int deleteActivityLine(int activityId, int activityBookingId, Date startHour)
 	{
 		int result=-1;
@@ -284,7 +284,7 @@ public class DBActivityLine implements IFDBActivityLine
 	  	return(result);
 	}
 	
-	@Override
+	
 	public int getActivityLineInstances(int bookingId, String date, String startHour)
 	{
 		int instances = 0;		
@@ -308,7 +308,7 @@ public class DBActivityLine implements IFDBActivityLine
 		return instances;		
 	}
 	
-	@Override
+	
 	public int getNumberOfActivityLinesForBooking(int bookingId, String date)
 	{
 		int number = 0;
