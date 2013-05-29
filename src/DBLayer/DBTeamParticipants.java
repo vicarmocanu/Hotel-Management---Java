@@ -93,14 +93,14 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		return participantList;
 	}
 
-	@Override
+
 	public LinkedList<Participant> getTeamParticipants(int teamId, boolean retrieveAssociation)
 	{
 		String wClause = "  teamId= '" + teamId + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+
 	public int insertTeamParticipant(Participant teamParticipant) throws Exception
 	{
 		int result = -1;
@@ -124,7 +124,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 	    return(result);
 	}
 
-	@Override
+
 	public int deleteTeamParticipant(int teamId, int participantId)
 	{
 		int result=-1;
@@ -147,7 +147,6 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 	  	return(result);
 	}
 
-	@Override
 	public int deleteTeamParticipants(int teamId)
 	{
 		int result=-1;
