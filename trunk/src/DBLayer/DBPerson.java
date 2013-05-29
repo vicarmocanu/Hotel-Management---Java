@@ -160,8 +160,12 @@ private Connection con;
 				IFDBLocation dbLocation = new DBLocation();
 				Location location = new Location();
 				location = dbLocation.searchLocationByZipCode(rbObj.getZipcode(), false);
-				rbObj.setZipcode(location.getZipCode());
-				rbObj.setCountry(location.getCountry());
+				if(location != null)
+				{
+					rbObj.setZipcode(location.getZipCode());
+					rbObj.setCountry(location.getCountry());
+				}
+				
 			}
 			else
 			{
@@ -202,8 +206,11 @@ private Connection con;
 				{
 					Location location = new Location();
 					location = dbLocation.searchLocationByZipCode(personObj.getZipcode(), false);
-					personObj.setZipcode(location.getZipCode());
-					personObj.setCountry(location.getCountry());
+					if(location != null)
+					{
+						personObj.setZipcode(location.getZipCode());
+						personObj.setCountry(location.getCountry());
+					}
 				}
 			}
 			
