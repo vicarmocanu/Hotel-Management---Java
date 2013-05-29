@@ -24,9 +24,9 @@ public class Person {
 			String email, String personType, String password) {
 		this.id = id;
 		this.name = name;
-		this.address = address;
 		this.zipcode = zipcode;
 		this.country = country;
+		this.address = address;
 		this.phoneNo = phoneNo;
 		this.email = email;
 		this.personType = personType;
@@ -106,6 +106,21 @@ public class Person {
 	public void setPersonType(String personType)
 	{
 		this.personType = personType;
+	}
+	
+	public boolean isGuest()
+	{
+		boolean check = false;
+		if(this instanceof Guest)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+			
+		}
+		return check;
 	}
 //end getters and setters
 }
