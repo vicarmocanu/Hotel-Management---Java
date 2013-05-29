@@ -39,7 +39,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		try
 		{
 			teamParticipantObj.setTeam(dbTeam.getTeamById(results.getInt("teamId"), false));
-			teamParticipantObj.setParticipant(dbGuest.searchGuestById(results.getInt("participantId"), false));
+			teamParticipantObj.setGuest(dbGuest.searchGuestById(results.getInt("participantId"), false));
 		}
 		catch(Exception e)
 		{
@@ -69,16 +69,16 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 			}
 			stmt.close();
 			if(retrieveAssociation)
-			{//participant and team reference
+			{//guest and team reference
 				IFDBGuest dbGuest= new DBGuest();
 				IFDBTeam dbTeam=new DBTeam();
 				for(Participant teamParticipantObj : participantList)
 				{
-					Guest participantObj=dbGuest.searchGuestById(teamParticipantObj.getParticipant().getId(), false);
-					System.out.println("Participant selected.");
-					teamParticipantObj.setParticipant(participantObj);
+					Guest guestObj=dbGuest.searchGuestById(teamParticipantObj.getGuest().getId(), false);
+					System.out.println("Guest selected.");
+					teamParticipantObj.setGuest(guestObj);
 					
-					Team teamObj=dbTeam.getTeamById(teamParticipantObj.getTeam().getId(), false);
+					Team teamObj=dbTeam.getTeamById(teamParticipantObj.getTeam().getId(), true);
 					System.out.println("Team selected.");
 					teamParticipantObj.setTeam(teamObj);
 				}
@@ -107,7 +107,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		
 		String query = "INSERT INTO TeamParticipants(teamId, participantId) VALUES ('" +
 				teamParticipant.getTeam().getId() + "','" +
-				teamParticipant.getParticipant().getId() + "')";
+				teamParticipant.getGuest().getId() + "')";
 		
 		System.out.println("Inserti query: " + query);
 	    try
@@ -131,6 +131,28 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		  
 	  	String query="DELETE FROM TeamParticipants WHERE teamId= '" + teamId + "'" + 
 	  	" AND participantId= '" + participantId + "'";
+	  	System.out.println("Delete query: " + query);
+	  	try
+	  	{
+	  		Statement stmt = con.createStatement();
+	 		stmt.setQueryTimeout(5);
+	 	  	result = stmt.executeUpdate(query);
+	 	  	stmt.close();	  		
+	  	}
+	  	catch(SQLException e)
+	  	{
+	  		System.out.println("Delete exception: " + e);
+	  	}
+	  	
+	  	return(result);
+	}
+
+	@Override
+	public int deleteTeamParticipants(int teamId)
+	{
+		int result=-1;
+		  
+	  	String query="DELETE FROM TeamParticipants WHERE teamId= '" + teamId + "'";
 	  	System.out.println("Delete query: " + query);
 	  	try
 	  	{
