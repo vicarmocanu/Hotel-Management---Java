@@ -11,7 +11,7 @@ public interface IFDBActivityLine
 	public ActivityLine getActivityLineById(int activityId, int activityBookingId, boolean retrieveAssociation);
 	
 	//get all activity lines for a booking
-	public LinkedList<ActivityLine> getActivityLineForActivityBooking(int activityBookingId, boolean retrieveAssociation);
+	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int activityBookingId, boolean retrieveAssociation);
 	
 	//insert activity line
 	public int insertActivityLine(ActivityLine activityLine) throws Exception;
@@ -21,4 +21,10 @@ public interface IFDBActivityLine
 	
 	//delete activity line by activity booking id, activity id and start hour
 	public int deleteActivityLine(int activityId, int activityBookingId, Date startHour);
+	
+	//method to avoid activity line double booking
+	public int getActivityLineInstances(int bookingId, String date, String startHour);
+	
+	//method to avoid more than 4 activity lines
+	public int getNumberOfActivityLinesForBooking(int bookingId, String date);
 }
