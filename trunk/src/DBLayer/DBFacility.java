@@ -126,34 +126,34 @@ public class DBFacility implements IFDBFacility
 		return facilityList;
 	}
 
-	@Override
+	
 	public Facility getFacilityById(int id, boolean retrieveAssociation)
 	{
 		String wClause = "  id= '" + id + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public LinkedList<Facility> getAllFacilities(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
 
-	@Override
+	
 	public LinkedList<Facility> getFacilitiesForActivity(int activityId, boolean retrieveAssociation)
 	{
 		String wClause = "  forActivity= '" + activityId + "'";
 		return miscWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public Facility getFacilityByName(String name, boolean retrieveAssociation)
 	{
 		String wClause = "  name= '" + name + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
+	
 	public int insertFacility(Facility facility) throws Exception
 	{
 		int result = -1;
@@ -179,7 +179,7 @@ public class DBFacility implements IFDBFacility
 	    return(result);
 	}
 
-	@Override
+	
 	public int updateFacility(Facility facility)
 	{
 		Facility facilityObj=facility;
@@ -208,7 +208,7 @@ public class DBFacility implements IFDBFacility
 		return(result);
 	}
 
-	@Override
+	
 	public int deleteFacility(int id)
 	{
 		int result=-1;
