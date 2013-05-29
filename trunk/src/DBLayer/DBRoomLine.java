@@ -25,7 +25,7 @@ public class DBRoomLine implements IFDBRoomLine {
 				"AND booking="+booking, retrieveAssociation);
 	}
 	
-	@Override
+	
 	public ArrayList<RoomLine> findRoomLinesForBooking(int bookingId,
 			boolean retrieveAssociation) {
 		return miscWhere("booking="+bookingId, retrieveAssociation);
@@ -77,7 +77,7 @@ public class DBRoomLine implements IFDBRoomLine {
 	private ArrayList<RoomLine> miscWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
-		ArrayList<RoomLine> list = new ArrayList<>();
+		ArrayList<RoomLine> list = new ArrayList<RoomLine>();
 		
 		String query=buildQuery(wClause);
 		
