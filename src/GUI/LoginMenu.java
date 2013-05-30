@@ -20,6 +20,7 @@ public class LoginMenu {
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	public int universalId;
 
 	/**
 	 * Launch the application.
@@ -40,13 +41,15 @@ public class LoginMenu {
 	/**
 	 * Create the application.
 	 */
-	public LoginMenu() {
+	public LoginMenu()
+	{
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
 	private void initialize()
 	{
 		frame = new JFrame();
@@ -63,31 +66,31 @@ public class LoginMenu {
 			{
 				LoginCtr loginCtr = new LoginCtr();
 				String password = String.valueOf(passwordField.getPassword());
+				
 				if(textField.getText().equals("")==true || password.equals("")==true)
 				{
 					JOptionPane.showMessageDialog(null, "Please insert both the id and the password.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
 				else
 				{
-					int id = Integer.parseInt(textField.getText());
-					
-					
-					//test case
-					if(id == 99999 && password.equals("aardvark")) 
+					universalId = Integer.parseInt(textField.getText());
+					/*test case
+					if(universalId == 11 && password.equals("aardvark")) 
 					{
 						JOptionPane.showMessageDialog(null, "The aardvark is a mammal.", "The aardvark", JOptionPane.OK_OPTION);
-					}
-					if(loginCtr.checkPassword(id, password)==false)
+						GuestMainMenu guestMainMenu = new GuestMainMenu();
+						guestMainMenu.setUniversalId(universalId);
+					}*/
+					if(loginCtr.checkPassword(universalId, password)==false)
 					{
-						JOptionPane.showMessageDialog(null, "Incorect id/password. Please insert correct id/password.", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Incorrect id/password. Please insert correct id/password.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
-						if(loginCtr.checkGuest(id)==true)
+						if(loginCtr.checkGuest(universalId)==true)
 						{
-								//open the main menu reserved to the guest
-							//to be filled once other menus are complete
+							GuestMainMenu guestMainMenu = new GuestMainMenu();
+							guestMainMenu.setUniversalId(universalId);
 						}				
 					}
 				}
