@@ -129,7 +129,7 @@ public class GuestTeamMenu
 				int leaderId = Integer.parseInt(stringLeaderId);
 				teamCtr.insertTeam(leaderId);
 				
-				JOptionPane.showMessageDialog(null, "Team successfully created.");
+				JOptionPane.showMessageDialog(null, "Team successfully created.", "Info", JOptionPane.INFORMATION_MESSAGE);
 				
 				clearLeftTable();
 				clearRightTable();
@@ -325,7 +325,7 @@ public class GuestTeamMenu
 			}
 		};
 		
-		modelLeft.setColumnIdentifiers(new String[] {"TeamId", "LeaderId, NumberOfParticipants"});
+		modelLeft.setColumnIdentifiers(new String[] {"TeamId", "LeaderId", "NumberOfParticipants"});
 		
 		try
 		{
