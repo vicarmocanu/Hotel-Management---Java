@@ -24,6 +24,16 @@ public class Team
 	
 	public Team(){}
 	
+	public Team(Guest leader)
+	{
+		this.leader=leader;
+		
+		LinkedList<Participant> participants = new LinkedList<Participant>();
+		Participant participant = new Participant(this, leader);
+		participants.add(participant);
+		this.numberOfParticipants=participants.size();
+	}
+	
 	//getters and setters + linked list CRUD
 	
 	public int getId()
@@ -65,6 +75,8 @@ public class Team
 	public void addParticipant(Participant participant)
 	{
 		participants.add(participant);
+		int newNumberOfParticipants = getNumberOfParticipants();
+		this.setNumberOfParticipants(newNumberOfParticipants);
 	}
 	public Participant getParticipant(int teamId, int guestId)
 	{
@@ -94,6 +106,8 @@ public class Team
 		if(wantedParticipant!=null)
 		{
 			participants.remove(wantedParticipant);
+			int newNumberOfParticipants = getNumberOfParticipants();
+			this.setNumberOfParticipants(newNumberOfParticipants);
 		}
 	}
 	
