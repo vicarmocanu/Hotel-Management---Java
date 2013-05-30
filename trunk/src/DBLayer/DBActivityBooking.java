@@ -111,7 +111,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 				{
 					System.out.println("Team is selected.");
 					activityBookingObj.setTeam(teamObj);
-				}
+				}				
 				else
 				{
 					System.out.println("No team selection.");
