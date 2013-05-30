@@ -70,9 +70,23 @@ public class ActivityBookingCtr
 		
 		IFDBTeam dbTeam = new DBTeam();
 		Team teamObj = new Team();
-		teamObj = dbTeam.getTeamById(teamId, false);	
+		teamObj = dbTeam.getTeamById(teamId, false);
 		
-		ActivityBooking activityBookingObj= new ActivityBooking(date, status, guestObj, teamObj);
+		ActivityBooking activityBookingObj= new ActivityBooking();
+		
+		if(teamObj != null)
+		{
+			activityBookingObj.setDate(date);
+			activityBookingObj.setStatus(status);
+			activityBookingObj.setGuest(guestObj);
+			activityBookingObj.setTeam(teamObj);
+		}
+		else
+		{
+			activityBookingObj.setDate(date);
+			activityBookingObj.setStatus(status);
+			activityBookingObj.setGuest(guestObj);
+		}
 		
 		try
 		 {
@@ -97,7 +111,22 @@ public class ActivityBookingCtr
 		Team teamObj = new Team();
 		teamObj = dbTeam.getTeamById(teamId, false);	
 		
-		ActivityBooking activityBookingObj = new ActivityBooking(id, date, status, guestObj, teamObj);
+		ActivityBooking activityBookingObj = new ActivityBooking();
+		
+		if(teamObj != null)
+		{
+			activityBookingObj.setDate(date);
+			activityBookingObj.setStatus(status);
+			activityBookingObj.setGuest(guestObj);
+			activityBookingObj.setTeam(teamObj);
+		}
+		else
+		{
+			activityBookingObj.setDate(date);
+			activityBookingObj.setStatus(status);
+			activityBookingObj.setGuest(guestObj);
+		}
+		
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		return dbActivityBooking.updateActivityBooking(activityBookingObj);
 	}
@@ -141,10 +170,30 @@ public class ActivityBookingCtr
 			IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 			ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(activityBookingId, true);
 			
-			ActivityLine activityLineObj = new ActivityLine(activityTypeObj, instructorObj, date, startHour, endHour, facilityTypeObj, activityBookingObj);
+			ActivityLine activityLineObj = new ActivityLine();
+			
+			if(instructorObj !=null)
+			{
+				activityLineObj.setActivity(activityTypeObj);
+				activityLineObj.setActivityBooking(activityBookingObj);
+				activityLineObj.setDate(date);
+				activityLineObj.setStartHour(startHour);
+				activityLineObj.setEndHour(endHour);
+				activityLineObj.setFacility(facilityTypeObj);
+				activityLineObj.setInstructor(instructorObj);
+			}
+			else
+			{
+				activityLineObj.setActivity(activityTypeObj);
+				activityLineObj.setActivityBooking(activityBookingObj);
+				activityLineObj.setDate(date);
+				activityLineObj.setStartHour(startHour);
+				activityLineObj.setEndHour(endHour);
+				activityLineObj.setFacility(facilityTypeObj);
+			}
 			
 			try
-			 {
+			{
 				 DBConnection1.startTransaction();
 				 DBActivityLine dbActivityLine = new DBActivityLine();
 				 dbActivityLine.insertActivityLine(activityLineObj);
@@ -175,7 +224,26 @@ public class ActivityBookingCtr
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(activityBookingId, true);
 		
-		ActivityLine activityLineObj = new ActivityLine(activityTypeObj, instructorObj, date, startHour, endHour, facilityTypeObj, activityBookingObj);
+		ActivityLine activityLineObj = new ActivityLine();
+		if(instructorObj !=null)
+		{
+			activityLineObj.setActivity(activityTypeObj);
+			activityLineObj.setActivityBooking(activityBookingObj);
+			activityLineObj.setDate(date);
+			activityLineObj.setStartHour(startHour);
+			activityLineObj.setEndHour(endHour);
+			activityLineObj.setFacility(facilityTypeObj);
+			activityLineObj.setInstructor(instructorObj);
+		}
+		else
+		{
+			activityLineObj.setActivity(activityTypeObj);
+			activityLineObj.setActivityBooking(activityBookingObj);
+			activityLineObj.setDate(date);
+			activityLineObj.setStartHour(startHour);
+			activityLineObj.setEndHour(endHour);
+			activityLineObj.setFacility(facilityTypeObj);
+		}		
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		return dbActivityLine.updateActivityLine(activityLineObj);
 	}
@@ -184,6 +252,12 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		return dbActivityLine.deleteActivityLine(activityId, activityBookingId, startHour);
+	}
+	
+	public int deleteBookingActivityLines(int activityBookingId)
+	{
+		IFDBActivityLine dbActivityline = new DBActivityLine();
+		return dbActivityline.deleteBookingActivityLines(activityBookingId);
 	}
 	
 	public boolean performCompleteCheck(int activityBookingId, String date, String startHour)
