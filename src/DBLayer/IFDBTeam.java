@@ -12,8 +12,8 @@ public interface IFDBTeam
 	//get team by id
 	public Team getTeamById(int id, boolean retrieveAssociation);
 	
-	//get team by leader id
-	public Team getTeamByLeaderId(int leaderId, boolean retrieveAssociation);
+	//get teams made by a leader id
+	public LinkedList<Team> getTeamsByLeaderId(int leaderId, boolean retrieveAssociation);
 	
 	//insert team
 	public int insertTeam(Team team) throws Exception;
@@ -22,7 +22,7 @@ public interface IFDBTeam
 	public int updateTeam(Team team);
 	
 	//delete team by leader id
-	public int deleteTeamByLeader(int leaderId);
+	public int deleteTeamsByLeader(int leaderId);
 	
 	//delete team by team id
 	public int deleteTeamById(int id);
