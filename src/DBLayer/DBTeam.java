@@ -32,11 +32,17 @@ public class DBTeam implements IFDBTeam
 	{
 		Team teamObj=new Team();		
 		IFDBGuest dbGuest=new DBGuest();
-		
+		Guest guestObj = new Guest();
 		try
 		{
 			teamObj.setId(results.getInt("id"));
-			teamObj.setLeader(dbGuest.searchGuestById(results.getInt("leaderId"), false));
+			
+			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"), false);
+			if(guestObj != null)
+			{
+				teamObj.setLeader(guestObj);
+			}
+			
 			teamObj.setNumberOfParticipants(results.getInt("numberOfParticipants"));
 		}
 		catch(Exception e)
@@ -68,8 +74,11 @@ public class DBTeam implements IFDBTeam
 			{//the leader is to be built as well
 				IFDBGuest dbGuest= new DBGuest();
 				Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), false);
-				System.out.println("Leader is selected.");
-				teamObj.setLeader(guestObj);
+				if(guestObj != null)
+				{
+					System.out.println("Leader is selected.");
+					teamObj.setLeader(guestObj);
+				}
 			}
 			else
 			{
@@ -109,8 +118,11 @@ public class DBTeam implements IFDBTeam
 				for(Team teamObj : teamList)
 				{
 					Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), false);
-					System.out.println("Leader is selected.");
-					teamObj.setLeader(guestObj);
+					if(guestObj != null)
+					{
+						System.out.println("Leader is selected.");
+						teamObj.setLeader(guestObj);
+					}
 				}
 			}
 		}
@@ -123,35 +135,44 @@ public class DBTeam implements IFDBTeam
 		return teamList;
 	}
 
-	
+	@Override
 	public LinkedList<Team> getAllTeams(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
 
-	
+	@Override
 	public Team getTeamById(int id, boolean retrieveAssociation)
 	{
 		String wClause = " id= '" + id + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	
+	@Override
 	public Team getTeamByLeaderId(int leaderId, boolean retrieveAssociation)
 	{
 		String wClause = " leaderId= '" + leaderId + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	
+	@Override
 	public int insertTeam(Team team) throws Exception
 	{
 		int result = -1;
+		Guest guestObj = team.getLeader();
+		String query = new String();
 		
-		String query = "INSERT INTO Team(id, leaderId, numberOfParticipants) VALUES ('" +
+		if(guestObj != null)
+		{
+			query = "INSERT INTO Team(id, leaderId, numberOfParticipants) VALUES ('" +
 				team.getId() + "','" + 
 				team.getLeader().getId() + "','" + 
 				team.getNumberOfParticipants() + "')";
+		}
+		else
+		{
+			System.out.println("Error! An inserted value may be invalid.");
+		}
 		
 		System.out.println("Insertion query: " + query);
 	    try
@@ -169,17 +190,27 @@ public class DBTeam implements IFDBTeam
 	    return(result);
 	}
 
-	
+	@Override
 	public int updateTeam(Team team) 
 	{
-		Team teamObj=team;
-		
-		String query="UPDATE Team SET " + 
-				"leaderId= '" + teamObj.getLeader().getId() + "', " +
-		"numberOfParticipants= '" + teamObj.getNumberOfParticipants() + "' " +
-				"WHERE id= '" + teamObj.getId() + "'";
-		
 		int result=-1;
+		
+		Team teamObj=team;
+		Guest guestObj = teamObj.getLeader();
+		String query = new String();
+		
+		if(guestObj != null)
+		{
+			query="UPDATE Team SET " + 
+		"leaderId= '" + teamObj.getLeader().getId() + "', " +
+					"numberOfParticipants= '" + teamObj.getNumberOfParticipants() + "' " +
+		"WHERE id= '" + teamObj.getId() + "'";
+		}
+		else
+		{
+			System.out.println("Error! An inserted value may be invalid.");
+		}
+		
 		System.out.println("Update query: " + query);
 		
 		try
@@ -197,7 +228,7 @@ public class DBTeam implements IFDBTeam
 		return(result);
 	}
 
-	
+	@Override
 	public int deleteTeamByLeader(int leaderId)
 	{
 		int result=-1;
@@ -219,7 +250,7 @@ public class DBTeam implements IFDBTeam
 	  	return(result);
 	}
 
-	
+	@Override
 	public int deleteTeamById(int id)
 	{
 		int result=-1;
