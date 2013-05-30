@@ -164,6 +164,7 @@ private Connection con;
 				{
 					rbObj.setZipcode(location.getZipCode());
 					rbObj.setCountry(location.getCountry());
+					System.out.println("Location selection.");
 				}
 				
 			}
@@ -210,6 +211,7 @@ private Connection con;
 					{
 						personObj.setZipcode(location.getZipCode());
 						personObj.setCountry(location.getCountry());
+						System.out.println("Location selection.");
 					}
 				}
 			}

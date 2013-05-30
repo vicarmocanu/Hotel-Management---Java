@@ -38,10 +38,7 @@ public class DBTeam implements IFDBTeam
 			teamObj.setId(results.getInt("id"));
 			
 			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"), false);
-			if(guestObj != null)
-			{
-				teamObj.setLeader(guestObj);
-			}
+			teamObj.setLeader(guestObj);
 			
 			teamObj.setNumberOfParticipants(results.getInt("numberOfParticipants"));
 		}
@@ -162,17 +159,10 @@ public class DBTeam implements IFDBTeam
 		Guest guestObj = team.getLeader();
 		String query = new String();
 		
-		if(guestObj != null)
-		{
-			query = "INSERT INTO Team(id, leaderId, numberOfParticipants) VALUES ('" +
-				team.getId() + "','" + 
-				team.getLeader().getId() + "','" + 
-				team.getNumberOfParticipants() + "')";
-		}
-		else
-		{
-			System.out.println("Error! An inserted value may be invalid.");
-		}
+		query = "INSERT INTO Team(id, leaderId, numberOfParticipants) VALUES ('" +
+		team.getId() + "','" + 
+		guestObj.getId() + "','" + 
+		team.getNumberOfParticipants() + "')";
 		
 		System.out.println("Insertion query: " + query);
 	    try
@@ -199,17 +189,11 @@ public class DBTeam implements IFDBTeam
 		Guest guestObj = teamObj.getLeader();
 		String query = new String();
 		
-		if(guestObj != null)
-		{
 			query="UPDATE Team SET " + 
-		"leaderId= '" + teamObj.getLeader().getId() + "', " +
+		"leaderId= '" + guestObj.getId() + "', " +
 					"numberOfParticipants= '" + teamObj.getNumberOfParticipants() + "' " +
 		"WHERE id= '" + teamObj.getId() + "'";
-		}
-		else
-		{
-			System.out.println("Error! An inserted value may be invalid.");
-		}
+		
 		
 		System.out.println("Update query: " + query);
 		

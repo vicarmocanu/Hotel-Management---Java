@@ -8,7 +8,6 @@ import java.util.LinkedList;
 
 import Model.Guest;
 import Model.Location;
-import Model.Person;
 import Model.TravelAgency;
 
 public class DBGuest implements IFDBGuest
@@ -22,11 +21,25 @@ public class DBGuest implements IFDBGuest
 	
 	public int insertGuest(Guest guest) throws Exception
 	{
-		String query = "INSERT INTO Guest(guestType, travelAgency) VALUES('" + 
-				guest.getGuestType() + "','" +
-				guest.getTravelAgency().getCVR() + "')";
-		
 		int rc = -1;
+		Guest guestObj = guest;
+		TravelAgency travelAgencyObj = new TravelAgency();
+		travelAgencyObj =guest.getTravelAgency();
+		String query = new String();
+		
+		if(travelAgencyObj != null)
+		{
+			query = "INSERT INTO Guest(guestType, travelAgency) VALUES('" +
+		guestObj.getGuestType() + "','" +
+					guestObj.getTravelAgency().getCVR() + "')";
+		}
+		else
+		{
+			query = "INSERT INTO Guest(guestType) VALUES('" +
+		guestObj.getGuestType() +  "')";
+		}
+		
+		
 		System.out.println("Insertion query: " + query);
 		try
 		{
@@ -48,11 +61,24 @@ public class DBGuest implements IFDBGuest
 	{
 		Guest guest = gst;
 		int rc = -1;
+		TravelAgency travelAgencyObj = new TravelAgency();
+		travelAgencyObj =guest.getTravelAgency();
+		String query = new String();
 		
-		String query = "UPDATE Guest SET " +
+		if(travelAgencyObj !=null)
+		{
+			query = "UPDATE Guest SET " +
 		"guestType= '" + guest.getGuestType() + "', " +
-		"travelAgency= '" + guest.getTravelAgency() + "' " +
-		"WHERE personId= '" + guest.getId() + "'";		
+					"travelAgency= '" + guest.getTravelAgency() + "' " +
+		"WHERE personId= '" + guest.getId() + "'";
+		}
+		else
+		{
+			query = "UPDATE Guest SET " +
+		"guestType= '" + guest.getGuestType() + "', " +
+					"WHERE personId= '" + guest.getId() + "'";
+		}
+		
 		System.out.println("Update query: " + query);
 		
 		try
@@ -117,7 +143,7 @@ public class DBGuest implements IFDBGuest
 			
 			if(travelAgencyObj != null)
 			{
-			rbObj.setTravelAgency(travelAgencyObj);
+				rbObj.setTravelAgency(travelAgencyObj);
 			}
 			rbObj.setGuestType(results.getString("guestType"));
 		}
@@ -148,7 +174,7 @@ public class DBGuest implements IFDBGuest
 				stmt.close();
 			}
 			if(retrieveAssociation)
-			{//location selection
+			{//location and travel agency selection
 				IFDBLocation dbLocation = new DBLocation();
 				Location location = new Location();
 				location = dbLocation.searchLocationByZipCode(rbObj.getZipcode(), false);
@@ -156,6 +182,16 @@ public class DBGuest implements IFDBGuest
 				{
 					rbObj.setZipcode(location.getZipCode());
 					rbObj.setCountry(location.getCountry());
+					System.out.println("Location selection");
+				}
+				
+				IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
+				TravelAgency travelAgencyObj = new TravelAgency();
+				travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(rbObj.getTravelAgency().getCVR(), false);
+				if(travelAgencyObj != null)
+				{
+					rbObj.setTravelAgency(travelAgencyObj);
+					System.out.println("Travel agency selection.");
 				}
 			}
 			else
@@ -193,14 +229,25 @@ public class DBGuest implements IFDBGuest
 			if(retrieveAssociation)
 			{
 				IFDBLocation dbLocation = new DBLocation();
-				for(Person personObj : list)
+				IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
+				
+				for(Guest guestObj : list)
 				{
 					Location location = new Location();
-					location = dbLocation.searchLocationByZipCode(personObj.getZipcode(), false);
+					location = dbLocation.searchLocationByZipCode(guestObj.getZipcode(), false);
 					if(location != null)
 					{
-						personObj.setZipcode(location.getZipCode());
-						personObj.setCountry(location.getCountry());
+						guestObj.setZipcode(location.getZipCode());
+						guestObj.setCountry(location.getCountry());
+						System.out.println("Location selection");
+					}
+					
+					TravelAgency travelAgencyObj = new TravelAgency();
+					travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(guestObj.getTravelAgency().getCVR(), false);
+					if(travelAgencyObj != null)
+					{
+						guestObj.setTravelAgency(travelAgencyObj);
+						System.out.println("Travel agency selection.");
 					}
 				}
 			}
