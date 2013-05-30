@@ -26,4 +26,7 @@ public interface IFDBTeam
 	
 	//delete team by team id
 	public int deleteTeamById(int id);
+	
+	//delete team by team id and leader id
+	public int deleteTeamByBothIDs(int teamId, int leaderId);
 }
