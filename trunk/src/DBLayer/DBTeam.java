@@ -159,8 +159,7 @@ public class DBTeam implements IFDBTeam
 		Guest guestObj = team.getLeader();
 		String query = new String();
 		
-		query = "INSERT INTO Team(id, leaderId, numberOfParticipants) VALUES ('" +
-		team.getId() + "','" + 
+		query = "INSERT INTO Team(leaderId, numberOfParticipants) VALUES ('" +
 		guestObj.getId() + "','" + 
 		team.getNumberOfParticipants() + "')";
 		
