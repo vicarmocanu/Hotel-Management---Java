@@ -1,19 +1,13 @@
 package Controller;
 
 import java.util.LinkedList;
-
 import DBLayer.DBTravelAgency;
 import DBLayer.IFDBTravelAgency;
 import Model.TravelAgency;
 
-
-
-public class TravelAgencyCtr {
-	
-	public TravelAgencyCtr()
-	{
-		
-	}
+public class TravelAgencyCtr 
+{
+	public TravelAgencyCtr(){}
 	
 	public LinkedList<TravelAgency> getAllTravelAgencies()
 	{
@@ -44,9 +38,20 @@ public class TravelAgencyCtr {
 		
 	}
 	
-	public int updateTravelAgency()
+	public int updateTravelAgency(int cvr, String name, int zipcode, String country,
+			String address, String phoneNo, String email)
 	{
+		TravelAgency travelAgency = new TravelAgency();
+		travelAgency.setCVR(cvr);
+		travelAgency.setName(name);
+		travelAgency.setZipCode(zipcode);
+		travelAgency.setCountry(country);
+		travelAgency.setAddress(address);
+		travelAgency.setPhoneNo(phoneNo);
+		travelAgency.setEmail(email);
 		
+		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
+		return dbTravelAgency.updateTravelAgency(travelAgency);
 	}
 	
 	public int deleteTravelAgencyByCvr(int cvr)
@@ -60,5 +65,4 @@ public class TravelAgencyCtr {
 		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
 		return dbTravelAgency.deleteTravelAgencyByName(name);
 	}
-
 }
