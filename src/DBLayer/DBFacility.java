@@ -182,9 +182,7 @@ public class DBFacility implements IFDBFacility
 		}
 		else
 		{
-			query = "INSERT INTO Facility(name, status) VALUES ('" +
-					facility.getName() + "','" +
-					facility.getStatus() + "')";
+			System.out.println("Error! An inserted value may be invalid.");
 		}
 		System.out.println("Insertion query: " + query);
 	    try
@@ -220,10 +218,7 @@ public class DBFacility implements IFDBFacility
 		}
 		else
 		{
-			query="UPDATE Facility SET " + 
-					"name= '" + facilityObj.getName() + "', " +
-					"status= '" + facilityObj.getStatus() + "' " + 
-					"WHERE id= '" + facilityObj.getId() + "'";
+			System.out.println("Error! An inserted value may be invalid.");
 		}
 		
 		int result=-1;
