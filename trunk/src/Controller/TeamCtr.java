@@ -31,11 +31,12 @@ public class TeamCtr
 		return teamObj;
 	}
 	
-	public Team getTeamByLeaderId(int leaderId)
+	public LinkedList<Team> getTeamByLeaderId(int leaderId)
 	{
 		IFDBTeam dbTeam = new DBTeam();
-		Team teamObj=dbTeam.getTeamByLeaderId(leaderId, true);
-		return teamObj;
+		LinkedList<Team> teamLeaderList = new LinkedList<Team>();
+		teamLeaderList = dbTeam.getTeamsByLeaderId(leaderId, true);
+		return teamLeaderList;
 	}
 	
 	public void insertTeam(int leaderId)
@@ -68,18 +69,20 @@ public class TeamCtr
 		return dbTeam.updateTeam(teamObj);
 	}
 	
-	public int deleteTeamByLeader(int leaderId)
+	public int deleteTeamsByLeader(int leaderId)
 	{
 		IFDBTeam dbTeam=new DBTeam();
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 		
-		Team teamObj = new Team();
-		teamObj = dbTeam.getTeamByLeaderId(leaderId, true);
-		int teamId = teamObj.getId();
+		LinkedList<Team> leaderTeamList = new LinkedList<Team>();
+		leaderTeamList = dbTeam.getTeamsByLeaderId(leaderId, true);
 		
-		dbTeamParticipants.deleteTeamParticipants(teamId);
-		
-		return dbTeam.deleteTeamByLeader(leaderId);
+		for(Team team : leaderTeamList)
+		{
+			int teamId = team.getId();
+			dbTeamParticipants.deleteTeamParticipants(teamId);
+		}		
+		return dbTeam.deleteTeamsByLeader(leaderId);
 	}
 	
 	public int deleteTeamById(int teamId)
