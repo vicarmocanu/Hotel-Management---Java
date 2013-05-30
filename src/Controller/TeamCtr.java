@@ -1,7 +1,6 @@
 package Controller;
 
 import java.util.LinkedList;
-
 import DBLayer.DBConnection1;
 import DBLayer.DBGuest;
 import DBLayer.DBTeam;
@@ -41,11 +40,10 @@ public class TeamCtr
 	
 	public void insertTeam(int leaderId)
 	{
-		IFDBGuest dbGuest = new DBGuest();
-		
+		IFDBGuest dbGuest = new DBGuest();		
 		Guest teamLeader = dbGuest.searchGuestById(leaderId, false);
-		Team teamObj = new Team();
-		teamObj.setLeader(teamLeader);
+		
+		Team teamObj = new Team(teamLeader);
 		
 		try
 		{
@@ -64,6 +62,7 @@ public class TeamCtr
 	{
 		IFDBTeam dbTeam = new DBTeam();
 		IFDBGuest dbGuest = new DBGuest();
+		
 		Guest teamLeader=dbGuest.searchGuestById(leaderId, false);
 		Team teamObj=new Team(id, teamLeader);
 		return dbTeam.updateTeam(teamObj);
@@ -72,13 +71,21 @@ public class TeamCtr
 	public int deleteTeamByLeader(int leaderId)
 	{
 		IFDBTeam dbTeam=new DBTeam();
+		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
+		
+		Team teamObj = new Team();
+		teamObj = dbTeam.getTeamByLeaderId(leaderId, true);
+		int teamId = teamObj.getId();
+		
+		dbTeamParticipants.deleteTeamParticipants(teamId);
+		
 		return dbTeam.deleteTeamByLeader(leaderId);
 	}
 	
-	public int deleteTeamById(int id)
+	public int deleteTeamById(int teamId)
 	{
 		IFDBTeam dbTeam=new DBTeam();
-		return dbTeam.deleteTeamById(id);
+		return dbTeam.deleteTeamById(teamId);
 	}
 	
 	public LinkedList<Participant> getTeamParticipantsByTeamId(int teamId)
@@ -92,8 +99,7 @@ public class TeamCtr
 	public void insertTeamParticipant(int teamId, int participantId)
 	{
 		IFDBTeam dbTeam=new DBTeam();
-		IFDBGuest dbGuest=new DBGuest();		
-		
+		IFDBGuest dbGuest=new DBGuest();
 		Team teamObj = dbTeam.getTeamById(teamId, false);
 		Guest guestObj = dbGuest.searchGuestById(participantId, false);
 		Participant participantObj = new Participant(teamObj, guestObj);
@@ -105,16 +111,26 @@ public class TeamCtr
 			 dbTeamParticipants.insertTeamParticipant(participantObj);
 			 DBConnection1.commitTransaction();
 			 teamObj.addParticipant(participantObj);
+			 dbTeam.updateTeam(teamObj);
 		 }
 		 catch(Exception e)
 		 {
 			 DBConnection1.rollbackTransaction();
-		 }		
+		 }
 	}
 	
 	public int deleteTeamParticipant(int teamId, int participantId)
 	{
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
+		IFDBTeam dbTeam = new DBTeam();
+		Team teamObj = new Team();		
+		teamObj = dbTeam.getTeamById(teamId, true);
+		
+		if(teamObj != null)
+		{
+			teamObj.removeParticipant(teamId, participantId);
+			dbTeam.updateTeam(teamObj);
+		}
 		return dbTeamParticipants.deleteTeamParticipant(teamId, participantId);
 	}
 	
@@ -123,5 +139,4 @@ public class TeamCtr
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 		return dbTeamParticipants.deleteTeamParticipants(teamId);
 	}
-
 }
