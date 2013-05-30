@@ -145,11 +145,10 @@ public class DBTeam implements IFDBTeam
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
-	public Team getTeamByLeaderId(int leaderId, boolean retrieveAssociation)
+	public  LinkedList<Team> getTeamsByLeaderId(int leaderId, boolean retrieveAssociation)
 	{
 		String wClause = " leaderId= '" + leaderId + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause, retrieveAssociation);
 	}
 
 	@Override
@@ -212,7 +211,7 @@ public class DBTeam implements IFDBTeam
 	}
 
 	@Override
-	public int deleteTeamByLeader(int leaderId)
+	public int deleteTeamsByLeader(int leaderId)
 	{
 		int result=-1;
 		  
