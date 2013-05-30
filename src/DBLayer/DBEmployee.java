@@ -71,8 +71,9 @@ public class DBEmployee implements IFDBEmployee
 				location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
 				if(location != null)
 				{
-				employeeObj.setZipcode(location.getZipCode());
-				employeeObj.setCountry(location.getCountry());
+					employeeObj.setZipcode(location.getZipCode());
+					employeeObj.setCountry(location.getCountry());
+					System.out.println("Location selection.");
 				}
 			}
 			else
@@ -119,8 +120,9 @@ public class DBEmployee implements IFDBEmployee
 					location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
 					if(location != null)
 					{
-					employeeObj.setZipcode(location.getZipCode());
-					employeeObj.setCountry(location.getCountry());
+						employeeObj.setZipcode(location.getZipCode());
+						employeeObj.setCountry(location.getCountry());
+						System.out.println("Location selection.");
 					}
 				}
 			}

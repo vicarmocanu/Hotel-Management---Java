@@ -45,17 +45,11 @@ public class DBActivityLine implements IFDBActivityLine
 		{
 			ActivityType activityTypeObj = new ActivityType();
 			activityTypeObj = dbActivityType.getActivityTypeByID(results.getInt("activityId"), false);
-			if(activityTypeObj != null)
-			{
-				activityLineObj.setActivity(activityTypeObj);
-			}
+			activityLineObj.setActivity(activityTypeObj);
 			
 			ActivityBooking activityBookingObj = new ActivityBooking();
 			activityBookingObj = dbActivityBooking.getActivityBookingById(results.getInt("bookingId"), true);
-			if(activityBookingObj != null)
-			{
-				activityLineObj.setActivityBooking(activityBookingObj);
-			}
+			activityLineObj.setActivityBooking(activityBookingObj);
 			
 			activityLineObj.setDate(results.getString("date"));
 			activityLineObj.setStartHour(results.getString("startHour"));
@@ -63,10 +57,7 @@ public class DBActivityLine implements IFDBActivityLine
 			
 			Facility facilityObj = new Facility();
 			facilityObj = dbFacility.getFacilityById(results.getInt("facilityId"), true);
-			if(facilityObj != null)
-			{
-				activityLineObj.setFacility(facilityObj);
-			}
+			activityLineObj.setFacility(facilityObj);
 			
 			Instructor instructorObj =new Instructor();
 			instructorObj = dbInstructor.getInstructorById(results.getInt("instructorId"), true);
@@ -137,6 +128,10 @@ public class DBActivityLine implements IFDBActivityLine
 				{
 					activityLineObj.setInstructor(instructorObj);
 					System.out.println("Instructor is selected.");
+				}
+				else
+				{
+					System.out.println("No instructor selection.");
 				}
 			}
 			else
@@ -209,6 +204,10 @@ public class DBActivityLine implements IFDBActivityLine
 					{
 						activityLineObj.setInstructor(instructorObj);
 						System.out.println("Instructor is selected.");
+					}
+					else
+					{
+						System.out.println("No instructor selection.");
 					}
 				}
 			}

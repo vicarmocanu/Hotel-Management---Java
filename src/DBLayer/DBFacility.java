@@ -41,10 +41,7 @@ public class DBFacility implements IFDBFacility
 			facilityObj.setName(results.getString("name"));
 			
 			activityTypeObj = dbActivity.getActivityTypeByID(results.getInt("forActivity"), true);
-			if(activityTypeObj !=null)
-			{
-				facilityObj.setActivity(activityTypeObj);
-			}
+			facilityObj.setActivity(activityTypeObj);
 			facilityObj.setStatus(results.getString("status"));
 		}
 		catch(Exception e)

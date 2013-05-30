@@ -39,11 +39,9 @@ public class DBInstructor implements IFDBInstructor
 		{
 			instructorObj.setId(results.getInt("employeeId"));
 			
-			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"), false);	
-			if(activityTypeObj != null)
-			{
+			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"), false);
 			instructorObj.setActivityType(activityTypeObj);	
-			}
+			
 			instructorObj.setPrice(results.getDouble("price"));
 		}
 		catch(Exception e)
@@ -89,11 +87,8 @@ public class DBInstructor implements IFDBInstructor
 				IFDBActivityType dbActivityType = new DBActivityType();
 				ActivityType activityTypeObj = new ActivityType();
 				activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
-				if(activityTypeObj != null)
-				{
 				instructorObj.setActivityType(activityTypeObj);
 				System.out.println("Activity selected.");
-				}
 				
 			}
 			else
@@ -138,9 +133,12 @@ public class DBInstructor implements IFDBInstructor
 				{
 					Location location = new Location();
 					location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
-					instructorObj.setZipcode(location.getZipCode());
-					instructorObj.setCountry(location.getCountry());
-					System.out.println("Location selected.");
+					if(location != null)
+					{
+					    instructorObj.setZipcode(location.getZipCode());
+						instructorObj.setCountry(location.getCountry());
+						System.out.println("Location selected.");
+					}
 					
 					ActivityType activityTypeObj = new ActivityType();
 					activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
