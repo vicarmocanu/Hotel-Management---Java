@@ -31,7 +31,7 @@ public class TeamCtr
 		return teamObj;
 	}
 	
-	public LinkedList<Team> getTeamByLeaderId(int leaderId)
+	public LinkedList<Team> getTeamsByLeaderId(int leaderId)
 	{
 		IFDBTeam dbTeam = new DBTeam();
 		LinkedList<Team> teamLeaderList = new LinkedList<Team>();
@@ -89,6 +89,12 @@ public class TeamCtr
 	{
 		IFDBTeam dbTeam=new DBTeam();
 		return dbTeam.deleteTeamById(teamId);
+	}
+	
+	public int deleteTeamByBothIDs(int teamId, int leaderId)
+	{
+		IFDBTeam dbTeam = new DBTeam();
+		return dbTeam.deleteTeamByBothIDs(teamId, leaderId);
 	}
 	
 	public LinkedList<Participant> getTeamParticipantsByTeamId(int teamId)
