@@ -105,6 +105,13 @@ public class TeamCtr
 		return teamParticipantList;
 	}
 	
+	public Participant getTeamParticipant(int teamId, int participantId)
+	{
+		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
+		Participant participantObj = dbTeamParticipants.getParticipant(teamId, participantId, true);
+		return participantObj;
+	}
+	
 	public void insertTeamParticipant(int teamId, int participantId)
 	{
 		IFDBTeam dbTeam=new DBTeam();
