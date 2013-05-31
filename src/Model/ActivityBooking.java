@@ -1,14 +1,15 @@
 package Model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ActivityBooking 
 {
-	SimpleDateFormat days=new SimpleDateFormat("mm-dd-yyyy");
+	final static String DATE_FORMAT = "dd-MM-yyyy";
 	
 	private int id;
-	private Date date;
+	private String date;
 	private String status;//booked, done, waitingList
 	private Guest guest;
 	private Team team;
@@ -25,16 +26,15 @@ public class ActivityBooking
 	public ActivityBooking(int id, String date, String status, Guest guest, Team team)
 	{
 		this.id = id;
-		
-		try
+		if(isDateValid(date)==true)
 		{
-			this.date=days.parse(date);
+			this.date=date;
 		}
-		catch(Exception e)
+		else
 		{
-			System.out.println("Cannot create activity booking. Problem with date input.");
+			System.out.println("Problem with date input.");
+			this.date = new String();
 		}
-		
 		this.status = status;
 		this.guest=guest;
 		this.team=team;
@@ -42,15 +42,15 @@ public class ActivityBooking
 	
 	public ActivityBooking(String date, String status, Guest guest, Team team)
 	{
-		try
+		if(isDateValid(date)==true)
 		{
-			this.date=days.parse(date);
+			this.date=date;
 		}
-		catch(Exception e)
+		else
 		{
-			System.out.println("Cannot create activity booking. Problem with date input.");
+			System.out.println("Problem with date input.");
+			this.date = new String();
 		}
-		
 		this.status = status;
 		this.guest=guest;
 		this.team=team;
@@ -94,25 +94,35 @@ public class ActivityBooking
 		this.team=team;
 	}
 	
-	public Date getDate()
+	public String getDate()
 	{
 		return this.date;
 	}
-	public String getStringDate()
-	{
-		String date=days.format(getDate());
-		return date;
-	}
 	public void setDate(String date)
+	{
+		if(isDateValid(date)==true)
+		{
+			this.date=date;
+		}
+		else
+		{
+			System.out.println("Problem with date input.");
+			this.date = new String();
+		}
+	}
+	
+	public static boolean isDateValid(String date) 
 	{
 		try
 		{
-			this.date=days.parse(date);
-		}
-		catch(Exception e)
+			DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+			df.setLenient(false);
+			df.parse(date);
+			return true;
+		} 
+		catch (ParseException e)
 		{
-			System.out.println("Cannot create activity booking. Problem with date input.");
+			return false;
 		}
 	}
-
 }
