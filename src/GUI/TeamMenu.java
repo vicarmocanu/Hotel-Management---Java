@@ -13,7 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.GuestCtr;
@@ -25,7 +28,8 @@ import Model.Team;
 public class TeamMenu
 {
 	public int universalId;
-	
+	private TeamCtr teamCtr = new TeamCtr();
+	private GuestCtr guestCtr = new GuestCtr();
 	private JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -141,11 +145,9 @@ public class TeamMenu
 				}
 				else
 				{
-					TeamCtr teamCtr = new TeamCtr();				
 					String stringLeaderId = textField_1.getText();
 					int leaderId = Integer.parseInt(stringLeaderId);
 					
-					GuestCtr guestCtr = new GuestCtr();
 					Guest guestObj = new Guest();
 					guestObj = guestCtr.searchGuestById(leaderId);
 					if(guestObj == null)
@@ -176,10 +178,7 @@ public class TeamMenu
 					JOptionPane.showMessageDialog(null, "Plese insert both the team and leader id for team you wish to remove", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 				else
-				{
-					TeamCtr teamCtr = new TeamCtr();
-					GuestCtr guestCtr = new GuestCtr();
-					
+				{	
 					Guest guestObj = new Guest();
 					Team teamObj = new Team();
 					
@@ -224,9 +223,6 @@ public class TeamMenu
 				}
 				else
 				{
-					TeamCtr teamCtr = new TeamCtr();
-					GuestCtr guestCtr = new GuestCtr();
-					
 					String stringLeaderId = textField_1.getText();
 					int leaderId = Integer.parseInt(stringLeaderId);
 					Guest guestObj = new Guest();
@@ -280,7 +276,6 @@ public class TeamMenu
 				}
 				else
 				{
-					GuestCtr guestCtr = new GuestCtr();
 					if(textField_1.getText().equals("")!=true)
 					{
 						String stringLeaderId = textField_1.getText();
@@ -339,7 +334,6 @@ public class TeamMenu
 	//method to get a model for the table
 	public DefaultTableModel getModel()
 	{
-		TeamCtr teamCtr = new TeamCtr();
 		LinkedList<Team > teamCompleteList = new LinkedList<Team>();
 		teamCompleteList = teamCtr.getAllTeams();
 		
@@ -371,6 +365,29 @@ public class TeamMenu
 		{
 			System.out.println("Exception: " + e);
 		}
+		
+		table.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				Team teamObj = new Team();
+				
+				int selectedRow = table.getSelectedRow();
+				String selectedData = (String) table.getValueAt(selectedRow, 0);
+				int id = Integer.parseInt(selectedData);
+				
+				teamObj = teamCtr.getTeamById(id);
+				
+				textField.setText(String.valueOf(teamObj.getId()));
+				textField_1.setText(String.valueOf(teamObj.getLeader().getId()));
+				textField_3.setText(teamObj.getLeader().getName());
+				textField_2.setText(String.valueOf(teamObj.getNumberOfParticipants()));
+			}
+		});
 		
 		return model;
 	}
