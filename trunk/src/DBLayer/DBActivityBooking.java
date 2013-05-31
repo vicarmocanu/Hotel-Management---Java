@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.LinkedList;
 
 import Model.ActivityBooking;
@@ -196,12 +195,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return singleWhere(wClause, retrieveAssociation);
 	}
 
-	@Override
-	public LinkedList<ActivityBooking> getActivityBookingsByDate(Date date,	boolean retrieveAssociation)
-	{
-		String wClause = " date= '" + date + "'";
-		return miscWhere(wClause, retrieveAssociation);
-	}
+	
 
 	@Override
 	public LinkedList<ActivityBooking> getActivityBookingsForGuest(int guestId, boolean retrieveAssociation)
@@ -309,4 +303,36 @@ public class DBActivityBooking implements IFDBActivityBooking
 		}
 		return(result);
 	}
+
+	@Override
+	public int getActivityBookingInstances(String date, int guestId)
+	{
+		int instances = 0;		
+		ResultSet results;
+		String query = "SELECT COUNT(guestId, date) AS activityBokingInstances FROM ActivityBooking " + 
+		" WHERE date='" +  date + "' AND guestId='" + guestId + "'";		
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);			
+			instances = results.getInt("activityLineInstances");
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity booking instance count: " + e);
+		}
+		return instances;
+	}
+
+	@Override
+	public ActivityBooking getActivityBookingByDate(int guestId, String date, boolean retrieveAssociation)
+	{
+		String wClause = " guestId= '" + guestId + "' AND date= '" + date + "'";
+		return singleWhere(wClause, retrieveAssociation);
+	}
+	
 }
