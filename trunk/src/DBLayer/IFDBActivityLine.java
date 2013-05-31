@@ -25,8 +25,14 @@ public interface IFDBActivityLine
 	//delete all activity lines in a booking
 	public int deleteBookingActivityLines(int activityBookingId);
 	
-	//method to avoid activity line double booking
-	public int getActivityLineInstances(int bookingId, String date, String startHour);
+	//method to avoid activity line -activity- double booking
+	public int getActivityLineInstances1(int bookingId, String date, String startHour);
+	
+	//method to avoid activity line -facility- double booking
+	public int getActivityLineInstances2(String date, String startHour, int facilityId);
+	
+	//method to avoid activity line -instructor- double booking
+	public int getActivityLineInstances3(String date, String startHour, int instructorId);
 	
 	//method to avoid more than 4 activity lines
 	public int getNumberOfActivityLinesForBooking(int bookingId, String date);
