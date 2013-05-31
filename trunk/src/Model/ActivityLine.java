@@ -1,20 +1,20 @@
 package Model;
 
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class ActivityLine
 {
+	final static String DATE_FORMAT = "dd-MM-yyyy";
+	
 	//attributes
 	private ActivityType activity;
-	private Instructor instructor;
+	private Instructor instructor;	
 	
-	SimpleDateFormat days=new SimpleDateFormat("mm-dd-yyyy");
-	private Date date;
-	
-	SimpleDateFormat hours=new SimpleDateFormat("HH:mm");
-	private Date startHour;
-	private Date endHour;
+	private String date;
+	private String startHour;
+	private String endHour;
 	
 	private Facility facility;
 	private ActivityBooking activityBooking;
@@ -26,32 +26,17 @@ public class ActivityLine
 		this.activity=activity;
 		this.instructor=instructor;
 		
-		try
+		if(isDateValid(date)==true)
 		{
-			this.date=days.parse(date);
+			this.date = date;
 		}
-		catch(Exception e)
+		else
 		{
-			System.out.println("Cannot create activity booking. Problem with date input.");
+			System.out.println("Problem with date input.");
+			this.date = new String();
 		}
-		
-		try
-		{
-			this.startHour=hours.parse(startHour);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Cannot create activity booking. Problem with start date input.");
-		}
-		
-		try
-		{
-			this.endHour=hours.parse(endHour);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Cannot create activity booking. Problem with end date input.");
-		}
+		this.startHour=startHour;
+		this.endHour=endHour;
 		
 		this.facility=facility;
 		this.activityBooking=activityBooking;
@@ -80,67 +65,41 @@ public class ActivityLine
 		this.instructor=instructor;
 	}
 	
-	public Date getDate()
+	public String getDate()
 	{
 		return this.date;
 	}
-	public String getStringDate()
-	{
-		String date=days.format(getDate());
-		return date;
-	}
+	
 	public void setDate(String date)
 	{
-		try
+		if(isDateValid(date)==true)
 		{
-			this.date=days.parse(date);
+			this.date = date;
 		}
-		catch(Exception e)
+		else
 		{
-			System.out.println("Cannot create activity booking. Problem with date input.");
+			System.out.println("Problem with date input.");
+			this.date = new String();
 		}
 	}
 	
-	public Date getStartHour()
+	public String getStartHour()
 	{
 		return this.startHour;
 	}
-	public String getStringStartHour()
-	{
-		String startHour=hours.format(getStartHour());
-		return startHour;
-	}
+	
 	public void setStartHour(String startHour)
 	{
-		try
-		{
-			this.startHour=hours.parse(startHour);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Cannot create activity booking. Problem with start date input.");
-		}
+		this.startHour = startHour;
 	}
 	
-	public Date getEndHour()
+	public String getEndHour()
 	{
 		return this.endHour;
 	}
-	public String getStringEndHour()
-	{
-		String endHour=hours.format(getEndHour());
-		return endHour;
-	}
 	public void setEndHour(String endHour)
 	{
-		try
-		{
-			this.endHour=hours.parse(endHour);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Cannot create activity booking. Problem with end date input.");
-		}
+		this.endHour = endHour;
 	}
 	
 	public Facility getFacility()
@@ -159,6 +118,21 @@ public class ActivityLine
 	public void setActivityBooking(ActivityBooking activityBooking)
 	{
 		this.activityBooking=activityBooking;
+	}
+	
+	public static boolean isDateValid(String date) 
+	{
+		try
+		{
+			DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+			df.setLenient(false);
+			df.parse(date);
+			return true;
+		} 
+		catch (ParseException e)
+		{
+			return false;
+		}
 	}
 
 }
