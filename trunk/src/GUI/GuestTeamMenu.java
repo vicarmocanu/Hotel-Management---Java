@@ -13,7 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.GuestCtr;
@@ -25,6 +28,8 @@ import Model.Team;
 public class GuestTeamMenu
 {
 	public int universalId;
+	private TeamCtr teamCtr = new TeamCtr();
+	private GuestCtr guestCtr = new GuestCtr();
 	
 	private JFrame frame;
 	private JTextField textField;
@@ -124,7 +129,6 @@ public class GuestTeamMenu
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				TeamCtr teamCtr = new TeamCtr();				
 				String stringLeaderId = textField_1.getText();
 				int leaderId = Integer.parseInt(stringLeaderId);
 				teamCtr.insertTeam(leaderId);
@@ -150,8 +154,6 @@ public class GuestTeamMenu
 				}
 				else
 				{
-					TeamCtr teamCtr = new TeamCtr();
-					
 					String stringTeamId = textField.getText();
 					int teamId = Integer.parseInt(stringTeamId);
 					
@@ -215,9 +217,6 @@ public class GuestTeamMenu
 				}
 				else
 				{
-					GuestCtr guestCtr = new GuestCtr();
-					TeamCtr teamCtr = new TeamCtr();
-					
 					String stringTeamId = textField.getText();
 					int teamId = Integer.parseInt(stringTeamId);
 					
@@ -255,9 +254,6 @@ public class GuestTeamMenu
 				}
 				else
 				{
-					GuestCtr guestCtr = new GuestCtr();
-					TeamCtr teamCtr = new TeamCtr();
-					
 					String stringTeamId = textField.getText();
 					int teamId = Integer.parseInt(stringTeamId);
 					
@@ -310,7 +306,6 @@ public class GuestTeamMenu
 	//method to get the model for the left table
 	public DefaultTableModel getModelLeft()
 	{
-		TeamCtr teamCtr = new TeamCtr();
 		String stringLeaderId = textField_1.getText();
 		int leaderId = Integer.parseInt(stringLeaderId);
 		LinkedList<Team> leaderTeamList = teamCtr.getTeamsByLeaderId(leaderId);
@@ -343,13 +338,34 @@ public class GuestTeamMenu
 		{
 			System.out.println("Exception: " + e);
 		}
+		
+		table.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() 
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				Team teamObj = new Team();
+				
+				int selectedRow = table.getSelectedRow();
+				String selectedData = (String) table.getValueAt(selectedRow, 0);
+				int id = Integer.parseInt(selectedData);
+				
+				teamObj = teamCtr.getTeamById(id);
+				
+				textField.setText(String.valueOf(teamObj.getId()));
+				textField_2.setText(String.valueOf(teamObj.getNumberOfParticipants()));
+			}
+		});
+		
 		return modelLeft;
 	}
 	
 	//method to get the model for the right table
 	public DefaultTableModel getModelRight()
 	{
-		TeamCtr teamCtr = new TeamCtr();
 		String stringTeamId = textField.getText();
 		int teamId = Integer.parseInt(stringTeamId);
 		LinkedList<Participant> teamParticipantList = teamCtr.getTeamParticipantsByTeamId(teamId);
@@ -381,6 +397,30 @@ public class GuestTeamMenu
 		{
 			System.out.println("Exception: " + e);
 		}
+		
+		table_1.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = table_1.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				Participant participantObj = new Participant();
+				
+				int selectedRow = table_1.getSelectedRow();
+				String selectedData1 = (String) table_1.getValueAt(selectedRow, 0);
+				String selectedData2 = (String) table_1.getValueAt(selectedRow, 1);
+				int teamId = Integer.parseInt(selectedData1);
+				int participantId = Integer.parseInt(selectedData2);
+				
+				participantObj = teamCtr.getTeamParticipant(teamId, participantId);
+				
+				textField_3.setText(String.valueOf(participantObj.getGuest().getId()));
+			}
+		});
+		
 		return modelRight;
 	}
 	
