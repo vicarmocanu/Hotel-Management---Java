@@ -362,29 +362,7 @@ public class DBActivityLine implements IFDBActivityLine
 	  	return(result);
 	}
 	
-	@Override
-	public int getActivityLineInstances(int bookingId, String date, String startHour)
-	{
-		int instances = 0;		
-		ResultSet results;
-		String query = "SELECT COUNT(bookingId, date, startHour) AS activityLineInstances FROM ActivityLine " + 
-		" WHERE bookingId='" + bookingId + "' AND date='" +  date + "' AND startHour='" + startHour + "'";		
-		System.out.println(query);
-		
-		try
-		{
-			Statement stmt = con.createStatement();
-			stmt.setQueryTimeout(5);
-			results = stmt.executeQuery(query);			
-			instances = results.getInt("activityLineInstances");
-			stmt.close();
-		}
-		catch(Exception e)
-		{
-			System.out.println("Exception in returning the activity line instance count: " + e);
-		}
-		return instances;		
-	}
+	
 	
 	@Override
 	public int getNumberOfActivityLinesForBooking(int bookingId, String date)
@@ -430,6 +408,78 @@ public class DBActivityLine implements IFDBActivityLine
 	  	}
 	  	
 	  	return(result);
+	}
+
+	@Override
+	public int getActivityLineInstances1(int bookingId, String date, String startHour)
+	{
+		int instances = 0;		
+		ResultSet results;
+		String query = "SELECT COUNT(bookingId, date, startHour) AS activityLineInstances1 FROM ActivityLine " + 
+		" WHERE bookingId='" + bookingId + "' AND date='" +  date + "' AND startHour='" + startHour + "'";		
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);			
+			instances = results.getInt("activityLineInstances1");
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity line instance count: " + e);
+		}
+		return instances;		
+	}
+
+	@Override
+	public int getActivityLineInstances2(String date, String startHour, int facilityId)
+	{
+		int instances = 0;		
+		ResultSet results;
+		String query = "SELECT COUNT(date, startHour, facilityId) AS activityLineInstances2 FROM ActivityLine " + 
+		" WHERE date='" + date + "' AND startHour='" +  startHour + "' AND facilityId='" + facilityId + "'";		
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);			
+			instances = results.getInt("activityLineInstances2");
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity line instance count: " + e);
+		}
+		return instances;		
+	}
+
+	@Override
+	public int getActivityLineInstances3(String date, String startHour, int instructorId)
+	{
+		int instances = 0;		
+		ResultSet results;
+		String query = "SELECT COUNT(date, startHour, instructorId) AS activityLineInstances3 FROM ActivityLine " + 
+		" WHERE date='" + date + "' AND startHour='" +  startHour + "' AND instructorId='" + instructorId + "'";		
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);			
+			instances = results.getInt("activityLineInstances3");
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity line instance count: " + e);
+		}
+		return instances;		
 	}
 
 }
