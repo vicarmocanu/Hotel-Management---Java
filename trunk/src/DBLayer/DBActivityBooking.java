@@ -223,13 +223,13 @@ public class DBActivityBooking implements IFDBActivityBooking
 			query = "INSERT INTO Team(guestId, teamId, date, status) VALUES ('" +
 					acticityBookingObj.getGuest().getId() + "','" + 
 					teamObj.getId() + "','" + 
-					acticityBookingObj.getStringDate() +"','" + 
+					acticityBookingObj.getDate() +"','" + 
 					acticityBookingObj.getStatus() +"')";
 		}
 		else
 		{
 			query = "INSERT INTO Team(guestId, date, status) VALUES ('" +
-				acticityBookingObj.getStringDate() +"','" + 
+				acticityBookingObj.getDate() +"','" + 
 				acticityBookingObj.getStatus() +"')";
 		}
 		
