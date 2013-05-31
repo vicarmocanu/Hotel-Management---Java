@@ -13,7 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import Controller.ActivityCtr;
 import Controller.FacilityCtr;
@@ -249,7 +252,7 @@ public class FacilityMenu
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, "Some facility attributes have not been inserted. Please insert all facility attribute.", "Error!", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Some facility attributes have not been inserted. Please insert all facility attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					else
@@ -373,6 +376,14 @@ public class FacilityMenu
 		panel_1.add(btnAll);
 		
 		JButton btnClearFields = new JButton("Clear fields");
+		btnClearFields.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				clearTable();
+				clearValues();
+			}
+		});
 		btnClearFields.setBounds(556, 57, 118, 25);
 		frame.getContentPane().add(btnClearFields);
 		
@@ -435,6 +446,31 @@ public class FacilityMenu
 		{
 			System.out.println("Exception: " + e);
 		}
+		
+		table.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() 
+		{
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				Facility facilityObj = new Facility();
+				
+				int selectedRow = table.getSelectedRow();
+				String selectedData = (String) table.getValueAt(selectedRow, 0);
+				int id = Integer.parseInt(selectedData);
+				
+				facilityObj = facilityCtr.getFacilityById(id);
+				
+				textField.setText(String.valueOf(facilityObj.getId()));
+				textField_1.setText(facilityObj.getName());
+				comboBox.setSelectedItem(facilityObj.getActivity().getName());
+				comboBox_1.setSelectedItem(facilityObj.getStatus());
+			}
+		});
+		
 		return model;
 	}
 }
