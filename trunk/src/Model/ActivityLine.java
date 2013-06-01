@@ -1,45 +1,34 @@
 package Model;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 public class ActivityLine
 {
-	final static String DATE_FORMAT = "dd-MM-yyyy";
 	
 	//attributes
 	private ActivityType activity;
-	private Instructor instructor;	
-	
+	private ActivityBooking activityBooking;
 	private String date;
 	private String startHour;
 	private String endHour;
-	
 	private Facility facility;
-	private ActivityBooking activityBooking;
+	private Instructor instructor;
+	private Team team;
+	
+	
+	
 	
 	//constructor
-	public ActivityLine (ActivityType activity, Instructor instructor, String date, String startHour, String endHour,
-			Facility facility, ActivityBooking activityBooking)
+	public ActivityLine (ActivityType activity, ActivityBooking activityBooking,
+			String date, String startHour, String endHour, Facility facility,
+			Instructor instructor, Team team)
 	{
 		this.activity=activity;
-		this.instructor=instructor;
-		
-		if(isDateValid(date)==true)
-		{
-			this.date = date;
-		}
-		else
-		{
-			System.out.println("Problem with date input.");
-			this.date = new String();
-		}
+		this.activityBooking=activityBooking;
+		this.date = date;
 		this.startHour=startHour;
 		this.endHour=endHour;
-		
 		this.facility=facility;
-		this.activityBooking=activityBooking;
+		this.instructor=instructor;
+		this.setTeam(team);
 	}
 	
 	public ActivityLine ()
@@ -69,25 +58,15 @@ public class ActivityLine
 	{
 		return this.date;
 	}
-	
 	public void setDate(String date)
 	{
-		if(isDateValid(date)==true)
-		{
-			this.date = date;
-		}
-		else
-		{
-			System.out.println("Problem with date input.");
-			this.date = new String();
-		}
+		this.date = date;
 	}
 	
 	public String getStartHour()
 	{
 		return this.startHour;
 	}
-	
 	public void setStartHour(String startHour)
 	{
 		this.startHour = startHour;
@@ -118,21 +97,16 @@ public class ActivityLine
 	public void setActivityBooking(ActivityBooking activityBooking)
 	{
 		this.activityBooking=activityBooking;
-	}
+	}	
 	
-	public static boolean isDateValid(String date) 
+
+	public Team getTeam()
 	{
-		try
-		{
-			DateFormat df = new SimpleDateFormat(DATE_FORMAT);
-			df.setLenient(false);
-			df.parse(date);
-			return true;
-		} 
-		catch (ParseException e)
-		{
-			return false;
-		}
+		return team;
+	}
+	public void setTeam(Team team)
+	{
+		this.team = team;
 	}
 
 }

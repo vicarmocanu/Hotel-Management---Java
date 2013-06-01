@@ -12,7 +12,6 @@ public class ActivityBooking
 	private String date;
 	private String status;//booked, done, waitingList
 	private Guest guest;
-	private Team team;
 	
 	//Constructor
 	public ActivityBooking()
@@ -23,7 +22,7 @@ public class ActivityBooking
 		this.id = id;
 	}
 	
-	public ActivityBooking(int id, String date, String status, Guest guest, Team team)
+	public ActivityBooking(int id, String date, String status, Guest guest)
 	{
 		this.id = id;
 		if(isDateValid(date)==true)
@@ -37,10 +36,9 @@ public class ActivityBooking
 		}
 		this.status = status;
 		this.guest=guest;
-		this.team=team;
 	}
 	
-	public ActivityBooking(String date, String status, Guest guest, Team team)
+	public ActivityBooking(String date, String status, Guest guest)
 	{
 		if(isDateValid(date)==true)
 		{
@@ -53,7 +51,6 @@ public class ActivityBooking
 		}
 		this.status = status;
 		this.guest=guest;
-		this.team=team;
 	}
 
 	//Getters and setters
@@ -83,15 +80,6 @@ public class ActivityBooking
 	public void setGuest(Guest guest)
 	{
 		this.guest = guest;
-	}
-	
-	public Team getTeam()
-	{
-		return this.team;
-	}
-	public void setTeam(Team team)
-	{
-		this.team=team;
 	}
 	
 	public String getDate()
