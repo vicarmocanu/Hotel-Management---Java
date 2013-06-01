@@ -239,4 +239,10 @@ public class DBInstructor implements IFDBInstructor
 	  	}	  	
 	  	return(result);
 	}
+	
+	public LinkedList<Instructor> getActivityAvailableInstructors(int activityTypeId, String status, boolean retrieveAssociation)
+	{
+		String wClause = "  activityType= '" + activityTypeId + "' AND status='" + status + "'";
+		return miscWhere(wClause, retrieveAssociation);
+	}
 }

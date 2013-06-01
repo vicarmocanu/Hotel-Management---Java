@@ -257,4 +257,11 @@ public class DBFacility implements IFDBFacility
 	  	
 	  	return(result);
 	}
+
+	@Override
+	public LinkedList<Facility> getAvailableFacilitiesForActivity(int activityId, String status, boolean retrieveAssociation) 
+	{
+		String wClause = "  forActivity= '" + activityId + "' AND status='" + status + "'";
+		return miscWhere(wClause, retrieveAssociation);
+	}
 }
