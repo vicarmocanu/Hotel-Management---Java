@@ -18,6 +18,9 @@ public interface IFDBFacility
 	//get facility by name
 	public Facility getFacilityByName(String name, boolean retrieveAssociation);
 	
+	//get available facilities for activity
+	public LinkedList<Facility> getAvailableFacilitiesForActivity(int activityId, String status, boolean retrieveAssociation);
+	
 	//insert facility
 	public int insertFacility(Facility facility) throws Exception;
 	
