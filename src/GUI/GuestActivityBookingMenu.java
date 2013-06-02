@@ -13,7 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ActivityBookingCtr;
@@ -24,6 +27,7 @@ import Controller.InstructorCtr;
 import Controller.PersonCtr;
 import Controller.TeamCtr;
 import Model.ActivityBooking;
+import Model.ActivityLine;
 import Model.ActivityType;
 import Model.Facility;
 import Model.Instructor;
@@ -74,6 +78,8 @@ public class GuestActivityBookingMenu
 	private JTable table_1;
 	private JButton button_1;
 	private JButton button_3;
+	private JTable table;
+	private JButton btnNewButton;
 
 	/**
 	 * Create the application.
@@ -155,7 +161,7 @@ public class GuestActivityBookingMenu
 		panel_1.add(textField_2);
 		textField_2.setColumns(10);
 		
-		final JButton btnNewButton = new JButton("Get teams");
+		btnNewButton = new JButton("Get teams");
 		btnNewButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -337,15 +343,17 @@ public class GuestActivityBookingMenu
 							else
 							{
 								activityBookingCtr.insertActivityBooking(guestId, date, status);
-								JOptionPane.showMessageDialog(null, "Complete activity booking made successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);								
+								JOptionPane.showMessageDialog(null, "Activity booking made successfully. You can add up to four activities.", "Info", JOptionPane.INFORMATION_MESSAGE);
+								
+								ActivityBooking activityBookingObj = new ActivityBooking();
+								activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestId, date);
+								bookingId = activityBookingObj.getId();
 								
 								button_1.setEnabled(true);
 								button_3.setEnabled(true);
 								btnRemove_1.setEnabled(true);
 								
-								ActivityBooking activityBookingObj = new ActivityBooking();
-								activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestId, date);
-								bookingId = activityBookingObj.getId();
+								
 							}
 						}
 					}
@@ -414,6 +422,7 @@ public class GuestActivityBookingMenu
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				clearUpTable();
 				table_1.setModel(getUpModel());
 			}
 		});
@@ -504,11 +513,18 @@ public class GuestActivityBookingMenu
 		frame.getContentPane().add(btnClose);
 		
 		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				clearValues();
+			}
+		});
 		btnClear.setBounds(715, 63, 90, 31);
 		frame.getContentPane().add(btnClear);
 		
 		panel_9 = new JPanel();
-		panel_9.setBorder(new TitledBorder(null, "JPanel title", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_9.setBorder(new TitledBorder(null, "Facility", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_9.setBounds(6, 361, 218, 84);
 		frame.getContentPane().add(panel_9);
 		panel_9.setLayout(null);
@@ -635,6 +651,10 @@ public class GuestActivityBookingMenu
 		scrollPane_1.setBounds(234, 264, 571, 190);
 		frame.getContentPane().add(scrollPane_1);
 		
+		table = new JTable();
+		table.setFillsViewportHeight(true);
+		scrollPane_1.setViewportView(table);
+		
 		JPanel panel_8 = new JPanel();
 		panel_8.setBounds(537, 465, 257, 130);
 		frame.getContentPane().add(panel_8);
@@ -665,6 +685,7 @@ public class GuestActivityBookingMenu
 					ActivityType activityTypeObj = new ActivityType();
 					activityTypeObj = activityCtr.getActivityTypeByName(activityName);
 					int activityId = activityTypeObj.getID();
+					int maxNumberOfParticipants = activityTypeObj.getMaxParticipants();
 					
 					String facilityName = (String) comboBox_2.getSelectedItem();
 					Facility facilityObj = new Facility();
@@ -672,10 +693,14 @@ public class GuestActivityBookingMenu
 					int facilityId = facilityObj.getId();
 					
 					String stringTeamId = (String) comboBox.getSelectedItem();
+					Team teamObj = new Team();					
 					int teamId = 0;
+					int numberOfParticipants = 0;
 					if(stringTeamId != null)
 					{
 						teamId = Integer.parseInt(stringTeamId);
+						teamObj = teamCtr.getTeamById(teamId);
+						numberOfParticipants = teamObj.getNumberOfParticipants();
 					}
 					
 					String instructorName = (String) comboBox_7.getSelectedItem();
@@ -707,14 +732,21 @@ public class GuestActivityBookingMenu
 							{
 								if(activityBookingCtr.checkActivityLineInstances1(activityId, bookingId, date, startHour, facilityId) != true)
 								{
-									JOptionPane.showMessageDialog(null, "Cannot book the same activity multiple times per day.", "Error!", JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(null, "Cannot book the same activity multiple times per day. Check schedule.", "Error!", JOptionPane.ERROR_MESSAGE);
 								}
 								else
 								{
 									if(teamId != 0)
 									{
-										activityBookingCtr.insertTeamActivityLine(activityId, instructorId, date, startHour, facilityId, teamId);
-										JOptionPane.showMessageDialog(null, "Team activity successfully booked.", "Info", JOptionPane.INFORMATION_MESSAGE);
+										if(numberOfParticipants > maxNumberOfParticipants)
+										{
+											JOptionPane.showMessageDialog(null, "Too many participants in team. Check team maximum participants property.", "Error!", JOptionPane.ERROR_MESSAGE);
+										}
+										else
+										{
+											activityBookingCtr.insertTeamActivityLine(activityId, instructorId, date, startHour, facilityId, teamId);
+											JOptionPane.showMessageDialog(null, "Team activity successfully booked.", "Info", JOptionPane.INFORMATION_MESSAGE);
+										}										
 									}
 									if(instructorId != 0)
 									{
@@ -738,6 +770,14 @@ public class GuestActivityBookingMenu
 		panel_8.add(button_1);
 		
 		button_3 = new JButton("All");
+		button_3.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				clearDownTable();
+				table.setModel(getDownModel());
+			}
+		});
 		button_3.setEnabled(false);
 		button_3.setBounds(10, 50, 237, 23);
 		panel_8.add(button_3);
@@ -778,8 +818,32 @@ public class GuestActivityBookingMenu
 						}
 						else
 						{
-							activityBookingCtr.deleteActivityLine(activityId, bookingId, date, startHour);
-							JOptionPane.showMessageDialog(null, "Activity successfully removed from booking.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							ActivityLine activityLineObj = new ActivityLine();
+							activityLineObj = activityBookingCtr.getActivityLine(bookingId, startHour);
+							{
+								if(activityLineObj == null)
+								{
+									JOptionPane.showMessageDialog(null, "There is no such activity booked at that start hour.", "Error!", JOptionPane.ERROR_MESSAGE);
+								}
+								else
+								{
+									activityBookingCtr.deleteActivityLine(activityId, bookingId, date, startHour);
+									JOptionPane.showMessageDialog(null, "Activity successfully removed from booking.", "Info", JOptionPane.INFORMATION_MESSAGE);
+									
+									comboBox_1.setSelectedItem(null);
+									textField_3.setText("");
+									comboBox_2.removeAll();
+									comboBox.removeAll();
+									textField_2.setText("");
+									btnNewButton.setEnabled(true);
+									comboBox_7.removeAll();
+									textField_2.setText("");
+									btnGetInstructors_1.setEnabled(true);
+									
+									clearDownTable();
+								}
+							}
+							
 						}
 					}
 				}
@@ -808,7 +872,7 @@ public class GuestActivityBookingMenu
 			}
 		};
 		
-		modelUp.setColumnIdentifiers(new String[] {"BookingId", "GuestId", "Date"});
+		modelUp.setColumnIdentifiers(new String[] {"BookingId", "Date"});
 		
 		try
 		{
@@ -817,7 +881,6 @@ public class GuestActivityBookingMenu
 				modelUp.addRow(new String[]
 						{
 						String.valueOf(activityBookingObj.getId()),
-						String.valueOf(activityBookingObj.getGuest().getId()),
 						activityBookingObj.getDate()
 						});
 			}
@@ -827,7 +890,188 @@ public class GuestActivityBookingMenu
 			System.out.println("Exception: " + e);
 		}
 		
+		table.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				ActivityBooking activityBookingObj = new ActivityBooking();
+				
+				int selectedRow = table_1.getSelectedRow();
+				
+				String stringBookingId = (String) table.getValueAt(selectedRow, 0);
+				int bookingId = Integer.parseInt(stringBookingId);
+				
+				activityBookingObj = activityBookingCtr.getActivityBookingById(bookingId);
+				
+				String date = activityBookingObj.getDate();
+				String day = date.substring(0,2);
+				String month = date.substring(3,5);
+				String year = date.substring(6,10);
+				
+				comboBox_4.setSelectedItem(day);
+				comboBox_6.setSelectedItem(month);
+				comboBox_5.setSelectedItem(year);
+			}
+		});
+		
 		return modelUp;
-
+	}
+	
+	public DefaultTableModel getDownModel()
+	{
+		LinkedList<ActivityLine> bookingActivityLines = new LinkedList<ActivityLine>();
+		bookingActivityLines = activityBookingCtr.getActivityLinesForActivityBooking(bookingId);
+		
+		DefaultTableModel modelDown = new DefaultTableModel()
+		{
+			private static final long serialVersionUID = 1L;
+			public boolean IsCellEditable(int row, int column)
+			{
+				//all cells false
+				return false;
+			}
+		};
+		
+		modelDown.setColumnIdentifiers(new String[] {"BookingId", "Activity", "Facility", "StartHour", "Instructor", "Team"});
+		
+		
+		try
+		{
+			for(ActivityLine activityLineObj : bookingActivityLines)
+			{
+				String instructorName = "";
+				if(activityLineObj.getInstructor() != null)
+				{
+					instructorName = activityLineObj.getInstructor().getName();
+				}
+				
+				String teamId = " ";
+				if(activityLineObj.getTeam() != null)
+				{
+					teamId = String.valueOf(activityLineObj.getTeam().getId());
+				}
+				
+				modelDown.addRow(new String[]
+						{
+						activityLineObj.getActivity().getName(),
+						activityLineObj.getFacility().getName(),
+						activityLineObj.getStartHour(),
+						instructorName,
+						teamId
+						});
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception: " + e);
+		}
+		
+		table.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) 
+			{
+				ActivityLine activityLineObj = new ActivityLine();
+				
+				int selectedRow = table_1.getSelectedRow();
+				
+				String stringBookingId = (String) table.getValueAt(selectedRow, 0);
+				int bookingId = Integer.parseInt(stringBookingId);
+				
+				String startHour = (String) table.getValueAt(selectedRow, 3);
+				
+				activityLineObj = activityBookingCtr.getActivityLine(bookingId, startHour);
+				
+				ActivityType activityObj = activityLineObj.getActivity();
+				String activityName = activityObj.getName();
+				String maxNumberOfParticipants = String.valueOf(activityObj.getMaxParticipants());
+				
+				Facility facilityObj = activityLineObj.getFacility();
+				String facilityName = facilityObj.getName();
+				
+				String instructorName = "";
+				Instructor instructorObj = activityLineObj.getInstructor();
+				if(instructorObj != null)
+				{
+					instructorName = instructorObj.getName();
+				}
+				
+				String stringTeamId = "";
+				String stringTeamNumberOfParticipants = "";
+				Team teamObj = activityLineObj.getTeam();
+				if(teamObj != null)
+				{
+					stringTeamId = String.valueOf(teamObj.getId());
+					stringTeamNumberOfParticipants = String.valueOf(teamObj.getNumberOfParticipants());
+				}
+				
+				String date = activityLineObj.getDate();
+				String day = date.substring(0,2);
+				String month = date.substring(3,5);
+				String year = date.substring(6,10);
+				
+				comboBox_4.setSelectedItem(day);
+				comboBox_6.setSelectedItem(month);
+				comboBox_5.setSelectedItem(year);
+				comboBox_1.setSelectedItem(activityName);
+				textField_3.setText(maxNumberOfParticipants);
+				comboBox_2.setSelectedItem(facilityName);
+				
+				if(teamObj != null)
+				{
+					comboBox.setSelectedItem(stringTeamId);
+					textField_2.setText(stringTeamNumberOfParticipants);
+				}
+				
+				if(instructorObj != null)
+				{
+					comboBox_7.setSelectedItem(instructorName);
+				}
+			}
+		});
+		
+		return modelDown;
+	}
+	
+	public void clearDownTable()
+	{
+		DefaultTableModel tdm2=(DefaultTableModel)table.getModel();
+		tdm2.getDataVector().removeAllElements();
+		tdm2.fireTableDataChanged();
+	}
+	
+	public void clearUpTable()
+	{
+		DefaultTableModel tdm1=(DefaultTableModel)table_1.getModel();
+		tdm1.getDataVector().removeAllElements();
+		tdm1.fireTableDataChanged();
+	}
+	
+	public void clearValues()
+	{
+		comboBox_4.setSelectedItem(null);
+		comboBox_6.setSelectedItem(null);
+		comboBox_5.setSelectedItem(null);
+		comboBox_1.setSelectedItem(null);
+		comboBox_3.setSelectedItem(null);
+		textField_3.setText("");
+		comboBox_2.removeAll();
+		comboBox.removeAll();
+		textField_2.setText("");
+		btnNewButton.setEnabled(true);
+		comboBox_7.removeAll();		
+		btnGetInstructors_1.setEnabled(true);		
+		
+		clearDownTable();
+		clearUpTable();
 	}
 }
