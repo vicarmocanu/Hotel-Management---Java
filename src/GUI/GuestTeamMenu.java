@@ -278,7 +278,7 @@ public class GuestTeamMenu
 		panel_2.add(btnRemove);
 		
 		//button to show all the participants in a team
-		JButton btnAll = new JButton("All");
+		JButton btnAll = new JButton("All participants");
 		btnAll.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
