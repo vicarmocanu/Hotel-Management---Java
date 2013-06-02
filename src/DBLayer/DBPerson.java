@@ -116,18 +116,18 @@ private Connection con;
 	
 	private Person buildPerson(ResultSet results)
 	{
-		Person rbObj = new Person();		
+		Person rbObj = new Person();
 		
 		try {
-			rbObj.setId(results.getInt("id"));
-			rbObj.setName(results.getString("name"));
-			rbObj.setZipcode(results.getInt("zipcode"));
-			rbObj.setCountry(results.getString("country"));
-			rbObj.setAddress(results.getString("address"));
-			rbObj.setPhoneNo(results.getString("phoneNo"));
-			rbObj.setEmail(results.getString("email"));
-			rbObj.setPersonType(results.getString("personType"));
-			rbObj.setPassword(results.getString("password"));
+			rbObj.setId(results.getInt(1));
+			rbObj.setName(results.getString(2));
+			rbObj.setZipcode(results.getInt(3));
+			rbObj.setCountry(results.getString(4));
+			rbObj.setAddress(results.getString(5));
+			rbObj.setPhoneNo(results.getString(6));
+			rbObj.setEmail(results.getString(7));
+			rbObj.setPersonType(results.getString(8));
+			rbObj.setPassword(results.getString(9));
 		}
 		catch (Exception e)
 		{
@@ -150,11 +150,13 @@ private Connection con;
 			stmt.setQueryTimeout(5);
 			results = stmt.executeQuery(query);
 			
-			if (results.next()) {
-				rbObj = buildPerson(results);
+			if (results.next())
+			{
+				rbObj = buildPerson(results);				
 				System.out.println("Person build successfully!");
 				stmt.close();
 			}
+			
 			if(retrieveAssociation)
 			{//location selection
 				IFDBLocation dbLocation = new DBLocation();
