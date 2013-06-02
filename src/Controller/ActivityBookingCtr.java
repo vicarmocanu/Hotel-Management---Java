@@ -115,7 +115,7 @@ public class ActivityBookingCtr
 		activityBookingObj.setStatus(status);
 		
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
-		return dbActivityBooking.updateActivityBooking(activityBookingObj);
+		return dbActivityBooking.updateActivityBookingStatus(activityBookingObj);
 	}
 	
 	public int deleteActivityBooking(int id)
@@ -359,5 +359,14 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		return dbActivityLine.deleteActivityLinesFromActivityBooking(bookingId);
+	}
+	
+	public LinkedList<ActivityLine> getDateActivityLines(String date)
+	{
+		IFDBActivityLine dbActivityLine = new DBActivityLine();
+		LinkedList<ActivityLine> dateActivityLines = new LinkedList<ActivityLine>();
+		dateActivityLines = dbActivityLine.getDateActivityLines(date, true);
+		return dateActivityLines;
+		
 	}
 }
