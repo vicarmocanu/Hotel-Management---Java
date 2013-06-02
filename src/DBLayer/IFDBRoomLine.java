@@ -2,7 +2,6 @@ package DBLayer;
 
 import java.util.ArrayList;
 
-import Model.Room;
 import Model.RoomLine;
 
 public interface IFDBRoomLine {
