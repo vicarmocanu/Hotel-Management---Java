@@ -116,7 +116,7 @@ public class GuestCtr
 		
 		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
 		TravelAgency travelAgencyObj = new TravelAgency();
-		travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(travelAgencyCVR, false);
+		travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(travelAgencyCVR, true);
 		if(travelAgencyObj != null)
 		{
 			guestObj.setTravelAgency(travelAgencyObj);
