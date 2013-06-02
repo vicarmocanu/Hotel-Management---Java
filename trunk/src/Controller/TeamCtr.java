@@ -42,7 +42,7 @@ public class TeamCtr
 	public void insertTeam(int leaderId)
 	{
 		IFDBGuest dbGuest = new DBGuest();		
-		Guest teamLeader = dbGuest.searchGuestById(leaderId, true);
+		Guest teamLeader = dbGuest.searchGuestById(leaderId, false);
 		
 		Team teamObj = new Team(teamLeader);
 		
