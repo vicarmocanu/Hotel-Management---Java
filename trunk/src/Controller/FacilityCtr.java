@@ -83,4 +83,12 @@ public class FacilityCtr
 		IFDBFacility dbFacility = new DBFacility();
 		return dbFacility.deleteFacility(id);
 	}
+	
+	public LinkedList<Facility> getAvailableFacilitiesForActivity(int activityId, String status)
+	{
+		IFDBFacility dbFacility = new DBFacility();
+		LinkedList<Facility> availableFacilitiesForActivity = new LinkedList<Facility>();
+		availableFacilitiesForActivity = dbFacility.getAvailableFacilitiesForActivity(activityId, status, true);
+		return availableFacilitiesForActivity;
+	}
 }

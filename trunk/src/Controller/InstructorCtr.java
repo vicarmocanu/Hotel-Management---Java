@@ -120,5 +120,13 @@ public class InstructorCtr
 		IFDBInstructor dbInstructor = new DBInstructor();
 		return dbInstructor.deleteInstructorById(employeeId);
 	}
+	
+	public LinkedList<Instructor> getAvailableInstructorsForActivityList(int activityTypeId, String status)
+	{
+		IFDBInstructor dbInstructor = new DBInstructor();
+		LinkedList<Instructor> availableInstructorForActivityList = new LinkedList<Instructor>();
+		availableInstructorForActivityList =dbInstructor.getActivityAvailableInstructors(activityTypeId, status, true);
+		return availableInstructorForActivityList;
+	}
 
 }
