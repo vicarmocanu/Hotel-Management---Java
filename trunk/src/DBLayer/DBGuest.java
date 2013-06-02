@@ -164,9 +164,7 @@ public class DBGuest implements IFDBGuest
 			rbObj.setPhoneNo(personObj.getPhoneNo());
 			rbObj.setEmail(personObj.getEmail());
 			rbObj.setPersonType(personObj.getPersonType());
-			rbObj.setPassword(personObj.getPassword());
-			
-			
+			rbObj.setPassword(personObj.getPassword());			
 		}
 		catch (Exception e)
 		{

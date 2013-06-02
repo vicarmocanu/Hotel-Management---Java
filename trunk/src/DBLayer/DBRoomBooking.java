@@ -39,6 +39,15 @@ public class DBRoomBooking implements IFDBRoomBooking {
 		return miscWhere("status='"+status+"'", retrieveAssociation);
 	}	
 	
+	//get the bookings where arrival and departure are between the already booked dates
+	public ArrayList<RoomBooking> findRoomBookingsWithDates(int arrival, int departure, boolean retrieveAssociation)
+	{
+		ArrayList<RoomBooking> rbList = new ArrayList<>();
+		rbList=miscWhere("arrivalDate<="+arrival+" AND departureDate>="+arrival+
+				" OR arrivalDate<="+departure+" AND departureDate>="+departure, retrieveAssociation);
+		return rbList;
+	}
+	
 	//insert
 	public int insertRoomBooking(RoomBooking rb) throws Exception {
 		String query = "INSERT INTO RoomBooking(arrivalDate, departureDate, stts, numberOfChildren)" +

@@ -13,6 +13,9 @@ public interface IFDBRoomBooking {
 	public ArrayList<RoomBooking> findRoomBookingsByDeparture(int departure, boolean retrieveAssociation);
 	//find all bookings with a status
 	public ArrayList<RoomBooking> findRoomBookingsByStatus(String status, boolean retrieveAssociation);
+	//get the bookings where arrival and departure are between the already booked dates
+	public ArrayList<RoomBooking> findRoomBookingsWithDates(int arrival, int departure, boolean retrieveAssociation);
+	
 	
 	//insert room booking 
 	public int insertRoomBooking(RoomBooking rb) throws Exception;
