@@ -29,14 +29,12 @@ public class DBGuest implements IFDBGuest
 		
 		if(travelAgencyObj != null)
 		{
-			query = "INSERT INTO Guest(guestType, travelAgency) VALUES('" +
-		guestObj.getGuestType() + "','" +
-					guestObj.getTravelAgency().getCVR() + "')";
+			query = "INSERT INTO Guest(personId, guestType, travelAgency) VALUES('" +
+		guestObj.getId() + "','" + 	guestObj.getGuestType() + "','" +	guestObj.getTravelAgency().getCVR() + "')";
 		}
 		else
 		{
-			query = "INSERT INTO Guest(guestType) VALUES('" +
-		guestObj.getGuestType() +  "')";
+			query = "INSERT INTO Guest(personId, guestType) VALUES('" + guestObj.getId() + "','" + 	guestObj.getGuestType() +  "')";
 		}
 		
 		

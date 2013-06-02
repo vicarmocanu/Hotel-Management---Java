@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import Model.Employee;
-import Model.Location;
+import Model.Person;
 
 public class DBEmployee implements IFDBEmployee
 {
@@ -31,11 +31,26 @@ public class DBEmployee implements IFDBEmployee
 	private Employee buildEmployee(ResultSet results)
 	{
 		Employee employeeObj= new Employee();
+		IFDBPerson dbPerson = new DBPerson();
+		Person personObj = new Person();
 		
 		try
 		{
+			int personId = results.getInt("personID");
 			employeeObj.setId(results.getInt("personId"));
 			employeeObj.setSalary(results.getDouble("salary"));
+			
+			personObj = dbPerson.searchPersonById(personId, true);
+			employeeObj.setName(personObj.getName());
+			employeeObj.setZipcode(personObj.getZipcode());
+			employeeObj.setCountry(personObj.getCountry());
+			employeeObj.setAddress(personObj.getAddress());
+			employeeObj.setPhoneNo(personObj.getPhoneNo());
+			employeeObj.setEmail(personObj.getEmail());
+			employeeObj.setPersonType(personObj.getPersonType());
+			employeeObj.setPassword(personObj.getPassword());
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -64,18 +79,7 @@ public class DBEmployee implements IFDBEmployee
 				employeeObj = buildEmployee(results);
 				stmt.close();
 			}
-			if(retrieveAssociation)
-			{//location selection
-				IFDBLocation dbLocation = new DBLocation();
-				Location location = new Location();
-				location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
-				if(location != null)
-				{
-					employeeObj.setZipcode(location.getZipCode());
-					employeeObj.setCountry(location.getCountry());
-					System.out.println("Location selection.");
-				}
-			}
+			
 			else
 			{
 				employeeObj = null;
@@ -111,21 +115,7 @@ public class DBEmployee implements IFDBEmployee
 			}
 			
 			stmt.close();
-			if(retrieveAssociation)
-			{
-				IFDBLocation dbLocation = new DBLocation();
-				for(Employee employeeObj : employeeList)
-				{
-					Location location = new Location();
-					location = dbLocation.searchLocationByZipCode(employeeObj.getZipcode(), false);
-					if(location != null)
-					{
-						employeeObj.setZipcode(location.getZipCode());
-						employeeObj.setCountry(location.getCountry());
-						System.out.println("Location selection.");
-					}
-				}
-			}
+			
 		}
 		catch(Exception e)
 		{
@@ -151,8 +141,8 @@ public class DBEmployee implements IFDBEmployee
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO Employee(salary) VALUES ('" +
-				employeeObj.getSalary() +   "')";
+		String query = "INSERT INTO Employee(personId, salary) VALUES ('" +
+		employeeObj.getId() + "','" + employeeObj.getSalary() +   "')";
 		
 		System.out.println("Insert query: " + query);
 	    try
