@@ -11,15 +11,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JComboBox;
 
 import Controller.RoomBookingCtr;
+import Model.Room;
 import Model.RoomBooking;
 import Model.RoomLine;
 
@@ -139,10 +138,6 @@ public class RoomBookingMenu {
 		panel_1.add(txtDepartureDate);
 		txtDepartureDate.setColumns(10);
 		
-		JComboBox cmbRoomType = new JComboBox();
-		cmbRoomType.setBounds(485, 92, 240, 20);
-		panel_1.add(cmbRoomType);
-		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(10, 142, 125, 338);
@@ -157,7 +152,7 @@ public class RoomBookingMenu {
 			{
 				RoomBookingCtr rbCtr=new RoomBookingCtr();
 				
-				if(txtRoomBookingId.getText().equals("")!=true)
+				if(!txtRoomBookingId.getText().equals(""))
 				{
 					String stringID=txtRoomBookingId.getText();
 					System.out.println(stringID);
@@ -165,18 +160,156 @@ public class RoomBookingMenu {
 					RoomBooking rb = rbCtr.findRoomBookingByID(id);
 					putValuesOnTheScreen(rb);
 					
-					DefaultTableModel tdm=(DefaultTableModel)table.getModel();
-					tdm.getDataVector().removeAllElements();
-					tdm.fireTableDataChanged();
+					ArrayList<RoomLine> rlList=new ArrayList<RoomLine>();
+					rlList=rbCtr.findRoomLinesForBooking(id);
+					
+					DefaultTableModel model2 = new DefaultTableModel()
+					{
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public boolean isCellEditable(int row, int column)
+						{
+							//all cells false
+							return false;
+						}
+					};
+				
+					model2.setColumnIdentifiers(new String[] {"Booking id", "Guest", "Guest type", "Room", "Room type", "Room price"});
+				
+					try
+					{
+						for(RoomLine rlObj : rlList)
+						{
+							model2.addRow(new String[]
+								{
+									String.valueOf(rlObj.getBooking().getId()),
+									rlObj.getGuest().getName(),
+									rlObj.getGuest().getGuestType(),
+									String.valueOf(rlObj.getRoom().getNumber()),
+									rlObj.getRoom().getRoomType().getCategory(),
+									String.valueOf(rlObj.getRoom().getRoomType().getPrice())
+								});
+						}
+						table.setModel(model2);
+					}
+				
+					catch(Exception e)
+					{
+						System.out.println("Exception: " + e);
+					}
+				}
+				else if(!txtArrivalDate.getText().equals(""))
+				{
+					int arrival = Integer.parseInt(txtArrivalDate.getText());
+					ArrayList<RoomBooking> rbList=new ArrayList<RoomBooking>();
+					rbList=rbCtr.findRoomBookingByArrival(arrival);
+					
+					DefaultTableModel model2 = new DefaultTableModel()
+					{
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public boolean isCellEditable(int row, int column)
+						{
+							//all cells false
+							return false;
+						}
+					};
+				
+					model2.setColumnIdentifiers(new String[] {"Booking id", "Guest", "Guest type", "Room", "Room type", "Room price"});
+				
+					try
+					{
+						for(RoomBooking rbObj : rbList)
+						{
+							ArrayList<RoomLine> rlList = new ArrayList<>();
+							rlList=rbCtr.findRoomLinesForBooking(rbObj.getId());
+							try
+							{
+								for(RoomLine rlObj : rlList)
+								{
+									model2.addRow(new String[]
+										{
+											String.valueOf(rlObj.getBooking().getId()),
+											rlObj.getGuest().getName(),
+											rlObj.getGuest().getGuestType(),
+											String.valueOf(rlObj.getRoom().getNumber()),
+											rlObj.getRoom().getRoomType().getCategory(),
+											String.valueOf(rlObj.getRoom().getRoomType().getPrice())
+										});
+								}
+								table.setModel(model2);
+							}						
+							catch(Exception e)
+							{
+								System.out.println("Exception: " + e);
+							}
+						}
+					}
+					catch(Exception e)
+					{
+						System.out.println("Exception: " + e);
+					}
+				}
+				else if(!txtDepartureDate.getText().equals(""))
+				{
+					int departure = Integer.parseInt(txtDepartureDate.getText());
+					ArrayList<RoomBooking> rbList=new ArrayList<RoomBooking>();
+					rbList=rbCtr.findRoomBookingByDeparture(departure);
+					
+					DefaultTableModel model2 = new DefaultTableModel()
+					{
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public boolean isCellEditable(int row, int column)
+						{
+							//all cells false
+							return false;
+						}
+					};
+				
+					model2.setColumnIdentifiers(new String[] {"Booking id", "Guest", "Guest type", "Room", "Room type", "Room price"});
+				
+					try
+					{
+						for(RoomBooking rbObj : rbList)
+						{
+							ArrayList<RoomLine> rlList = new ArrayList<>();
+							rlList=rbCtr.findRoomLinesForBooking(rbObj.getId());
+							try
+							{
+								for(RoomLine rlObj : rlList)
+								{
+									model2.addRow(new String[]
+										{
+											String.valueOf(rlObj.getBooking().getId()),
+											rlObj.getGuest().getName(),
+											rlObj.getGuest().getGuestType(),
+											String.valueOf(rlObj.getRoom().getNumber()),
+											rlObj.getRoom().getRoomType().getCategory(),
+											String.valueOf(rlObj.getRoom().getRoomType().getPrice())
+										});
+								}
+								table.setModel(model2);
+							}
+						
+							catch(Exception e)
+							{
+								System.out.println("Exception: " + e);
+							}
+						}
+					}
+					catch(Exception e)
+					{
+						System.out.println("Exception: " + e);
+					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Please insert either id of the booking.", "Error!", JOptionPane.ERROR_MESSAGE);			
+					JOptionPane.showMessageDialog(null, "Please insert id of the booking.", "Error!", JOptionPane.ERROR_MESSAGE);			
 				}
-				
-				DefaultTableModel tdm=(DefaultTableModel)table.getModel();
-				tdm.getDataVector().removeAllElements();
-				tdm.fireTableDataChanged();
 			}
 		});
 		btnNewButton.setBounds(6, 16, 110, 35);
@@ -203,10 +336,10 @@ public class RoomBookingMenu {
 							txtStatus.getText().equals("")!=true ||
 							txtDepartureDate.getText().equals("")!=true)
 						{
-							String arrival=txtArrivalDate.getText();
+							int arrival=Integer.parseInt(txtArrivalDate.getText());
 							int children=Integer.parseInt(txtNumberOfChildren.getText());
 							String status=txtStatus.getText();
-							String departure=txtDepartureDate.getText();
+							int departure=Integer.parseInt(txtDepartureDate.getText());
 							
 							rbCtr.updateBooking(rbId, arrival, departure, status, children);
 							
@@ -226,7 +359,7 @@ public class RoomBookingMenu {
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Please insert either id of the booking.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please insert id of the booking.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				DefaultTableModel tdm=(DefaultTableModel)table.getModel();
@@ -238,7 +371,7 @@ public class RoomBookingMenu {
 		panel.add(btnUpdate);
 		
 		//delete room booking button
-		JButton btnDelete = new JButton("Delete");
+		/*JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
@@ -271,9 +404,9 @@ public class RoomBookingMenu {
 			}
 		});
 		btnDelete.setBounds(6, 154, 110, 35);
-		panel.add(btnDelete);
+		panel.add(btnDelete);*/
 	
-		//insert button
+		//create button
 		JButton btnCreate = new JButton("Create");
 		btnCreate.addActionListener(new ActionListener() 
 		{
@@ -286,8 +419,8 @@ public class RoomBookingMenu {
 				else
 				{
 					RoomBookingCtr rbCtr=new RoomBookingCtr();
-					String arrival=txtArrivalDate.getText();
-					String departure=txtDepartureDate.getText();
+					int arrival=Integer.parseInt(txtArrivalDate.getText());
+					int departure=Integer.parseInt(txtDepartureDate.getText());
 					String status=txtStatus.getText();
 					int numberOfChildren=Integer.parseInt(txtNumberOfChildren.getText());
 					
@@ -304,27 +437,25 @@ public class RoomBookingMenu {
 		btnCreate.setBounds(6, 62, 110, 35);
 		panel.add(btnCreate);
 		
-		//get room lines for a room booking
-		JButton btnGetRoomLines = new JButton("Show rooms and guests");
+		//get available room lines 
+		JButton btnGetRoomLines = new JButton("Show available rooms");
 		btnGetRoomLines.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
 				RoomBookingCtr rbCtr=new RoomBookingCtr();
 				
-				if(txtRoomBookingId.getText().equals("")==true)
+				if(txtArrivalDate.getText().equals("") || txtDepartureDate.getText().equals(""))
 				{
-					JOptionPane.showMessageDialog(null, "Please insert id of the booking.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please insert arrival date and departure date.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
-					String stringID=txtRoomBookingId.getText();
-					int bookingId=Integer.parseInt(stringID);
-					RoomBooking rb=rbCtr.findRoomBookingByID(bookingId);
-					putValuesOnTheScreen(rb);
+					int arrival=Integer.parseInt(txtArrivalDate.getText());
+					int departure=Integer.parseInt(txtDepartureDate.getText());
 					
-					ArrayList<RoomLine> rlList=new ArrayList<RoomLine>();
-					rlList=rbCtr.findRoomLinesForBooking(bookingId);
+					ArrayList<Room> rlList=new ArrayList<Room>();
+					rlList=rbCtr.findAvailableRooms(arrival, departure);
 					
 					DefaultTableModel model2 = new DefaultTableModel()
 					{
@@ -338,19 +469,20 @@ public class RoomBookingMenu {
 						}
 					};
 				
-					model2.setColumnIdentifiers(new String[] {"Guest", "Guest type", "Room", "Room type", "Room price"});
+					model2.setColumnIdentifiers(new String[] {"Booking id", "Guest", "Guest type", "Room", "Room type", "Room price"});
 				
 					try
 					{
-						for(RoomLine rlObj : rlList)
+						for(Room rlObj : rlList)
 						{
 							model2.addRow(new String[]
 								{
-								rlObj.getGuest().getName(),
-								rlObj.getGuest().getGuestType(),
-								String.valueOf(rlObj.getRoom().getNumber()),
-								rlObj.getRoom().getRoomType().getCategory(),
-								String.valueOf(rlObj.getRoom().getRoomType().getPrice())
+									"None",//String.valueOf(rlObj.getBooking().getId()),//None
+									"None",//rlObj.getGuest().getName(),//None
+									"None",//rlObj.getGuest().getGuestType(),//None
+									String.valueOf(rlObj.getNumber()),
+									rlObj.getRoomType().getCategory(),
+									String.valueOf(rlObj.getRoomType().getPrice())
 								});
 						}
 						table.setModel(model2);
@@ -392,10 +524,10 @@ public class RoomBookingMenu {
 	private void putValuesOnTheScreen(RoomBooking rbObj)
 	{
 		txtRoomBookingId.setText(String.valueOf(rbObj.getId()));
-		txtArrivalDate.setText(rbObj.getArrivalDate());
+		txtArrivalDate.setText(String.valueOf(rbObj.getArrivalDate()));
 		txtNumberOfChildren.setText(String.valueOf(rbObj.getNumberOfChildren()));
 		txtStatus.setText(rbObj.getStatus());
-		txtDepartureDate.setText(rbObj.getDepartureDate());
+		txtDepartureDate.setText(String.valueOf(rbObj.getDepartureDate()));
 	}
 
 	private void clearValues()
