@@ -69,7 +69,7 @@ public class DBGuest implements IFDBGuest
 		{
 			query = "UPDATE Guest SET " +
 		"guestType= '" + guest.getGuestType() + "', " +
-					"travelAgency= '" + guest.getTravelAgency() + "' " +
+					"travelAgency= '" + guest.getTravelAgency().getCVR() + "' " +
 		"WHERE personId= '" + guest.getId() + "'";
 		}
 		else
