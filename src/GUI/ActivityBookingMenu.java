@@ -64,7 +64,7 @@ public class ActivityBookingMenu
 	private void initialize()
 	{
 		frame = new JFrame("Activity booking");
-		frame.setBounds(100, 100, 800, 520);
+		frame.setBounds(100, 100, 800, 550);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -163,7 +163,7 @@ public class ActivityBookingMenu
 		JPanel panel_4 = new JPanel();
 		panel_4.setLayout(null);
 		panel_4.setBorder(new TitledBorder(null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_4.setBounds(10, 175, 247, 291);
+		panel_4.setBounds(10, 175, 247, 326);
 		frame.getContentPane().add(panel_4);
 		
 		JButton button = new JButton("Create");
@@ -269,10 +269,11 @@ public class ActivityBookingMenu
 		btnGetAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
+				clearTable();
 				table.setModel(getModel());
 			}
 		});
-		btnGetAll.setBounds(10, 118, 227, 23);
+		btnGetAll.setBounds(10, 152, 227, 23);
 		panel_4.add(btnGetAll);
 		
 		JButton btnDelete = new JButton("Delete");
@@ -323,7 +324,7 @@ public class ActivityBookingMenu
 				
 			}
 		});
-		btnDelete.setBounds(10, 84, 227, 23);
+		btnDelete.setBounds(10, 118, 227, 23);
 		panel_4.add(btnDelete);
 		
 		JButton btnExit = new JButton("Exit");
@@ -331,31 +332,32 @@ public class ActivityBookingMenu
 			public void actionPerformed(ActionEvent e)
 			{
 				clearValues();
+				clearTable();
 				frame.dispose();
 			}
 		});
-		btnExit.setBounds(10, 254, 227, 23);
+		btnExit.setBounds(10, 288, 227, 23);
 		panel_4.add(btnExit);
 		
-		JButton btnClearValues = new JButton("Clear values");
+		JButton btnClearValues = new JButton("Clear all");
 		btnClearValues.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				textField.setText("");
-				textField_1.setText("");
-				comboBox.setSelectedItem(null);
-				comboBox_1.setSelectedItem(null);
-				comboBox_2.setSelectedItem(null);
-				comboBox_3.setSelectedItem(null);
+				clearTable();
+				clearValues();
 				bookingId = 0;
 			}
 		});
-		btnClearValues.setBounds(10, 220, 227, 23);
+		btnClearValues.setBounds(10, 254, 227, 23);
 		panel_4.add(btnClearValues);
 		
 		JButton button_2 = new JButton("Schedule");
-		button_2.setBounds(10, 152, 227, 23);
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_2.setBounds(10, 186, 227, 23);
 		panel_4.add(button_2);
 		
 		JButton btnGetActivityLines = new JButton("Get activity lines");
@@ -394,17 +396,75 @@ public class ActivityBookingMenu
 						else
 						{
 							bookingId = activityBookingObj.getId();
+							String stringBookingId = String.valueOf(bookingId);
+							
+							ActivityLinesMenu activityLinesMenu = new ActivityLinesMenu();
+							activityLinesMenu.setActivityBookingAttributes(stringBookingId, date, stringGuestId);
 							
 						}
 					}
 				}
 			}
 		});
-		btnGetActivityLines.setBounds(10, 186, 227, 23);
+		btnGetActivityLines.setBounds(10, 220, 227, 23);
 		panel_4.add(btnGetActivityLines);
 		
+		JButton btnUpdate = new JButton("Update status");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				if(textField_1.getText().equals("") == true ||
+						comboBox.getSelectedItem().equals(null) == true || 
+						comboBox_1.getSelectedItem().equals(null)  == true || 
+						comboBox_2.getSelectedItem().equals(null) == true || 
+						comboBox_3.getSelectedItem().equals(null) == true)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert all the necessary attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String day = (String) comboBox.getSelectedItem();
+					String month = (String) comboBox_2.getSelectedItem();
+					String year = (String) comboBox_1.getSelectedItem();
+					String date = day + "-" + month + "-" + year;
+					
+					String stringGuestId = textField_1.getText();
+					int guestId = Integer.parseInt(stringGuestId);
+					
+					String status = (String) comboBox_3.getSelectedItem();
+					
+					
+					if(DateCheck.isDateValid(date) != true)
+					{
+						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						ActivityBooking activityBookingObj = new ActivityBooking();
+						activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestId, date);
+						if(activityBookingObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "There is no activity booking by this date. Please insert a valid guest id and activity booking date.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							bookingId = activityBookingObj.getId();
+							guestId = activityBookingObj.getGuest().getId();
+							
+							activityBookingCtr.updateActivityBooking(bookingId, guestId, date, status);
+							
+							JOptionPane.showMessageDialog(null, "Status of activity booking successfully updated.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							clearValues();
+						}
+					}
+				}
+			}
+		});
+		btnUpdate.setBounds(10, 84, 227, 23);
+		panel_4.add(btnUpdate);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(267, 11, 507, 460);
+		scrollPane.setBounds(267, 11, 507, 490);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
@@ -420,6 +480,13 @@ public class ActivityBookingMenu
 		comboBox_1.setSelectedItem(null);
 		comboBox_2.setSelectedItem(null);
 		comboBox_3.setSelectedItem(null);
+	}
+	
+	private void clearTable()
+	{
+		DefaultTableModel tdm=(DefaultTableModel)table.getModel();
+		tdm.getDataVector().removeAllElements();
+		tdm.fireTableDataChanged();
 	}
 	
 	private DefaultTableModel getModel()
