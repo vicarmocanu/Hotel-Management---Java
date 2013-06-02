@@ -115,14 +115,6 @@ public class GuestActivityBookingMenu
 		
 		comboBox = new JComboBox<String>();
 		comboBox.setBounds(137, 14, 100, 20);
-		LinkedList<Team> leaderTeamList = new LinkedList<Team>();
-		leaderTeamList = teamCtr.getTeamsByLeaderId(universalId);
-		for(Team teamObj : leaderTeamList)
-		{
-			int leaderId = teamObj.getId();
-			String stringLeaderId = String.valueOf(leaderId);
-			comboBox.addItem(stringLeaderId);
-		}
 		comboBox.setSelectedItem(null);
 		comboBox.addActionListener(new ActionListener()
 		{
@@ -171,20 +163,25 @@ public class GuestActivityBookingMenu
 				
 				LinkedList<Team> leaderListTeam = new LinkedList<Team>();
 				leaderListTeam = teamCtr.getTeamsByLeaderId(guestId);
-				
-				for(Team teamObj : leaderListTeam)
+				if(leaderListTeam.isEmpty() == true)
 				{
-					int teamId = teamObj.getId();
-					String stringTeamId = String.valueOf(teamId);
-					comboBox.addItem(stringTeamId);
+					JOptionPane.showMessageDialog(null, "There are not teams", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
-				
-				comboBox_7.setSelectedItem(null);
-				comboBox_7.removeAll();
-				comboBox_7.setEnabled(false);
-				
-				btnGetInstructors_1.setEnabled(false);
-				
+				else
+				{
+					for(Team teamObj : leaderListTeam)
+					{
+						int teamId = teamObj.getId();
+						String stringTeamId = String.valueOf(teamId);
+						comboBox.addItem(stringTeamId);
+					}
+					
+					comboBox_7.setSelectedItem(null);
+					comboBox_7.removeAll();
+					comboBox_7.setEnabled(false);
+					
+					btnGetInstructors_1.setEnabled(false);
+				}
 			}
 		});
 		btnNewButton.setBounds(6, 70, 231, 23);
@@ -509,15 +506,23 @@ public class GuestActivityBookingMenu
 		scrollPane.setViewportView(table_1);
 		
 		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				frame.dispose();
+			}
+		});
 		btnClose.setBounds(715, 21, 90, 31);
 		frame.getContentPane().add(btnClose);
 		
-		JButton btnClear = new JButton("Clear");
+		JButton btnClear = new JButton("Clear all");
 		btnClear.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				clearValues();
+				clearDownTable();
+				clearUpTable();
 			}
 		});
 		btnClear.setBounds(715, 63, 90, 31);
@@ -558,10 +563,17 @@ public class GuestActivityBookingMenu
 					LinkedList<Facility> availableFacilitiesForActivity = new LinkedList<Facility>();
 					availableFacilitiesForActivity = facilityCtr.getAvailableFacilitiesForActivity(activityId, desiredStatus);
 					
-					for(Facility facilityObj : availableFacilitiesForActivity)
+					if(availableFacilitiesForActivity.isEmpty() == true)
 					{
-						String facilityName = facilityObj.getName();
-						comboBox_2.addItem(facilityName);
+						JOptionPane.showMessageDialog(null, "No available facilities", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						for(Facility facilityObj : availableFacilitiesForActivity)
+						{
+							String facilityName = facilityObj.getName();
+							comboBox_2.addItem(facilityName);
+						}
 					}
 				}
 			}
@@ -608,19 +620,26 @@ public class GuestActivityBookingMenu
 					LinkedList<Instructor> availableInstructorForActivity = new LinkedList<Instructor>();
 					availableInstructorForActivity = instructorCtr.getAvailableInstructorsForActivityList(activityId, desiredStatus);
 					
-					for(Instructor instructorObj : availableInstructorForActivity)
+					if(availableInstructorForActivity.isEmpty() == true)
 					{
-						String instructorName = instructorObj.getName();
-						comboBox_7.addItem(instructorName);
+						JOptionPane.showMessageDialog(null, "No instructors.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						for(Instructor instructorObj : availableInstructorForActivity)
+						{
+							String instructorName = instructorObj.getName();
+							comboBox_7.addItem(instructorName);
+						}
+						
+						comboBox.setSelectedItem(null);
+						comboBox.removeAll();
+						comboBox.setEnabled(false);						
+						textField_2.setText("");						
+						btnNewButton.setEnabled(false);
 					}
 					
-					comboBox.setSelectedItem(null);
-					comboBox.removeAll();
-					comboBox.setEnabled(false);
 					
-					textField_2.setText("");
-					
-					btnNewButton.setEnabled(false);
 				}
 			}
 		});
@@ -937,7 +956,7 @@ public class GuestActivityBookingMenu
 			}
 		};
 		
-		modelDown.setColumnIdentifiers(new String[] {"BookingId", "Activity", "Facility", "StartHour", "Instructor", "Team"});
+		modelDown.setColumnIdentifiers(new String[] {"BookingId", "Activity", "Facility", "StartHour", "EndHour", "Instructor", "Team"});
 		
 		
 		try
@@ -950,7 +969,7 @@ public class GuestActivityBookingMenu
 					instructorName = activityLineObj.getInstructor().getName();
 				}
 				
-				String teamId = " ";
+				String teamId = "";
 				if(activityLineObj.getTeam() != null)
 				{
 					teamId = String.valueOf(activityLineObj.getTeam().getId());
@@ -958,9 +977,11 @@ public class GuestActivityBookingMenu
 				
 				modelDown.addRow(new String[]
 						{
+						String.valueOf(bookingId),
 						activityLineObj.getActivity().getName(),
 						activityLineObj.getFacility().getName(),
 						activityLineObj.getStartHour(),
+						activityLineObj.getEndHour(),
 						instructorName,
 						teamId
 						});
@@ -1031,10 +1052,19 @@ public class GuestActivityBookingMenu
 					comboBox.setSelectedItem(stringTeamId);
 					textField_2.setText(stringTeamNumberOfParticipants);
 				}
+				else
+				{
+					comboBox.removeAll();
+					textField_2.setText("");
+				}
 				
 				if(instructorObj != null)
 				{
 					comboBox_7.setSelectedItem(instructorName);
+				}
+				else
+				{
+					comboBox_7.removeAll();
 				}
 			}
 		});

@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import Controller.ActivityBookingCtr;
 import Controller.DateCheck;
 import Model.ActivityBooking;
+import Model.ActivityLine;
 
 public class ActivityBookingMenu
 {
@@ -393,6 +394,7 @@ public class ActivityBookingMenu
 						else
 						{
 							bookingId = activityBookingObj.getId();
+							
 						}
 					}
 				}
