@@ -21,10 +21,16 @@ public class DBRoom implements IFDBRoom {
 		return singleWhere("number='"+number+"'",retrieveAssociation);
 	}
 
-	public ArrayList<Room> findAvailableRooms(String arrival, String departure,
+	public ArrayList<Room> findAvailableRooms(int arrival, int departure,
 			String type, boolean retrieveAssociation) {
 		return miscWhere("(SELECT roomNo FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking WHERE " +
-				"arrivalDate>='"+arrival+"' AND rb.departureDate<='"+departure+"'))<>number AND roomType='"+type+"'", retrieveAssociation);
+				"arrivalDate>='"+arrival+"' AND departureDate<='"+departure+"'))<>number AND roomType='"+type+"'", retrieveAssociation);
+	}
+	
+	public ArrayList<Room> findAvailableRooms(int arrival, int departure,
+			boolean retrieveAssociation) {
+		return miscWhere("(SELECT roomNo FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking WHERE " +
+				"arrivalDate>='"+arrival+"' AND departureDate<='"+departure+"' AND stts<>'canceled'))<>number", retrieveAssociation);
 	}
 	//end interface methods
 	
@@ -38,7 +44,6 @@ public class DBRoom implements IFDBRoom {
 			roomTypeObj.setCategory(result.getString(2));
             System.out.println("build Room" + roomObj.getNumber());
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("Error in building the Room object!");
 		}
 		return roomObj;
