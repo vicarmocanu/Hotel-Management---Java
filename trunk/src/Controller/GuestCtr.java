@@ -51,7 +51,7 @@ public class GuestCtr
 	}
 	
 	public void insertGuest(String name, String address, int zipcode,
-				String country, String phoneNo, String email, String personType,
+				String country, String phoneNo, String email, 
 				String password, String guestType, int travelAgencyCVR)
 	{
 		Person personObj = new Person();
@@ -61,7 +61,7 @@ public class GuestCtr
 		personObj.setCountry(country);
 		personObj.setPhoneNo(phoneNo);
 		personObj.setEmail(email);
-		personObj.setPersonType(personType);
+		personObj.setPersonType("Guest");
 		personObj.setPassword(password);
 		
 		try
