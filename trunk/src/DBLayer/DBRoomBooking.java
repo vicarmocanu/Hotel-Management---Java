@@ -22,13 +22,13 @@ public class DBRoomBooking implements IFDBRoomBooking {
 	}
 
 	
-	public ArrayList<RoomBooking> findRoomBookingsByArrival(String arrival,
+	public ArrayList<RoomBooking> findRoomBookingsByArrival(int arrival,
 			boolean retrieveAssociation) {
 		return miscWhere("arrivalDate='"+arrival+"'", retrieveAssociation);
 	}
 
 	
-	public ArrayList<RoomBooking> findRoomBookingsByDeparture(String departure,
+	public ArrayList<RoomBooking> findRoomBookingsByDeparture(int departure,
 			boolean retrieveAssociation) {
 		return miscWhere("departureDate='"+departure+"'", retrieveAssociation);
 	}
@@ -127,8 +127,8 @@ public class DBRoomBooking implements IFDBRoomBooking {
 		
 		try {
 			rbObj.setId(results.getInt("id"));
-			rbObj.setArrivalDate(results.getString("arrivalDate"));
-			rbObj.setDepartureDate(results.getString("departureDate"));
+			rbObj.setArrivalDate(results.getInt("arrivalDate"));
+			rbObj.setDepartureDate(results.getInt("departureDate"));
 			rbObj.setStatus(results.getString("stts"));
 			rbObj.setNumberOfChildren(results.getInt("numberOfChildren"));
 		} catch (Exception e) {
