@@ -93,6 +93,12 @@ public class ActivityTypeMenu
 		panel.add(textField_2);
 		
 		JButton button = new JButton("Close");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				frame.dispose();
+			}
+		});
 		button.setBounds(556, 21, 118, 25);
 		frame.getContentPane().add(button);
 		
@@ -336,7 +342,7 @@ public class ActivityTypeMenu
 		btnAll.setBounds(6, 168, 134, 25);
 		panel_1.add(btnAll);
 		
-		JButton btnClearFields = new JButton("Clear fields");
+		JButton btnClearFields = new JButton("Clear all");
 		btnClearFields.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
