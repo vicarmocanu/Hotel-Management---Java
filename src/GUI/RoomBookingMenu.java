@@ -73,7 +73,7 @@ public class RoomBookingMenu {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("Room booking");
-		frame.setBounds(100, 100, 900, 500);
+		frame.setBounds(100, 100, 913, 530);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
 		frame.getContentPane().setLayout(null);
 		
@@ -424,13 +424,13 @@ public class RoomBookingMenu {
 					String status=txtStatus.getText();
 					int numberOfChildren=Integer.parseInt(txtNumberOfChildren.getText());
 					
-					rbCtr.createNewBooking(arrival, departure, status, numberOfChildren);
+					int bookingId = rbCtr.createNewBooking(arrival, departure, status, numberOfChildren);
 					
 					DefaultTableModel tdm=(DefaultTableModel)table.getModel();
 					tdm.getDataVector().removeAllElements();
 					tdm.fireTableDataChanged();
 					
-					JOptionPane.showMessageDialog(null, "Booking has been created successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);
+					RoomLineMenu.getInstance(bookingId, arrival, departure);
 				}
 			}
 		});
