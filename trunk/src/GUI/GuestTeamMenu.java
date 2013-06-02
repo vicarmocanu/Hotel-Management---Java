@@ -62,7 +62,7 @@ public class GuestTeamMenu
 	{
 		frame = new JFrame("Team");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 800, 270);
+		frame.setBounds(100, 100, 880, 270);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -114,12 +114,12 @@ public class GuestTeamMenu
 				frame.dispose();
 			}
 		});
-		btnNewButton.setBounds(667, 11, 117, 43);
+		btnNewButton.setBounds(747, 11, 117, 43);
 		frame.getContentPane().add(btnNewButton);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Team", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 65, 96, 156);
+		panel_1.setBounds(10, 76, 139, 156);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -139,7 +139,7 @@ public class GuestTeamMenu
 				clearRightTable();
 			}
 		});
-		btnCreate.setBounds(6, 27, 80, 25);
+		btnCreate.setBounds(6, 27, 123, 25);
 		panel_1.add(btnCreate);
 		
 		//button to delete a team
@@ -168,7 +168,7 @@ public class GuestTeamMenu
 				}
 			}
 		});
-		btnDelete.setBounds(6, 75, 80, 25);
+		btnDelete.setBounds(6, 75, 123, 25);
 		panel_1.add(btnDelete);
 		
 		JButton btnAllTeams = new JButton("All teams");
@@ -181,16 +181,16 @@ public class GuestTeamMenu
 				table.setModel(getModelLeft());
 			}
 		});
-		btnAllTeams.setBounds(6, 124, 80, 25);
+		btnAllTeams.setBounds(6, 124, 123, 25);
 		panel_1.add(btnAllTeams);
 				
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(116, 65, 270, 156);
+		scrollPane.setBounds(159, 75, 307, 156);
 		frame.getContentPane().add(scrollPane);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Participant", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(396, 65, 164, 156);
+		panel_2.setBounds(476, 76, 164, 156);
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -291,16 +291,16 @@ public class GuestTeamMenu
 		panel_2.add(btnAll);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(570, 65, 214, 156);
+		scrollPane_1.setBounds(650, 75, 214, 156);
 		frame.getContentPane().add(scrollPane_1);
 		
 		table = new JTable();
-		table.setFillsViewportHeight(true);
 		scrollPane.setViewportView(table);
+		table.setFillsViewportHeight(true);
 		
 		table_1 = new JTable();
+		scrollPane_1.setViewportView(table_1);
 		table_1.setFillsViewportHeight(true);
-		scrollPane_1.setRowHeaderView(table_1);
 	}
 	
 	//method to get the model for the left table
