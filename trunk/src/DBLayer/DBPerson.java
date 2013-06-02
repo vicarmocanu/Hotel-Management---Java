@@ -170,10 +170,6 @@ private Connection con;
 				}
 				
 			}
-			else
-			{
-				rbObj = null;
-			}
 		}
 		catch (Exception e)
 		{
