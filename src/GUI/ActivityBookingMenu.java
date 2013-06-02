@@ -354,7 +354,9 @@ public class ActivityBookingMenu
 		
 		JButton button_2 = new JButton("Schedule");
 		button_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
+				ScheduleMenu scheduleMenu = new ScheduleMenu();
 			}
 		});
 		button_2.setBounds(10, 186, 227, 23);

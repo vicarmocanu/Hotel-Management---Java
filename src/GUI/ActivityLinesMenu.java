@@ -622,7 +622,9 @@ public class ActivityLinesMenu
 		
 		JButton btnSchedule = new JButton("Schedule");
 		btnSchedule.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
+				ScheduleMenu scheduleMenu = new ScheduleMenu();
 			}
 		});
 		btnSchedule.setBounds(126, 62, 110, 23);
