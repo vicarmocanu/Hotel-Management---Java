@@ -11,6 +11,9 @@ public interface IFDBActivityLine
 	//get all activity lines for a booking
 	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId, boolean retrieveAssociation);
 	
+	//get all activity lines for a date
+	public LinkedList<ActivityLine> getDateActivityLines(String date, boolean retrieveAssociation);
+	
 	//insert activity line
 	public int insertActivityLine(ActivityLine activityLine) throws Exception;
 	

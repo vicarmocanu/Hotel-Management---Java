@@ -193,12 +193,10 @@ public class DBActivityBooking implements IFDBActivityBooking
 	}
 	
 	@Override
-	public int updateActivityBooking(ActivityBooking activityBooking)
+	public int updateActivityBookingStatus(ActivityBooking activityBooking)
 	{
 		ActivityBooking activityBookingObj = activityBooking;
 		String query = "UPDATE ActivityBooking SET " + 
-		"guestId= '" + activityBookingObj.getGuest().getId() + "', " +
-				"date= '" + activityBookingObj.getDate() + "', " +
 		" status= '" + activityBookingObj.getStatus() + "' " +
 				"WHERE id= '" + activityBookingObj.getId() + "'";
 		
