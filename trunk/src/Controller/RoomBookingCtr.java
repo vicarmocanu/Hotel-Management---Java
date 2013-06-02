@@ -30,6 +30,20 @@ public class RoomBookingCtr {
 		return rb;
 	}
 	
+	public ArrayList<RoomBooking> findRoomBookingByArrival(int arrival)
+	{
+		IFDBRoomBooking dbrb = new DBRoomBooking();
+		ArrayList<RoomBooking> rb = dbrb.findRoomBookingsByArrival(arrival, false);
+		return rb;
+	}
+	
+	public ArrayList<RoomBooking> findRoomBookingByDeparture(int departure)
+	{
+		IFDBRoomBooking dbrb = new DBRoomBooking();
+		ArrayList<RoomBooking> rb = dbrb.findRoomBookingsByDeparture(departure, false);
+		return rb;
+	}
+	
 	public ArrayList<RoomLine> findRoomLinesForBooking(int bookingId)
 	{
 		IFDBRoomLine dbrl = new DBRoomLine();
@@ -37,10 +51,10 @@ public class RoomBookingCtr {
 		return roomLines;
 	}
 	
-	public ArrayList<Room> findAvailableRooms(String arrival, String departure, String type)
+	public ArrayList<Room> findAvailableRooms(int arrival, int departure)
 	{
 		IFDBRoom dbroom = new DBRoom();
-		ArrayList<Room> rooms = dbroom.findAvailableRooms(arrival, departure, type, true);
+		ArrayList<Room> rooms = dbroom.findAvailableRooms(arrival, departure, true);
 		return rooms;
 	}
 	
@@ -70,7 +84,7 @@ public class RoomBookingCtr {
 		System.out.println("Line created.");
 	}
 	
-	public void createNewBooking(String arrival, String departure, String status, int children)
+	public void createNewBooking(int arrival, int departure, String status, int children)
 	{
 		RoomBooking rb = new RoomBooking();
 		
@@ -90,7 +104,7 @@ public class RoomBookingCtr {
 		System.out.println("Booking created: "+rb.getId());
 	}
 	
-	public int updateBooking(int id, String arrival, String departure, String status, int children)
+	public int updateBooking(int id, int arrival, int departure, String status, int children)
 	{
 		IFDBRoomBooking dbrb = new DBRoomBooking();
 		RoomBooking rb = new RoomBooking();
