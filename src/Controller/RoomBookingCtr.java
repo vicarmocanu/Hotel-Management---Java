@@ -84,7 +84,7 @@ public class RoomBookingCtr {
 		System.out.println("Line created.");
 	}
 	
-	public void createNewBooking(int arrival, int departure, String status, int children)
+	public int createNewBooking(int arrival, int departure, String status, int children)
 	{
 		RoomBooking rb = new RoomBooking();
 		
@@ -102,6 +102,7 @@ public class RoomBookingCtr {
 			DBConnection1.rollbackTransaction();
 		}
 		System.out.println("Booking created: "+rb.getId());
+		return rb.getId();
 	}
 	
 	public int updateBooking(int id, int arrival, int departure, String status, int children)
