@@ -35,9 +35,9 @@ public class DBTeam implements IFDBTeam
 		Guest guestObj = new Guest();
 		try
 		{
-			teamObj.setId(results.getInt("id"));
+			teamObj.setId(results.getInt("teamId"));
 			
-			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"), false);
+			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"), true);
 			teamObj.setLeader(guestObj);
 			
 			teamObj.setNumberOfParticipants(results.getInt("numberOfParticipants"));
@@ -67,20 +67,15 @@ public class DBTeam implements IFDBTeam
 				teamObj=buildTeam(results);
 				stmt.close();
 			}
+			
 			if(retrieveAssociation)
 			{//the leader is to be built as well
 				IFDBGuest dbGuest= new DBGuest();
-				Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), false);
-				if(guestObj != null)
-				{
-					System.out.println("Leader is selected.");
-					teamObj.setLeader(guestObj);
-				}
+				Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), true);
+				System.out.println("Leader is selected.");
+				teamObj.setLeader(guestObj);
 			}
-			else
-			{
-				teamObj=null;
-			}
+			
 		}
 		catch(Exception e)
 		{
@@ -114,12 +109,9 @@ public class DBTeam implements IFDBTeam
 				IFDBGuest dbGuest= new DBGuest();
 				for(Team teamObj : teamList)
 				{
-					Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), false);
-					if(guestObj != null)
-					{
-						System.out.println("Leader is selected.");
-						teamObj.setLeader(guestObj);
-					}
+					Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), true);
+					System.out.println("Leader is selected.");
+					teamObj.setLeader(guestObj);
 				}
 			}
 		}

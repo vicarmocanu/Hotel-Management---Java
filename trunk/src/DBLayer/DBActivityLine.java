@@ -515,4 +515,11 @@ public class DBActivityLine implements IFDBActivityLine
 		return numbers;		
 	}
 
+	@Override
+	public LinkedList<ActivityLine> getDateActivityLines(String date,boolean retrieveAssociation) 
+	{
+		String wClause = " date= '" + date + "'";
+		return miscWhere(wClause, retrieveAssociation);
+	}
+
 }

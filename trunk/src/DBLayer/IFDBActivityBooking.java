@@ -22,7 +22,7 @@ public interface IFDBActivityBooking
 	public int insertActivityBooking(ActivityBooking activityBooking) throws Exception;
 	
 	//method to update an activity booking
-	public int updateActivityBooking(ActivityBooking activityBooking);
+	public int updateActivityBookingStatus(ActivityBooking activityBooking);
 	
 	//method to delete an activity booking by its id
 	public int deleteActivityBooking(int id);
