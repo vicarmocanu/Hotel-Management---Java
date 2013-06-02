@@ -582,6 +582,12 @@ public class GuestActivityBookingMenu
 		panel_9.add(btnGetInstructors);
 		
 		btnSchedule = new JButton("Schedule");
+		btnSchedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				ScheduleMenu scheduleMenu = new ScheduleMenu();
+			}
+		});
 		btnSchedule.setBounds(715, 105, 90, 31);
 		frame.getContentPane().add(btnSchedule);
 		

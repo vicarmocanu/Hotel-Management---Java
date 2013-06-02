@@ -206,6 +206,13 @@ public class ScheduleMenu
 		scrollPane.setViewportView(table);
 		
 		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				clearTable();
+				frame.dispose();
+			}
+		});
 		btnExit.setBounds(396, 30, 126, 23);
 		frame.getContentPane().add(btnExit);
 	}
