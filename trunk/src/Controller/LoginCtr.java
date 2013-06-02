@@ -37,7 +37,7 @@ public class LoginCtr
 		boolean check = false;
 		Person personToCheck = new Person();
 		IFDBPerson dbPerson = new DBPerson();
-		personToCheck = dbPerson.searchPersonById(id, false);
+		personToCheck = dbPerson.searchPersonById(id, true);
 		if(personToCheck !=null)
 		{
 			String correctPassword = personToCheck.getPassword();
