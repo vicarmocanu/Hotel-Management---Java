@@ -2,8 +2,8 @@ package Model;
 
 public class RoomBooking {
 	private int id;
-	private String arrivalDate;
-	private String departureDate;
+	private int arrivalDate;
+	private int departureDate;
 	private String status;//booked,checked-in,payed,checked-out;
 	private int numberOfChildren;
 
@@ -16,7 +16,7 @@ public class RoomBooking {
 		this.id = id;
 	}
 	
-	public RoomBooking(int id, String arrivalDate, String departureDate,
+	public RoomBooking(int id, int arrivalDate, int departureDate,
 			String status, int numberOfChildren) {
 		this.id = id;
 		this.arrivalDate = arrivalDate;
@@ -34,19 +34,19 @@ public class RoomBooking {
 		this.id = id;
 	}
 
-	public String getArrivalDate() {
+	public int getArrivalDate() {
 		return arrivalDate;
 	}
 
-	public void setArrivalDate(String arrivalDate) {
+	public void setArrivalDate(int arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
-	public String getDepartureDate() {
+	public int getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(String departureDate) {
+	public void setDepartureDate(int departureDate) {
 		this.departureDate = departureDate;
 	}
 
