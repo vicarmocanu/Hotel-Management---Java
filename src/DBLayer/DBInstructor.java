@@ -4,9 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+
 import Model.ActivityType;
+import Model.Employee;
 import Model.Instructor;
-import Model.Location;
 
 public class DBInstructor implements IFDBInstructor
 {
@@ -32,17 +33,34 @@ public class DBInstructor implements IFDBInstructor
 	private Instructor buildInstructor(ResultSet results)
 	{
 		Instructor instructorObj= new Instructor();
+		IFDBEmployee dbEmployee = new DBEmployee();
+		Employee employeeObj = new Employee();
 		IFDBActivityType dbActivivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
 		
 		try
 		{
+			int employeeId = results.getInt("employeeId");
 			instructorObj.setId(results.getInt("employeeId"));
 			
 			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"), false);
 			instructorObj.setActivityType(activityTypeObj);	
 			
 			instructorObj.setPrice(results.getDouble("price"));
+			
+			employeeObj = dbEmployee.getEmployeeById(employeeId, true);
+			
+			instructorObj.setName(employeeObj.getName());
+			instructorObj.setZipcode(employeeObj.getZipcode());
+			instructorObj.setCountry(employeeObj.getCountry());
+			instructorObj.setAddress(employeeObj.getAddress());
+			instructorObj.setPhoneNo(employeeObj.getPhoneNo());
+			instructorObj.setEmail(employeeObj.getEmail());
+			instructorObj.setPersonType(employeeObj.getPersonType());
+			instructorObj.setPassword(employeeObj.getPassword());
+			instructorObj.setSalary(employeeObj.getSalary());
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -73,15 +91,6 @@ public class DBInstructor implements IFDBInstructor
 			}
 			if(retrieveAssociation)
 			{//location and activity selection
-				IFDBLocation dbLocation = new DBLocation();
-				Location location = new Location();
-				location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
-				if(location != null)
-				{
-				    instructorObj.setZipcode(location.getZipCode());
-					instructorObj.setCountry(location.getCountry());
-					System.out.println("Location selected.");
-				}
 				
 				
 				IFDBActivityType dbActivityType = new DBActivityType();
@@ -127,19 +136,9 @@ public class DBInstructor implements IFDBInstructor
 			stmt.close();
 			if(retrieveAssociation)
 			{
-				IFDBLocation dbLocation = new DBLocation();
 				IFDBActivityType dbActivityType = new DBActivityType();
 				for(Instructor instructorObj : instructorList)
 				{
-					Location location = new Location();
-					location = dbLocation.searchLocationByZipCode(instructorObj.getZipcode(), false);
-					if(location != null)
-					{
-					    instructorObj.setZipcode(location.getZipCode());
-						instructorObj.setCountry(location.getCountry());
-						System.out.println("Location selected.");
-					}
-					
 					ActivityType activityTypeObj = new ActivityType();
 					activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
 					instructorObj.setActivityType(activityTypeObj);
@@ -171,9 +170,10 @@ public class DBInstructor implements IFDBInstructor
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO Instructor(activityType, price, status) VALUES ('" +
+		String query = "INSERT INTO Instructor(employeeId, activityType, price, status) VALUES ('" +
+		instructorObj.getId() + "," + 
 				instructorObj.getActivityType() + "','" +
-				instructorObj.getPrice() + "','" +
+		instructorObj.getPrice() + "','" +
 				instructorObj.getStatus() + "')";
 		
 		System.out.println("Insert query: " + query);
