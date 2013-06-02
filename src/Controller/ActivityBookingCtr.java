@@ -84,7 +84,7 @@ public class ActivityBookingCtr
 	{
 		IFDBGuest dbGuest = new DBGuest();
 		Guest guestObj = new Guest();
-		guestObj = dbGuest.searchGuestById(guestId, false);
+		guestObj = dbGuest.searchGuestById(guestId, true);
 		
 		ActivityBooking activityBookingObj = new ActivityBooking(date, status, guestObj);
 		
@@ -106,7 +106,7 @@ public class ActivityBookingCtr
 	{
 		IFDBGuest dbGuest = new DBGuest();
 		Guest guestObj = new Guest();
-		guestObj = dbGuest.searchGuestById(guestId, false);
+		guestObj = dbGuest.searchGuestById(guestId, true);
 		
 		ActivityBooking activityBookingObj = new ActivityBooking();
 		
@@ -249,7 +249,7 @@ public class ActivityBookingCtr
 		Facility facilityObj = dbFacility.getFacilityById(facilityId, true);
 		
 		IFDBInstructor dbInstructor = new DBInstructor();
-		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, false);
+		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, true);
 		
 		DateCheck dateCheck = new DateCheck();
 		String endHour = dateCheck.getEndHour(startHour);
@@ -330,7 +330,7 @@ public class ActivityBookingCtr
 		Team teamObj = dbTeam.getTeamById(teamId, true);
 		
 		IFDBInstructor dbInstructor = new DBInstructor();
-		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, false);
+		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, true);
 		
 		DateCheck dateCheck = new DateCheck();
 		String endHour = dateCheck.getEndHour(startHour);
