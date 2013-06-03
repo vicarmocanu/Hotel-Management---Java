@@ -54,8 +54,29 @@ public class RoomBookingCtr {
 	
 	public ArrayList<Room> findAvailableRooms(int arrival, int departure)
 	{
+		IFDBRoomBooking dbrb=new DBRoomBooking();
+		ArrayList<RoomBooking> rbl=dbrb.findRoomBookingsWithDates(arrival, departure, false);
 		IFDBRoom dbroom = new DBRoom();
-		ArrayList<Room> rooms = dbroom.findAvailableRooms(arrival, departure, true);
+		
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		if(rbl.isEmpty())
+		{
+			rooms = dbroom.findAllRooms(true);;
+		}
+		else
+		{
+			for(RoomBooking rb : rbl)
+			{
+				IFDBRoomLine dbrl = new DBRoomLine();
+				ArrayList<RoomLine> rll = dbrl.findRoomLinesForBooking(rb.getId(), true);
+				
+				for(RoomLine rl:rll)
+				{
+					rooms.addAll(dbroom.findDifferentRooms(rl.getRoom().getNumber(), true));
+				}
+			}
+		}
 		return rooms;
 	}
 	
