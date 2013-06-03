@@ -220,8 +220,10 @@ public class PersonMenu {
 		frame.getContentPane().add(btnDelete);
 		
 		JButton btnUpdate = new JButton("Update");
-		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnUpdate.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				
 				if(textField.getText().equals("")!= true)
 				{
@@ -260,12 +262,50 @@ public class PersonMenu {
 							JOptionPane.showMessageDialog(null, "Person has been succsefully updated", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
-					
-				
-				
-				
-				
-					
+				}
+				else
+				{
+					if(textField_1.getText().equals("") != true)
+					{
+						String personName = textField_1.getText();
+						PersonCtr personCtr = new PersonCtr();
+						Person personObj = new Person();
+						personObj = personCtr.searchPersonByName(personName);
+						if(personObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "There is no person by this name", "ERROR", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							if(textField_1.getText().equals("") == true || textField_2.getText().equals("") == true || textField_3.getText().equals("") == true ||
+									textField_4.getText().equals("") == true || textField_5.getText().equals("") == true || textField_6.getText().equals("") == true ||
+									textField_7.getText().equals("") == true || textField_8.getText().equals("") == true || textField.getText().equals("") == true || textField_9.getText().equals("") == true)
+							{
+								JOptionPane.showMessageDialog(null, "Some fields might be empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								int id = personObj.getId();
+								int personZipCode=Integer.parseInt(textField_2.getText());
+								String personCountry = textField_3.getText();
+								String personAddress = textField_4.getText();
+								String personPhoneNo = textField_5.getText();
+								String personEmail = textField_6.getText();
+								String personPersonType = textField_7.getText();
+								String personPassword = textField_8.getText();
+								String personCity = textField_9.getText();
+								
+								LocationCtr locationCtr = new LocationCtr();
+								locationCtr.updateLocation(personZipCode, personCountry, personCity);
+								personCtr.updatePerson(id, personName, personAddress, personZipCode, personCountry, personPhoneNo, personEmail, personPersonType, personPassword);
+								JOptionPane.showMessageDialog(null, "Person has been succsefully updated", "Info", JOptionPane.INFORMATION_MESSAGE);
+							}
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Please insert either the name or the id of the person you wish to update.", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
