@@ -98,7 +98,7 @@ public class ManagerMainMenu {
 				frame.dispose();
 			}
 		});
-		btnExit.setBounds(190, 60, 178, 41);
+		btnExit.setBounds(6, 104, 363, 38);
 		frame.getContentPane().add(btnExit);
 		
 		
@@ -107,7 +107,7 @@ public class ManagerMainMenu {
 				FacilityMenu.getInstance();
 			}
 		});
-		btnFacility_1.setBounds(6, 104, 178, 34);
+		btnFacility_1.setBounds(190, 63, 178, 38);
 		
 		frame.getContentPane().add(btnFacility_1);
 
