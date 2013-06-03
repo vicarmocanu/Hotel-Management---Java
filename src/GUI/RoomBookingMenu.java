@@ -27,12 +27,13 @@ public class RoomBookingMenu {
 	
 	private JFrame frame;
 	private JTextField txtRoomBookingId;
-	private JTextField txtArrivalDate;
 	private JTextField txtNumberOfChildren;
 	private JTextField txtStatus;
-	private JTextField txtDepartureDate;
 	private JTable table;
 	private JScrollPane scrollPane;
+	private JTextField txtArrivalDate;
+	private JTextField txtDeparturedate;
+	
 
 	/**
 	 * Launch the application.
@@ -79,7 +80,7 @@ public class RoomBookingMenu {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Booking data", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 7, 735, 120);
+		panel_1.setBounds(10, 7, 759, 120);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -108,20 +109,10 @@ public class RoomBookingMenu {
 		panel_1.add(lblDepartureDate);
 		lblDepartureDate.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblRoomType = new JLabel("Room type:");
-		lblRoomType.setBounds(375, 88, 100, 25);
-		panel_1.add(lblRoomType);
-		lblRoomType.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
 		txtRoomBookingId = new JTextField();
 		txtRoomBookingId.setBounds(96, 20, 240, 20);
 		panel_1.add(txtRoomBookingId);
 		txtRoomBookingId.setColumns(10);
-		
-		txtArrivalDate = new JTextField();
-		txtArrivalDate.setBounds(96, 56, 240, 20);
-		panel_1.add(txtArrivalDate);
-		txtArrivalDate.setColumns(10);
 		
 		txtNumberOfChildren = new JTextField();
 		txtNumberOfChildren.setBounds(96, 92, 240, 20);
@@ -133,10 +124,23 @@ public class RoomBookingMenu {
 		panel_1.add(txtStatus);
 		txtStatus.setColumns(10);
 		
-		txtDepartureDate = new JTextField();
-		txtDepartureDate.setBounds(485, 56, 240, 20);
-		panel_1.add(txtDepartureDate);
-		txtDepartureDate.setColumns(10);
+		JLabel lblDdmmyyyy = new JLabel("YYYY:MM:DD");
+		lblDdmmyyyy.setBounds(278, 59, 76, 14);
+		panel_1.add(lblDdmmyyyy);
+		
+		JLabel lblDdmmyyyy_1 = new JLabel("YYYY:MM:DD");
+		lblDdmmyyyy_1.setBounds(679, 59, 70, 14);
+		panel_1.add(lblDdmmyyyy_1);
+		
+		txtArrivalDate = new JTextField();
+		txtArrivalDate.setBounds(96, 56, 172, 20);
+		panel_1.add(txtArrivalDate);
+		txtArrivalDate.setColumns(10);
+		
+		txtDeparturedate = new JTextField();
+		txtDeparturedate.setBounds(485, 56, 184, 20);
+		panel_1.add(txtDeparturedate);
+		txtDeparturedate.setColumns(10);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -252,9 +256,9 @@ public class RoomBookingMenu {
 						System.out.println("Exception: " + e);
 					}
 				}
-				else if(!txtDepartureDate.getText().equals(""))
+				else if(!txtDeparturedate.getText().equals(""))
 				{
-					int departure = Integer.parseInt(txtDepartureDate.getText());
+					int departure = Integer.parseInt(txtDeparturedate.getText());
 					ArrayList<RoomBooking> rbList=new ArrayList<RoomBooking>();
 					rbList=rbCtr.findRoomBookingByDeparture(departure);
 					
@@ -334,12 +338,12 @@ public class RoomBookingMenu {
 						if(txtArrivalDate.getText().equals("")!=true || 
 							txtNumberOfChildren.getText().equals("")!=true ||
 							txtStatus.getText().equals("")!=true ||
-							txtDepartureDate.getText().equals("")!=true)
+							txtDeparturedate.getText().equals("")!=true)
 						{
 							int arrival=Integer.parseInt(txtArrivalDate.getText());
 							int children=Integer.parseInt(txtNumberOfChildren.getText());
 							String status=txtStatus.getText();
-							int departure=Integer.parseInt(txtDepartureDate.getText());
+							int departure=Integer.parseInt(txtDeparturedate.getText());
 							
 							rbCtr.updateBooking(rbId, arrival, departure, status, children);
 							
@@ -412,7 +416,7 @@ public class RoomBookingMenu {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				if(txtArrivalDate.getText().equals("")==true || txtDepartureDate.getText().equals("")==true || txtNumberOfChildren.getText().equals("")==true || txtStatus.getText().equals("")==true)
+				if(txtArrivalDate.getText().equals("")==true || txtDeparturedate.getText().equals("")==true || txtNumberOfChildren.getText().equals("")==true || txtStatus.getText().equals("")==true)
 				{
 					JOptionPane.showMessageDialog(null, "Please insert all data!", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -420,10 +424,10 @@ public class RoomBookingMenu {
 				{
 					RoomBookingCtr rbCtr=new RoomBookingCtr();
 					int arrival=Integer.parseInt(txtArrivalDate.getText());
-					int departure=Integer.parseInt(txtDepartureDate.getText());
+					int departure=Integer.parseInt(txtDeparturedate.getText());
 					String status=txtStatus.getText();
 					int numberOfChildren=Integer.parseInt(txtNumberOfChildren.getText());
-					
+					System.out.println(txtArrivalDate.getText());
 					int bookingId = rbCtr.createNewBooking(arrival, departure, status, numberOfChildren);
 					
 					DefaultTableModel tdm=(DefaultTableModel)table.getModel();
@@ -445,14 +449,14 @@ public class RoomBookingMenu {
 			{
 				RoomBookingCtr rbCtr=new RoomBookingCtr();
 				
-				if(txtArrivalDate.getText().equals("") || txtDepartureDate.getText().equals(""))
+				if(txtArrivalDate.getText().equals("") || txtDeparturedate.getText().equals(""))
 				{
 					JOptionPane.showMessageDialog(null, "Please insert arrival date and departure date.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
 					int arrival=Integer.parseInt(txtArrivalDate.getText());
-					int departure=Integer.parseInt(txtDepartureDate.getText());
+					int departure=Integer.parseInt(txtDeparturedate.getText());
 					
 					ArrayList<Room> rlList=new ArrayList<Room>();
 					rlList=rbCtr.findAvailableRooms(arrival, departure);
@@ -525,22 +529,21 @@ public class RoomBookingMenu {
 	{
 		txtRoomBookingId.setText(String.valueOf(rbObj.getId()));
 		txtArrivalDate.setText(String.valueOf(rbObj.getArrivalDate()));
+		txtDeparturedate.setText(String.valueOf(rbObj.getDepartureDate()));
 		txtNumberOfChildren.setText(String.valueOf(rbObj.getNumberOfChildren()));
 		txtStatus.setText(rbObj.getStatus());
-		txtDepartureDate.setText(String.valueOf(rbObj.getDepartureDate()));
 	}
 
 	private void clearValues()
 	{
 		txtRoomBookingId.setText(null);
 		txtArrivalDate.setText(null);
+		txtDeparturedate.setText(null);
 		txtNumberOfChildren.setText(null);
 		txtStatus.setText(null);
-		txtDepartureDate.setText(null);
 		
 		DefaultTableModel tdm=(DefaultTableModel)table.getModel();
 		tdm.getDataVector().removeAllElements();
 		tdm.fireTableDataChanged();
 	}
-
 }

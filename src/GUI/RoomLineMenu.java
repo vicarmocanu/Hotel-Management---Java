@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import Controller.GuestCtr;
 import Controller.RoomBookingCtr;
 import Controller.TravelAgencyCtr;
+import DBLayer.GetMax;
 import Model.Guest;
 import Model.Room;
 import java.awt.event.ActionListener;
@@ -39,7 +40,6 @@ public class RoomLineMenu {
 	private JTextField txtBookingId;
 	private JTable table;
 	private JScrollPane scrollPane;
-	private JTextField txtRoomType;
 
 	/**
 	 * Create the application.
@@ -61,7 +61,7 @@ public class RoomLineMenu {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int bookingId, int arrival, int departure) {
+	private void initialize(int bookingId, final int arrival, final int departure) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 480, 530);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -216,16 +216,11 @@ public class RoomLineMenu {
 					String phone = txtPhone.getText();
 					int zipcode = Integer.parseInt(txtZipcode.getText());
 					int travelAgency = travelAgencyCtr.getTravelAgencyByName(txtTravelAgency.getText()).getCVR();
-					String password;
-					if (txtPassword!=txtConfirmPassword) {
-						JOptionPane.showMessageDialog(null, "Passwords do not match!", "Error!", JOptionPane.ERROR_MESSAGE);
-					}
-					else{
-						password=txtPassword.getText();
-						String guestType=txtGuestType.getText();
+					String password=txtPassword.getText();
+					String guestType=txtGuestType.getText();
 						
-						guestCtr.insertGuest(name, address, zipcode, country, phone, email, password, guestType, travelAgency);
-					}								
+					guestCtr.insertGuest(name, address, zipcode, country, phone, email, password, guestType, travelAgency);
+					txtGuestid.setText(String.valueOf(GetMax.getMaxId("Select max(personId) from Guest")));								
 				}
 			}
 		});
@@ -329,15 +324,6 @@ public class RoomLineMenu {
 		panel.add(txtRoomNumber);
 		txtRoomNumber.setColumns(10);
 		
-		JLabel lblRoomType = new JLabel("Room type:");
-		lblRoomType.setBounds(221, 24, 63, 14);
-		panel.add(lblRoomType);
-		
-		txtRoomType = new JTextField();
-		txtRoomType.setBounds(294, 21, 140, 20);
-		panel.add(txtRoomType);
-		txtRoomType.setColumns(10);
-		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -382,43 +368,48 @@ public class RoomLineMenu {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setFillsViewportHeight(true);
-		
-		RoomBookingCtr rbCtr = new RoomBookingCtr();
-		ArrayList<Room> rooms = rbCtr.findAvailableRooms(arrival, departure);
-		
-		DefaultTableModel model2 = new DefaultTableModel()
-		{
-			private static final long serialVersionUID = 1L;
+			
+		JButton btnShowAvailableRooms = new JButton("Show available rooms");
+		btnShowAvailableRooms.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RoomBookingCtr rbCtr = new RoomBookingCtr();
+				ArrayList<Room> rooms = rbCtr.findAvailableRooms(arrival, departure);
+				
+				DefaultTableModel model2 = new DefaultTableModel()
+				{
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean isCellEditable(int row, int column)
-			{
-				//all cells false
-				return false;
-			}
-		};
-	
-		model2.setColumnIdentifiers(new String[] {"Room", "Room type", "Room price"});
-	
-		try
-		{
-			for(Room roomObj : rooms)
-			{
-				model2.addRow(new String[]
+					@Override
+					public boolean isCellEditable(int row, int column)
 					{
-						String.valueOf(roomObj.getNumber()),
-						roomObj.getRoomType().getCategory(),
-						String.valueOf(roomObj.getRoomType().getPrice())
-					});
+						//all cells false
+						return false;
+					}
+				};
+			
+				model2.setColumnIdentifiers(new String[] {"Room", "Room type", "Room price"});
+			
+				try
+				{
+					for(Room roomObj : rooms)
+					{
+						model2.addRow(new String[]
+							{
+								String.valueOf(roomObj.getNumber()),
+								roomObj.getRoomType().getCategory(),
+								String.valueOf(roomObj.getRoomType().getPrice())
+							});
+					}
+					table.setModel(model2);
+				}
+				catch(Exception e1)
+				{
+					System.out.println("Exception: " + e1);
+				}					
 			}
-			table.setModel(model2);
-		}
-	
-		catch(Exception e)
-		{
-			System.out.println("Exception: " + e);
-		}
-		
+		});
+		btnShowAvailableRooms.setBounds(208, 20, 148, 23);
+		panel.add(btnShowAvailableRooms);
 	}
 	
 	private void putValuesOnTheScreen(Guest guest)
@@ -448,7 +439,6 @@ public class RoomLineMenu {
 		txtConfirmPassword.setText(null);
 		
 		txtRoomNumber.setText(null);
-		txtRoomType.setText(null);
 		
 		DefaultTableModel tdm=(DefaultTableModel)table.getModel();
 		tdm.getDataVector().removeAllElements();
