@@ -1,8 +1,13 @@
 package Controller;
 
 import java.util.LinkedList;
+
+import DBLayer.DBConnection1;
+import DBLayer.DBLocation;
 import DBLayer.DBTravelAgency;
+import DBLayer.IFDBLocation;
 import DBLayer.IFDBTravelAgency;
+import Model.Location;
 import Model.TravelAgency;
 
 public class TravelAgencyCtr 
@@ -33,9 +38,30 @@ public class TravelAgencyCtr
 		return travelAgencyObj;
 	}
 	
-	public void insertTravelAgency()
+	public void insertTravelAgency(int cvr, String name, int zipcode, String country,
+			String address, String phoneNo, String email)
 	{
+		TravelAgency travelAgencyObj = new TravelAgency();
+		TravelAgency travelAgency = new TravelAgency();
+		travelAgency.setCVR(cvr);
+		travelAgency.setName(name);
+		travelAgency.setZipCode(zipcode);
+		travelAgency.setCountry(country);
+		travelAgency.setAddress(address);
+		travelAgency.setPhoneNo(phoneNo);
+		travelAgency.setEmail(email);
 		
+		try
+		{
+			DBConnection1.startTransaction();
+			 DBTravelAgency dbTravelAgency = new DBTravelAgency();
+			 dbTravelAgency.insertTravelAgency(travelAgencyObj);
+			 DBConnection1.commitTransaction();
+		}
+		catch(Exception e)
+		{
+			DBConnection1.rollbackTransaction();
+		}
 	}
 	
 	public int updateTravelAgency(int cvr, String name, int zipcode, String country,
