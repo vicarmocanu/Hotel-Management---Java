@@ -18,7 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PersonMenu {
-
+	private static PersonMenu instance;
+	
 	private JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -59,8 +60,17 @@ public class PersonMenu {
 	/**
 	 * Create the application.
 	 */
-	public PersonMenu() {
+	private PersonMenu() {
 		initialize();
+		frame.setVisible(true);
+	}
+	
+	public static PersonMenu getInstance()
+	{
+		if (instance==null) {
+			instance = new PersonMenu();
+		}
+		return instance;
 	}
 
 	/**
@@ -162,10 +172,24 @@ public class PersonMenu {
 		frame.getContentPane().add(scrollPane);
 		
 		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				frame.dispose();
+			}
+		});
 		btnClose.setBounds(10, 357, 159, 30);
 		frame.getContentPane().add(btnClose);
 		
 		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				clearValues();
+			}
+		});
 		btnClear.setBounds(10, 320, 159, 26);
 		frame.getContentPane().add(btnClear);
 		
@@ -204,8 +228,6 @@ public class PersonMenu {
 						PersonCtr personCtr = new PersonCtr();
 						personCtr.insertPerson(personName, personAddress, personZipCode, personCountry, personPhoneNo, personEmail, personPersonType, personPassword);
 						
-
-						
 						
 						JOptionPane.showMessageDialog(null, "Person successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -214,8 +236,7 @@ public class PersonMenu {
 		btnCreate.setBounds(10, 144, 159, 33);
 		frame.getContentPane().add(btnCreate);
 		
-		JButton btnDelete = new JButton("Delete");
-		
+		JButton btnDelete = new JButton("Delete");		
 		btnDelete.setBounds(10, 232, 159, 33);
 		frame.getContentPane().add(btnDelete);
 		
@@ -328,5 +349,19 @@ public class PersonMenu {
 		lblCity = new JLabel("City");
 		lblCity.setBounds(638, 56, 46, 14);
 		frame.getContentPane().add(lblCity);
+	}
+	
+	private void clearValues()
+	{
+		textField.setText(null);
+		textField_1.setText(null);
+		textField_2.setText(null);
+		textField_3.setText(null);
+		textField_4.setText(null);
+		textField_5.setText(null);
+		textField_6.setText(null);
+		textField_7.setText(null);
+		textField_8.setText(null);
+		textField_9.setText(null);
 	}
 }

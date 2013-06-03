@@ -62,7 +62,7 @@ public class RoomLineMenu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(int bookingId, final int arrival, final int departure) {
-		frame = new JFrame();
+		frame = new JFrame("Room line menu");
 		frame.setBounds(100, 100, 480, 530);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);

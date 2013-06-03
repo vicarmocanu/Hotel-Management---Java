@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,23 +32,6 @@ public class RoomBookingMenu {
 	private JScrollPane scrollPane;
 	private JTextField txtArrivalDate;
 	private JTextField txtDeparturedate;
-	
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RoomBookingMenu window = new RoomBookingMenu();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -442,8 +424,8 @@ public class RoomBookingMenu {
 		panel.add(btnCreate);
 		
 		//get available room lines 
-		JButton btnGetRoomLines = new JButton("Show available rooms");
-		btnGetRoomLines.addActionListener(new ActionListener()
+		JButton btnGetRoomsAvailable = new JButton("Available rooms");
+		btnGetRoomsAvailable.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
@@ -499,8 +481,8 @@ public class RoomBookingMenu {
 				}
 			}
 		});
-		btnGetRoomLines.setBounds(6, 246, 110, 35);
-		panel.add(btnGetRoomLines);
+		btnGetRoomsAvailable.setBounds(6, 200, 110, 35);
+		panel.add(btnGetRoomsAvailable);
 		
 		//clear window data button
 		JButton btnClear = new JButton("Clear");
@@ -511,8 +493,17 @@ public class RoomBookingMenu {
 				clearValues();
 			}
 		});
-		btnClear.setBounds(6, 200, 110, 35);
+		btnClear.setBounds(6, 246, 110, 35);
 		panel.add(btnClear);
+		
+		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		btnClose.setBounds(6, 292, 110, 35);
+		panel.add(btnClose);
 		
 		//scroll pane and table creation
 		scrollPane = new JScrollPane();
