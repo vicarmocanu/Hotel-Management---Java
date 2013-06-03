@@ -29,9 +29,7 @@ public class GuestMainMenu
 	public GuestMainMenu()
 	{
 		initialize();		
-		frame.setVisible(true);
-		
-		
+		frame.setVisible(true);	
 	}
 	
 	public void setUniversalId(int newUniversalId)

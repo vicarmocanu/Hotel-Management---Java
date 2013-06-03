@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.EventQueue;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
@@ -30,9 +29,7 @@ public class ScheduleMenu
 	private JTable table;
 	JComboBox<String> comboBox;
 	JComboBox<String> comboBox_1;
-	JComboBox<String> comboBox_2;
-	
-	
+	JComboBox<String> comboBox_2;	
 
 	/**
 	 * Create the application.

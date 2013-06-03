@@ -20,10 +20,10 @@ import javax.swing.table.DefaultTableModel;
 import Controller.ActivityBookingCtr;
 import Controller.DateCheck;
 import Model.ActivityBooking;
-import Model.ActivityLine;
 
 public class ActivityBookingMenu
 {
+	private static ActivityBookingMenu instance;
 	private DateCheck dateCheck = new DateCheck();
 
 	private int bookingId;
@@ -37,20 +37,22 @@ public class ActivityBookingMenu
 	private JComboBox<String> comboBox_1;
 	private JComboBox<String> comboBox_3;
 	private JTable table;
-	
-	
-
-	/**
-	 * Launch the application.
-	 */
-	
 
 	/**
 	 * Create the application.
 	 */
-	public ActivityBookingMenu()
+	private ActivityBookingMenu()
 	{
 		initialize();
+		frame.setVisible(true);
+	}
+	
+	public static ActivityBookingMenu getInstance()
+	{
+		if (instance==null) {
+			instance= new ActivityBookingMenu();
+		}
+		return instance;
 	}
 	
 	public int getBookingId()

@@ -55,7 +55,6 @@ public class LoginMenu {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setUndecorated(true);//with/o border
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnLogin = new JButton("Login");
