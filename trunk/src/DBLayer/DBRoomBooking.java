@@ -92,10 +92,8 @@ public class DBRoomBooking implements IFDBRoomBooking {
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println("Update exception in RoomBooking: " + e);
-		}
-		
+		}		
 		return rc;
-
 	}
 
 	
