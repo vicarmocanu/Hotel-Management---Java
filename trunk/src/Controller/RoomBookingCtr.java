@@ -7,6 +7,7 @@ import DBLayer.DBGuest;
 import DBLayer.DBRoom;
 import DBLayer.DBRoomBooking;
 import DBLayer.DBRoomLine;
+import DBLayer.GetMax;
 import DBLayer.IFDBGuest;
 import DBLayer.IFDBRoom;
 import DBLayer.IFDBRoomBooking;
@@ -86,6 +87,8 @@ public class RoomBookingCtr {
 	
 	public int createNewBooking(int arrival, int departure, String status, int children)
 	{
+		int nextId = GetMax.getMaxId("Select max(id) from RoomBooking");
+        nextId = nextId + 1;
 		RoomBooking rb = new RoomBooking();
 		
 		rb.setArrivalDate(arrival);
@@ -101,8 +104,7 @@ public class RoomBookingCtr {
 		} catch (Exception e) {
 			DBConnection1.rollbackTransaction();
 		}
-		System.out.println("Booking created: "+rb.getId());
-		return rb.getId();
+		return nextId;
 	}
 	
 	public int updateBooking(int id, int arrival, int departure, String status, int children)
