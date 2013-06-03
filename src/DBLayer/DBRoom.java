@@ -6,8 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Model.Room;
-import Model.RoomBooking;
-import Model.RoomLine;
 import Model.RoomType;
 
 public class DBRoom implements IFDBRoom {
@@ -23,37 +21,23 @@ public class DBRoom implements IFDBRoom {
 		return singleWhere("number='"+number+"'",retrieveAssociation);
 	}
 
-	public ArrayList<Room> findAvailableRooms(int arrival, int departure,
+/*	public ArrayList<Room> findAvailableRooms(int arrival, int departure,
 			String type, boolean retrieveAssociation) {
 		return miscWhere("(SELECT roomNo FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking WHERE " +
 				"arrivalDate>='"+arrival+"' AND departureDate<='"+departure+"'))<>number AND roomType='"+type+"'", retrieveAssociation);
-	}
+	}*/
 	
-	public ArrayList<Room> findAvailableRooms(int arrival, int departure,
+	public ArrayList<Room> findDifferentRooms(int roomNo,
 			boolean retrieveAssociation) {
-		IFDBRoomBooking dbrb=new DBRoomBooking();
-		ArrayList<RoomBooking> rbl=dbrb.findRoomBookingsWithDates(arrival, departure, false);
-		
 		ArrayList<Room> rooms = new ArrayList<>();
 		
-		if(rbl.isEmpty())
-		{
-			rooms = miscWhere("", retrieveAssociation);
-		}
-		else
-		{
-			for(RoomBooking rb : rbl)
-			{
-				IFDBRoomLine dbrl = new DBRoomLine();
-				ArrayList<RoomLine> rll = dbrl.findRoomLinesForBooking(rb.getId(), true);
-				
-				for(RoomLine rl:rll)
-				{
-					rooms.addAll(miscWhere("number<>"+rl.getRoom().getNumber(), retrieveAssociation));
-				}
-			}
-		}
+		rooms.addAll(miscWhere("number<>"+roomNo, retrieveAssociation));
 		return rooms;
+	}
+	
+	public ArrayList<Room> findAllRooms(boolean retrieveAssociation)
+	{
+		return miscWhere("", retrieveAssociation);
 	}
 	//end interface methods
 	
