@@ -23,12 +23,53 @@ public class LoginCtr
 			}
 			else
 			{
-				check = false;
-							
+				check = false;							
 			}
-		}
+		}		
+		return check;
+	}
+	
+	public boolean checkManager(int id)
+	{
+		boolean check = false;
+		Person personToCheck = new Person();
+		IFDBPerson dbPerson = new DBPerson();
+		personToCheck = dbPerson.searchPersonById(id, true);
 		
+		if(personToCheck !=null)
+		{
+			String personType = personToCheck.getPersonType();
+			if(personType.equals("Manager"))
+			{
+				check = true;
+			}
+			else
+			{
+				check = false;							
+			}
+		}		
+		return check;
+	}
+	
+	public boolean checkEmployee(int id)
+	{
+		boolean check = false;
+		Person personToCheck = new Person();
+		IFDBPerson dbPerson = new DBPerson();
+		personToCheck = dbPerson.searchPersonById(id, true);
 		
+		if(personToCheck !=null)
+		{
+			String personType = personToCheck.getPersonType();
+			if(personType.equals("Employee"))
+			{
+				check = true;
+			}
+			else
+			{
+				check = false;							
+			}
+		}		
 		return check;
 	}
 	
