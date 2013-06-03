@@ -90,7 +90,15 @@ public class LoginMenu {
 						{
 							GuestMainMenu guestMainMenu = new GuestMainMenu();
 							guestMainMenu.setUniversalId(universalId);
-						}				
+						}	
+						else if(loginCtr.checkEmployee(universalId))
+						{
+							EmployeeMainMenu.getInstance();
+						}
+						else if(loginCtr.checkManager(universalId))
+						{
+							ManagerMainMenu.getInstance();
+						}
 					}
 				}
 			}
