@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import DBLayer.DBConnection1;
 import DBLayer.DBLocation;
+import DBLayer.DBPerson;
 import DBLayer.IFDBLocation;
 import Model.Location;
 
@@ -54,11 +55,16 @@ public class LocationCtr {
 	public void insertLocation(int zipCode, String country, String city)
 	{
 		Location locationObj = new Location();
+		locationObj.setZipCode(zipCode);
+		locationObj.setCountry(country);
+		locationObj.setCity(city);
+		
 		try
 		{
-			locationObj.setZipCode(zipCode);
-			locationObj.setCountry(country);
-			locationObj.setCity(city);
+			DBConnection1.startTransaction();
+			 DBLocation dbLocation = new DBLocation();
+			 dbLocation.insertLocation(locationObj);
+			 DBConnection1.commitTransaction();
 		}
 		catch(Exception e)
 		{
