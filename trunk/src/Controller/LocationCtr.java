@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import DBLayer.DBConnection1;
 import DBLayer.DBLocation;
-import DBLayer.DBPerson;
 import DBLayer.IFDBLocation;
 import Model.Location;
 
@@ -29,7 +28,7 @@ public class LocationCtr {
 	{
 		IFDBLocation dbLocation = new DBLocation();
 		LinkedList<Location> locationList = new LinkedList<Location>();
-		locationList = dbLocation.getAllLocations(true);
+		locationList = dbLocation.getAllLocation(true);
 		return locationList;
 	}
 	public int deleteLocation(int loczipCode)
