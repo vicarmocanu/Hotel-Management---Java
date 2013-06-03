@@ -24,7 +24,8 @@ import Model.ActivityType;
 import Model.Facility;
 
 public class FacilityMenu
-{
+{	
+	private static FacilityMenu instance;
 	private FacilityCtr facilityCtr = new FacilityCtr();
 	private ActivityCtr activityTypeCtr = new ActivityCtr();
 
@@ -44,6 +45,13 @@ public class FacilityMenu
 		frame.setVisible(true);
 	}
 
+	public static FacilityMenu getInstance()
+	{
+		if (instance==null) {
+			instance = new FacilityMenu();
+		}
+		return instance;
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -479,4 +487,9 @@ public class FacilityMenu
 		
 		return model;
 	}
+
+	
+
+	
+	
 }

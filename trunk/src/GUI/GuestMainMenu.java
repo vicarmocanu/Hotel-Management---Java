@@ -91,7 +91,7 @@ public class GuestMainMenu
 			}
 		});
 		btnActivityBooking.setBounds(6, 16, 178, 41);
-		panel_2.add(btnActivityBooking);
+		panel_2.add(btnActivityBooking); 
 		
 		JTextPane txtpnMenuToBook = new JTextPane();
 		txtpnMenuToBook.setEditable(false);
