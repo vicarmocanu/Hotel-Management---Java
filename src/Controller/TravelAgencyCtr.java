@@ -3,11 +3,8 @@ package Controller;
 import java.util.LinkedList;
 
 import DBLayer.DBConnection1;
-import DBLayer.DBLocation;
 import DBLayer.DBTravelAgency;
-import DBLayer.IFDBLocation;
 import DBLayer.IFDBTravelAgency;
-import Model.Location;
 import Model.TravelAgency;
 
 public class TravelAgencyCtr 
@@ -38,12 +35,11 @@ public class TravelAgencyCtr
 		return travelAgencyObj;
 	}
 	
-	public void insertTravelAgency(int cvr, String name, int zipcode, String country,
+	public void insertTravelAgency(String name, int zipcode, String country,
 			String address, String phoneNo, String email)
 	{
 		TravelAgency travelAgencyObj = new TravelAgency();
 		TravelAgency travelAgency = new TravelAgency();
-		travelAgency.setCVR(cvr);
 		travelAgency.setName(name);
 		travelAgency.setZipCode(zipcode);
 		travelAgency.setCountry(country);
