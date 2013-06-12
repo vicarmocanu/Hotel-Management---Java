@@ -42,7 +42,7 @@ public class TeamCtr
 	public void insertTeam(int leaderId)
 	{
 		IFDBGuest dbGuest = new DBGuest();		
-		Guest teamLeader = dbGuest.searchGuestById(leaderId, false);
+		Guest teamLeader = dbGuest.searchGuestById(leaderId, true);
 		
 		Team teamObj = new Team(teamLeader);
 		
@@ -123,7 +123,7 @@ public class TeamCtr
 		try
 		 {
 			 DBConnection1.startTransaction();
-			 IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
+			 DBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 			 dbTeamParticipants.insertTeamParticipant(participantObj);
 			 DBConnection1.commitTransaction();
 			 teamObj.addParticipant(participantObj);

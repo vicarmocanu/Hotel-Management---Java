@@ -14,24 +14,33 @@ import java.awt.Font;
 import javax.swing.JPasswordField;
 
 import Controller.LoginCtr;
+import DBLayer.DBPerson;
+import DBLayer.IFDBPerson;
+import Model.Person;
 
-public class LoginMenu {
-
+public class LoginMenu
+{
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	public int universalId;
-
+	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
 					LoginMenu window = new LoginMenu();
 					window.frame.setVisible(true);
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -64,14 +73,17 @@ public class LoginMenu {
 			public void actionPerformed(ActionEvent arg0)
 			{
 				LoginCtr loginCtr = new LoginCtr();
-				String password = String.valueOf(passwordField.getPassword());
+				IFDBPerson dbPerson = new DBPerson();
+				Person personObj = new Person();
 				
-				if(textField.getText().equals("")==true || password.equals("")==true)
+				if(textField.getText().equals("")==true || passwordField.getPassword().equals("")==true)
 				{
 					JOptionPane.showMessageDialog(null, "Please insert both the id and the password.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
+
+					String password = String.valueOf(passwordField.getPassword());
 					universalId = Integer.parseInt(textField.getText());
 					/*test case
 					if(universalId == 11 && password.equals("aardvark")) 
@@ -88,7 +100,10 @@ public class LoginMenu {
 					{
 						if(loginCtr.checkGuest(universalId)==true)
 						{
-							GuestMainMenu guestMainMenu = new GuestMainMenu();
+							GuestMenu guestMainMenu = new GuestMenu();
+							personObj = dbPerson.searchPersonById(universalId, true);
+							String personName = personObj.getName();
+							guestMainMenu.setGuestName(personName);
 							guestMainMenu.setUniversalId(universalId);
 						}	
 						else if(loginCtr.checkEmployee(universalId))

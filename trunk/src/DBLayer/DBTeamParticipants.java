@@ -38,8 +38,8 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		
 		try
 		{
-			teamParticipantObj.setTeam(dbTeam.getTeamById(results.getInt("teamId"), false));
-			teamParticipantObj.setGuest(dbGuest.searchGuestById(results.getInt("participantId"), false));
+			teamParticipantObj.setTeam(dbTeam.getTeamById(results.getInt("teamId"), true));
+			teamParticipantObj.setGuest(dbGuest.searchGuestById(results.getInt("participantId"), true));
 		}
 		catch(Exception e)
 		{
@@ -70,7 +70,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 			if(retrieveAssociation)
 			{//guest and team reference
 				IFDBGuest dbGuest= new DBGuest();
-				Guest guestObj=dbGuest.searchGuestById(participantObj.getGuest().getId(), false);
+				Guest guestObj=dbGuest.searchGuestById(participantObj.getGuest().getId(), true);
 				System.out.println("Guest selected.");
 				participantObj.setGuest(guestObj);
 				
@@ -113,7 +113,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 				IFDBTeam dbTeam=new DBTeam();
 				for(Participant teamParticipantObj : participantList)
 				{
-					Guest guestObj=dbGuest.searchGuestById(teamParticipantObj.getGuest().getId(), false);
+					Guest guestObj=dbGuest.searchGuestById(teamParticipantObj.getGuest().getId(), true);
 					System.out.println("Guest selected.");
 					teamParticipantObj.setGuest(guestObj);
 					
