@@ -35,24 +35,24 @@ public class TravelAgencyCtr
 		return travelAgencyObj;
 	}
 	
-	public void insertTravelAgency(String name, int zipcode, String country,
+	public void insertTravelAgency(int CVR, String name, int zipcode, String country,
 			String address, String phoneNo, String email)
 	{
 		TravelAgency travelAgencyObj = new TravelAgency();
-		TravelAgency travelAgency = new TravelAgency();
-		travelAgency.setName(name);
-		travelAgency.setZipCode(zipcode);
-		travelAgency.setCountry(country);
-		travelAgency.setAddress(address);
-		travelAgency.setPhoneNo(phoneNo);
-		travelAgency.setEmail(email);
+		travelAgencyObj.setCVR(CVR);
+		travelAgencyObj.setName(name);
+		travelAgencyObj.setZipCode(zipcode);
+		travelAgencyObj.setCountry(country);
+		travelAgencyObj.setAddress(address);
+		travelAgencyObj.setPhoneNo(phoneNo);
+		travelAgencyObj.setEmail(email);
 		
 		try
 		{
 			DBConnection1.startTransaction();
-			 DBTravelAgency dbTravelAgency = new DBTravelAgency();
-			 dbTravelAgency.insertTravelAgency(travelAgencyObj);
-			 DBConnection1.commitTransaction();
+			DBTravelAgency dbTravelAgency = new DBTravelAgency();
+			dbTravelAgency.insertTravelAgency(travelAgencyObj);
+			DBConnection1.commitTransaction();
 		}
 		catch(Exception e)
 		{
@@ -63,17 +63,17 @@ public class TravelAgencyCtr
 	public int updateTravelAgency(int cvr, String name, int zipcode, String country,
 			String address, String phoneNo, String email)
 	{
-		TravelAgency travelAgency = new TravelAgency();
-		travelAgency.setCVR(cvr);
-		travelAgency.setName(name);
-		travelAgency.setZipCode(zipcode);
-		travelAgency.setCountry(country);
-		travelAgency.setAddress(address);
-		travelAgency.setPhoneNo(phoneNo);
-		travelAgency.setEmail(email);
+		TravelAgency travelAgencyObj = new TravelAgency();
+		travelAgencyObj.setCVR(cvr);
+		travelAgencyObj.setName(name);
+		travelAgencyObj.setZipCode(zipcode);
+		travelAgencyObj.setCountry(country);
+		travelAgencyObj.setAddress(address);
+		travelAgencyObj.setPhoneNo(phoneNo);
+		travelAgencyObj.setEmail(email);
 		
 		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
-		return dbTravelAgency.updateTravelAgency(travelAgency);
+		return dbTravelAgency.updateTravelAgency(travelAgencyObj);
 	}
 	
 	public int deleteTravelAgencyByCvr(int cvr)
