@@ -83,7 +83,7 @@ public class GuestMenu
 		
 		dinamicLabel = new JLabel("GUEST");
 		dinamicLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-		dinamicLabel.setBounds(151, 37, 84, 25);
+		dinamicLabel.setBounds(151, 37, 241, 25);
 		panel.add(dinamicLabel);
 		
 		JTextArea informationText = new JTextArea();
@@ -371,11 +371,11 @@ public class GuestMenu
 			public void actionPerformed(ActionEvent arg0)
 			{
 				teamCtr.insertTeam(universalId);
-				
-				JOptionPane.showMessageDialog(null, "Team successfully created.", "Info", JOptionPane.INFORMATION_MESSAGE);
 				clearTeamTab();
 				clearParticipantsTable();
 				clearTeamTable();
+				JOptionPane.showMessageDialog(null, "Team successfully created.", "Info", JOptionPane.INFORMATION_MESSAGE);
+				
 			}
 		});
 		createTeamButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -396,11 +396,10 @@ public class GuestMenu
 					
 					teamCtr.deleteTeamParticipants(teamId);
 					teamCtr.deleteTeamByBothIDs(teamId, universalId);
-					JOptionPane.showMessageDialog(null, "Team has been removed successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
-					
 					clearTeamTab();
 					clearParticipantsTable();
 					clearTeamTable();
+					JOptionPane.showMessageDialog(null, "Team has been removed successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -433,6 +432,7 @@ public class GuestMenu
 				{
 					allTeamsComboBox.removeAll();
 				}
+				allTeamsComboBox.setSelectedItem(null);
 			}
 		});
 		getAllTeamsButton.setBounds(6, 88, 125, 25);
@@ -710,23 +710,19 @@ public class GuestMenu
 	}
 	
 	//clear the team table
-	public void clearTeamTable()
+	private void clearTeamTable()
 	{
-		DefaultTableModel teamTableModel=(DefaultTableModel)teamTable.getModel();
-		teamTableModel.getDataVector().removeAllElements();
-		teamTableModel.fireTableDataChanged();
+		teamTable.setModel(new DefaultTableModel());		
 	}
 	
 	//clear the team participants table
-	public void clearParticipantsTable()
+	private void clearParticipantsTable()
 	{
-		DefaultTableModel participantsTableModel=(DefaultTableModel)participantsTable.getModel();
-		participantsTableModel.getDataVector().removeAllElements();
-		participantsTableModel.fireTableDataChanged();
+		participantsTable.setModel(new DefaultTableModel());	
 	}
 	
 	//clear the team tab fields
-	public void clearTeamTab()
+	private void clearTeamTab()
 	{
 		allTeamsComboBox.setSelectedItem(null);
 		participantIdTextField.setText("");
