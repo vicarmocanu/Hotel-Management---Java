@@ -135,7 +135,7 @@ public class DBTeam implements IFDBTeam
 	public int insertTeam(Team team) throws Exception
 	{
 		//call to get the next team id
-		int nextTeamId = GetMax.getMaxId("SELECT MAX(teamId) from Team");
+		int nextTeamId = GetMax.getMaxId("SELECT MAX(teamId) FROM Team");
 		nextTeamId = nextTeamId + 1;
 		System.out.println("Next team id = " + nextTeamId);
 		

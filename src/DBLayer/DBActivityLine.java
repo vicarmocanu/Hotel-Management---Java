@@ -43,11 +43,11 @@ public class DBActivityLine implements IFDBActivityLine
 		try
 		{
 			ActivityType activityTypeObj = new ActivityType();
-			activityTypeObj = dbActivityType.getActivityTypeByID(results.getInt("activityId"), false);
+			activityTypeObj = dbActivityType.getActivityTypeByID(results.getInt("activityId"));
 			activityLineObj.setActivity(activityTypeObj);
 			
 			ActivityBooking activityBookingObj = new ActivityBooking();
-			activityBookingObj = dbActivityBooking.getActivityBookingById(results.getInt("bookingId"), true);
+			activityBookingObj = dbActivityBooking.getActivityBookingById(results.getInt("bookingId"));
 			activityLineObj.setActivityBooking(activityBookingObj);
 			
 			activityLineObj.setDate(results.getString("date"));
@@ -66,7 +66,7 @@ public class DBActivityLine implements IFDBActivityLine
 			}
 			
 			Team teamObj = new Team();
-			teamObj = dbTeam.getTeamById(results.getInt("teamId"), true);
+			teamObj = dbTeam.getTeamById(results.getInt("teamId"));
 			if(teamObj != null)
 			{
 				activityLineObj.setTeam(teamObj);

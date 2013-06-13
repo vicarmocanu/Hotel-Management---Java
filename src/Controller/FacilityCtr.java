@@ -19,7 +19,7 @@ public class FacilityCtr
 	{
 		IFDBFacility dbFacility = new DBFacility();
 		Facility facilityObj = new Facility();
-		facilityObj = dbFacility.getFacilityById(id, true);
+		facilityObj = dbFacility.getFacilityById(id);
 		return facilityObj;
 	}
 	
@@ -27,7 +27,7 @@ public class FacilityCtr
 	{
 		IFDBFacility dbFacility = new DBFacility();
 		LinkedList<Facility> facilityList = new LinkedList<Facility>();
-		facilityList = dbFacility.getAllFacilities(true);
+		facilityList = dbFacility.getAllFacilities();
 		return facilityList;
 	}
 	
@@ -35,7 +35,7 @@ public class FacilityCtr
 	{
 		IFDBFacility dbFacility = new DBFacility();
 		LinkedList<Facility> facilityList = new LinkedList<Facility>();
-		facilityList = dbFacility.getFacilitiesForActivity(activityId, true);
+		facilityList = dbFacility.getFacilitiesForActivity(activityId);
 		return facilityList;
 	}
 	
@@ -43,14 +43,14 @@ public class FacilityCtr
 	{
 		IFDBFacility dbFacility = new DBFacility();
 		Facility facilityObj = new Facility();
-		facilityObj = dbFacility.getFacilityByName(name, true);
+		facilityObj = dbFacility.getFacilityByName(name);
 		return facilityObj;
 	}
 	
 	public void insertFacility(String name, int activityId, String status)
 	{
 		IFDBActivityType dbActivity = new DBActivityType();
-		ActivityType activityObj = dbActivity.getActivityTypeByID(activityId, false);
+		ActivityType activityObj = dbActivity.getActivityTypeByID(activityId);
 		
 		Facility facilityObj = new Facility(name, activityObj, status);
 		
@@ -72,7 +72,7 @@ public class FacilityCtr
 		IFDBFacility dbFacility = new DBFacility();
 		IFDBActivityType dbActivity = new DBActivityType();
 		
-		ActivityType activityObj = dbActivity.getActivityTypeByID(activityId, false);
+		ActivityType activityObj = dbActivity.getActivityTypeByID(activityId);
 		
 		Facility facilityObj = new Facility(id, name, activityObj, status);
 		return dbFacility.updateFacility(facilityObj);
@@ -88,7 +88,7 @@ public class FacilityCtr
 	{
 		IFDBFacility dbFacility = new DBFacility();
 		LinkedList<Facility> availableFacilitiesForActivity = new LinkedList<Facility>();
-		availableFacilitiesForActivity = dbFacility.getAvailableFacilitiesForActivity(activityId, status, true);
+		availableFacilitiesForActivity = dbFacility.getAvailableFacilitiesForActivity(activityId, status);
 		return availableFacilitiesForActivity;
 	}
 }

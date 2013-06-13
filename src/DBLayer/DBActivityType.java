@@ -24,6 +24,7 @@ public class DBActivityType implements IFDBActivityType
 		{
 			query=query+" WHERE "+ wClause;
 		}
+		
 		return query;
 	}
 	
@@ -47,7 +48,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 	
 	//singleWhere is used when we select only one object
-	private ActivityType singleWhere (String wClause, boolean retrieveAssociation)
+	private ActivityType singleWhere (String wClause)
 	{
 		ResultSet results;
 		ActivityType activityTypeObj=new ActivityType();
@@ -76,7 +77,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 	
 	//miscWhere is used when we want to select multiple objects
-	private LinkedList<ActivityType> miscWhere (String wClause, boolean retrieveAssociation)
+	private LinkedList<ActivityType> miscWhere (String wClause)
 	{
 		ResultSet results;
 		LinkedList<ActivityType> activityTypeList=new LinkedList<ActivityType>();
@@ -109,47 +110,53 @@ public class DBActivityType implements IFDBActivityType
 
 	//get all activity types
 	
-	public LinkedList<ActivityType> getAllActivityTypes(boolean retrieveAssociation)
+	public LinkedList<ActivityType> getAllActivityTypes()
 	{
-		return miscWhere("", retrieveAssociation);
+		return miscWhere("");
 	}
 
 	//get an activity type by id
 	
-	public ActivityType getActivityTypeByID(int id, boolean retrieveAssociation)
+	public ActivityType getActivityTypeByID(int id)
 	{
 		String wClause = "  id= '" + id + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}
 
 	//get an activity type by name
 	
-	public ActivityType getActivityTypeByName(String name, boolean retrieveAssociation)
+	public ActivityType getActivityTypeByName(String name)
 	{
 		String wClause = " name= '" + name + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}
 	
 	//insert a new activity type into the database
 	
 	public int insertActivityType(ActivityType activityTypeObj) throws Exception
 	{
+		//call to get the next activity type id
+		int nextActivityTypeId = GetMax.getMaxId("SELECT MAX(id) from ActivityType");
+		nextActivityTypeId = nextActivityTypeId + 1;
+		System.out.println("Next activity type id = " + nextActivityTypeId);
+		
 		int result = -1;
 		
-		String query = "INSERT INTO ActivityType(name, maxParticipants) VALUES ('" +
+		String query = "INSERT INTO ActivityType(id, name, maxParticipants) VALUES ('" +
+		nextActivityTypeId + "','" +
 				activityTypeObj.getName() + "','" +
-				activityTypeObj.getMaxParticipants() +  "')";
-		
+		activityTypeObj.getMaxParticipants() +  "')";
 		System.out.println("Insert query: " + query);
-	    try
-	    {
-	    	Statement stmt = con.createStatement();
-	    	stmt.setQueryTimeout(5);
-	    	result = stmt.executeUpdate(query);
-	    	stmt.close();
-	    }
-	    catch(SQLException e)
-	    {
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
 	    	System.out.println("Insert exception: " + e);
 	    }
 	    
