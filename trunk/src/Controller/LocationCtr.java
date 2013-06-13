@@ -24,13 +24,14 @@ public class LocationCtr {
 		return locationObj;
 	}
 	
-	public LinkedList<Location> getAllLocation()
+	public LinkedList<Location> getAllLocations()
 	{
 		IFDBLocation dbLocation = new DBLocation();
 		LinkedList<Location> locationList = new LinkedList<Location>();
 		locationList = dbLocation.getAllLocation(true);
 		return locationList;
 	}
+	
 	public int deleteLocation(int loczipCode)
 	{
 		IFDBLocation dbLocation = new DBLocation();
@@ -47,10 +48,8 @@ public class LocationCtr {
 		locationObj.setCity(city);
 		
 		return dbLocation.updateLocation(locationObj);
-		
-		
-		
 	}
+	
 	public void insertLocation(int zipCode, String country, String city)
 	{
 		Location locationObj = new Location();
@@ -61,16 +60,13 @@ public class LocationCtr {
 		try
 		{
 			DBConnection1.startTransaction();
-			 DBLocation dbLocation = new DBLocation();
-			 dbLocation.insertLocation(locationObj);
-			 DBConnection1.commitTransaction();
+			DBLocation dbLocation = new DBLocation();
+			dbLocation.insertLocation(locationObj);
+			DBConnection1.commitTransaction();
 		}
 		catch(Exception e)
 		{
 			DBConnection1.rollbackTransaction();
 		}
-		
-		
 	}
-
 }
