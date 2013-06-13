@@ -20,14 +20,14 @@ public class TeamCtr
 	{
 		IFDBTeam dbTeam = new DBTeam();
 		LinkedList<Team> teamList = new LinkedList<Team>();
-		teamList=dbTeam.getAllTeams(true);
+		teamList=dbTeam.getAllTeams();
 		return teamList;
 	}
 	
-	public Team getTeamById(int id)
+	public Team getTeamById(int teamId)
 	{
 		IFDBTeam dbTeam = new DBTeam();
-		Team teamObj=dbTeam.getTeamById(id, true);
+		Team teamObj=dbTeam.getTeamById(teamId);
 		return teamObj;
 	}
 	
@@ -35,38 +35,37 @@ public class TeamCtr
 	{
 		IFDBTeam dbTeam = new DBTeam();
 		LinkedList<Team> teamLeaderList = new LinkedList<Team>();
-		teamLeaderList = dbTeam.getTeamsByLeaderId(leaderId, true);
+		teamLeaderList = dbTeam.getTeamsByLeaderId(leaderId);
 		return teamLeaderList;
 	}
 	
 	public void insertTeam(int leaderId)
 	{
 		IFDBGuest dbGuest = new DBGuest();		
-		Guest teamLeader = dbGuest.searchGuestById(leaderId, true);
+		Guest teamLeader = dbGuest.searchGuestById(leaderId, false);
 		
-		Team teamObj = new Team(teamLeader);
+		Team teamObj = new Team();
+		teamObj.setLeader(teamLeader);
+		
+		Participant participantObj = new Participant();
+		participantObj.setGuest(teamLeader);
+		participantObj.setTeam(teamObj);		
+		teamObj.addParticipant(participantObj);
+		
+		int numberOfParticipants = teamObj.getParticipantsNumbers();
+		teamObj.setNumberOfParticipants(numberOfParticipants);
 		
 		try
 		{
-			 DBConnection1.startTransaction();
-			 DBTeam dbTeam = new DBTeam();
-			 dbTeam.insertTeam(teamObj);
-			 DBConnection1.commitTransaction();
-		 }
-		 catch(Exception e)
-		 {
-			 DBConnection1.rollbackTransaction();
-		 }
-	}
-	
-	public int updateTeam(int id, int leaderId)
-	{
-		IFDBTeam dbTeam = new DBTeam();
-		IFDBGuest dbGuest = new DBGuest();
-		
-		Guest teamLeader=dbGuest.searchGuestById(leaderId, true);
-		Team teamObj=new Team(id, teamLeader);
-		return dbTeam.updateTeam(teamObj);
+			DBConnection1.startTransaction();
+			DBTeam dbTeam = new DBTeam();
+			dbTeam.insertTeam(teamObj);
+			DBConnection1.commitTransaction();
+		}
+		catch(Exception e)
+		{
+			DBConnection1.rollbackTransaction();
+		}
 	}
 	
 	public int deleteTeamsByLeader(int leaderId)
@@ -75,7 +74,7 @@ public class TeamCtr
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 		
 		LinkedList<Team> leaderTeamList = new LinkedList<Team>();
-		leaderTeamList = dbTeam.getTeamsByLeaderId(leaderId, true);
+		leaderTeamList = dbTeam.getTeamsByLeaderId(leaderId);
 		
 		for(Team team : leaderTeamList)
 		{
@@ -101,14 +100,14 @@ public class TeamCtr
 	{
 		IFDBTeamParticipants dbTeamParticipants=new DBTeamParticipants();
 		LinkedList<Participant> teamParticipantList=new LinkedList<Participant>();
-		teamParticipantList = dbTeamParticipants.getTeamParticipants(teamId, true);
+		teamParticipantList = dbTeamParticipants.getTeamParticipants(teamId);
 		return teamParticipantList;
 	}
 	
 	public Participant getTeamParticipant(int teamId, int participantId)
 	{
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
-		Participant participantObj = dbTeamParticipants.getParticipant(teamId, participantId, true);
+		Participant participantObj = dbTeamParticipants.getParticipant(teamId, participantId);
 		return participantObj;
 	}
 	
@@ -116,18 +115,23 @@ public class TeamCtr
 	{
 		IFDBTeam dbTeam=new DBTeam();
 		IFDBGuest dbGuest=new DBGuest();
-		Team teamObj = dbTeam.getTeamById(teamId, true);
-		Guest guestObj = dbGuest.searchGuestById(participantId, true);
+		
+		Team teamObj = dbTeam.getTeamById(teamId);
+		Guest guestObj = dbGuest.searchGuestById(participantId, false);
+		
 		Participant participantObj = new Participant(teamObj, guestObj);
+		
+		teamObj.addParticipant(participantObj);
+		int newNumberOfParticipants= teamObj.getNumberOfParticipants() + 1;
+		teamObj.setNumberOfParticipants(newNumberOfParticipants);
+		dbTeam.updateTeam(teamObj);
 		
 		try
 		 {
-			 DBConnection1.startTransaction();
+			 DBConnection1.startTransaction();			 
 			 DBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
-			 dbTeamParticipants.insertTeamParticipant(participantObj);
+			 dbTeamParticipants.insertTeamParticipant(participantObj);			 
 			 DBConnection1.commitTransaction();
-			 teamObj.addParticipant(participantObj);
-			 dbTeam.updateTeam(teamObj);
 		 }
 		 catch(Exception e)
 		 {
@@ -139,12 +143,15 @@ public class TeamCtr
 	{
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 		IFDBTeam dbTeam = new DBTeam();
+		
 		Team teamObj = new Team();		
-		teamObj = dbTeam.getTeamById(teamId, true);
+		teamObj = dbTeam.getTeamById(teamId);
 		
 		if(teamObj != null)
 		{
 			teamObj.removeParticipant(teamId, participantId);
+			int newNumberOfParticipants= teamObj.getNumberOfParticipants() - 1;
+			teamObj.setNumberOfParticipants(newNumberOfParticipants);
 			dbTeam.updateTeam(teamObj);
 		}
 		return dbTeamParticipants.deleteTeamParticipant(teamId, participantId);
@@ -154,5 +161,25 @@ public class TeamCtr
 	{
 		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
 		return dbTeamParticipants.deleteTeamParticipants(teamId);
+	}
+	
+	public boolean checkTeamParticipantInstances(int teamId, int participantId)
+	{
+		boolean check = false;
+		int instances = 0;
+		
+		IFDBTeamParticipants dbTeamParticipants = new DBTeamParticipants();
+		instances = dbTeamParticipants.getTeamParticipantInstances(teamId, participantId);
+		
+		if(instances == 0)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+		}
+		return check;
+		
 	}
 }

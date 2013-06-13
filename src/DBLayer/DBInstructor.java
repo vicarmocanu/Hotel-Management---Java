@@ -89,17 +89,7 @@ public class DBInstructor implements IFDBInstructor
 				instructorObj = buildInstructor(results);
 				stmt.close();
 			}
-			if(retrieveAssociation)
-			{//location and activity selection
-				
-				
-				IFDBActivityType dbActivityType = new DBActivityType();
-				ActivityType activityTypeObj = new ActivityType();
-				activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
-				instructorObj.setActivityType(activityTypeObj);
-				System.out.println("Activity selected.");
-				
-			}
+			
 			else
 			{
 				instructorObj = null;
@@ -134,17 +124,6 @@ public class DBInstructor implements IFDBInstructor
 				instructorList.add(instructorObj);
 			}
 			stmt.close();
-			if(retrieveAssociation)
-			{
-				IFDBActivityType dbActivityType = new DBActivityType();
-				for(Instructor instructorObj : instructorList)
-				{
-					ActivityType activityTypeObj = new ActivityType();
-					activityTypeObj = dbActivityType.getActivityTypeByID(instructorObj.getActivityType().getID(), false);
-					instructorObj.setActivityType(activityTypeObj);
-					System.out.println("Activity selected.");
-				}
-			}
 		}
 		catch(Exception e)
 		{
