@@ -1,38 +1,35 @@
 package GUI;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.LinkedList;
-
-import javax.swing.border.TitledBorder;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Controller.GuestCtr;
-import Controller.PersonCtr;
 import Controller.TeamCtr;
 import Model.Guest;
-import Model.Person;
+import Model.Participant;
 import Model.Team;
 
 public class GuestMenu
 {
 	private int universalId;
-	private PersonCtr personCtr = new PersonCtr();
 	private TeamCtr teamCtr = new TeamCtr();
 	private GuestCtr guestCtr = new GuestCtr();
 	
@@ -320,15 +317,7 @@ public class GuestMenu
 		panel_1.add(teamIdLabel);
 		
 		allTeamsComboBox = new JComboBox<String>();
-		LinkedList<Team> allLeaderTeams = new LinkedList<Team>();
-		allLeaderTeams = teamCtr.getTeamsByLeaderId(universalId);
-		if(allLeaderTeams.isEmpty() == false)
-		{
-			for(Team teamObj : allLeaderTeams)
-			{
-				allTeamsComboBox.addItem(String.valueOf(teamObj.getId()));
-			}
-		}
+		allTeamsComboBox.setSelectedItem(null);
 		allTeamsComboBox.setBounds(77, 28, 100, 20);
 		panel_1.add(allTeamsComboBox);
 		
@@ -346,7 +335,11 @@ public class GuestMenu
 			public void actionPerformed(ActionEvent arg0)
 			{
 				teamCtr.insertTeam(universalId);
+				
 				JOptionPane.showMessageDialog(null, "Team successfully created.", "Info", JOptionPane.INFORMATION_MESSAGE);
+				clearTeamTab();
+				clearParticipantsTable();
+				clearTeamTable();
 			}
 		});
 		createTeamButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -368,6 +361,10 @@ public class GuestMenu
 					teamCtr.deleteTeamParticipants(teamId);
 					teamCtr.deleteTeamByBothIDs(teamId, universalId);
 					JOptionPane.showMessageDialog(null, "Team has been removed successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+					
+					clearTeamTab();
+					clearParticipantsTable();
+					clearTeamTable();
 				}
 			}
 		});
@@ -376,6 +373,32 @@ public class GuestMenu
 		deleteTeamButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		JButton getAllTeamsButton = new JButton("All");
+		getAllTeamsButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				clearTeamTab();
+				clearTeamTable();
+				clearParticipantsTable();
+				
+				teamTable.setModel(getTeamTableModel());
+				
+				allTeamsComboBox.removeAllItems();
+				LinkedList<Team> allLeaderTeams = new LinkedList<Team>();
+				allLeaderTeams = teamCtr.getTeamsByLeaderId(universalId);
+				if(allLeaderTeams.isEmpty() == false)
+				{
+					for(Team teamObj : allLeaderTeams)
+					{
+						allTeamsComboBox.addItem(String.valueOf(teamObj.getId()));
+					}
+				}
+				else
+				{
+					allTeamsComboBox.removeAll();
+				}
+			}
+		});
 		getAllTeamsButton.setBounds(6, 88, 125, 25);
 		teamOptions.add(getAllTeamsButton);
 		getAllTeamsButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -385,6 +408,7 @@ public class GuestMenu
 		panel_1.add(teamScrollPane);
 		
 		teamTable = new JTable();
+		teamTable.setEnabled(false);
 		teamTable.setFillsViewportHeight(true);
 		teamScrollPane.setViewportView(teamTable);
 		
@@ -430,8 +454,19 @@ public class GuestMenu
 					}
 					else
 					{
-						teamCtr.insertTeamParticipant(teamId, participantId);
-						JOptionPane.showMessageDialog(null, "Participant has been successfully added to your team.", "Info", JOptionPane.INFORMATION_MESSAGE);
+						if(teamCtr.checkTeamParticipantInstances(teamId, participantId) == false)
+						{
+							JOptionPane.showMessageDialog(null, "That particular participant is already in the team.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							teamCtr.insertTeamParticipant(teamId, participantId);
+							JOptionPane.showMessageDialog(null, "Participant has been successfully added to your team.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							
+							clearTeamTab();
+							clearParticipantsTable();
+							clearTeamTable();
+						}
 					}
 				}
 			}
@@ -465,8 +500,19 @@ public class GuestMenu
 					}
 					else
 					{
-						teamCtr.deleteTeamParticipant(teamId, participantId);
-						JOptionPane.showMessageDialog(null, "Participant has been successfully removed from your team.", "Info", JOptionPane.INFORMATION_MESSAGE);
+						if(participantId == universalId)
+						{
+							JOptionPane.showMessageDialog(null, "You may not delete yourself from your own team.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							teamCtr.deleteTeamParticipant(teamId, participantId);
+							JOptionPane.showMessageDialog(null, "Participant has been successfully removed from your team.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							
+							clearTeamTab();
+							clearParticipantsTable();
+							clearTeamTable();
+						}
 					}
 				}
 			}
@@ -476,6 +522,23 @@ public class GuestMenu
 		removeParticipantButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		JButton getAllTeamParticipantsButton = new JButton("All");
+		getAllTeamParticipantsButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if(allTeamsComboBox.getSelectedItem() == null)
+				{
+					JOptionPane.showMessageDialog(null, "Please select the team first.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					clearTeamTable();
+					clearParticipantsTable();
+					
+					participantsTable.setModel(getParticipantsTableModel());
+				}
+			}
+		});
 		getAllTeamParticipantsButton.setBounds(6, 88, 125, 25);
 		participantsOptions.add(getAllTeamParticipantsButton);
 		getAllTeamParticipantsButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -485,10 +548,59 @@ public class GuestMenu
 		panel_1.add(participantsScrollPane);
 		
 		participantsTable = new JTable();
+		participantsTable.setEnabled(false);
 		participantsTable.setFillsViewportHeight(true);
 		participantsScrollPane.setViewportView(participantsTable);
 		
+		JButton teamClearAllButton = new JButton("Clear all");
+		teamClearAllButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				clearTeamTab();
+				clearParticipantsTable();
+				clearTeamTable();
+			}
+		});
+		teamClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		teamClearAllButton.setBounds(31, 382, 125, 25);
+		panel_1.add(teamClearAllButton);
+		
+		JButton getLeaderTeamsButton = new JButton("Get teams");
+		getLeaderTeamsButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				allTeamsComboBox.removeAllItems();
+				LinkedList<Team> allLeaderTeams = new LinkedList<Team>();
+				allLeaderTeams = teamCtr.getTeamsByLeaderId(universalId);
+				if(allLeaderTeams.isEmpty() == false)
+				{
+					for(Team teamObj : allLeaderTeams)
+					{
+						allTeamsComboBox.addItem(String.valueOf(teamObj.getId()));
+					}
+				}
+				else
+				{
+					allTeamsComboBox.removeAll();
+				}
+			}
+		});
+		getLeaderTeamsButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		getLeaderTeamsButton.setBounds(187, 27, 125, 25);
+		panel_1.add(getLeaderTeamsButton);
+		
 		JButton logOffButton = new JButton("Log Off");
+		logOffButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				frame.dispose();
+				LoginMenu loginMenu = LoginMenu.getInstance();
+				loginMenu.frame.setVisible(true);
+			}
+		});
 		logOffButton.setFont(new Font("Tahoma", Font.BOLD, 15));
 		logOffButton.setBounds(715, 550, 125, 39);
 		frame.getContentPane().add(logOffButton);
@@ -502,5 +614,85 @@ public class GuestMenu
 	public void setUniversalId(int newUniversalId)
 	{
 		universalId = newUniversalId;
+	}
+	
+	//model for the teams table
+	private DefaultTableModel getTeamTableModel()
+	{
+		int leaderId = universalId;
+		LinkedList<Team> leaderTeams = teamCtr.getTeamsByLeaderId(leaderId);
+		
+		DefaultTableModel teamTableModel = new DefaultTableModel();
+		
+		//the team table heads
+		teamTableModel.setColumnIdentifiers(new String[] {"Team id", "Number of participants"});
+		
+		//the team table contents
+		if(leaderTeams.isEmpty() == false)
+		{
+			for(Team teamObj : leaderTeams)
+			{
+				teamTableModel.addRow(new String[]
+						{
+							String.valueOf(teamObj.getId()),
+							String.valueOf(teamObj.getNumberOfParticipants())
+						});
+			}
+		}
+		
+		return teamTableModel;
+	}
+	
+	//model for the team participants table
+	private DefaultTableModel getParticipantsTableModel()
+	{
+		String stringTeamId = String.valueOf(allTeamsComboBox.getSelectedItem());
+		int teamId = Integer.parseInt(stringTeamId);
+		
+		LinkedList<Participant> teamParticipants = teamCtr.getTeamParticipantsByTeamId(teamId);
+		
+		DefaultTableModel participantsTableModel = new DefaultTableModel();
+		
+		//the team table heads
+		participantsTableModel.setColumnIdentifiers(new String[] {"Team id", "Participant id", "Participant"});
+		
+		//the team table contents
+		if(teamParticipants.isEmpty() == false)
+		{
+			for(Participant participantObj : teamParticipants)
+			{
+				participantsTableModel.addRow(new String[]
+						{
+							String.valueOf(participantObj.getTeam().getId()),
+							String.valueOf(participantObj.getGuest().getId()),
+							participantObj.getGuest().getName()
+						});
+			}
+		}
+		
+		return participantsTableModel;
+	}
+	
+	//clear the team table
+	public void clearTeamTable()
+	{
+		DefaultTableModel teamTableModel=(DefaultTableModel)teamTable.getModel();
+		teamTableModel.getDataVector().removeAllElements();
+		teamTableModel.fireTableDataChanged();
+	}
+	
+	//clear the team participants table
+	public void clearParticipantsTable()
+	{
+		DefaultTableModel participantsTableModel=(DefaultTableModel)participantsTable.getModel();
+		participantsTableModel.getDataVector().removeAllElements();
+		participantsTableModel.fireTableDataChanged();
+	}
+	
+	//clear the team tab fields
+	public void clearTeamTab()
+	{
+		allTeamsComboBox.setSelectedItem(null);
+		participantIdTextField.setText("");
 	}
 }
