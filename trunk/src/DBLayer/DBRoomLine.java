@@ -99,7 +99,7 @@ public class DBRoomLine implements IFDBRoomLine {
 				{
 					//Make association with the guest
 					IFDBGuest dbguestObj = new DBGuest();
-					Guest guestObj = dbguestObj.searchGuestById(roomLine.getGuest().getId(), true);
+					Guest guestObj = dbguestObj.searchGuestById(roomLine.getGuest().getId());
 					System.out.println("Guest is found!");
 					roomLine.setGuest(guestObj);
 					//Make association with the room
@@ -143,7 +143,7 @@ public class DBRoomLine implements IFDBRoomLine {
 				if (retrieveAssociation) {
 					//Make association with the guest
 					IFDBGuest dbguestObj = new DBGuest();
-					Guest guestObj = dbguestObj.searchGuestById(roomLine.getGuest().getId(), true);
+					Guest guestObj = dbguestObj.searchGuestById(roomLine.getGuest().getId());
 					System.out.println("Guest is found!");
 					roomLine.setGuest(guestObj);
 					//Make association with the room
