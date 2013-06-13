@@ -142,19 +142,19 @@ public class ScheduleMenu
 						LinkedList<ActivityLine> dateActivityLines = new LinkedList<ActivityLine>();
 						dateActivityLines = activityBookingCtr.getDateActivityLines(date);
 						
-						if(dateActivityLines.isEmpty() != true)
+						if(dateActivityLines.isEmpty() == false)
 						{
 							DefaultTableModel model = new DefaultTableModel()
 							{
 								private static final long serialVersionUID = 1L;
-								public boolean IsCellEditable(int row, int column)
+								public boolean isCellEditable(int row, int column)
 								{
 									//all cells false
 									return false;
 								}
 							};
 							
-							model.setColumnIdentifiers(new String[] {"Date", "StartHour", "Facility", "Instructor"});
+							model.setColumnIdentifiers(new String[] {"Date", "Start Hour", "Facility", "Instructor"});
 							
 							try
 							{
@@ -203,7 +203,8 @@ public class ScheduleMenu
 		scrollPane.setViewportView(table);
 		
 		JButton btnExit = new JButton("Exit");
-		btnExit.addActionListener(new ActionListener() {
+		btnExit.addActionListener(new ActionListener()
+		{
 			public void actionPerformed(ActionEvent e) 
 			{
 				clearTable();
@@ -216,8 +217,6 @@ public class ScheduleMenu
 	
 	public void clearTable()
 	{
-		DefaultTableModel tdm=(DefaultTableModel)table.getModel();
-		tdm.getDataVector().removeAllElements();
-		tdm.fireTableDataChanged();
+		table.setModel(new DefaultTableModel());
 	}
 }
