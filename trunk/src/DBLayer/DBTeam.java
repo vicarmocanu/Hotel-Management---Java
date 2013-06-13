@@ -21,23 +21,26 @@ public class DBTeam implements IFDBTeam
 	private String buildQuery(String wClause)
 	{
 		String query="SELECT * FROM Team";
+		
 		if (wClause.length()>0)
 		{
 			query=query+" WHERE "+ wClause;
 		}
+		
 		return query;
 	}
 	
 	private Team buildTeam(ResultSet results)
 	{
-		Team teamObj=new Team();		
+		Team teamObj=new Team();
 		IFDBGuest dbGuest=new DBGuest();
 		Guest guestObj = new Guest();
+		
 		try
 		{
 			teamObj.setId(results.getInt("teamId"));
 			
-			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"), true);
+			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"), false);
 			teamObj.setLeader(guestObj);
 			
 			teamObj.setNumberOfParticipants(results.getInt("numberOfParticipants"));
@@ -46,13 +49,15 @@ public class DBTeam implements IFDBTeam
 		{
 			System.out.println("Exception in building the team object: " + e);
 		}
+		
 		return teamObj;
 	}
 	
-	private Team singleWhere(String wClause, boolean retrieveAssociation)
+	private Team singleWhere(String wClause)
 	{
 		ResultSet results;
-		Team teamObj=new Team();		
+		
+		Team teamObj=new Team();
 		String query = buildQuery(wClause);
 		System.out.println("Query: " + query);
 		
@@ -67,26 +72,19 @@ public class DBTeam implements IFDBTeam
 				teamObj=buildTeam(results);
 				stmt.close();
 			}
-			
-			if(retrieveAssociation)
-			{//the leader is to be built as well
-				IFDBGuest dbGuest= new DBGuest();
-				Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), true);
-				System.out.println("Leader is selected.");
-				teamObj.setLeader(guestObj);
-			}
-			
 		}
 		catch(Exception e)
 		{
 			System.out.println("Single selection query exception: " + e);
 		}
+		
 		return teamObj;
 	}
 	
-	private LinkedList<Team> miscWhere(String wClause, boolean retrieveAssociation)
+	private LinkedList<Team> miscWhere(String wClause)
 	{
 		ResultSet results;
+		
 		LinkedList<Team> teamList=new LinkedList<Team>();
 		String query =  buildQuery(wClause);
 		System.out.println("Query: " + query);
@@ -104,16 +102,6 @@ public class DBTeam implements IFDBTeam
 				teamList.add(teamObj);
 			}
 			stmt.close();
-			if(retrieveAssociation)
-			{//the leader is to be selected as well
-				IFDBGuest dbGuest= new DBGuest();
-				for(Team teamObj : teamList)
-				{
-					Guest guestObj=dbGuest.searchGuestById(teamObj.getLeader().getId(), true);
-					System.out.println("Leader is selected.");
-					teamObj.setLeader(guestObj);
-				}
-			}
 		}
 		catch(Exception e)
 		{
@@ -125,49 +113,53 @@ public class DBTeam implements IFDBTeam
 	}
 
 	@Override
-	public LinkedList<Team> getAllTeams(boolean retrieveAssociation)
+	public LinkedList<Team> getAllTeams()
 	{
-		return miscWhere("", retrieveAssociation);
+		return miscWhere("");
 	}
 
 	@Override
-	public Team getTeamById(int id, boolean retrieveAssociation)
+	public Team getTeamById(int teamId)
 	{
-		String wClause = " id= '" + id + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		String wClause = " teamId= '" + teamId + "'";
+		return singleWhere(wClause);
 	}
 
-	public  LinkedList<Team> getTeamsByLeaderId(int leaderId, boolean retrieveAssociation)
+	public LinkedList<Team> getTeamsByLeaderId(int leaderId)
 	{
 		String wClause = " leaderId= '" + leaderId + "'";
-		return miscWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause);
 	}
 
 	@Override
 	public int insertTeam(Team team) throws Exception
 	{
+		//call to get the next team id
+		int nextTeamId = GetMax.getMaxId("SELECT MAX(teamId) from Team");
+		nextTeamId = nextTeamId + 1;
+		System.out.println("Next team id = " + nextTeamId);
+		
 		int result = -1;
+		
 		Guest guestObj = team.getLeader();
-		String query = new String();
-		
-		query = "INSERT INTO Team(leaderId, numberOfParticipants) VALUES ('" +
-		guestObj.getId() + "','" + 
-		team.getNumberOfParticipants() + "')";
-		
+		String query = "INSERT INTO Team(teamId, leaderId, numberOfParticipants) VALUES ('" + nextTeamId + "','" +
+		guestObj.getId() + "','" +
+				team.getNumberOfParticipants() + "') INSERT INTO TeamParticipants(teamId, participantId) VALUES ('" + nextTeamId + "','" +
+		guestObj.getId() + "')";
 		System.out.println("Insertion query: " + query);
-	    try
-	    {
-	    	Statement stmt = con.createStatement();
-	    	stmt.setQueryTimeout(5);
-	    	result = stmt.executeUpdate(query);
-	    	stmt.close();
-	    }
-	    catch(SQLException e)
-	    {
-	    	System.out.println("Insert exception: " + e);
-	    }
-	    
-	    return(result);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Insert exception: " + e);
+		}
+		return(result);
 	}
 
 	@Override
@@ -177,28 +169,22 @@ public class DBTeam implements IFDBTeam
 		
 		Team teamObj=team;
 		Guest guestObj = teamObj.getLeader();
-		String query = new String();
-		
-			query="UPDATE Team SET " + 
-		"leaderId= '" + guestObj.getId() + "', " +
-					"numberOfParticipants= '" + teamObj.getNumberOfParticipants() + "' " +
-		"WHERE id= '" + teamObj.getId() + "'";
-		
-		
+		String query = "UPDATE Team SET leaderId= '" + guestObj.getId() + "', " +
+		"numberOfParticipants= '" + teamObj.getNumberOfParticipants() + "' " +
+				"WHERE teamId= '" + teamObj.getId() + "'";
 		System.out.println("Update query: " + query);
 		
 		try
 		{
-			Statement stmt = con.createStatement();		
-	 		stmt.setQueryTimeout(5);
-	 	 	result = stmt.executeUpdate(query);
-	 	 	stmt.close();
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
 		}
 		catch(SQLException e)
 		{
 			System.out.println("Update exception: " + e);
 		}
-		
 		return(result);
 	}
 
@@ -206,65 +192,66 @@ public class DBTeam implements IFDBTeam
 	public int deleteTeamsByLeader(int leaderId)
 	{
 		int result=-1;
-		  
-	  	String query="DELETE FROM Team WHERE leaderId= '" + leaderId + "'";
-	  	System.out.println("Delete query: " + query);
-	  	try
-	  	{
-	  		Statement stmt = con.createStatement();
-	 		stmt.setQueryTimeout(5);
-	 	  	result = stmt.executeUpdate(query);
-	 	  	stmt.close();	  		
-	  	}
-	  	catch(SQLException e)
-	  	{
-	  		System.out.println("Delete exception: " + e);
-	  	}
-	  	
-	  	return(result);
+		
+		String query="DELETE FROM Team WHERE leaderId= '" + leaderId + "'";
+		System.out.println("Delete query: " + query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Delete exception: " + e);
+		}
+		return(result);
 	}
 
 	@Override
 	public int deleteTeamById(int id)
 	{
 		int result=-1;
-		  
-	  	String query="DELETE FROM Team WHERE id= '" + id + "'";
-	  	System.out.println("Delete query: " + query);
-	  	try
-	  	{
-	  		Statement stmt = con.createStatement();
-	 		stmt.setQueryTimeout(5);
-	 	  	result = stmt.executeUpdate(query);
-	 	  	stmt.close();	  		
-	  	}
-	  	catch(SQLException e)
-	  	{
-	  		System.out.println("Delete exception: " + e);
-	  	}
-	  	
-	  	return(result);
+		
+		String query="DELETE FROM Team WHERE teamId= '" + id + "'";
+		System.out.println("Delete query: " + query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Delete exception: " + e);
+		}
+		return(result);
 	}
 
 	@Override
 	public int deleteTeamByBothIDs(int teamId, int leaderId)
 	{
 		int result=-1;
-		  
-	  	String query="DELETE FROM Team WHERE id= '" + teamId + "' AND leaderId= '" + leaderId + "'";
-	  	System.out.println("Delete query: " + query);
-	  	try
-	  	{
-	  		Statement stmt = con.createStatement();
-	 		stmt.setQueryTimeout(5);
-	 	  	result = stmt.executeUpdate(query);
-	 	  	stmt.close();	  		
-	  	}
-	  	catch(SQLException e)
-	  	{
-	  		System.out.println("Delete exception: " + e);
-	  	}
-	  	
-	  	return(result);
+		
+		String query="DELETE FROM Team WHERE teamId= '" + teamId + "' AND leaderId= '" + leaderId + "'";
+		System.out.println("Delete query: " + query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Delete exception: " + e);
+		}
+		
+		return(result);
 	}
 }

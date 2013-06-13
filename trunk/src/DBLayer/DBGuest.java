@@ -141,8 +141,8 @@ public class DBGuest implements IFDBGuest
 		try
 		{
 			int id = results.getInt("personId");
-			rbObj.setId(id);			
-			rbObj.setId(results.getInt("personId"));			
+			rbObj.setId(id);
+			
 			int travelAgencyCVR = results.getInt("travelAgency");
 			if(travelAgencyCVR != 0)
 			{
@@ -196,18 +196,6 @@ public class DBGuest implements IFDBGuest
 			{
 				rbObj = null;
 			}
-			if(retrieveAssociation == true)
-			{//travel agency reference
-				IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
-				TravelAgency travelAgencyObj = new TravelAgency();
-				if(rbObj.getTravelAgency() != null)
-				{
-					travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(rbObj.getTravelAgency().getCVR(), true);
-					rbObj.setTravelAgency(travelAgencyObj);
-					System.out.println("Travel agency selection.");
-				}
-			}
-			
 		}
 		catch (Exception e)
 		{
@@ -236,25 +224,10 @@ public class DBGuest implements IFDBGuest
 				list.add(rbObj);
 			}
 			stmt.close();
-			if(retrieveAssociation == true)
-			{
-				IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
-				
-				for(Guest rbObj : list)
-				{
-					TravelAgency travelAgencyObj = new TravelAgency();
-					if(rbObj.getTravelAgency() != null)
-					{
-						travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(rbObj.getTravelAgency().getCVR(), true);
-						rbObj.setTravelAgency(travelAgencyObj);
-						System.out.println("Travel agency selection.");
-					}
-				}
-			}
 		}
 		catch (Exception e)
 		{
-			System.out.println("Multiiple selection query exception: "+e);
+			System.out.println("Multiple selection query exception: "+e);
 			e.printStackTrace();
 		}
 		return list;

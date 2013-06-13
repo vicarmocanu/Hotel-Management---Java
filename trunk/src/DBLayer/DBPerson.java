@@ -118,7 +118,8 @@ private Connection con;
 	{
 		Person rbObj = new Person();
 		
-		try {
+		try
+		{
 			rbObj.setId(results.getInt(1));
 			rbObj.setName(results.getString(2));
 			rbObj.setZipcode(results.getInt(3));

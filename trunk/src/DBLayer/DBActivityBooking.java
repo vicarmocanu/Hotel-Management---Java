@@ -20,6 +20,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 	private String buildQuery(String wClause)
 	{
 		String query="SELECT * FROM ActivityBooking";
+		
 		if (wClause.length()>0)
 		{
 			query=query+" WHERE "+ wClause;

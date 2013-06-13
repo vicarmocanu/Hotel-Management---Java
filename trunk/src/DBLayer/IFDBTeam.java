@@ -7,13 +7,13 @@ import Model.Team;
 public interface IFDBTeam
 {
 	//get all teams
-	public LinkedList<Team> getAllTeams(boolean retrieveAssociation);
+	public LinkedList<Team> getAllTeams();
 	
 	//get team by id
-	public Team getTeamById(int id, boolean retrieveAssociation);
+	public Team getTeamById(int id);
 	
 	//get teams made by a leader id
-	public LinkedList<Team> getTeamsByLeaderId(int leaderId, boolean retrieveAssociation);
+	public LinkedList<Team> getTeamsByLeaderId(int leaderId);
 	
 	//insert team
 	public int insertTeam(Team team) throws Exception;
