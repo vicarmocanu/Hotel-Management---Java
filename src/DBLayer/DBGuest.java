@@ -22,9 +22,10 @@ public class DBGuest implements IFDBGuest
 	public int insertGuest(Guest guest) throws Exception
 	{
 		int rc = -1;
+		
 		Guest guestObj = guest;
 		TravelAgency travelAgencyObj = new TravelAgency();
-		travelAgencyObj =guest.getTravelAgency();
+		travelAgencyObj = guest.getTravelAgency();
 		String query = new String();
 		
 		if(travelAgencyObj != null)
@@ -73,7 +74,7 @@ public class DBGuest implements IFDBGuest
 		else
 		{
 			query = "UPDATE Guest SET " +
-		"guestType= '" + guest.getGuestType() + "', " +
+		"guestType= '" + guest.getGuestType() + "' " +
 					"WHERE personId= '" + guest.getId() + "'";
 		}
 		
@@ -98,8 +99,7 @@ public class DBGuest implements IFDBGuest
 	{
 		int rc=-1;
 		  
-	  	String query="DELETE FROM Guest WHERE guestId= '" +
-				guestId + "'";
+	  	String query="DELETE FROM Guest WHERE guestId= '" + guestId + "'";
 	  	System.out.println("Delete query: " + query);
 	  	
 	  	try
@@ -174,7 +174,7 @@ public class DBGuest implements IFDBGuest
 		return rbObj;
 	}
 	
-	private Guest singleWhere(String wClause, boolean retrieveAssociation)
+	private Guest singleWhere(String wClause)
 	{
 		ResultSet results;
 		Guest rbObj = new Guest();
@@ -200,13 +200,12 @@ public class DBGuest implements IFDBGuest
 		catch (Exception e)
 		{
 			System.out.println("Single selection query exception: " + e);
-			e.printStackTrace();
 		}
 		
 		return rbObj;
 	}
 	
-	private LinkedList<Guest> miscWhere(String wClause, boolean retrieveAssociation)
+	private LinkedList<Guest> miscWhere(String wClause)
 	{
 		ResultSet results;
 		LinkedList<Guest> list = new LinkedList<Guest>();
@@ -233,28 +232,28 @@ public class DBGuest implements IFDBGuest
 		return list;
 	}
 	
-	public LinkedList<Guest> getAllGuests(boolean retriveAssociation)
+	public LinkedList<Guest> getAllGuests()
 	{
-		return miscWhere("", retriveAssociation);
+		return miscWhere("");
 	}
 
-	public Guest searchGuestById(int personId, boolean retriveAssociation)
+	public Guest searchGuestById(int personId)
 	{
 		String wClause = " personId= '" + personId + "'";
-		return singleWhere(wClause, retriveAssociation);
+		return singleWhere(wClause);
 	}
 
 	
-	public Guest searchGuestByName(String name, boolean retriveAssociation)
+	public Guest searchGuestByName(String name)
 	{
 		String wClause = " name= '" + name + "'";
-		return singleWhere(wClause, retriveAssociation);
+		return singleWhere(wClause);
 	}
 	
 	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation)
 	{
 		return singleWhere("personId=(SELECT guestId FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking " +
-				"WHERE arrivalDate<='"+date+" AND departureDate>='"+date+") AND roomNo='"+roomNo+"')", retrieveAssociation);
+				"WHERE arrivalDate<='"+date+" AND departureDate>='"+date+") AND roomNo='"+roomNo+"')");
 	}
 
 }

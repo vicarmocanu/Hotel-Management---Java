@@ -38,7 +38,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		try
 		{
 			teamParticipantObj.setTeam(dbTeam.getTeamById(results.getInt("teamId")));
-			teamParticipantObj.setGuest(dbGuest.searchGuestById(results.getInt("participantId"), false));
+			teamParticipantObj.setGuest(dbGuest.searchGuestById(results.getInt("participantId")));
 		}
 		catch(Exception e)
 		{

@@ -40,7 +40,7 @@ public class DBTeam implements IFDBTeam
 		{
 			teamObj.setId(results.getInt("teamId"));
 			
-			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"), false);
+			guestObj = dbGuest.searchGuestById(results.getInt("leaderId"));
 			teamObj.setLeader(guestObj);
 			
 			teamObj.setNumberOfParticipants(results.getInt("numberOfParticipants"));
