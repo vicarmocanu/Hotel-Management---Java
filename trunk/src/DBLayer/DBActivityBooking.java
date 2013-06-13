@@ -25,6 +25,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		{
 			query=query+" WHERE "+ wClause;
 		}
+		
 		return query;
 	}
 	
@@ -44,7 +45,6 @@ public class DBActivityBooking implements IFDBActivityBooking
 			activityBookingObj.setGuest(guestObj);
 			
 			activityBookingObj.setDate(results.getString("date"));
-			
 			activityBookingObj.setStatus(results.getString("status"));
 		}
 		catch(Exception e)
@@ -55,9 +55,10 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return activityBookingObj;
 	}
 	
-	private ActivityBooking singleWhere(String wClause, boolean retrieveAssociation)
+	private ActivityBooking singleWhere(String wClause)
 	{
 		ResultSet results;
+		
 		ActivityBooking activityBookingObj=new ActivityBooking();		
 		String query = buildQuery(wClause);
 		System.out.println(query);
@@ -73,32 +74,18 @@ public class DBActivityBooking implements IFDBActivityBooking
 				activityBookingObj = buildActivityBooking(results);
 				stmt.close();
 			}
-			if(retrieveAssociation)
-			{//guest reference
-				IFDBGuest dbGuest = new DBGuest();
-				Guest guestObj=dbGuest.searchGuestById(activityBookingObj.getGuest().getId(), false);
-				if(guestObj != null)
-				{
-					System.out.println("Guest is selected.");
-					activityBookingObj.setGuest(guestObj);
-				}
-			}
-			else
-			{
-				activityBookingObj = null;
-			}
 		}
 		catch(Exception e)
 		{
 			System.out.println("Single selection query exception: " + e);
-			e.printStackTrace();
 		}
 		return activityBookingObj;
 	}
 	
-	private LinkedList<ActivityBooking> miscWhere(String wClause, boolean retrieveAssociation)
+	private LinkedList<ActivityBooking> miscWhere(String wClause)
 	{
 		ResultSet results;
+		
 		LinkedList<ActivityBooking> activityBookingList = new LinkedList<ActivityBooking>();
 		String query =  buildQuery(wClause);
 		System.out.println(query);
@@ -116,20 +103,6 @@ public class DBActivityBooking implements IFDBActivityBooking
 				activityBookingList.add(activityBookingObj);
 			}
 			stmt.close();
-			if(retrieveAssociation)
-			{//guest reference
-				IFDBGuest dbGuest= new DBGuest();
-				
-				for(ActivityBooking activityBookingObj : activityBookingList)
-				{
-					Guest guestObj=dbGuest.searchGuestById(activityBookingObj.getGuest().getId(), false);
-					if(guestObj != null)
-					{
-						System.out.println("Guest is selected.");
-						activityBookingObj.setGuest(guestObj);
-					}
-				}
-			}
 		}
 		catch(Exception e)
 		{
@@ -141,44 +114,50 @@ public class DBActivityBooking implements IFDBActivityBooking
 	}
 
 	@Override
-	public LinkedList<ActivityBooking> getAllActivityBookings(boolean retrieveAssociation)
+	public LinkedList<ActivityBooking> getAllActivityBookings()
 	{
-		return miscWhere("", retrieveAssociation);
+		return miscWhere("");
 	}
 
 	@Override
-	public ActivityBooking getActivityBookingById(int id, boolean retrieveAssociation)
+	public ActivityBooking getActivityBookingById(int id)
 	{
 		String wClause = " id= '" + id + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}	
 
 	@Override
-	public ActivityBooking getActivityBookingForDate(int guestId, String date, boolean retrieveAssociation)
+	public ActivityBooking getActivityBookingForDate(int guestId, String date)
 	{
 		String wClause = " guestId= '" + guestId + "' AND date= '" + date + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}
 	
 	@Override
-	public LinkedList<ActivityBooking> getActivityBookingsForGuest(int guestId,	boolean retrieveAssociation)
+	public LinkedList<ActivityBooking> getActivityBookingsForGuest(int guestId)
 	{
 		String wClause = " guestId= '" + guestId + "'";
-		return miscWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause);
 	}
 	
 	@Override
 	public int insertActivityBooking(ActivityBooking activityBooking) throws Exception
 	{
-		ActivityBooking acticityBookingObj = activityBooking;		
+		ActivityBooking acticityBookingObj = activityBooking;
+		//call to get the next activity booking id
+		int nextActivityBookingId = GetMax.getMaxId("SELECT MAX(id) from ActivityBooking");
+		nextActivityBookingId = nextActivityBookingId + 1;
+		System.out.println("Next activity booking id = " + nextActivityBookingId);
+		
 		int result = -1;
 		
-		String query = "INSERT INTO ActivityBooking(guestId, date, status) VALUES ('" +
-					acticityBookingObj.getGuest().getId() + "','" + 
-					acticityBookingObj.getDate() + "','" + 
-					acticityBookingObj.getStatus() +"')";
-		
+		String query = "INSERT INTO ActivityBooking(id, guestId, date, status) VALUES ('" +
+		nextActivityBookingId + "','" +
+				acticityBookingObj.getGuest().getId() + "','" +
+		acticityBookingObj.getDate() + "','" +
+				acticityBookingObj.getStatus() +"')";
 		System.out.println("Insertion query: " + query);
+		
 		try
 		{
 			Statement stmt = con.createStatement();
@@ -190,6 +169,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 		{
 			System.out.println("Insertion exception: " + e);
 		}
+		
 		return(result);
 	}
 	
@@ -265,7 +245,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 	{
 		int instances = 0;		
 		ResultSet results;
-		String query = "SELECT COUNT(guestId, date) AS activityBokingInstances FROM ActivityBooking " + 
+		String query = "SELECT COUNT(*) AS activityBokingInstances FROM ActivityBooking " + 
 		" WHERE date='" +  date + "' AND guestId='" + guestId + "'";
 		System.out.println(query);
 		
@@ -273,8 +253,13 @@ public class DBActivityBooking implements IFDBActivityBooking
 		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
-			results = stmt.executeQuery(query);			
-			instances = results.getInt("activityBokingInstances");
+			results = stmt.executeQuery(query);
+			
+			while( results.next() )
+			{
+				instances = results.getInt("activityBokingInstances");
+				System.out.println("Activity booking instances: " + instances);
+			}
 			stmt.close();
 		}
 		catch(Exception e)

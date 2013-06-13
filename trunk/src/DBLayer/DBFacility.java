@@ -21,10 +21,12 @@ public class DBFacility implements IFDBFacility
 	private String buildQuery(String wClause)
 	{
 		String query="SELECT * FROM Facility";
+		
 		if (wClause.length()>0)
 		{
 			query=query+" WHERE "+ wClause;
 		}
+		
 		return query;
 	}
 	
@@ -40,7 +42,7 @@ public class DBFacility implements IFDBFacility
 			facilityObj.setId(results.getInt("id"));
 			facilityObj.setName(results.getString("name"));
 			
-			activityTypeObj = dbActivity.getActivityTypeByID(results.getInt("forActivity"), true);
+			activityTypeObj = dbActivity.getActivityTypeByID(results.getInt("forActivity"));
 			facilityObj.setActivity(activityTypeObj);
 			facilityObj.setStatus(results.getString("status"));
 		}
@@ -51,7 +53,7 @@ public class DBFacility implements IFDBFacility
 		return facilityObj;
 	}
 	
-	private Facility singleWhere(String wClause, boolean retrieveAssociation)
+	private Facility singleWhere(String wClause)
 	{
 		ResultSet results;
 		Facility facilityObj=new Facility();
@@ -70,20 +72,6 @@ public class DBFacility implements IFDBFacility
 				facilityObj=buildFacility(results);
 				stmt.close();
 			}
-			if(retrieveAssociation)
-			{//the activity type is to be built as well
-				IFDBActivityType dbActivityType=new DBActivityType();
-				ActivityType activityTypeObj=dbActivityType.getActivityTypeByID(facilityObj.getActivity().getID(), false);
-				if(activityTypeObj != null)
-				{
-					System.out.println("Activity type is selected.");
-					facilityObj.setActivity(activityTypeObj);
-				}
-			}
-			else
-			{
-				facilityObj=null;
-			}
 		}
 		catch(Exception e)
 		{
@@ -92,7 +80,7 @@ public class DBFacility implements IFDBFacility
 		return facilityObj;
 	}
 	
-	private LinkedList<Facility> miscWhere(String wClause, boolean retrieveAssociation)
+	private LinkedList<Facility> miscWhere(String wClause)
 	{
 		ResultSet results;
 		LinkedList<Facility> facilityList=new LinkedList<Facility>();
@@ -112,19 +100,6 @@ public class DBFacility implements IFDBFacility
 				facilityList.add(facilityObj);
 			}
 			stmt.close();
-			if(retrieveAssociation)
-			{//the activity line is to be selected as well
-				IFDBActivityType dbActivityType=new DBActivityType();
-				for(Facility facilityObj : facilityList)
-				{
-					ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(facilityObj.getActivity().getID(), false);
-					if(activityTypeObj != null)
-					{
-						System.out.println("Activity line is selected.");
-						facilityObj.setActivity(activityTypeObj);
-					}
-				}
-			}
 		}
 		catch(Exception e)
 		{
@@ -136,35 +111,40 @@ public class DBFacility implements IFDBFacility
 	}
 
 	@Override
-	public Facility getFacilityById(int id, boolean retrieveAssociation)
+	public Facility getFacilityById(int id)
 	{
 		String wClause = "  id= '" + id + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}
 
 	@Override
-	public LinkedList<Facility> getAllFacilities(boolean retrieveAssociation)
+	public LinkedList<Facility> getAllFacilities()
 	{
-		return miscWhere("", retrieveAssociation);
+		return miscWhere("");
 	}
 
 	@Override
-	public LinkedList<Facility> getFacilitiesForActivity(int activityId, boolean retrieveAssociation)
+	public LinkedList<Facility> getFacilitiesForActivity(int activityId)
 	{
 		String wClause = "  forActivity= '" + activityId + "'";
-		return miscWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause);
 	}
 
 	@Override
-	public Facility getFacilityByName(String name, boolean retrieveAssociation)
+	public Facility getFacilityByName(String name)
 	{
 		String wClause = "  name= '" + name + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}
 
 	@Override
 	public int insertFacility(Facility facility) throws Exception
 	{
+		//call to get the next facility id
+		int nextFacilityId = GetMax.getMaxId("SELECT MAX(id) FROM Facility");
+		nextFacilityId = nextFacilityId + 1;
+		System.out.println("Next facility id = " + nextFacilityId);
+		
 		int result = -1;
 		Facility facilityObj =facility;
 		ActivityType activityTypeObj = facilityObj.getActivity();
@@ -172,9 +152,10 @@ public class DBFacility implements IFDBFacility
 		
 		if(activityTypeObj!=null)
 		{
-			query = "INSERT INTO Facility(name, forActivity, status) VALUES ('" +
+			query = "INSERT INTO Facility(id, name, forActivity, status) VALUES ('" +
+		nextFacilityId + "','" +
 					facility.getName() + "','" +
-			facility.getActivity().getID() + "','" +
+		facility.getActivity().getID() + "','" +
 					facility.getStatus() + "')";
 		}
 		else
@@ -182,19 +163,20 @@ public class DBFacility implements IFDBFacility
 			System.out.println("Error! An inserted value may be invalid.");
 		}
 		System.out.println("Insertion query: " + query);
-	    try
-	    {
-	    	Statement stmt = con.createStatement();
-	    	stmt.setQueryTimeout(5);
-	    	result = stmt.executeUpdate(query);
-	    	stmt.close();
-	    }
-	    catch(SQLException e)
-	    {
-	    	System.out.println("Insert exception: " + e);
-	    }
-	    
-	    return(result);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Insert exception: " + e);
+		}
+		
+		return(result);
 	}
 
 	@Override
@@ -207,15 +189,11 @@ public class DBFacility implements IFDBFacility
 		
 		if(activityTypeObj != null)
 		{
-			query="UPDATE Facility SET " + 
+			query="UPDATE Facility SET " +
 		"name= '" + facilityObj.getName() + "', " +
 					"forActivity= '" + facilityObj.getActivity().getID() + "', " +
-		"status= '" + facilityObj.getStatus() + "' " + 
+		"status= '" + facilityObj.getStatus() + "' " +
 					"WHERE id= '" + facilityObj.getId() + "'";
-		}
-		else
-		{
-			System.out.println("Error! An inserted value may be invalid.");
 		}
 		
 		int result=-1;
@@ -223,10 +201,10 @@ public class DBFacility implements IFDBFacility
 		
 		try
 		{
-			Statement stmt = con.createStatement();		
-	 		stmt.setQueryTimeout(5);
-	 	 	result = stmt.executeUpdate(query);
-	 	 	stmt.close();
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
 		}
 		catch(SQLException e)
 		{
@@ -240,28 +218,29 @@ public class DBFacility implements IFDBFacility
 	public int deleteFacility(int id)
 	{
 		int result=-1;
-		  
-	  	String query="DELETE FROM Facility WHERE id= '" + id + "'";
-	  	System.out.println("Delete query: " + query);
-	  	try
-	  	{
-	  		Statement stmt = con.createStatement();
-	 		stmt.setQueryTimeout(5);
-	 	  	result = stmt.executeUpdate(query);
-	 	  	stmt.close();	  		
-	  	}
-	  	catch(SQLException e)
-	  	{
-	  		System.out.println("Delete exception: " + e);
-	  	}
-	  	
-	  	return(result);
+		
+		String query="DELETE FROM Facility WHERE id= '" + id + "'";
+		System.out.println("Delete query: " + query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			result = stmt.executeUpdate(query);
+			stmt.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Delete exception: " + e);
+		}
+		
+		return(result);
 	}
 
 	@Override
-	public LinkedList<Facility> getAvailableFacilitiesForActivity(int activityId, String status, boolean retrieveAssociation) 
+	public LinkedList<Facility> getAvailableFacilitiesForActivity(int activityId, String status) 
 	{
 		String wClause = "  forActivity= '" + activityId + "' AND status='" + status + "'";
-		return miscWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause);
 	}
 }

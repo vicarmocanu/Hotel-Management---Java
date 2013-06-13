@@ -15,7 +15,7 @@ public class ActivityCtr
 	{
 		IFDBActivityType dbActivity = new DBActivityType();
 		LinkedList<ActivityType> allActivityTypes = new LinkedList<ActivityType>();
-		allActivityTypes = dbActivity.getAllActivityTypes(false);
+		allActivityTypes = dbActivity.getAllActivityTypes();
 		return allActivityTypes;
 	}
 	
@@ -23,7 +23,7 @@ public class ActivityCtr
 	{
 		IFDBActivityType dbActivity = new DBActivityType();
 		ActivityType activityObj = new ActivityType();
-		activityObj=dbActivity.getActivityTypeByID(id, false);
+		activityObj=dbActivity.getActivityTypeByID(id);
 		return activityObj;
 	}
 	
@@ -31,7 +31,7 @@ public class ActivityCtr
 	{
 		IFDBActivityType dbActivity = new DBActivityType();
 		ActivityType activityObj = new ActivityType();
-		activityObj = dbActivity.getActivityTypeByName(name, false);
+		activityObj = dbActivity.getActivityTypeByName(name);
 		return activityObj;
 	}
 	

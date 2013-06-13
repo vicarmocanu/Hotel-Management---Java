@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Controller.DateCheck;
 import Controller.GuestCtr;
 import Controller.TeamCtr;
 import Model.Guest;
@@ -32,6 +33,7 @@ public class GuestMenu
 	private int universalId;
 	private TeamCtr teamCtr = new TeamCtr();
 	private GuestCtr guestCtr = new GuestCtr();
+	private DateCheck dateCheck = new DateCheck();
 	
 	private JFrame frame;
 	private JTable teamTable;
@@ -44,6 +46,9 @@ public class GuestMenu
 	private JLabel dinamicLabel;
 	private JComboBox<String> activityBookingAllTeamsComboBox;
 	private JComboBox<String> allTeamsComboBox;
+	private JComboBox<String> dayComboBox;
+	private JComboBox<String> monthComboBox;
+	private JComboBox<String> yearComboBox;
 
 	public GuestMenu()
 	{
@@ -110,7 +115,15 @@ public class GuestMenu
 		day.setLayout(null);
 		day.setBorder(new TitledBorder(null, "dd", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
-		JComboBox<String> dayComboBox = new JComboBox<String>();
+		dayComboBox = new JComboBox<String>();
+		LinkedList<String> days = new LinkedList<String>();
+		days = dateCheck.getDays();
+		for(String aDay : days)
+		{
+			String insertedDay = aDay;
+			dayComboBox.addItem(insertedDay);
+		}
+		dayComboBox.setSelectedItem(null);
 		dayComboBox.setBounds(6, 16, 45, 20);
 		day.add(dayComboBox);
 		
@@ -120,7 +133,15 @@ public class GuestMenu
 		month.setLayout(null);
 		month.setBorder(new TitledBorder(null, "MM", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
-		JComboBox<String> monthComboBox = new JComboBox<String>();
+		monthComboBox = new JComboBox<String>();
+		LinkedList<String> months = new LinkedList<String>();
+		months = dateCheck.getMonths();
+		for(String aMonth : months)
+		{
+			String insertedMonth = aMonth;
+			monthComboBox.addItem(insertedMonth);
+		}
+		monthComboBox.setSelectedItem(null);
 		monthComboBox.setBounds(6, 16, 45, 20);
 		month.add(monthComboBox);
 		
@@ -130,11 +151,26 @@ public class GuestMenu
 		year.setLayout(null);
 		year.setBorder(new TitledBorder(null, "yyyy", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
-		JComboBox<String> yearComboBox = new JComboBox<String>();
+		yearComboBox = new JComboBox<String>();
+		LinkedList<String> years = new LinkedList<String>();
+		years = dateCheck.getYears();
+		for(String aYear : years)
+		{
+			String insertedYear = aYear;
+			yearComboBox.addItem(insertedYear);
+		}
+		yearComboBox.setSelectedItem(null);
 		yearComboBox.setBounds(6, 16, 65, 20);
 		year.add(yearComboBox);
 		
 		JButton createActivityBookingButton = new JButton("Create");
+		createActivityBookingButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				
+			}
+		});
 		createActivityBookingButton.setBounds(4, 70, 225, 25);
 		activityBookingPanel.add(createActivityBookingButton);
 		createActivityBookingButton.setFont(new Font("Arial", Font.PLAIN, 11));
