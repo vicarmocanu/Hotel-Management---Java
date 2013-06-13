@@ -129,7 +129,14 @@ public class LoginMenu
 						}
 						else if(loginCtr.checkManager(universalId))
 						{
-							ManagerMainMenu.getInstance();
+							ManagerMenu managerMainMenu = new ManagerMenu();
+							personObj = dbPerson.searchPersonById(universalId, true);
+							String personName = personObj.getName();
+							managerMainMenu.setManagerName(personName);
+							
+							textField.setText("");
+							passwordField.setText("");
+							frame.dispose();
 						}
 					}
 				}
