@@ -46,13 +46,25 @@ public class ManagerMenu
 	private JTable activityTypeTable;
 	private JTextField travelAgencyCVRTextField;
 	private JTextField travelAgencyNameTextField;
-	private JTextField travelAgencyTextField;
+	private JTextField travelAgencyCityTextField;
 	private JTextField travelAgencyCountryTextField;
 	private JTextField travelAgencyZipcodeTextField;
 	private JTextField travelAgencyAddressTextField;
 	private JTextField travelAgencyPhoneNoTextField;
 	private JTextField travelAgencyEmailTextField;
 	private JTable travelAgencyTable;
+	private JTextField guestIdTextField;
+	private JTextField guestNameTextLabel;
+	private JTextField guestCityTextField;
+	private JTextField guestCountryTextField;
+	private JTextField guestZipcodeTextField;
+	private JTextField guestAddressTextField;
+	private JTextField guestPhoneNoTextField;
+	private JTextField guestEmailTextField;
+	private JTextField guestPersonTypeTextField;
+	private JTextField guestPasswordTextField;
+	private JTextField guestGuestTypeTextField;
+	private JTable guestTable;
 
 	
 	public ManagerMenu()
@@ -103,6 +115,194 @@ public class ManagerMenu
 		
 		JPanel GuestPanel = new JPanel();
 		tabbedPane.addTab("Guest menu", null, GuestPanel, null);
+		GuestPanel.setLayout(null);
+		
+		JPanel guestAttributesPanel = new JPanel();
+		guestAttributesPanel.setBorder(new TitledBorder(null, "Guest attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		guestAttributesPanel.setBounds(6, 11, 768, 93);
+		GuestPanel.add(guestAttributesPanel);
+		guestAttributesPanel.setLayout(null);
+		
+		JLabel guestIdLabel = new JLabel("Id:");
+		guestIdLabel.setBounds(6, 19, 46, 14);
+		guestAttributesPanel.add(guestIdLabel);
+		guestIdLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestIdTextField = new JTextField();
+		guestIdTextField.setBounds(70, 16, 80, 20);
+		guestAttributesPanel.add(guestIdTextField);
+		guestIdTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestIdTextField.setColumns(10);
+		
+		JLabel guestNameLabel = new JLabel("Name:");
+		guestNameLabel.setBounds(160, 19, 46, 14);
+		guestAttributesPanel.add(guestNameLabel);
+		guestNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestNameTextLabel = new JTextField();
+		guestNameTextLabel.setBounds(240, 16, 80, 20);
+		guestAttributesPanel.add(guestNameTextLabel);
+		guestNameTextLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestNameTextLabel.setColumns(10);
+		
+		JLabel guestCityLabel = new JLabel("City:");
+		guestCityLabel.setBounds(330, 19, 86, 14);
+		guestAttributesPanel.add(guestCityLabel);
+		guestCityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestCityTextField = new JTextField();
+		guestCityTextField.setBounds(372, 16, 80, 20);
+		guestAttributesPanel.add(guestCityTextField);
+		guestCityTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCityTextField.setColumns(10);
+		
+		JLabel guestCountryLabel = new JLabel("Country:");
+		guestCountryLabel.setBounds(462, 19, 86, 14);
+		guestAttributesPanel.add(guestCountryLabel);
+		guestCountryLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestCountryTextField = new JTextField();
+		guestCountryTextField.setBounds(531, 16, 80, 20);
+		guestAttributesPanel.add(guestCountryTextField);
+		guestCountryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCountryTextField.setColumns(10);
+		
+		JLabel guestZipcodeLabel = new JLabel("Zipcode:");
+		guestZipcodeLabel.setBounds(621, 19, 86, 14);
+		guestAttributesPanel.add(guestZipcodeLabel);
+		guestZipcodeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestZipcodeTextField = new JTextField();
+		guestZipcodeTextField.setBounds(682, 16, 80, 20);
+		guestAttributesPanel.add(guestZipcodeTextField);
+		guestZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestZipcodeTextField.setColumns(10);
+		
+		JLabel guestAddressLabel = new JLabel("Address:");
+		guestAddressLabel.setBounds(6, 44, 86, 14);
+		guestAttributesPanel.add(guestAddressLabel);
+		guestAddressLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestAddressTextField = new JTextField();
+		guestAddressTextField.setBounds(70, 41, 80, 20);
+		guestAttributesPanel.add(guestAddressTextField);
+		guestAddressTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestAddressTextField.setColumns(10);
+		
+		JLabel guestPhoneNoLabel = new JLabel("Phone no:");
+		guestPhoneNoLabel.setBounds(160, 44, 86, 14);
+		guestAttributesPanel.add(guestPhoneNoLabel);
+		guestPhoneNoLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestPhoneNoTextField = new JTextField();
+		guestPhoneNoTextField.setBounds(240, 41, 80, 20);
+		guestAttributesPanel.add(guestPhoneNoTextField);
+		guestPhoneNoTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPhoneNoTextField.setColumns(10);
+		
+		JLabel guestEmailLabel = new JLabel("E-mail:");
+		guestEmailLabel.setBounds(330, 44, 86, 14);
+		guestAttributesPanel.add(guestEmailLabel);
+		guestEmailLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestEmailTextField = new JTextField();
+		guestEmailTextField.setBounds(372, 41, 80, 20);
+		guestAttributesPanel.add(guestEmailTextField);
+		guestEmailTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestEmailTextField.setColumns(10);
+		
+		JLabel guestPersonTypeLabel = new JLabel("Person type:");
+		guestPersonTypeLabel.setBounds(462, 44, 86, 14);
+		guestAttributesPanel.add(guestPersonTypeLabel);
+		guestPersonTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestPersonTypeTextField = new JTextField();
+		guestPersonTypeTextField.setBounds(531, 41, 80, 20);
+		guestAttributesPanel.add(guestPersonTypeTextField);
+		guestPersonTypeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPersonTypeTextField.setColumns(10);
+		
+		JLabel guestPasswordLabel = new JLabel("Password:");
+		guestPasswordLabel.setBounds(621, 44, 86, 14);
+		guestAttributesPanel.add(guestPasswordLabel);
+		guestPasswordLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestPasswordTextField = new JTextField();
+		guestPasswordTextField.setBounds(682, 41, 80, 20);
+		guestAttributesPanel.add(guestPasswordTextField);
+		guestPasswordTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPasswordTextField.setColumns(10);
+		
+		JLabel guestGuestTypeLabel = new JLabel("Guest type:");
+		guestGuestTypeLabel.setBounds(6, 69, 86, 14);
+		guestAttributesPanel.add(guestGuestTypeLabel);
+		guestGuestTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		guestGuestTypeTextField = new JTextField();
+		guestGuestTypeTextField.setBounds(70, 66, 80, 20);
+		guestAttributesPanel.add(guestGuestTypeTextField);
+		guestGuestTypeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestGuestTypeTextField.setColumns(10);
+		
+		JLabel guestTravelAgencyLabel = new JLabel("Travel agency:");
+		guestTravelAgencyLabel.setBounds(160, 69, 86, 14);
+		guestAttributesPanel.add(guestTravelAgencyLabel);
+		guestTravelAgencyLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JComboBox guestTravelAgencyComboBox = new JComboBox();
+		guestTravelAgencyComboBox.setBounds(240, 66, 122, 20);
+		guestAttributesPanel.add(guestTravelAgencyComboBox);
+		
+		JPanel guestOptionsMenu = new JPanel();
+		guestOptionsMenu.setLayout(null);
+		guestOptionsMenu.setBorder(new TitledBorder(null, "Guest options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		guestOptionsMenu.setBounds(6, 108, 104, 192);
+		GuestPanel.add(guestOptionsMenu);
+		
+		JButton guestSearchButton = new JButton("Search");
+		guestSearchButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+		});
+		guestSearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestSearchButton.setBounds(6, 16, 90, 25);
+		guestOptionsMenu.add(guestSearchButton);
+		
+		JButton guestCreateButton = new JButton("Create");
+		guestCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCreateButton.setBounds(6, 52, 90, 25);
+		guestOptionsMenu.add(guestCreateButton);
+		
+		JButton guestUpdateButton = new JButton("Update");
+		guestUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestUpdateButton.setBounds(6, 88, 90, 25);
+		guestOptionsMenu.add(guestUpdateButton);
+		
+		JButton guestDeleteButton = new JButton("Delete");
+		guestDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestDeleteButton.setBounds(6, 124, 90, 25);
+		guestOptionsMenu.add(guestDeleteButton);
+		
+		JButton guestAllButton = new JButton("All");
+		guestAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestAllButton.setBounds(6, 160, 90, 25);
+		guestOptionsMenu.add(guestAllButton);
+		
+		JButton guestClearAllButton = new JButton("Clear all");
+		guestClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestClearAllButton.setBounds(6, 311, 104, 25);
+		GuestPanel.add(guestClearAllButton);
+		
+		JScrollPane guestTableScrollPane = new JScrollPane();
+		guestTableScrollPane.setBounds(120, 115, 695, 304);
+		GuestPanel.add(guestTableScrollPane);
+		
+		guestTable = new JTable();
+		guestTable.setFillsViewportHeight(true);
+		guestTableScrollPane.setViewportView(guestTable);
 		
 		JPanel TravelAgencyPanel = new JPanel();
 		tabbedPane.addTab("Travel agency menu", null, TravelAgencyPanel, null);
@@ -120,6 +320,7 @@ public class ManagerMenu
 		travelAgencyCVRLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyCVRTextField = new JTextField();
+		travelAgencyCVRTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyCVRTextField.setBounds(57, 16, 80, 20);
 		travelAgencyAttributesPanel.add(travelAgencyCVRTextField);
 		travelAgencyCVRTextField.setColumns(10);
@@ -130,6 +331,7 @@ public class ManagerMenu
 		travelAgencyNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyNameTextField = new JTextField();
+		travelAgencyNameTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyNameTextField.setBounds(201, 16, 80, 20);
 		travelAgencyAttributesPanel.add(travelAgencyNameTextField);
 		travelAgencyNameTextField.setColumns(10);
@@ -139,10 +341,11 @@ public class ManagerMenu
 		travelAgencyAttributesPanel.add(travelAgencyCityLabel);
 		travelAgencyCityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		travelAgencyTextField = new JTextField();
-		travelAgencyTextField.setBounds(341, 16, 80, 20);
-		travelAgencyAttributesPanel.add(travelAgencyTextField);
-		travelAgencyTextField.setColumns(10);
+		travelAgencyCityTextField = new JTextField();
+		travelAgencyCityTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		travelAgencyCityTextField.setBounds(341, 16, 80, 20);
+		travelAgencyAttributesPanel.add(travelAgencyCityTextField);
+		travelAgencyCityTextField.setColumns(10);
 		
 		JLabel travelAgencyCountryLabel = new JLabel("Country:");
 		travelAgencyCountryLabel.setBounds(431, 19, 86, 14);
@@ -150,6 +353,7 @@ public class ManagerMenu
 		travelAgencyCountryLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyCountryTextField = new JTextField();
+		travelAgencyCountryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyCountryTextField.setBounds(481, 16, 80, 20);
 		travelAgencyAttributesPanel.add(travelAgencyCountryTextField);
 		travelAgencyCountryTextField.setColumns(10);
@@ -160,6 +364,7 @@ public class ManagerMenu
 		travelAgencyZipcodeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyZipcodeTextField = new JTextField();
+		travelAgencyZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyZipcodeTextField.setBounds(57, 41, 80, 20);
 		travelAgencyAttributesPanel.add(travelAgencyZipcodeTextField);
 		travelAgencyZipcodeTextField.setColumns(10);
@@ -170,6 +375,7 @@ public class ManagerMenu
 		travelAgencyAddressLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyAddressTextField = new JTextField();
+		travelAgencyAddressTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyAddressTextField.setBounds(201, 41, 80, 20);
 		travelAgencyAttributesPanel.add(travelAgencyAddressTextField);
 		travelAgencyAddressTextField.setColumns(10);
@@ -180,6 +386,7 @@ public class ManagerMenu
 		travelAgencyPhoneNoLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyPhoneNoTextField = new JTextField();
+		travelAgencyPhoneNoTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyPhoneNoTextField.setBounds(341, 41, 80, 20);
 		travelAgencyAttributesPanel.add(travelAgencyPhoneNoTextField);
 		travelAgencyPhoneNoTextField.setColumns(10);
@@ -190,6 +397,7 @@ public class ManagerMenu
 		travelAgencyEmailLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyEmailTextField = new JTextField();
+		travelAgencyEmailTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyEmailTextField.setBounds(481, 41, 80, 20);
 		travelAgencyAttributesPanel.add(travelAgencyEmailTextField);
 		travelAgencyEmailTextField.setColumns(10);
@@ -201,6 +409,10 @@ public class ManagerMenu
 		TravelAgencyPanel.add(travelAgencyOptionsPanel);
 		
 		JButton travelAgencySearchButton = new JButton("Search");
+		travelAgencySearchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		travelAgencySearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencySearchButton.setBounds(6, 16, 134, 25);
 		travelAgencyOptionsPanel.add(travelAgencySearchButton);
