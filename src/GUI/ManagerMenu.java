@@ -40,6 +40,10 @@ public class ManagerMenu
 	private JComboBox<String> statusComboBox;
 	private JTable facilityTable;
 	private JScrollPane facilityTableScrollPane;
+	private JTextField activityTypeIdTextField;
+	private JTextField activityTypeNameTextField;
+	private JTextField maxParticipantsTextField;
+	private JTable activityTypeTable;
 
 	
 	public ManagerMenu()
@@ -90,6 +94,212 @@ public class ManagerMenu
 		
 		JPanel ActivityTypePanel = new JPanel();
 		tabbedPane.addTab("Activity type menu", null, ActivityTypePanel, null);
+		ActivityTypePanel.setLayout(null);
+		
+		JPanel activityTypeAttributesPanel = new JPanel();
+		activityTypeAttributesPanel.setBorder(new TitledBorder(null, "Activity type attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		activityTypeAttributesPanel.setBounds(30, 19, 636, 43);
+		ActivityTypePanel.add(activityTypeAttributesPanel);
+		activityTypeAttributesPanel.setLayout(null);
+		
+		JLabel activityTypeIdLabel = new JLabel("Activity type id:");
+		activityTypeIdLabel.setBounds(6, 19, 86, 14);
+		activityTypeAttributesPanel.add(activityTypeIdLabel);
+		activityTypeIdLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		activityTypeIdTextField = new JTextField();
+		activityTypeIdTextField.setBounds(93, 16, 50, 20);
+		activityTypeAttributesPanel.add(activityTypeIdTextField);
+		activityTypeIdTextField.setColumns(10);
+		
+		JLabel activityTypeNameLabel = new JLabel("Activity type name:");
+		activityTypeNameLabel.setBounds(153, 19, 127, 14);
+		activityTypeAttributesPanel.add(activityTypeNameLabel);
+		activityTypeNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		activityTypeNameTextField = new JTextField();
+		activityTypeNameTextField.setBounds(255, 16, 180, 20);
+		activityTypeAttributesPanel.add(activityTypeNameTextField);
+		activityTypeNameTextField.setColumns(10);
+		
+		JLabel maxParticipantsLabel = new JLabel("Maximum participants:");
+		maxParticipantsLabel.setBounds(445, 19, 127, 14);
+		activityTypeAttributesPanel.add(maxParticipantsLabel);
+		maxParticipantsLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		maxParticipantsTextField = new JTextField();
+		maxParticipantsTextField.setBounds(560, 16, 70, 20);
+		activityTypeAttributesPanel.add(maxParticipantsTextField);
+		maxParticipantsTextField.setColumns(10);
+		
+		JPanel activityTypesOptionsPanel = new JPanel();
+		activityTypesOptionsPanel.setLayout(null);
+		activityTypesOptionsPanel.setBorder(new TitledBorder(null, "Activity", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		activityTypesOptionsPanel.setBounds(30, 73, 150, 203);
+		ActivityTypePanel.add(activityTypesOptionsPanel);
+		
+		JButton activityTypeSearchButton = new JButton("Search");
+		activityTypeSearchButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(activityTypeIdTextField.getText().equals("")==true && activityTypeNameTextField.getText().equals("")==true)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted activity type.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					if(activityTypeNameTextField.getText().equals("") == true)
+					{
+						String stringActivityTypeId = activityTypeIdTextField.getText();
+						int activityTypeId = Integer.parseInt(stringActivityTypeId);
+						
+						ActivityType activityTypeObj = new ActivityType();
+						activityTypeObj = activityTypeCtr.getActivityTypeByID(activityTypeId);
+						
+						if(activityTypeObj.getID() == 0)
+						{
+							JOptionPane.showMessageDialog(null, "There is no activity type by this id. Please insert a valid activity type id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							String activityTypeName = activityTypeObj.getName();
+							int maxParticipants = activityTypeObj.getMaxParticipants();
+							String stringMaxParticipants = String.valueOf(maxParticipants);
+							
+							activityTypeIdTextField.setText(stringActivityTypeId);
+							activityTypeNameTextField.setText(activityTypeName);
+							maxParticipantsTextField.setText(stringMaxParticipants);
+						}
+					}
+					else
+					{
+						if(activityTypeIdTextField.getText().equals("") == true)
+						{
+							String activityTypeName = activityTypeNameTextField.getText();
+							
+							ActivityType activityTypeObj = new ActivityType();
+							activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
+							
+							if(activityTypeObj.getID() == 0)
+							{
+								JOptionPane.showMessageDialog(null, "There is no activity type by this name. Please insert a valid activity type name.", "Error!", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								int activityTypeId = activityTypeObj.getID();
+								String stringActivityTypeId = String.valueOf(activityTypeId);
+								int maxParticipants = activityTypeObj.getMaxParticipants();
+								String stringMaxParticipants = String.valueOf(maxParticipants);
+								
+								activityTypeIdTextField.setText(stringActivityTypeId);
+								activityTypeNameTextField.setText(activityTypeName);
+								maxParticipantsTextField.setText(stringMaxParticipants);
+							}
+						}
+						else
+						{
+							if(activityTypeIdTextField.getText().equals("") != true && activityTypeNameTextField.getText().equals("") != true)
+							{
+								String stringActivityTypeId = activityTypeIdTextField.getText();
+								int activityTypeId = Integer.parseInt(stringActivityTypeId);
+								
+								ActivityType activityTypeObj = new ActivityType();
+								activityTypeObj = activityTypeCtr.getActivityTypeByID(activityTypeId);
+								
+								if(activityTypeObj.getID() == 0)
+								{
+									JOptionPane.showMessageDialog(null, "There is no activity type by this id. Please insert a valid activity type id.", "Error!", JOptionPane.ERROR_MESSAGE);
+								}
+								else
+								{
+									String activityTypeName = activityTypeObj.getName();
+									int maxParticipants = activityTypeObj.getMaxParticipants();
+									String stringMaxParticipants = String.valueOf(maxParticipants);
+									
+									activityTypeIdTextField.setText(stringActivityTypeId);
+									activityTypeNameTextField.setText(activityTypeName);
+									maxParticipantsTextField.setText(stringMaxParticipants);
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		activityTypeSearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		activityTypeSearchButton.setBounds(6, 24, 134, 25);
+		activityTypesOptionsPanel.add(activityTypeSearchButton);
+		
+		JButton activityTypeCreateButton = new JButton("Create");
+		activityTypeCreateButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(activityTypeNameTextField.getText().equals("") == true || maxParticipantsTextField.getText().equals("") == true)
+				{
+					JOptionPane.showMessageDialog(null, "A activity type attribute might be missing. Please insert all needed activity type attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String activityTypeName = activityTypeNameTextField.getText();
+					String stringMaxParticipants = maxParticipantsTextField.getText();
+					int maxParticipants = Integer.parseInt(stringMaxParticipants);
+					if(activityTypeCtr.getActivityTypeByName(activityTypeName).getID() != 0)
+					{
+						JOptionPane.showMessageDialog(null, "Cannot register the same activity type twice.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						activityTypeCtr.insertActivityType(activityTypeName, maxParticipants);
+						activityTypeComboBox.removeAllItems();
+						LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
+						allActivityTypesList = activityTypeCtr.getAllActivityTypes();
+						if(allActivityTypesList.isEmpty()==false)
+						{
+							for(ActivityType activityTypeObj : allActivityTypesList)
+							{
+								String comboBoxItem = activityTypeObj.getName();
+								activityTypeComboBox.addItem(comboBoxItem);
+							}
+						}
+						activityTypeComboBox.setSelectedItem(null);
+						JOptionPane.showMessageDialog(null, "Activity type successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		});
+		activityTypeCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		activityTypeCreateButton.setBounds(6, 60, 134, 25);
+		activityTypesOptionsPanel.add(activityTypeCreateButton);
+		
+		JButton activityTypeUpdateButton = new JButton("Update");
+		activityTypeUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		activityTypeUpdateButton.setBounds(6, 96, 134, 25);
+		activityTypesOptionsPanel.add(activityTypeUpdateButton);
+		
+		JButton activityTypeDeleteButton = new JButton("Delete");
+		activityTypeDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		activityTypeDeleteButton.setBounds(6, 132, 134, 25);
+		activityTypesOptionsPanel.add(activityTypeDeleteButton);
+		
+		JButton activityTypeAllButton = new JButton("All");
+		activityTypeAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		activityTypeAllButton.setBounds(6, 168, 134, 25);
+		activityTypesOptionsPanel.add(activityTypeAllButton);
+		
+		JScrollPane activityTypeTableScrollPane = new JScrollPane();
+		activityTypeTableScrollPane.setBounds(190, 73, 560, 240);
+		ActivityTypePanel.add(activityTypeTableScrollPane);
+		
+		activityTypeTable = new JTable();
+		activityTypeTable.setFillsViewportHeight(true);
+		activityTypeTableScrollPane.setViewportView(activityTypeTable);
+		
+		JButton activityTypeClearAllButton = new JButton("Clear all");
+		activityTypeClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		activityTypeClearAllButton.setBounds(30, 334, 134, 25);
+		ActivityTypePanel.add(activityTypeClearAllButton);
 		
 		JPanel FacilityPanel = new JPanel();
 		tabbedPane.addTab("Facility menu", null, FacilityPanel, null);
@@ -459,8 +669,8 @@ public class ManagerMenu
 		facilityTable.setFillsViewportHeight(true);
 		facilityTableScrollPane.setViewportView(facilityTable);
 		
-		JButton clearAllButton = new JButton("Clear all");
-		clearAllButton.addActionListener(new ActionListener()
+		JButton facilityClearAllButton = new JButton("Clear all");
+		facilityClearAllButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -468,9 +678,9 @@ public class ManagerMenu
 				clearFacilityTable();
 			}
 		});
-		clearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		clearAllButton.setBounds(29, 381, 134, 25);
-		FacilityPanel.add(clearAllButton);
+		facilityClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		facilityClearAllButton.setBounds(29, 381, 134, 25);
+		FacilityPanel.add(facilityClearAllButton);
 		frame.setUndecorated(true);
 	}
 	
