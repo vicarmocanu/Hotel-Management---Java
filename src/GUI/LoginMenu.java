@@ -20,7 +20,9 @@ import Model.Person;
 
 public class LoginMenu
 {
-	private JFrame frame;
+	private static LoginMenu instance = null;
+	
+	public JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	public int universalId;
@@ -53,6 +55,17 @@ public class LoginMenu
 	public LoginMenu()
 	{
 		initialize();
+	}
+	
+	//instance of login
+	public static LoginMenu getInstance()
+	{
+		if(instance==null)
+		{
+			instance = new LoginMenu();
+		}
+		return instance;
+		
 	}
 
 	/**
@@ -105,6 +118,10 @@ public class LoginMenu
 							String personName = personObj.getName();
 							guestMainMenu.setGuestName(personName);
 							guestMainMenu.setUniversalId(universalId);
+							
+							textField.setText("");
+							passwordField.setText("");
+							frame.dispose();
 						}	
 						else if(loginCtr.checkEmployee(universalId))
 						{
