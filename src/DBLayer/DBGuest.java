@@ -74,7 +74,8 @@ public class DBGuest implements IFDBGuest
 		else
 		{
 			query = "UPDATE Guest SET " +
-		"guestType= '" + guest.getGuestType() + "' " +
+		"guestType= '" + guest.getGuestType() + "', " +
+		"travelAgency=  '0' " +
 					"WHERE personId= '" + guest.getId() + "'";
 		}
 		
@@ -99,7 +100,7 @@ public class DBGuest implements IFDBGuest
 	{
 		int rc=-1;
 		  
-	  	String query="DELETE FROM Guest WHERE guestId= '" + guestId + "'";
+	  	String query="DELETE FROM Guest WHERE personId= '" + guestId + "'";
 	  	System.out.println("Delete query: " + query);
 	  	
 	  	try
@@ -242,18 +243,13 @@ public class DBGuest implements IFDBGuest
 		String wClause = " personId= '" + personId + "'";
 		return singleWhere(wClause);
 	}
-
-	
-	public Guest searchGuestByName(String name)
-	{
-		String wClause = " name= '" + name + "'";
-		return singleWhere(wClause);
-	}
 	
 	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation)
 	{
 		return singleWhere("personId=(SELECT guestId FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking " +
 				"WHERE arrivalDate<='"+date+" AND departureDate>='"+date+") AND roomNo='"+roomNo+"')");
 	}
+	
+	
 
 }

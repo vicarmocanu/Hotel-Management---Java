@@ -71,12 +71,17 @@ public class DBTravelAgency implements IFDBTravelAgency
 			{//location selection
 				IFDBLocation dbLocation = new DBLocation();
 				Location location = new Location();
-				location = dbLocation.searchLocationByZipCode(travelAgencyObj.getZipCode(), false);
+				location = dbLocation.getLocation(travelAgencyObj.getZipCode(), travelAgencyObj.getCountry());
 				if(location != null)
 				{
 					travelAgencyObj.setZipCode(location.getZipCode());
 					travelAgencyObj.setCountry(location.getCountry());
+					System.out.println("Location selection.");
 				}
+			}
+			else
+			{
+				travelAgencyObj =null;
 			}
 		}
 		catch (Exception e)
@@ -114,11 +119,12 @@ public class DBTravelAgency implements IFDBTravelAgency
 				for(TravelAgency travelAgencyObject : list)
 				{
 					Location location = new Location();
-					location = dbLocation.searchLocationByZipCode(travelAgencyObject.getZipCode(), false);
+					location = dbLocation.getLocation(travelAgencyObject.getZipCode(), travelAgencyObject.getCountry());
 					if(location != null)
 					{
 						travelAgencyObject.setZipCode(location.getZipCode());
 						travelAgencyObject.setCountry(location.getCountry());
+						System.out.println("Location selection.");
 					}
 				}
 			}

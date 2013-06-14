@@ -20,9 +20,15 @@ private Connection con;
 	
 	public int insertPerson(Person prs) throws Exception
 	{
-		String query = "INSERT INTO Person(id, name, zipcode, country, address, phoneNo, email, personType, password)" +
-				" VALUES('" +
-				prs.getId()+"','"+
+		//call to get the next person id
+		int nextPersonId = GetMax.getMaxId("SELECT MAX(id) FROM Person");
+		nextPersonId = nextPersonId + 1;
+		System.out.println("Next person id = " + nextPersonId);
+		
+		
+		String query = "INSERT INTO Person(id, name, zipcode, country, address, phoneNo, email, personType, password) VALUES('" +
+		
+				nextPersonId + "','" +
 				prs.getName()+"','"+
 				prs.getZipcode()+ "','"+
 				prs.getCountry()+"','"+
@@ -33,7 +39,7 @@ private Connection con;
 				prs.getPassword()+"')";
 		
 		int rc = -1;
-		System.out.println("Insert query: " + query);
+		System.out.println("Insertion query: " + query);
 		try
 		{
 			Statement stmt = con.createStatement();
@@ -43,8 +49,7 @@ private Connection con;
 		}
 		catch (SQLException ex)
 		{
-			System.out.println("Person is not inserted");
-	        throw new Exception ("Person is not inserted correctly!");
+			System.out.println("Insert exception: " + ex);
 		}
 		return rc;
 	}
@@ -74,7 +79,7 @@ private Connection con;
 		}
 		catch (Exception e)
 		{
-			System.out.println("Update exception in Person: " + e);
+			System.out.println("Update exception: " + e);
 		}
 		
 		return rc;
@@ -96,7 +101,7 @@ private Connection con;
 	 	  	stmt.close();
   		}
    	    catch(Exception ex){
-	 	  	System.out.println("Delete exception in Person: "+ex);
+	 	  	System.out.println("Delete exception: "+ex);
    	    }
 		return(rc);
 	}
@@ -132,7 +137,7 @@ private Connection con;
 		}
 		catch (Exception e)
 		{
-			System.out.println("Error in building the Person object!");
+			System.out.println("Exception in building the person object: " + e);
 		}
 		
 		return rbObj;
@@ -141,6 +146,7 @@ private Connection con;
 	private Person singleWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
+		
 		Person rbObj = new Person();
 		String query = buildQuery(wClause);
 		System.out.println("Query: "+query);
@@ -154,27 +160,29 @@ private Connection con;
 			if (results.next())
 			{
 				rbObj = buildPerson(results);				
-				System.out.println("Person build successfully!");
 				stmt.close();
-			}
-			
-			if(retrieveAssociation)
-			{//location selection
-				IFDBLocation dbLocation = new DBLocation();
-				Location location = new Location();
-				location = dbLocation.searchLocationByZipCode(rbObj.getZipcode(), false);
-				if(location != null)
-				{
-					rbObj.setZipcode(location.getZipCode());
-					rbObj.setCountry(location.getCountry());
-					System.out.println("Location selection.");
+				if(retrieveAssociation)
+				{//location selection
+					IFDBLocation dbLocation = new DBLocation();
+					Location location = new Location();
+					location = dbLocation.getLocation(rbObj.getZipcode(), rbObj.getCountry());
+					if(location != null)
+					{
+						rbObj.setZipcode(location.getZipCode());
+						rbObj.setCountry(location.getCountry());
+						System.out.println("Location selection.");
+					}
 				}
 				
+			}
+			else
+			{
+				rbObj = null;
 			}
 		}
 		catch (Exception e)
 		{
-			System.out.println("Query exception - select Person : "+e);
+			System.out.println("Single selection query exception: " + e);
 			e.printStackTrace();
 		}
 		
@@ -199,13 +207,14 @@ private Connection con;
 				list.add(rbObj);
 			}
 			stmt.close();
-			if(retrieveAssociation)
+			
+			if(retrieveAssociation == true)
 			{
 				IFDBLocation dbLocation = new DBLocation();
 				for(Person personObj : list)
 				{
 					Location location = new Location();
-					location = dbLocation.searchLocationByZipCode(personObj.getZipcode(), false);
+					location = dbLocation.getLocation(personObj.getZipcode(), personObj.getCountry());
 					if(location != null)
 					{
 						personObj.setZipcode(location.getZipCode());
@@ -216,28 +225,63 @@ private Connection con;
 			}
 			
 		}
-		catch (Exception e) {
-			System.out.println("Query exception - select Person : "+e);
+		catch (Exception e)
+		{
+			System.out.println("Multiple query selection exception: "+e);
 			e.printStackTrace();
 		}
 		return list;
 	}
 	
-	public LinkedList<Person> getAllPerson(boolean retriveAssociation) {
+	public LinkedList<Person> getAllPerson(boolean retriveAssociation)
+	{
 		return miscWhere("", retriveAssociation);
 	}
 
 	public Person searchPersonById(int id,
-			boolean retriveAssociation) {
+			boolean retriveAssociation)
+	{
 		String wClause = " id= '" + id + "'";
 		return singleWhere(wClause, retriveAssociation);
 	}
 
 	
-	public Person searchPersonByName(String name, boolean retriveAssociation) {
-		String wClause = " name= " + name + ",";
-		System.out.println("Person " + wClause);
+	public Person searchPersonByName(String name, boolean retriveAssociation)
+	{
+		String wClause = " name= '" + name + "'";
 		return singleWhere(wClause, retriveAssociation);
+	}
+	
+	@Override
+	public int getPersonInstances(int id, String name, int zipcode, String country, String address)
+	{
+		int instances = 0;
+		
+		ResultSet results;
+		
+		String query = "SELECT COUNT(*) AS personInstances FROM Person " + 
+		" WHERE id<> '" +  id + "' AND name= '" + name + "' AND zipcode= '" + zipcode + 
+		"' AND country= '" + country + "' AND address= '" + address + "'";
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);
+			
+			while( results.next() )
+			{
+				instances = results.getInt("personInstances");
+				System.out.println("Person instances: " + instances);
+			}
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the person instance count: " + e);
+		}
+		return instances;
 	}
 
 }

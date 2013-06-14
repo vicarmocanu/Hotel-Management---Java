@@ -21,23 +21,15 @@ public class GuestCtr
 	{
 		IFDBGuest dbGuest = new DBGuest();
 		LinkedList<Guest> guestList = new LinkedList<Guest>();
-		guestList = dbGuest.getAllGuests(true);
+		guestList = dbGuest.getAllGuests();
 		return guestList;
-	}
-	
-	public Guest searchGuestByName(String name)
-	{
-		IFDBGuest dbGuest = new DBGuest();
-		Guest guestObj = new Guest();
-		guestObj = dbGuest.searchGuestByName(name, true);
-		return guestObj;
 	}
 	
 	public Guest searchGuestById(int personId)
 	{
 		IFDBGuest dbGuest = new DBGuest();
 		Guest guestObj = new Guest();
-		guestObj = dbGuest.searchGuestById(personId, true);
+		guestObj = dbGuest.searchGuestById(personId);
 		return guestObj;
 	}
 	
@@ -50,35 +42,11 @@ public class GuestCtr
 		return guestObj;
 	}
 	
-	public void insertGuest(String name, String address, int zipcode,
-				String country, String phoneNo, String email, 
-				String password, String guestType, int travelAgencyCVR)
+	public void insertGuest(String guestName, int travelAgencyCVR, String guestType)
 	{
-		Person personObj = new Person();
-		personObj.setName(name);
-		personObj.setAddress(address);
-		personObj.setZipcode(zipcode);
-		personObj.setCountry(country);
-		personObj.setPhoneNo(phoneNo);
-		personObj.setEmail(email);
-		personObj.setPersonType("Guest");
-		personObj.setPassword(password);
-		
-		try
-		{
-			DBConnection1.startTransaction();
-			DBPerson dbPerson = new DBPerson();
-			dbPerson.insertPerson(personObj);
-			DBConnection1.commitTransaction();
-		}
-		catch(Exception e)
-		{
-			DBConnection1.rollbackTransaction();
-		}
-		
 		IFDBPerson dbPerson = new DBPerson();
 		Person personReferenceObj = new Person();
-		personReferenceObj = dbPerson.searchPersonByName(name, true);
+		personReferenceObj = dbPerson.searchPersonByName(guestName, true);
 		int referenceId = personReferenceObj.getId();
 		
 		Guest guestObj = new Guest();
@@ -87,9 +55,14 @@ public class GuestCtr
 		
 		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
 		TravelAgency travelAgencyObj = new TravelAgency();
-		travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(travelAgencyCVR, true);
-		if(travelAgencyObj != null)
+		if(travelAgencyCVR == 0)
 		{
+			travelAgencyObj = null;
+			guestObj.setTravelAgency(travelAgencyObj);
+		}
+		else
+		{
+			travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(travelAgencyCVR, true);
 			guestObj.setTravelAgency(travelAgencyObj);
 		}
 		
@@ -116,9 +89,14 @@ public class GuestCtr
 		
 		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
 		TravelAgency travelAgencyObj = new TravelAgency();
-		travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(travelAgencyCVR, true);
-		if(travelAgencyObj != null)
+		if(travelAgencyCVR == 0)
 		{
+			travelAgencyObj = null;
+			guestObj.setTravelAgency(travelAgencyObj);
+		}
+		else
+		{
+			travelAgencyObj = dbTravelAgency.getTravelAgencyByCVR(travelAgencyCVR, true);
 			guestObj.setTravelAgency(travelAgencyObj);
 		}
 		

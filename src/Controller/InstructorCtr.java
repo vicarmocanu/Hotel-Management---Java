@@ -85,7 +85,7 @@ public class InstructorCtr
 		
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
-		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId, false);
+		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
 		if(activityTypeObj != null)
 		{
 			instructorObj.setActivityType(activityTypeObj);
@@ -99,7 +99,7 @@ public class InstructorCtr
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
-		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId, false);
+		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
 		
 		Instructor instructorObj = new Instructor();
 		instructorObj.setId(id);

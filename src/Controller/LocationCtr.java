@@ -7,20 +7,21 @@ import DBLayer.DBLocation;
 import DBLayer.IFDBLocation;
 import Model.Location;
 
-public class LocationCtr {
-	
-	public Location searchLocationByCity(String city, boolean retriveAssociation)
+public class LocationCtr
+{
+	public Location getLocation(int zipcode, String country)
 	{
 		IFDBLocation dbLocation = new DBLocation();
 		Location locationObj = new Location();
-		locationObj = dbLocation.searchLocationByCity(city, true);
+		locationObj = dbLocation.getLocation(zipcode, country);
 		return locationObj;
 	}
-	public Location searchLocationByZipCode(int zipCode,boolean retriveAssociation)
+	
+	public Location getCompleteLocation(int zipcode, String country, String city)
 	{
 		IFDBLocation dbLocation = new DBLocation();
 		Location locationObj = new Location();
-		locationObj = dbLocation.searchLocationByZipCode(zipCode, true);
+		locationObj = dbLocation.getCompleteLocation(zipcode, country, city);
 		return locationObj;
 	}
 	
@@ -28,21 +29,21 @@ public class LocationCtr {
 	{
 		IFDBLocation dbLocation = new DBLocation();
 		LinkedList<Location> locationList = new LinkedList<Location>();
-		locationList = dbLocation.getAllLocation(true);
+		locationList = dbLocation.getAllLocations();
 		return locationList;
 	}
 	
-	public int deleteLocation(int loczipCode)
+	public int deleteLocation(int zipcode, String country)
 	{
 		IFDBLocation dbLocation = new DBLocation();
-		return dbLocation.deleteLocation(loczipCode);
+		return dbLocation.deleteLocation(zipcode, country);
 	}
 	
 	public int updateLocation(int zipCode, String country, String city)
 	{
 		IFDBLocation dbLocation = new DBLocation();
 		Location locationObj = new Location();
-		locationObj = dbLocation.searchLocationByZipCode(zipCode, true);
+		locationObj = dbLocation.getLocation(zipCode, country);
 		locationObj.setZipCode(zipCode);
 		locationObj.setCountry(country);
 		locationObj.setCity(city);

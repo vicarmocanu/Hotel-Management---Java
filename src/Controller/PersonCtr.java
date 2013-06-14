@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.LinkedList;
+
 import DBLayer.DBConnection1;
 import DBLayer.DBPerson;
 import DBLayer.IFDBPerson;
@@ -81,4 +82,34 @@ public class PersonCtr
 		 IFDBPerson dbPerson = new DBPerson();
 		 return dbPerson.deletePerson(id);
 	 }
+	 
+	 public String getPersonPassword(String name, String zipcode, String country, String address)
+	 {
+		 String step1 = name.substring(0, 1);
+		 String step2 = zipcode.substring(0, 3);
+		 String step3 = country.substring(0, 2);
+		 String step4 = address.substring(0, 2);
+		 String endPassword = step1 + step2 + step3 + step4;
+		 return endPassword;
+	}
+	 
+	public boolean checkGuestInstanceCount(int id, String name, int zipcode, String country, String address)
+	{
+		boolean check = false;
+		int instances = 0;
+		
+		IFDBPerson dbPerson = new DBPerson();
+		instances = dbPerson.getPersonInstances(id, name, zipcode, country, address);
+		
+		if(instances == 0)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+		}
+		
+		return check;
+	}
 }

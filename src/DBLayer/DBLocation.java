@@ -25,7 +25,9 @@ private Connection con;
 				loc.getCity()+"')";
 		
 		int rc = -1;
+		
 		System.out.println("Insert query: " + query);
+		
 		try
 		{
 			Statement stmt = con.createStatement();
@@ -66,12 +68,12 @@ private Connection con;
 		return rc;
 	}
 
-	
-	public int deleteLocation(int loczipCode)
+	@Override
+	public int deleteLocation(int zipcode, String country)
 	{
 		int rc=-1;
 		  
-	  	String query="DELETE FROM Location WHERE zipCode = '" + loczipCode + "'";
+	  	String query="DELETE FROM Location WHERE zipCode= '" + zipcode + "' AND country= '" + country + "'";
 	  	System.out.println("Delete query: " + query);
 	  	
 	  	try
@@ -105,9 +107,10 @@ private Connection con;
 	
 	private Location buildLocation(ResultSet results)
 	{
-		Location rbObj = new Location();		
+		Location rbObj = new Location();
 		
-		try {
+		try
+		{
 			rbObj.setZipCode(results.getInt("zipcode"));
 			rbObj.setCountry(results.getString("country"));
 			rbObj.setCity(results.getString("city"));
@@ -121,9 +124,10 @@ private Connection con;
 		return rbObj;
 	}
 	
-	private Location singleWhere(String wClause, boolean retrieveAssociation)
+	private Location singleWhere(String wClause)
 	{
 		ResultSet results;
+		
 		Location rbObj = new Location();
 		String query = buildQuery(wClause);
 		System.out.println("Query: "+query);
@@ -153,9 +157,10 @@ private Connection con;
 		return rbObj;
 	}
 	
-	private LinkedList<Location> miscWhere(String wClause, boolean retrieveAssiciation)
+	private LinkedList<Location> miscWhere(String wClause)
 	{
 		ResultSet results;
+		
 		LinkedList<Location> list = new LinkedList<Location>();
 		String query = buildQuery(wClause);
 		System.out.println("Query: "+query);
@@ -182,21 +187,22 @@ private Connection con;
 		return list;
 	}
 	
-	public LinkedList<Location> getAllLocation(boolean retriveAssociation)
+	public LinkedList<Location> getAllLocations()
 	{
-		return miscWhere("", retriveAssociation);
+		return miscWhere("");
 	}
-
-	public Location searchLocationByZipCode(int zipCode, boolean retriveAssociation)
-	{
-		String wClause = " zipCode= '" + zipCode + "'";
-		return singleWhere(wClause, retriveAssociation);
-	}
-
 	
-	public Location searchLocationByCity(String city, boolean retriveAssociation)
+	@Override
+	public Location getLocation(int zipcode, String country)
 	{
-		String wClause = "city= '" + city + "'";
-		return singleWhere(wClause, retriveAssociation);
+		String wClause = " zipcode= '" + zipcode + "' AND country= '" + country + "'";
+		return singleWhere(wClause);
+	}
+
+	@Override
+	public Location getCompleteLocation(int zipcode, String country, String city)
+	{
+		String wClause = " zipcode= '" + zipcode + "' AND country= '" + country + "' AND city= '" + city + "'";
+		return singleWhere(wClause);
 	}
 }
