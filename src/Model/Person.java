@@ -1,6 +1,7 @@
 package Model;
 
-public class Person {
+public class Person
+{
 	private int id;
 	private String name;
 	private int zipcode;
@@ -107,20 +108,5 @@ public class Person {
 	{
 		this.personType = personType;
 	}
-	
-	public boolean isGuest()
-	{
-		boolean check = false;
-		if(this instanceof Guest)
-		{
-			check = true;
-		}
-		else
-		{
-			check = false;
-			
-		}
-		return check;
-	}
-//end getters and setters
+	//end getters and setters
 }
