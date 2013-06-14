@@ -29,5 +29,8 @@ public interface IFDBFacility
 	
 	//delete facility 
 	public int deleteFacility(int id);
+	
+	//get the facility instance count by name and different id
+	public int getFacilityInstances(int id, String name);
 
 }

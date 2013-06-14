@@ -24,4 +24,7 @@ public interface IFDBActivityType
 	
 	//delete activity type by name
 	public int deleteActivityTypeByName(String name);
+	
+	//get the activity type instances by name and different id
+	public int getActivityTypeInstances(int id, String name);
 }

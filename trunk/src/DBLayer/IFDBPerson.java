@@ -23,5 +23,8 @@ public interface IFDBPerson {
     
     //delete Customer by Id    
     public int deletePerson(int id);
+    
+    //get the person instance count with different id and similar attributes
+    public int getPersonInstances(int id, String name, int zipcode, String country, String address);
 
 }

@@ -55,7 +55,7 @@ public class DBActivityLine implements IFDBActivityLine
 			activityLineObj.setEndHour(results.getString("endHour"));
 			
 			Facility facilityObj = new Facility();
-			facilityObj = dbFacility.getFacilityById(results.getInt("facilityId"), true);
+			facilityObj = dbFacility.getFacilityById(results.getInt("facilityId"));
 			activityLineObj.setFacility(facilityObj);
 			
 			Instructor instructorObj =new Instructor();
@@ -101,7 +101,7 @@ public class DBActivityLine implements IFDBActivityLine
 			{//activity, activity booking, facility, instructor, team reference
 				IFDBActivityType dbActivityType = new DBActivityType();
 				ActivityType activityTypeObj = new ActivityType();
-				activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID(), false);
+				activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID());
 				if(activityTypeObj != null)
 				{
 					activityLineObj.setActivity(activityTypeObj);
@@ -110,7 +110,7 @@ public class DBActivityLine implements IFDBActivityLine
 				
 				IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 				ActivityBooking activityBookingObj = new ActivityBooking();
-				activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId(), true);
+				activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId());
 				if(activityBookingObj != null)
 				{
 					activityLineObj.setActivityBooking(activityBookingObj);
@@ -119,7 +119,7 @@ public class DBActivityLine implements IFDBActivityLine
 				
 				IFDBFacility dbFacility = new DBFacility();
 				Facility facilityObj = new Facility();
-				facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId(), true);
+				facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId());
 				if(facilityObj != null)
 				{
 					activityLineObj.setFacility(facilityObj);
@@ -141,7 +141,7 @@ public class DBActivityLine implements IFDBActivityLine
 				
 				IFDBTeam dbTeam = new DBTeam();
 				Team teamObj = new Team();
-				teamObj = dbTeam.getTeamById(activityLineObj.getTeam().getId(), true);
+				teamObj = dbTeam.getTeamById(activityLineObj.getTeam().getId());
 				if(teamObj != null)
 				{
 					activityLineObj.setTeam(teamObj);
@@ -194,7 +194,7 @@ public class DBActivityLine implements IFDBActivityLine
 				for(ActivityLine activityLineObj : activityLineList)
 				{
 					ActivityType activityTypeObj = new ActivityType();
-					activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID(), false);
+					activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID());
 					if(activityTypeObj != null)
 					{
 						activityLineObj.setActivity(activityTypeObj);
@@ -202,7 +202,7 @@ public class DBActivityLine implements IFDBActivityLine
 					}
 					
 					ActivityBooking activityBookingObj = new ActivityBooking();
-					activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId(), true);
+					activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId());
 					if(activityBookingObj != null)
 					{
 						activityLineObj.setActivityBooking(activityBookingObj);
@@ -210,7 +210,7 @@ public class DBActivityLine implements IFDBActivityLine
 					}
 					
 					Facility facilityObj = new Facility();
-					facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId(), true);
+					facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId());
 					if(facilityObj != null)
 					{
 						activityLineObj.setFacility(facilityObj);
@@ -230,7 +230,7 @@ public class DBActivityLine implements IFDBActivityLine
 					}
 					
 					Team teamObj = new Team();
-					teamObj = dbTeam.getTeamById(activityLineObj.getTeam().getId(), true);
+					teamObj = dbTeam.getTeamById(activityLineObj.getTeam().getId());
 					if(teamObj != null)
 					{
 						activityLineObj.setTeam(teamObj);

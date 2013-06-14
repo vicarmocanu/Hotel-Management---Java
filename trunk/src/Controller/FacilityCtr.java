@@ -91,4 +91,24 @@ public class FacilityCtr
 		availableFacilitiesForActivity = dbFacility.getAvailableFacilitiesForActivity(activityId, status);
 		return availableFacilitiesForActivity;
 	}
+	
+	public boolean checkFacilityInstanceCount(int id, String name)
+	{
+		boolean check = false;
+		int instances = 0;
+		
+		IFDBFacility dbFacility = new DBFacility();
+		instances = dbFacility.getFacilityInstances(id, name);
+		
+		if(instances == 0)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+		}
+		
+		return check;
+	}
 }

@@ -70,4 +70,24 @@ public class ActivityCtr
 		IFDBActivityType dbActivityType = new DBActivityType();
 		return dbActivityType.deleteActivityTypeByName(name);
 	}
+	
+	public boolean checkActivityTypeInstances(int id, String name)
+	{
+		boolean check = false;
+		int instances = 0;
+		
+		IFDBActivityType dbActivityType = new DBActivityType();
+		instances = dbActivityType.getActivityTypeInstances(id, name);
+		
+		if(instances == 0)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+		}
+		
+		return check;
+	}
 }

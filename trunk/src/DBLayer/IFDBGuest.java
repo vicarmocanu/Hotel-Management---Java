@@ -6,11 +6,8 @@ import java.util.LinkedList;
 
 public interface IFDBGuest {
 	
-	  //get all customers
+	  //get all guests
     public LinkedList<Guest> getAllGuests();
-   
-    //find customer by name
-    public Guest searchGuestByName(String name);
     
     //find customer by ID
     public Guest searchGuestById(int personId);

@@ -32,7 +32,7 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		LinkedList<ActivityBooking> activityBookingsList = new LinkedList<ActivityBooking>();
-		activityBookingsList = dbActivityBooking.getAllActivityBookings(true);
+		activityBookingsList = dbActivityBooking.getAllActivityBookings();
 		return activityBookingsList;
 	}
 	
@@ -40,7 +40,7 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		ActivityBooking activityBookingObj = new ActivityBooking();
-		activityBookingObj = dbActivityBooking.getActivityBookingById(id, true);
+		activityBookingObj = dbActivityBooking.getActivityBookingById(id);
 		return activityBookingObj;
 	}
 	
@@ -48,7 +48,7 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		ActivityBooking activityBookingObj = new ActivityBooking();
-		activityBookingObj = dbActivityBooking.getActivityBookingForDate(guestId, date, true);
+		activityBookingObj = dbActivityBooking.getActivityBookingForDate(guestId, date);
 		return activityBookingObj;
 	}
 	
@@ -56,7 +56,7 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		LinkedList<ActivityBooking> activityBookingList = new LinkedList<ActivityBooking>();
-		activityBookingList = dbActivityBooking.getActivityBookingsForGuest(guestId, true);
+		activityBookingList = dbActivityBooking.getActivityBookingsForGuest(guestId);
 		return activityBookingList;
 	}
 	
@@ -84,7 +84,7 @@ public class ActivityBookingCtr
 	{
 		IFDBGuest dbGuest = new DBGuest();
 		Guest guestObj = new Guest();
-		guestObj = dbGuest.searchGuestById(guestId, true);
+		guestObj = dbGuest.searchGuestById(guestId);
 		
 		ActivityBooking activityBookingObj = new ActivityBooking(date, status, guestObj);
 		
@@ -106,7 +106,7 @@ public class ActivityBookingCtr
 	{
 		IFDBGuest dbGuest = new DBGuest();
 		Guest guestObj = new Guest();
-		guestObj = dbGuest.searchGuestById(guestId, true);
+		guestObj = dbGuest.searchGuestById(guestId);
 		
 		ActivityBooking activityBookingObj = new ActivityBooking();
 		
@@ -204,13 +204,13 @@ public class ActivityBookingCtr
 	public void insertSimpleActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
-		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId, false);
+		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
 		
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
-		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId, true);
+		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId);
 		
 		IFDBFacility dbFacility = new DBFacility();
-		Facility facilityObj = dbFacility.getFacilityById(facilityId, true);
+		Facility facilityObj = dbFacility.getFacilityById(facilityId);
 		
 		DateCheck dateCheck = new DateCheck();
 		String endHour = dateCheck.getEndHour(startHour);
@@ -240,13 +240,13 @@ public class ActivityBookingCtr
 	public void insertInstructorActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int instructorId)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
-		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId, false);
+		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
 		
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
-		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId, true);
+		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId);
 		
 		IFDBFacility dbFacility = new DBFacility();
-		Facility facilityObj = dbFacility.getFacilityById(facilityId, true);
+		Facility facilityObj = dbFacility.getFacilityById(facilityId);
 		
 		IFDBInstructor dbInstructor = new DBInstructor();
 		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, true);
@@ -279,16 +279,16 @@ public class ActivityBookingCtr
 	public void insertTeamActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int teamId)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
-		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId, false);
+		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
 		
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
-		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId, true);
+		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId);
 		
 		IFDBFacility dbFacility = new DBFacility();
-		Facility facilityObj = dbFacility.getFacilityById(facilityId, true);
+		Facility facilityObj = dbFacility.getFacilityById(facilityId);
 		
 		IFDBTeam dbTeam = new DBTeam();
-		Team teamObj = dbTeam.getTeamById(teamId, true);
+		Team teamObj = dbTeam.getTeamById(teamId);
 		
 		DateCheck dateCheck = new DateCheck();
 		String endHour = dateCheck.getEndHour(startHour);
@@ -318,16 +318,16 @@ public class ActivityBookingCtr
 	public int updateActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int teamId, int instructorId)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
-		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId, false);
+		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
 		
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
-		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId, true);
+		ActivityBooking activityBookingObj = dbActivityBooking.getActivityBookingById(bookingId);
 		
 		IFDBFacility dbFacility = new DBFacility();
-		Facility facilityObj = dbFacility.getFacilityById(facilityId, true);
+		Facility facilityObj = dbFacility.getFacilityById(facilityId);
 		
 		IFDBTeam dbTeam = new DBTeam();
-		Team teamObj = dbTeam.getTeamById(teamId, true);
+		Team teamObj = dbTeam.getTeamById(teamId);
 		
 		IFDBInstructor dbInstructor = new DBInstructor();
 		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, true);

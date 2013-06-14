@@ -41,7 +41,7 @@ public class DBActivityBooking implements IFDBActivityBooking
 			activityBookingObj.setId(results.getInt("id"));
 			
 			int guestId = results.getInt("guestId");
-			guestObj = dbGuest.searchGuestById(guestId, false);
+			guestObj = dbGuest.searchGuestById(guestId);
 			activityBookingObj.setGuest(guestObj);
 			
 			activityBookingObj.setDate(results.getString("date"));

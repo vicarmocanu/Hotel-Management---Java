@@ -43,7 +43,7 @@ public class DBInstructor implements IFDBInstructor
 			int employeeId = results.getInt("employeeId");
 			instructorObj.setId(results.getInt("employeeId"));
 			
-			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"), false);
+			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"));
 			instructorObj.setActivityType(activityTypeObj);	
 			
 			instructorObj.setPrice(results.getDouble("price"));
