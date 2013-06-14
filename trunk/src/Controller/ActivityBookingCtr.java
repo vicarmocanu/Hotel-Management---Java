@@ -249,7 +249,7 @@ public class ActivityBookingCtr
 		Facility facilityObj = dbFacility.getFacilityById(facilityId);
 		
 		IFDBInstructor dbInstructor = new DBInstructor();
-		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, true);
+		Instructor instructorObj = dbInstructor.getInstructorById(instructorId);
 		
 		DateCheck dateCheck = new DateCheck();
 		String endHour = dateCheck.getEndHour(startHour);
@@ -330,7 +330,7 @@ public class ActivityBookingCtr
 		Team teamObj = dbTeam.getTeamById(teamId);
 		
 		IFDBInstructor dbInstructor = new DBInstructor();
-		Instructor instructorObj = dbInstructor.getInstructorById(instructorId, true);
+		Instructor instructorObj = dbInstructor.getInstructorById(instructorId);
 		
 		DateCheck dateCheck = new DateCheck();
 		String endHour = dateCheck.getEndHour(startHour);
