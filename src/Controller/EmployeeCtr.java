@@ -18,7 +18,7 @@ public class EmployeeCtr
 	{
 		IFDBEmployee dbEmployee = new DBEmployee();
 		LinkedList<Employee> employeeList = new LinkedList<Employee>();
-		employeeList = dbEmployee.getAllEmployees(true);
+		employeeList = dbEmployee.getAllEmployees();
 		return employeeList;
 	}
 	
@@ -26,38 +26,15 @@ public class EmployeeCtr
 	{
 		IFDBEmployee dbEmployee = new DBEmployee();
 		Employee employeeObj = new Employee();
-		employeeObj = dbEmployee.getEmployeeById(id, true);
+		employeeObj = dbEmployee.getEmployeeById(id);
 		return employeeObj;
 	}
 	
-	public void insertEmployee(String name, String address, int zipcode,	String country, String phoneNo, 
-			String email, String personType, String password, double salary)
+	public void insertEmployee(String employeeName, double salary)
 	{
-		Person personObj = new Person();
-		personObj.setName(name);
-		personObj.setAddress(address);
-		personObj.setZipcode(zipcode);
-		personObj.setCountry(country);
-		personObj.setPhoneNo(phoneNo);
-		personObj.setEmail(email);
-		personObj.setPersonType(personType);
-		personObj.setPassword(password);
-		
-		try
-		{
-			DBConnection1.startTransaction();
-			DBPerson dbPerson = new DBPerson();
-			dbPerson.insertPerson(personObj);
-			DBConnection1.commitTransaction();
-		}
-		catch(Exception e)
-		{
-			DBConnection1.rollbackTransaction();
-		}
-		
 		IFDBPerson dbPerson = new DBPerson();
 		Person personReferenceObj = new Person();
-		personReferenceObj = dbPerson.searchPersonByName(name, true);
+		personReferenceObj = dbPerson.searchPersonByName(employeeName, true);
 		int referenceId = personReferenceObj.getId();
 		
 		Employee employeeObj = new Employee();
@@ -67,7 +44,7 @@ public class EmployeeCtr
 		try
 		{
 			DBConnection1.startTransaction();
-			DBEmployee dbEmployee =new DBEmployee();
+			DBEmployee dbEmployee = new DBEmployee();
 			dbEmployee.insertEmployee(employeeObj);
 			DBConnection1.commitTransaction();
 		}
@@ -81,6 +58,7 @@ public class EmployeeCtr
 	{
 		IFDBEmployee dbEmployee = new DBEmployee();
 		Employee employeeObj = new Employee();
+		employeeObj.setId(id);
 		employeeObj.setSalary(salary);
 		return dbEmployee.updateEmployee(employeeObj);
 	}
