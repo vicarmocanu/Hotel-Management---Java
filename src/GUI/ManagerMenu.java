@@ -143,9 +143,6 @@ public class ManagerMenu
 		dinamicLabel.setBounds(137, 37, 216, 25);
 		WelcomePanel.add(dinamicLabel);
 		
-		JPanel PersonPanel = new JPanel();
-		tabbedPane.addTab("Person menu", null, PersonPanel, null);
-		
 		JPanel GuestPanel = new JPanel();
 		tabbedPane.addTab("Guest menu", null, GuestPanel, null);
 		GuestPanel.setLayout(null);
@@ -2603,4 +2600,6 @@ public class ManagerMenu
 		guestTable.setCellSelectionEnabled(false);
 		guestTable.setModel(new DefaultTableModel());
 	}
+	
+	
 }
