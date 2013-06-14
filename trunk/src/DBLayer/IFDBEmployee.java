@@ -6,8 +6,8 @@ import Model.Employee;
 
 public interface IFDBEmployee
 {
-	public LinkedList<Employee> getAllEmployees(boolean retrieveAssociation);
-	public Employee getEmployeeById(int id, boolean retrieveAssociation);
+	public LinkedList<Employee> getAllEmployees();
+	public Employee getEmployeeById(int id);
 	public int insertEmployee(Employee employeeObj) throws Exception;	
 	public int updateEmployee(Employee employeeObj);
 	public int deleteEmployeeById(int id);

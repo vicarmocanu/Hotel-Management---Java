@@ -1,16 +1,14 @@
 package Controller;
 
 import java.util.LinkedList;
+
 import DBLayer.DBActivityType;
-import DBLayer.DBConnection1;
-import DBLayer.DBEmployee;
 import DBLayer.DBInstructor;
 import DBLayer.DBPerson;
 import DBLayer.IFDBActivityType;
 import DBLayer.IFDBInstructor;
 import DBLayer.IFDBPerson;
 import Model.ActivityType;
-import Model.Employee;
 import Model.Instructor;
 import Model.Person;
 
@@ -22,7 +20,7 @@ public class InstructorCtr
 	{
 		IFDBInstructor dbInstructor = new DBInstructor();
 		LinkedList<Instructor> instructorList = new LinkedList<Instructor>();
-		instructorList = dbInstructor.getAllInstructors(true);
+		instructorList = dbInstructor.getAllInstructors();
 		return instructorList;
 	}
 	
@@ -30,79 +28,40 @@ public class InstructorCtr
 	{
 		IFDBInstructor dbInstructor = new DBInstructor();
 		Instructor instructorObj = new Instructor();
-		instructorObj = dbInstructor.getInstructorById(employeeId, true);
+		instructorObj = dbInstructor.getInstructorById(employeeId);
 		return instructorObj;
 	}
 	
-	public void insertInstructor(int id, String name, String address, int zipcode,	String country, String phoneNo, 
-			String email, String personType, String password, int activityTypeId, double price, String status, double salary)
+	public void insertInstructor(String instructorName, int activityTypeId, double price, String status)
 	{
-		Person personObj = new Person();
-		personObj.setName(name);
-		personObj.setAddress(address);
-		personObj.setZipcode(zipcode);
-		personObj.setCountry(country);
-		personObj.setPhoneNo(phoneNo);
-		personObj.setEmail(email);
-		personObj.setPersonType(personType);
-		personObj.setPassword(password);
-		
-		try
-		{
-			DBConnection1.startTransaction();
-			DBPerson dbPerson = new DBPerson();
-			dbPerson.insertPerson(personObj);
-			DBConnection1.commitTransaction();
-		}
-		catch(Exception e)
-		{
-			DBConnection1.rollbackTransaction();
-		}
-		
 		IFDBPerson dbPerson = new DBPerson();
 		Person personReferenceObj = new Person();
-		personReferenceObj = dbPerson.searchPersonByName(name, true);
+		personReferenceObj = dbPerson.searchPersonByName(instructorName, true);
 		int referenceId = personReferenceObj.getId();
 		
-		Employee employeeObj = new Employee();
-		employeeObj.setId(referenceId);
-		employeeObj.setSalary(salary);
-		
-		try
-		{
-			DBConnection1.startTransaction();
-			DBEmployee dbEmployee =new DBEmployee();
-			dbEmployee.insertEmployee(employeeObj);
-			DBConnection1.commitTransaction();
-		}
-		catch(Exception e)
-		{
-			DBConnection1.rollbackTransaction();
-		}
+		IFDBActivityType dbActivityType = new DBActivityType();
+		ActivityType activityTypeObj = new ActivityType();
+		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
 		
 		Instructor instructorObj = new Instructor();
 		instructorObj.setId(referenceId);
 		
-		IFDBActivityType dbActivityType = new DBActivityType();
-		ActivityType activityTypeObj = new ActivityType();
-		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
 		if(activityTypeObj != null)
 		{
 			instructorObj.setActivityType(activityTypeObj);
 		}
-		
 		instructorObj.setStatus(status);
 		instructorObj.setPrice(price);
 	}
 	
-	public int updateInstructor(int id, int activityTypeId, double price, String status)
+	public int updateInstructor(int employeeId, int activityTypeId, double price, String status)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
 		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
 		
 		Instructor instructorObj = new Instructor();
-		instructorObj.setId(id);
+		instructorObj.setId(employeeId);
 		instructorObj.setPrice(price);
 		instructorObj.setStatus(status);
 		
@@ -125,7 +84,7 @@ public class InstructorCtr
 	{
 		IFDBInstructor dbInstructor = new DBInstructor();
 		LinkedList<Instructor> availableInstructorForActivityList = new LinkedList<Instructor>();
-		availableInstructorForActivityList =dbInstructor.getActivityAvailableInstructors(activityTypeId, status, true);
+		availableInstructorForActivityList =dbInstructor.getActivityAvailableInstructors(activityTypeId, status);
 		return availableInstructorForActivityList;
 	}
 

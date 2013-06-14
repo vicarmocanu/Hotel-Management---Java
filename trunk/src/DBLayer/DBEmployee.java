@@ -31,6 +31,7 @@ public class DBEmployee implements IFDBEmployee
 	private Employee buildEmployee(ResultSet results)
 	{
 		Employee employeeObj= new Employee();
+		
 		IFDBPerson dbPerson = new DBPerson();
 		Person personObj = new Person();
 		
@@ -49,8 +50,6 @@ public class DBEmployee implements IFDBEmployee
 			employeeObj.setEmail(personObj.getEmail());
 			employeeObj.setPersonType(personObj.getPersonType());
 			employeeObj.setPassword(personObj.getPassword());
-			
-			
 		}
 		catch(Exception e)
 		{
@@ -61,7 +60,7 @@ public class DBEmployee implements IFDBEmployee
 	}
 	
 	//singleWhere is used when we select only one object
-	private Employee singleWhere (String wClause, boolean retrieveAssociation)
+	private Employee singleWhere (String wClause)
 	{
 		ResultSet results;
 		Employee employeeObj=new Employee();		
@@ -94,7 +93,7 @@ public class DBEmployee implements IFDBEmployee
 	}
 	
 	//miscWhere is used when we want to select multiple objects
-	private LinkedList<Employee> miscWhere (String wClause, boolean retrieveAssociation)
+	private LinkedList<Employee> miscWhere (String wClause)
 	{
 		ResultSet results;
 		LinkedList<Employee> employeeList=new LinkedList<Employee>();
@@ -126,15 +125,15 @@ public class DBEmployee implements IFDBEmployee
 		return employeeList;
 	}
 
-	public LinkedList<Employee> getAllEmployees(boolean retrieveAssociation)
+	public LinkedList<Employee> getAllEmployees()
 	{
-		return miscWhere("", retrieveAssociation);
+		return miscWhere("");
 	}
 	
-	public Employee getEmployeeById(int id, boolean retrieveAssociation)
+	public Employee getEmployeeById(int personId)
 	{
-		String wClause = "  id= '" + id + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		String wClause = "  personId= '" + personId + "'";
+		return singleWhere(wClause);
 	}
 	
 	public int insertEmployee(Employee employeeObj) throws Exception
@@ -165,10 +164,11 @@ public class DBEmployee implements IFDBEmployee
 		Employee employeeNewObj=employeeObj;
 		
 		String query="UPDATE Employee SET " +
-		"salary= '" + employeeNewObj.getSalary() + "', " +		
+		"salary= '" + employeeNewObj.getSalary() + "' " +		
 		"WHERE personId= '" + employeeNewObj.getId() + "'";
 		
 		int result=-1;
+		
 		System.out.println("Update query: " + query);
 		
 		try
@@ -192,6 +192,7 @@ public class DBEmployee implements IFDBEmployee
 		  
 	  	String query="DELETE FROM Employee WHERE personId= '" + id + "'";
 	  	System.out.println("Delete query: " + query);
+	  	
 	  	try
 	  	{
 	  		Statement stmt = con.createStatement();
@@ -202,7 +203,8 @@ public class DBEmployee implements IFDBEmployee
 	  	catch(SQLException e)
 	  	{
 	  		System.out.println("Delete exception: " + e);
-	  	}	  	
+	  	}
+	  	
 	  	return(result);
 	}
 }

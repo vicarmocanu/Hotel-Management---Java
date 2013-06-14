@@ -33,8 +33,10 @@ public class DBInstructor implements IFDBInstructor
 	private Instructor buildInstructor(ResultSet results)
 	{
 		Instructor instructorObj= new Instructor();
+		
 		IFDBEmployee dbEmployee = new DBEmployee();
 		Employee employeeObj = new Employee();
+		
 		IFDBActivityType dbActivivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
 		
@@ -42,13 +44,12 @@ public class DBInstructor implements IFDBInstructor
 		{
 			int employeeId = results.getInt("employeeId");
 			instructorObj.setId(results.getInt("employeeId"));
-			
 			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"));
-			instructorObj.setActivityType(activityTypeObj);	
-			
+			instructorObj.setActivityType(activityTypeObj);
 			instructorObj.setPrice(results.getDouble("price"));
+			instructorObj.setStatus(results.getString("status"));
 			
-			employeeObj = dbEmployee.getEmployeeById(employeeId, true);
+			employeeObj = dbEmployee.getEmployeeById(employeeId);
 			
 			instructorObj.setName(employeeObj.getName());
 			instructorObj.setZipcode(employeeObj.getZipcode());
@@ -59,8 +60,6 @@ public class DBInstructor implements IFDBInstructor
 			instructorObj.setPersonType(employeeObj.getPersonType());
 			instructorObj.setPassword(employeeObj.getPassword());
 			instructorObj.setSalary(employeeObj.getSalary());
-			
-			
 		}
 		catch(Exception e)
 		{
@@ -71,7 +70,7 @@ public class DBInstructor implements IFDBInstructor
 	}
 	
 	//singleWhere is used when we select only one object
-	private Instructor singleWhere (String wClause, boolean retrieveAssociation)
+	private Instructor singleWhere (String wClause)
 	{
 		ResultSet results;
 		Instructor instructorObj=new Instructor();		
@@ -104,7 +103,7 @@ public class DBInstructor implements IFDBInstructor
 	}
 	
 	//miscWhere is used when we want to select multiple objects
-	private LinkedList<Instructor> miscWhere (String wClause, boolean retrieveAssociation)
+	private LinkedList<Instructor> miscWhere (String wClause)
 	{
 		ResultSet results;
 		LinkedList<Instructor> instructorList=new LinkedList<Instructor>();
@@ -134,15 +133,15 @@ public class DBInstructor implements IFDBInstructor
 		return instructorList;
 	}
 
-	public LinkedList<Instructor> getAllInstructors(boolean retrieveAssociation)
+	public LinkedList<Instructor> getAllInstructors()
 	{
-		return miscWhere("", retrieveAssociation);
+		return miscWhere("");
 	}
 	
-	public Instructor getInstructorById(int employeeId, boolean retrieveAssociation)
+	public Instructor getInstructorById(int employeeId)
 	{
 		String wClause = "  employeeId= '" + employeeId + "'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}
 	
 	public int insertInstructor(Instructor instructorObj) throws Exception
@@ -151,7 +150,7 @@ public class DBInstructor implements IFDBInstructor
 		
 		String query = "INSERT INTO Instructor(employeeId, activityType, price, status) VALUES ('" +
 		instructorObj.getId() + "," + 
-				instructorObj.getActivityType() + "','" +
+				instructorObj.getActivityType().getID() + "','" +
 		instructorObj.getPrice() + "','" +
 				instructorObj.getStatus() + "')";
 		
@@ -176,7 +175,7 @@ public class DBInstructor implements IFDBInstructor
 		Instructor instructorNewObj= instructorObj;
 		
 		String query="UPDATE Instructor SET " +
-		"activityType= '" + instructorNewObj.getActivityType() + "', " +
+		"activityType= '" + instructorNewObj.getActivityType().getID() + "', " +
 		"price= '" + instructorNewObj.getPrice() + "' " +
 		"status= '" + instructorNewObj.getStatus() + "' " +
 		"WHERE employeeId= '" + instructorNewObj.getId() + "'";
@@ -219,9 +218,9 @@ public class DBInstructor implements IFDBInstructor
 	  	return(result);
 	}
 	
-	public LinkedList<Instructor> getActivityAvailableInstructors(int activityTypeId, String status, boolean retrieveAssociation)
+	public LinkedList<Instructor> getActivityAvailableInstructors(int activityTypeId, String status)
 	{
 		String wClause = "  activityType= '" + activityTypeId + "' AND status='" + status + "'";
-		return miscWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause);
 	}
 }

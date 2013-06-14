@@ -23,14 +23,17 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ActivityCtr;
+import Controller.EmployeeCtr;
 import Controller.FacilityCtr;
 import Controller.GuestCtr;
+import Controller.InstructorCtr;
 import Controller.LocationCtr;
 import Controller.PersonCtr;
 import Controller.TravelAgencyCtr;
 import Model.ActivityType;
 import Model.Facility;
 import Model.Guest;
+import Model.Instructor;
 import Model.Location;
 import Model.Person;
 import Model.TravelAgency;
@@ -43,6 +46,8 @@ public class ManagerMenu
 	private GuestCtr guestCtr = new GuestCtr();
 	private PersonCtr personCtr = new PersonCtr();
 	private LocationCtr locationCtr = new LocationCtr();
+	private InstructorCtr instructorCtr = new InstructorCtr();
+	private EmployeeCtr employeeCtr = new EmployeeCtr();
 
 	private JFrame frame;
 	private JLabel dinamicLabel;
@@ -77,6 +82,20 @@ public class ManagerMenu
 	private JTable guestTable;
 	private JComboBox<String> guestTravelAgencyComboBox;
 	private JComboBox<String> guestGuestTypeComboBox;
+	private JTextField instructorIdTextField;
+	private JTextField instructorNameTextField;
+	private JTextField instructorCityTextField;
+	private JTextField instructorCountryTextField;
+	private JTextField instructorZipcodeTextField;
+	private JTextField instructorAddressTextField;
+	private JTextField instructorPhoneNoTextField;
+	private JTextField instructorEmailTextField;
+	private JTextField instructorPasswordTextField;
+	private JTextField instructorSalaryTextField;
+	private JTextField instructorPriceTextField;
+	private JTable instructorTable;
+	private JComboBox<String> instructorActivityTypeComboBox;
+	private JComboBox<String> instructorStatusComboBox;
 	
 	public ManagerMenu()
 	{
@@ -123,6 +142,9 @@ public class ManagerMenu
 		dinamicLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 		dinamicLabel.setBounds(137, 37, 216, 25);
 		WelcomePanel.add(dinamicLabel);
+		
+		JPanel PersonPanel = new JPanel();
+		tabbedPane.addTab("Person menu", null, PersonPanel, null);
 		
 		JPanel GuestPanel = new JPanel();
 		tabbedPane.addTab("Guest menu", null, GuestPanel, null);
@@ -539,6 +561,8 @@ public class ManagerMenu
 						locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
 						personCtr.insertPerson(guestName, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
 						guestCtr.insertGuest(guestName, travelAgencyCVR, guestType);
+						clearGuestPanel();
+						clearGuestTable();
 						JOptionPane.showMessageDialog(null, "Guest successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
@@ -598,7 +622,7 @@ public class ManagerMenu
 							travelAgencyCVR = travelAgencyObj.getCVR();
 						}
 						
-						if(personCtr.checkGuestInstanceCount(guestId, guestName, guestZipcode, guestCountry, guestAddress) == false)
+						if(personCtr.checkPersonInstanceCount(guestId, guestName, guestZipcode, guestCountry, guestAddress) == false)
 						{
 							JOptionPane.showMessageDialog(null, "You may not update with an already existing guest on this id.", "Error!", JOptionPane.ERROR_MESSAGE);
 						}
@@ -613,7 +637,8 @@ public class ManagerMenu
 							
 							personCtr.updatePerson(guestId, guestName, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
 							guestCtr.updateGuest(guestId, guestType, travelAgencyCVR);
-							
+							clearGuestPanel();
+							clearGuestTable();
 							JOptionPane.showMessageDialog(null, "Guest updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
@@ -651,6 +676,8 @@ public class ManagerMenu
 						{
 							guestCtr.deleteGuest(guestId);
 							personCtr.deletePerson(guestId);
+							clearGuestPanel();
+							clearGuestTable();
 							JOptionPane.showMessageDialog(null, "Guest successfully removed", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
@@ -706,11 +733,29 @@ public class ManagerMenu
 		guestOptionsMenu.add(guestDeleteButton);
 		
 		JButton guestAllButton = new JButton("All");
+		guestAllButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				clearGuestPanel();
+				clearGuestTable();
+				
+				guestTable.setModel(getGuestTableModel());
+			}
+		});
 		guestAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestAllButton.setBounds(6, 160, 90, 25);
 		guestOptionsMenu.add(guestAllButton);
 		
 		JButton guestClearAllButton = new JButton("Clear all");
+		guestClearAllButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				clearGuestPanel();
+				clearGuestTable();
+			}
+		});
 		guestClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestClearAllButton.setBounds(6, 311, 104, 25);
 		GuestPanel.add(guestClearAllButton);
@@ -1033,8 +1078,9 @@ public class ManagerMenu
 					{
 						activityTypeCtr.insertActivityType(activityTypeName, maxParticipants);
 						
-						activityTypeComboBox.removeAllItems();
 						LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
+						
+						activityTypeComboBox.removeAllItems();						
 						allActivityTypesList = activityTypeCtr.getAllActivityTypes();
 						if(allActivityTypesList.isEmpty()==false)
 						{
@@ -1045,6 +1091,18 @@ public class ManagerMenu
 							}
 						}
 						activityTypeComboBox.setSelectedItem(null);
+						
+						instructorActivityTypeComboBox.removeAllItems();
+						allActivityTypesList = activityTypeCtr.getAllActivityTypes();
+						if(allActivityTypesList.isEmpty()==false)
+						{
+							for(ActivityType activityTypeObj : allActivityTypesList)
+							{
+								String comboBoxItem = activityTypeObj.getName();
+								instructorActivityTypeComboBox.addItem(comboBoxItem);
+							}
+						}
+						instructorActivityTypeComboBox.setSelectedItem(null);
 						
 						clearActivityTypePanel();
 						clearActivityTypeTable();
@@ -1093,9 +1151,10 @@ public class ManagerMenu
 						else
 						{
 							activityTypeCtr.updateActivityType(activityTypeId, activityTypeName, maxParticipants);
+							
+							LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
 						
 							activityTypeComboBox.removeAllItems();
-							LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
 							allActivityTypesList = activityTypeCtr.getAllActivityTypes();
 							if(allActivityTypesList.isEmpty()==false)
 							{
@@ -1106,6 +1165,18 @@ public class ManagerMenu
 								}
 							}
 							activityTypeComboBox.setSelectedItem(null);
+							
+							instructorActivityTypeComboBox.removeAllItems();
+							allActivityTypesList = activityTypeCtr.getAllActivityTypes();
+							if(allActivityTypesList.isEmpty()==false)
+							{
+								for(ActivityType activityTypeListObj : allActivityTypesList)
+								{
+									String comboBoxItem = activityTypeListObj.getName();
+									instructorActivityTypeComboBox.addItem(comboBoxItem);
+								}
+							}
+							instructorActivityTypeComboBox.setSelectedItem(null);
 							
 							clearActivityTypePanel();
 							clearActivityTypeTable();
@@ -1146,9 +1217,9 @@ public class ManagerMenu
 						else
 						{
 							activityTypeCtr.deleteActivityTypeByID(activityTypeId);
+							LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
 							
 							activityTypeComboBox.removeAllItems();
-							LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
 							allActivityTypesList = activityTypeCtr.getAllActivityTypes();
 							if(allActivityTypesList.isEmpty()==false)
 							{
@@ -1159,6 +1230,18 @@ public class ManagerMenu
 								}
 							}
 							activityTypeComboBox.setSelectedItem(null);
+							
+							instructorActivityTypeComboBox.removeAllItems();
+							allActivityTypesList = activityTypeCtr.getAllActivityTypes();
+							if(allActivityTypesList.isEmpty()==false)
+							{
+								for(ActivityType activityTypeListObj : allActivityTypesList)
+								{
+									String comboBoxItem = activityTypeListObj.getName();
+									instructorActivityTypeComboBox.addItem(comboBoxItem);
+								}
+							}
+							instructorActivityTypeComboBox.setSelectedItem(null);
 							
 							clearActivityTypePanel();
 							clearActivityTypeTable();
@@ -1289,6 +1372,565 @@ public class ManagerMenu
 		
 		JPanel InstructorPanel = new JPanel();
 		tabbedPane.addTab("Instructor menu", null, InstructorPanel, null);
+		InstructorPanel.setLayout(null);
+		
+		JPanel instructorAttributePanel = new JPanel();
+		instructorAttributePanel.setLayout(null);
+		instructorAttributePanel.setBorder(new TitledBorder(null, "Instructor attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		instructorAttributePanel.setBounds(10, 11, 768, 100);
+		InstructorPanel.add(instructorAttributePanel);
+		
+		JLabel istructorIdLabel = new JLabel("Id:");
+		istructorIdLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		istructorIdLabel.setBounds(6, 19, 46, 14);
+		instructorAttributePanel.add(istructorIdLabel);
+		
+		instructorIdTextField = new JTextField();
+		instructorIdTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorIdTextField.setColumns(10);
+		instructorIdTextField.setBounds(70, 16, 80, 20);
+		instructorAttributePanel.add(instructorIdTextField);
+		
+		JLabel instructorNameLabel = new JLabel("Name:");
+		instructorNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorNameLabel.setBounds(160, 19, 46, 14);
+		instructorAttributePanel.add(instructorNameLabel);
+		
+		instructorNameTextField = new JTextField();
+		instructorNameTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorNameTextField.setColumns(10);
+		instructorNameTextField.setBounds(240, 16, 80, 20);
+		instructorAttributePanel.add(instructorNameTextField);
+		
+		JLabel instructorCityLabel = new JLabel("City:");
+		instructorCityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorCityLabel.setBounds(330, 19, 86, 14);
+		instructorAttributePanel.add(instructorCityLabel);
+		
+		instructorCityTextField = new JTextField();
+		instructorCityTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorCityTextField.setColumns(10);
+		instructorCityTextField.setBounds(372, 16, 80, 20);
+		instructorAttributePanel.add(instructorCityTextField);
+		
+		JLabel instructorCountryLabel = new JLabel("Country:");
+		instructorCountryLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorCountryLabel.setBounds(462, 19, 86, 14);
+		instructorAttributePanel.add(instructorCountryLabel);
+		
+		instructorCountryTextField = new JTextField();
+		instructorCountryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorCountryTextField.setColumns(10);
+		instructorCountryTextField.setBounds(531, 16, 80, 20);
+		instructorAttributePanel.add(instructorCountryTextField);
+		
+		JLabel instructorZipcodeLabel = new JLabel("Zipcode:");
+		instructorZipcodeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorZipcodeLabel.setBounds(621, 19, 86, 14);
+		instructorAttributePanel.add(instructorZipcodeLabel);
+		
+		instructorZipcodeTextField = new JTextField();
+		instructorZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorZipcodeTextField.setColumns(10);
+		instructorZipcodeTextField.setBounds(682, 16, 80, 20);
+		instructorAttributePanel.add(instructorZipcodeTextField);
+		
+		JLabel instructorAddressLabel = new JLabel("Address:");
+		instructorAddressLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorAddressLabel.setBounds(6, 44, 86, 14);
+		instructorAttributePanel.add(instructorAddressLabel);
+		
+		instructorAddressTextField = new JTextField();
+		instructorAddressTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorAddressTextField.setColumns(10);
+		instructorAddressTextField.setBounds(70, 41, 80, 20);
+		instructorAttributePanel.add(instructorAddressTextField);
+		
+		JLabel instructorPhoneNoLabel = new JLabel("Phone no:");
+		instructorPhoneNoLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorPhoneNoLabel.setBounds(160, 44, 86, 14);
+		instructorAttributePanel.add(instructorPhoneNoLabel);
+		
+		instructorPhoneNoTextField = new JTextField();
+		instructorPhoneNoTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorPhoneNoTextField.setColumns(10);
+		instructorPhoneNoTextField.setBounds(240, 41, 80, 20);
+		instructorAttributePanel.add(instructorPhoneNoTextField);
+		
+		JLabel instructorEmailLabel = new JLabel("E-mail:");
+		instructorEmailLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorEmailLabel.setBounds(330, 44, 86, 14);
+		instructorAttributePanel.add(instructorEmailLabel);
+		
+		instructorEmailTextField = new JTextField();
+		instructorEmailTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorEmailTextField.setColumns(10);
+		instructorEmailTextField.setBounds(372, 41, 80, 20);
+		instructorAttributePanel.add(instructorEmailTextField);
+		
+		JLabel instructorPasswordLabel = new JLabel("Password:");
+		instructorPasswordLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorPasswordLabel.setBounds(462, 44, 86, 14);
+		instructorAttributePanel.add(instructorPasswordLabel);
+		
+		instructorPasswordTextField = new JTextField();
+		instructorPasswordTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorPasswordTextField.setEditable(false);
+		instructorPasswordTextField.setColumns(10);
+		instructorPasswordTextField.setBounds(531, 41, 80, 20);
+		instructorAttributePanel.add(instructorPasswordTextField);
+		
+		JLabel instructorActivityTypeLabel = new JLabel("Activity type:");
+		instructorActivityTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorActivityTypeLabel.setBounds(350, 70, 86, 14);
+		instructorAttributePanel.add(instructorActivityTypeLabel);
+		
+		instructorActivityTypeComboBox = new JComboBox<String>();
+		LinkedList<ActivityType> instructorAllActivityTypesList = new LinkedList<ActivityType>();
+		instructorAllActivityTypesList = activityTypeCtr.getAllActivityTypes();
+		if(instructorAllActivityTypesList.isEmpty()==false)
+		{
+			for(ActivityType activityTypeObj : instructorAllActivityTypesList)
+			{
+				String comboBoxItem = activityTypeObj.getName();
+				instructorActivityTypeComboBox.addItem(comboBoxItem);
+			}
+		}
+		instructorActivityTypeComboBox.setSelectedItem(null);
+		instructorActivityTypeComboBox.setBounds(426, 67, 122, 20);
+		instructorAttributePanel.add(instructorActivityTypeComboBox);
+		
+		JLabel instructorSalaryLabel = new JLabel("Salary:");
+		instructorSalaryLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorSalaryLabel.setBounds(621, 44, 86, 14);
+		instructorAttributePanel.add(instructorSalaryLabel);
+		
+		instructorSalaryTextField = new JTextField();
+		instructorSalaryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorSalaryTextField.setColumns(10);
+		instructorSalaryTextField.setBounds(682, 41, 80, 20);
+		instructorAttributePanel.add(instructorSalaryTextField);
+		
+		JLabel instructorPriceLabel = new JLabel("Price:");
+		instructorPriceLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorPriceLabel.setBounds(6, 69, 86, 14);
+		instructorAttributePanel.add(instructorPriceLabel);
+		
+		JLabel instructorStatusLabel = new JLabel("Status:");
+		instructorStatusLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorStatusLabel.setBounds(160, 69, 86, 14);
+		instructorAttributePanel.add(instructorStatusLabel);
+		
+		instructorPriceTextField = new JTextField();
+		instructorPriceTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorPriceTextField.setColumns(10);
+		instructorPriceTextField.setBounds(70, 66, 80, 20);
+		instructorAttributePanel.add(instructorPriceTextField);
+		
+		instructorStatusComboBox = new JComboBox<String>();
+		instructorStatusComboBox.addItem("Available");
+		instructorStatusComboBox.addItem("Unavailable");
+		instructorStatusComboBox.setSelectedItem(null);
+		instructorStatusComboBox.setBounds(218, 66, 122, 20);
+		instructorAttributePanel.add(instructorStatusComboBox);
+		
+		JPanel instructorOptionsPanel = new JPanel();
+		instructorOptionsPanel.setLayout(null);
+		instructorOptionsPanel.setBorder(new TitledBorder(null, "Instructor options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		instructorOptionsPanel.setBounds(10, 122, 104, 192);
+		InstructorPanel.add(instructorOptionsPanel);
+		
+		JButton instructorSearchButton = new JButton("Search");
+		instructorSearchButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(instructorIdTextField.getText().equals("")==true && instructorNameTextField.getText().equals("")==true)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted instructor.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					if(instructorNameTextField.getText().equals("") == true)
+					{
+						String stringInstructorId = instructorIdTextField.getText();
+						int instructorId = Integer.parseInt(stringInstructorId);
+						
+						Instructor instructorObj = new Instructor();
+						instructorObj = instructorCtr.getInstructorById(instructorId);
+						
+						if(instructorObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "There is no instructor by this id. Please insert a valid instructor id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							String instructorName = instructorObj.getName();
+							String instructorCountry = instructorObj.getCountry();
+							int instructorZipcode = instructorObj.getZipcode();
+							String stringInstructorZipcode = String.valueOf(instructorZipcode);
+							String instructorAddress = instructorObj.getAddress();
+							String instructorPhoneNo = instructorObj.getPhoneNo();
+							String instructorEmail = instructorObj.getEmail();
+							String instructorPassword = instructorObj.getPassword();
+							double instructorSalary = instructorObj.getSalary();
+							String stringInstructorSalary = String.valueOf(instructorSalary);
+							double instructorPrice = instructorObj.getPrice();
+							String stringInstructorPrice = String.valueOf(instructorPrice);
+							String instructorStatus = instructorObj.getStatus();
+							ActivityType activityTypeObj = instructorObj.getActivityType();
+							String activityTypeName = activityTypeObj.getName();
+							
+							Location locationObj = new Location();
+							locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
+							String instructorCity = locationObj.getCity();
+							
+							instructorIdTextField.setText(stringInstructorId);
+							instructorNameTextField.setText(instructorName);
+							instructorCityTextField.setText(instructorCity);
+							instructorCountryTextField.setText(instructorCountry);
+							instructorZipcodeTextField.setText(stringInstructorZipcode);
+							instructorAddressTextField.setText(instructorAddress);
+							instructorPhoneNoTextField.setText(instructorPhoneNo);
+							instructorEmailTextField.setText(instructorEmail);
+							instructorPasswordTextField.setText(instructorPassword);
+							instructorSalaryTextField.setText(stringInstructorSalary);
+							instructorPriceTextField.setText(stringInstructorPrice);
+							instructorStatusComboBox.setSelectedItem(instructorStatus);
+							instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+						}
+					}
+					else
+					{
+						if(instructorIdTextField.getText().equals("") == true)
+						{
+							String instructorName = instructorNameTextField.getText();
+							
+							Person personObj = new Person();
+							personObj = personCtr.searchPersonByName(instructorName);
+							
+							if(personObj == null || personObj.getPersonType().equals("Instructor") == false)
+							{
+								JOptionPane.showMessageDialog(null, "There is no instructor by this name. Please insert a valid instructor name.", "Error!", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								int instructorId = personObj.getId();
+								Instructor instructorObj = instructorCtr.getInstructorById(instructorId);
+								
+								String stringInstructorId = String.valueOf(instructorId);								
+								String instructorCountry = instructorObj.getCountry();
+								int instructorZipcode = instructorObj.getZipcode();
+								String stringInstructorZipcode = String.valueOf(instructorZipcode);
+								String instructorAddress = instructorObj.getAddress();
+								String instructorPhoneNo = instructorObj.getPhoneNo();
+								String instructorEmail = instructorObj.getEmail();
+								String instructorPassword = instructorObj.getPassword();
+								double instructorSalary = instructorObj.getSalary();
+								String stringInstructorSalary = String.valueOf(instructorSalary);
+								double instructorPrice = instructorObj.getPrice();
+								String stringInstructorPrice = String.valueOf(instructorPrice);
+								String instructorStatus = instructorObj.getStatus();
+								ActivityType activityTypeObj = instructorObj.getActivityType();
+								String activityTypeName = activityTypeObj.getName();
+								
+								Location locationObj = new Location();
+								locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
+								String instructorCity = locationObj.getCity();
+								
+								instructorIdTextField.setText(stringInstructorId);
+								instructorNameTextField.setText(instructorName);
+								instructorCityTextField.setText(instructorCity);
+								instructorCountryTextField.setText(instructorCountry);
+								instructorZipcodeTextField.setText(stringInstructorZipcode);
+								instructorAddressTextField.setText(instructorAddress);
+								instructorPhoneNoTextField.setText(instructorPhoneNo);
+								instructorEmailTextField.setText(instructorEmail);
+								instructorPasswordTextField.setText(instructorPassword);
+								instructorSalaryTextField.setText(stringInstructorSalary);
+								instructorPriceTextField.setText(stringInstructorPrice);
+								instructorStatusComboBox.setSelectedItem(instructorStatus);
+								instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+							}
+						}
+						else
+						{
+							if(instructorIdTextField.getText().equals("") != true && instructorNameTextField.getText().equals("") != true)
+							{
+								String stringInstructorId = instructorIdTextField.getText();
+								int instructorId = Integer.parseInt(stringInstructorId);
+								
+								Instructor instructorObj = new Instructor();
+								instructorObj = instructorCtr.getInstructorById(instructorId);
+								
+								if(instructorObj == null)
+								{
+									JOptionPane.showMessageDialog(null, "There is no instructor by this id. Please insert a valid instructor id.", "Error!", JOptionPane.ERROR_MESSAGE);
+								}
+								else
+								{
+									String instructorName = instructorObj.getName();
+									String instructorCountry = instructorObj.getCountry();
+									int instructorZipcode = instructorObj.getZipcode();
+									String stringInstructorZipcode = String.valueOf(instructorZipcode);
+									String instructorAddress = instructorObj.getAddress();
+									String instructorPhoneNo = instructorObj.getPhoneNo();
+									String instructorEmail = instructorObj.getEmail();
+									String instructorPassword = instructorObj.getPassword();
+									double instructorSalary = instructorObj.getSalary();
+									String stringInstructorSalary = String.valueOf(instructorSalary);
+									double instructorPrice = instructorObj.getPrice();
+									String stringInstructorPrice = String.valueOf(instructorPrice);
+									String instructorStatus = instructorObj.getStatus();
+									ActivityType activityTypeObj = instructorObj.getActivityType();
+									String activityTypeName = activityTypeObj.getName();
+									
+									Location locationObj = new Location();
+									locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
+									String instructorCity = locationObj.getCity();
+									
+									instructorIdTextField.setText(stringInstructorId);
+									instructorNameTextField.setText(instructorName);
+									instructorCityTextField.setText(instructorCity);
+									instructorCountryTextField.setText(instructorCountry);
+									instructorZipcodeTextField.setText(stringInstructorZipcode);
+									instructorAddressTextField.setText(instructorAddress);
+									instructorPhoneNoTextField.setText(instructorPhoneNo);
+									instructorEmailTextField.setText(instructorEmail);
+									instructorPasswordTextField.setText(instructorPassword);
+									instructorSalaryTextField.setText(stringInstructorSalary);
+									instructorPriceTextField.setText(stringInstructorPrice);
+									instructorStatusComboBox.setSelectedItem(instructorStatus);
+									instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		instructorSearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorSearchButton.setBounds(6, 16, 90, 25);
+		instructorOptionsPanel.add(instructorSearchButton);
+		
+		JButton instructorCreateButton = new JButton("Create");
+		instructorCreateButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(instructorNameTextField.getText().equals("") == true || instructorCityTextField.getText().equals("") == true ||
+						instructorCountryTextField.getText().equals("") == true || instructorZipcodeTextField.getText().equals("") == true ||
+						instructorAddressTextField.getText().equals("") == true || instructorSalaryTextField.getText().equals("") == true ||
+						instructorPriceTextField.getText().equals("") == true || instructorStatusComboBox.getSelectedItem().equals(null) == true ||
+						instructorActivityTypeComboBox.getSelectedItem().equals(null) == true)
+				{
+					JOptionPane.showMessageDialog(null, "An instructor attribute might be missing. Please insert all needed instructor attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String instructorName = instructorNameTextField.getText();
+					String instructorCiy = instructorCityTextField.getText();
+					String instructorCountry = instructorCountryTextField.getText();
+					String stringInstructorZipcode = instructorZipcodeTextField.getText();
+					int instructorZipcode = Integer.parseInt(stringInstructorZipcode);
+					String instructorAddress = instructorAddressTextField.getText();
+					String instructorPhoneNo = instructorPhoneNoTextField.getText();
+					String instructorEmail = instructorEmailTextField.getText();
+					String instructorPassword = personCtr.getPersonPassword(instructorName, stringInstructorZipcode, instructorCountry, instructorAddress);
+					String stringInstructorSalary = instructorSalaryTextField.getText();
+					int instructorSalary = Integer.parseInt(stringInstructorSalary);
+					String stringInstructorPrice = instructorPriceTextField.getText();
+					int instructorPrice = Integer.parseInt(stringInstructorPrice);
+					String instructorStatus = (String) instructorStatusComboBox.getSelectedItem();
+					String activityTypeName = (String) instructorActivityTypeComboBox.getSelectedItem();
+					ActivityType activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
+					int activityTypeId = activityTypeObj.getID();
+					
+					if(personCtr.searchPersonByName(instructorName) != null)
+					{
+						JOptionPane.showMessageDialog(null, "Cannot register the same instructor twice.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						locationCtr.insertLocation(instructorZipcode, instructorCountry, instructorCiy);
+						personCtr.insertPerson(instructorName, instructorAddress, instructorZipcode, instructorCountry, instructorPhoneNo, instructorEmail, "Instructor", instructorPassword);
+						employeeCtr.insertEmployee(instructorName, instructorSalary);
+						instructorCtr.insertInstructor(instructorName, activityTypeId, instructorPrice, instructorStatus);
+						JOptionPane.showMessageDialog(null, "Instructor successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		});
+		instructorCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorCreateButton.setBounds(6, 52, 90, 25);
+		instructorOptionsPanel.add(instructorCreateButton);
+		
+		JButton instructorUpdateButton = new JButton("Update");
+		instructorUpdateButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(instructorIdTextField.getText().equals("") == true || instructorNameTextField.getText().equals("") == true ||
+						instructorCityTextField.getText().equals("") == true || instructorCountryTextField.getText().equals("") == true ||
+						instructorZipcodeTextField.getText().equals("") == true || instructorAddressTextField.getText().equals("") == true ||
+						instructorSalaryTextField.getText().equals("") == true || instructorPriceTextField.getText().equals("") == true ||
+						instructorStatusComboBox.getSelectedItem().equals(null) == true || instructorActivityTypeComboBox.getSelectedItem().equals(null) == true)
+				{
+					JOptionPane.showMessageDialog(null, "An instructor attribute might be missing. Please insert all needed instructor attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String stringInstructorId = instructorIdTextField.getText();
+					int instructorId = Integer.parseInt(stringInstructorId);
+					
+					Instructor instructorObj = new Instructor();
+					instructorObj = instructorCtr.getInstructorById(instructorId);
+				
+					if(instructorObj == null)
+					{
+						JOptionPane.showMessageDialog(null, "The wanted instructor does not exist in the system. Please check instructor list.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						String instructorName = instructorNameTextField.getText();
+						String instructorCiy = instructorCityTextField.getText();
+						String instructorCountry = instructorCountryTextField.getText();
+						String stringInstructorZipcode = instructorZipcodeTextField.getText();
+						int instructorZipcode = Integer.parseInt(stringInstructorZipcode);
+						String instructorAddress = instructorAddressTextField.getText();
+						String instructorPhoneNo = instructorPhoneNoTextField.getText();
+						String instructorEmail = instructorEmailTextField.getText();
+						String instructorPassword = personCtr.getPersonPassword(instructorName, stringInstructorZipcode, instructorCountry, instructorAddress);
+						String stringInstructorSalary = instructorSalaryTextField.getText();
+						int instructorSalary = Integer.parseInt(stringInstructorSalary);
+						String stringInstructorPrice = instructorPriceTextField.getText();
+						int instructorPrice = Integer.parseInt(stringInstructorPrice);
+						String instructorStatus = (String) instructorStatusComboBox.getSelectedItem();
+						String activityTypeName = (String) instructorActivityTypeComboBox.getSelectedItem();
+						ActivityType activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
+						int activityTypeId = activityTypeObj.getID();
+						
+						if(personCtr.checkPersonInstanceCount(instructorId, instructorName, instructorZipcode, instructorCountry, instructorAddress) == false)
+						{
+							JOptionPane.showMessageDialog(null, "You may not update with an already existing instructor on this id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							Location locationObj =  new Location();
+							locationObj = locationCtr.getCompleteLocation(instructorZipcode, instructorCountry, instructorCiy);
+							if(locationObj == null)
+							{
+								locationCtr.insertLocation(instructorZipcode, instructorCountry, instructorCiy);
+							}
+							personCtr.updatePerson(instructorId, instructorName, instructorAddress, instructorZipcode, instructorCountry, instructorPhoneNo, instructorEmail, "Instructor", instructorPassword);
+							employeeCtr.updateEmployee(instructorId, instructorSalary);
+							instructorCtr.updateInstructor(instructorId, activityTypeId, instructorPrice, instructorStatus);
+							
+							JOptionPane.showMessageDialog(null, "Instructor updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+				}
+			}
+		});
+		instructorUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorUpdateButton.setBounds(6, 88, 90, 25);
+		instructorOptionsPanel.add(instructorUpdateButton);
+		
+		JButton instructorDeleteButton = new JButton("Delete");
+		instructorDeleteButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(instructorIdTextField.getText().equals("")==true && instructorNameTextField.getText().equals("")==true)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted instructor.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					if(instructorNameTextField.getText().equals("") == true)
+					{
+						String stringInstructorId = instructorIdTextField.getText();
+						int instructorId = Integer.parseInt(stringInstructorId);
+						
+						Instructor instructorObj = new Instructor();
+						instructorObj = instructorCtr.getInstructorById(instructorId);
+						
+						if(instructorObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "There is no instructor by this id. Please insert a valid instructor id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							instructorCtr.deleteInstructorById(instructorId);
+							JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+					else
+					{
+						if(instructorIdTextField.getText().equals("") == true)
+						{
+							String instructorName = instructorNameTextField.getText();
+							
+							Person personObj = new Person();
+							personObj = personCtr.searchPersonByName(instructorName);
+							
+							if(personObj == null || personObj.getPersonType().equals("Instructor") == false)
+							{
+								JOptionPane.showMessageDialog(null, "There is no instructor by this name. Please insert a valid instructor name.", "Error!", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								int instructorId = personObj.getId();
+								instructorCtr.deleteInstructorById(instructorId);
+								JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							}
+						}
+						else
+						{
+							if(instructorIdTextField.getText().equals("") != true && instructorNameTextField.getText().equals("") != true)
+							{
+								String stringInstructorId = instructorIdTextField.getText();
+								int instructorId = Integer.parseInt(stringInstructorId);
+								
+								Instructor instructorObj = new Instructor();
+								instructorObj = instructorCtr.getInstructorById(instructorId);
+								
+								if(instructorObj == null)
+								{
+									JOptionPane.showMessageDialog(null, "There is no instructor by this id. Please insert a valid instructor id.", "Error!", JOptionPane.ERROR_MESSAGE);
+								}
+								else
+								{
+									instructorCtr.deleteInstructorById(instructorId);
+									JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		instructorDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorDeleteButton.setBounds(6, 124, 90, 25);
+		instructorOptionsPanel.add(instructorDeleteButton);
+		
+		JButton instructorAllButton = new JButton("All");
+		instructorAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorAllButton.setBounds(6, 160, 90, 25);
+		instructorOptionsPanel.add(instructorAllButton);
+		
+		JButton instructorClearAllButton = new JButton("Clear all");
+		instructorClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		instructorClearAllButton.setBounds(10, 325, 104, 25);
+		InstructorPanel.add(instructorClearAllButton);
+		
+		JScrollPane instructorTableScrollPane = new JScrollPane();
+		instructorTableScrollPane.setBounds(124, 122, 691, 275);
+		InstructorPanel.add(instructorTableScrollPane);
+		
+		instructorTable = new JTable();
+		instructorTable.setFillsViewportHeight(true);
+		instructorTableScrollPane.setViewportView(instructorTable);
 		
 		JPanel FacilityPanel = new JPanel();
 		tabbedPane.addTab("Facility menu", null, FacilityPanel, null);
@@ -1828,5 +2470,137 @@ public class ManagerMenu
 	{
 		activityTypeTable.setCellSelectionEnabled(false);
 		activityTypeTable.setModel(new DefaultTableModel());
+	}
+	
+	public DefaultTableModel getGuestTableModel()
+	{
+		LinkedList<Guest> completeGuestList = new LinkedList<Guest>();
+		completeGuestList = guestCtr.getAllGuests();
+		
+		DefaultTableModel guestTableModel = new DefaultTableModel()
+		{
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				//all cells false
+				return false;
+			}
+		};
+		
+		guestTableModel.setColumnIdentifiers(new String[] {"Id", "Name", "Guest type", "Travel agency", "Password"});
+		
+		for(Guest guestObj : completeGuestList)
+		{
+			String travelAgencyName = new String();
+			TravelAgency travelAgencyObj = new TravelAgency();
+			travelAgencyObj = guestObj.getTravelAgency();
+			if(travelAgencyObj == null)
+			{
+				travelAgencyName = "0";
+			}
+			else
+			{
+				travelAgencyName = travelAgencyObj.getName();
+			}
+			guestTableModel.addRow(new String[]
+					{
+					String.valueOf(guestObj.getId()),
+					guestObj.getName(),
+					guestObj.getGuestType(),
+					travelAgencyName,
+					guestObj.getPassword()
+					});
+		}
+		
+		guestTable.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = guestTable.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				Guest guestObj = new Guest();
+				
+				int selectedRow = guestTable.getSelectedRow();
+				if(selectedRow > -1)
+				{
+					String selectedData = (String) guestTable.getValueAt(selectedRow, 0);
+					int guestId = Integer.parseInt(selectedData);
+					String stringGuestId = String.valueOf(guestId);
+					
+					guestObj = guestCtr.searchGuestById(guestId);
+					String guestName = guestObj.getName();
+					int guestZipCode = guestObj.getZipCode();
+					String stringGuestZipcode = String.valueOf(guestZipCode);
+					String guestCountry = guestObj.getCountry();
+					String guestAddress = guestObj.getAddress();
+					String guestPhoneNo = guestObj.getPhoneNo();
+					String guestEmail = guestObj.getEmail();
+					String guestPassword = guestObj.getPassword();
+					String guestType = guestObj.getGuestType();
+												
+					String travelAgencyName = new String();
+					TravelAgency travelAgencyObj = new TravelAgency();
+					travelAgencyObj = guestObj.getTravelAgency();
+					if(travelAgencyObj == null)
+					{
+						travelAgencyName = "0";
+					}
+					else
+					{
+						travelAgencyName = travelAgencyObj.getName();
+					}
+					
+					Location locationObj = new Location();
+					locationObj = locationCtr.getLocation(guestZipCode, guestCountry);
+					String guestCity = locationObj.getCity();
+					
+					guestIdTextField.setText(stringGuestId);
+					guestNameTextField.setText(guestName);
+					guestCityTextField.setText(guestCity);
+					guestCountryTextField.setText(guestCountry);
+					guestZipcodeTextField.setText(stringGuestZipcode);
+					guestAddressTextField.setText(guestAddress);
+					guestPhoneNoTextField.setText(guestPhoneNo);
+					guestEmailTextField.setText(guestEmail);
+					guestPasswordTextField.setText(guestPassword);									
+					guestGuestTypeComboBox.setSelectedItem(guestType);
+					
+					if(travelAgencyName.equals("0") == true)
+					{
+						guestTravelAgencyComboBox.setSelectedItem(null);
+					}
+					else
+					{
+						guestTravelAgencyComboBox.setSelectedItem(travelAgencyName);
+					}
+				}
+			}
+		});
+		
+		return guestTableModel;
+	}
+	
+	public void clearGuestPanel()
+	{
+		guestIdTextField.setText("");
+		guestNameTextField.setText("");
+		guestCityTextField.setText("");
+		guestCountryTextField.setText("");
+		guestZipcodeTextField.setText("");
+		guestAddressTextField.setText("");
+		guestPhoneNoTextField.setText("");
+		guestEmailTextField.setText("");
+		guestPasswordTextField.setText("");									
+		guestGuestTypeComboBox.setSelectedItem(null);
+		guestTravelAgencyComboBox.setSelectedItem(null);
+	}
+	
+	public void clearGuestTable()
+	{
+		guestTable.setCellSelectionEnabled(false);
+		guestTable.setModel(new DefaultTableModel());
 	}
 }

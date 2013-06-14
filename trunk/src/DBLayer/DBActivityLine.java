@@ -59,7 +59,7 @@ public class DBActivityLine implements IFDBActivityLine
 			activityLineObj.setFacility(facilityObj);
 			
 			Instructor instructorObj =new Instructor();
-			instructorObj = dbInstructor.getInstructorById(results.getInt("instructorId"), true);
+			instructorObj = dbInstructor.getInstructorById(results.getInt("instructorId"));
 			if(instructorObj != null)
 			{
 				activityLineObj.setInstructor(instructorObj);
@@ -128,7 +128,7 @@ public class DBActivityLine implements IFDBActivityLine
 				
 				IFDBInstructor dbInstructor = new DBInstructor();
 				Instructor instructorObj = new Instructor();
-				instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId(), true);
+				instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId());
 				if(instructorObj != null)
 				{
 					activityLineObj.setInstructor(instructorObj);
@@ -218,7 +218,7 @@ public class DBActivityLine implements IFDBActivityLine
 					}
 					
 					Instructor instructorObj = new Instructor();
-					instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId(), true);
+					instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId());
 					if(instructorObj != null)
 					{
 						activityLineObj.setInstructor(instructorObj);

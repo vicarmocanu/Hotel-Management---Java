@@ -93,7 +93,7 @@ public class PersonCtr
 		 return endPassword;
 	}
 	 
-	public boolean checkGuestInstanceCount(int id, String name, int zipcode, String country, String address)
+	public boolean checkPersonInstanceCount(int id, String name, int zipcode, String country, String address)
 	{
 		boolean check = false;
 		int instances = 0;
