@@ -74,6 +74,10 @@ public class DBActivityBooking implements IFDBActivityBooking
 				activityBookingObj = buildActivityBooking(results);
 				stmt.close();
 			}
+			else
+			{
+				activityBookingObj = null;
+			}
 		}
 		catch(Exception e)
 		{
