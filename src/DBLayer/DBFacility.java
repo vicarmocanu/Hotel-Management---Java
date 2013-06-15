@@ -163,18 +163,22 @@ public class DBFacility implements IFDBFacility
 		ActivityType activityTypeObj = facilityObj.getActivity();
 		String query = new String();
 		
-		if(activityTypeObj!=null)
+		if(activityTypeObj != null)
 		{
 			query = "INSERT INTO Facility(id, name, forActivity, status) VALUES ('" +
 		nextFacilityId + "','" +
-					facility.getName() + "','" +
-		facility.getActivity().getID() + "','" +
-					facility.getStatus() + "')";
+					facilityObj.getName() + "','" +
+		facilityObj.getActivity().getID() + "','" +
+					facilityObj.getStatus() + "')";
 		}
 		else
 		{
-			System.out.println("Error! An inserted value may be invalid.");
+			query = "INSERT INTO Facility(id, name, status) VALUES ('" +
+					nextFacilityId + "','" +
+								facilityObj.getName() + "','" +
+					facilityObj.getStatus() + "')";
 		}
+		
 		System.out.println("Insertion query: " + query);
 		
 		try
@@ -193,12 +197,12 @@ public class DBFacility implements IFDBFacility
 	}
 
 	@Override
-	public int updateFacility(Facility facility)
+	public int updateFacility(Facility facilityObj)
 	{
-		Facility facilityObj=facility;
+		int result=-1;
+		String query = new String();		
 		ActivityType activityTypeObj = new ActivityType();
-		activityTypeObj = facility.getActivity();
-		String query = new String();
+		activityTypeObj = facilityObj.getActivity();
 		
 		if(activityTypeObj != null)
 		{
@@ -208,8 +212,15 @@ public class DBFacility implements IFDBFacility
 		"status= '" + facilityObj.getStatus() + "' " +
 					"WHERE id= '" + facilityObj.getId() + "'";
 		}
+		else
+		{
+			query="UPDATE Facility SET " +
+		"name= '" + facilityObj.getName() + "', " +
+					"forActivity= '0', " +
+		"status= '" + facilityObj.getStatus() + "' " +
+					"WHERE id= '" + facilityObj.getId() + "'";
+		}
 		
-		int result=-1;
 		System.out.println("Update query: " + query);
 		
 		try
