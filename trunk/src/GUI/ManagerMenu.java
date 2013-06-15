@@ -574,7 +574,7 @@ public class ManagerMenu
 					}
 					else
 					{
-						Location locationObj = locationCtr.getCompleteLocation(guestZipcode, guestCountry, guestCity);
+						Location locationObj = locationCtr.getLocation(guestZipcode, guestCountry);
 						if(locationObj == null)
 						{
 							locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
@@ -650,7 +650,7 @@ public class ManagerMenu
 						else
 						{
 							Location locationObj =  new Location();
-							locationObj = locationCtr.getCompleteLocation(guestZipcode, guestCountry, guestCity);
+							locationObj = locationCtr.getLocation(guestZipcode, guestCountry);
 							if(locationObj == null)
 							{
 								locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
@@ -846,19 +846,19 @@ public class ManagerMenu
 					String travelAgencyPhoneNo = travelAgencyPhoneNoTextField.getText();
 					String travelAgencyEmail = travelAgencyEmailTextField.getText();
 					
-					if(travelCtr.getTravelAgencyByCVR(travelAgencyCVR) != null)
+					if(travelCtr.getTravelAgencyByName(travelAgencyName) != null)
 					{
 						JOptionPane.showMessageDialog(null, "Cannot register the same travel agency twice.", "Error!", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
-						Location locationObj = locationCtr.getCompleteLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
+						Location locationObj = locationCtr.getLocation(travelAgencyZipcode, travelAgencyCountry);
 						if(locationObj == null)
 						{
 							locationCtr.insertLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
 						}
 						
-						travelCtr.insertTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyAddress, travelAgencyCountry, travelAgencyPhoneNo, travelAgencyEmail);
+						travelCtr.insertTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyCountry, travelAgencyAddress, travelAgencyPhoneNo, travelAgencyEmail);
 						clearTable();
 						clearValues();
 						
@@ -906,7 +906,7 @@ public class ManagerMenu
 						
 						if(travelAgencyObj == null)
 						{
-							JOptionPane.showMessageDialog(null, "The wanted travel agency does not exist. Please .", "Error!", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "The wanted travel agency does not exist. Please check travel agency list.", "Error!", JOptionPane.ERROR_MESSAGE);
 							
 						}
 						else
@@ -929,30 +929,30 @@ public class ManagerMenu
 							else
 							{
 								Location locationObj =  new Location();
-								locationObj = locationCtr.getCompleteLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
+								locationObj = locationCtr.getLocation(travelAgencyZipcode, travelAgencyCountry);
 								if(locationObj == null)
 								{
 									locationCtr.insertLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
 								}
-							}
-							
-							travelCtr.updateTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyCountry, travelAgencyAddress, travelAgencyPhoneNo, travelAgencyEmail);
-							clearTable();
-							clearValues();
-							
-							guestTravelAgencyComboBox.removeAllItems();
-							LinkedList<TravelAgency> allTravelAgenciesList = new LinkedList<TravelAgency>();
-							allTravelAgenciesList = travelCtr.getAllTravelAgencies();
-							if(allTravelAgenciesList.isEmpty() == false)
-							{
-								for(TravelAgency listElementTravelAgencyObj: allTravelAgenciesList)
+								
+								travelCtr.updateTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyCountry, travelAgencyAddress, travelAgencyPhoneNo, travelAgencyEmail);
+								clearTable();
+								clearValues();
+								
+								guestTravelAgencyComboBox.removeAllItems();
+								LinkedList<TravelAgency> allTravelAgenciesList = new LinkedList<TravelAgency>();
+								allTravelAgenciesList = travelCtr.getAllTravelAgencies();
+								if(allTravelAgenciesList.isEmpty() == false)
 								{
-									String comboBoxItem = listElementTravelAgencyObj.getName();
-									guestTravelAgencyComboBox.addItem(comboBoxItem);
+									for(TravelAgency listElementTravelAgencyObj: allTravelAgenciesList)
+									{
+										String comboBoxItem = listElementTravelAgencyObj.getName();
+										guestTravelAgencyComboBox.addItem(comboBoxItem);
+									}
 								}
+								
+								JOptionPane.showMessageDialog(null, "Travel agency updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 							}
-							
-							JOptionPane.showMessageDialog(null, "Travel agency updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
 				}
@@ -1513,17 +1513,6 @@ public class ManagerMenu
 		instructorStatusComboBox.setBounds(218, 66, 122, 20);
 		instructorAttributePanel.add(instructorStatusComboBox);
 		
-		JButton noActivityButton = new JButton("No activity");
-		noActivityButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				instructorActivityTypeComboBox.setSelectedItem(null);
-			}
-		});
-		noActivityButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		noActivityButton.setBounds(658, 65, 104, 25);
-		instructorAttributePanel.add(noActivityButton);
-		
 		JPanel instructorOptionsPanel = new JPanel();
 		instructorOptionsPanel.setLayout(null);
 		instructorOptionsPanel.setBorder(new TitledBorder(null, "Instructor", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -1750,7 +1739,8 @@ public class ManagerMenu
 				if(instructorNameTextField.getText().equals("") == true || instructorCityTextField.getText().equals("") == true ||
 						instructorCountryTextField.getText().equals("") == true || instructorZipcodeTextField.getText().equals("") == true ||
 						instructorAddressTextField.getText().equals("") == true || instructorSalaryTextField.getText().equals("") == true ||
-						instructorPriceTextField.getText().equals("") == true || instructorStatusComboBox.getSelectedItem().equals(null) == true)
+						instructorPriceTextField.getText().equals("") == true || instructorStatusComboBox.getSelectedItem() == null ||
+						instructorActivityTypeComboBox.getSelectedItem() == null)
 				{
 					JOptionPane.showMessageDialog(null, "An instructor attribute might be missing. Please insert all needed instructor attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -1785,7 +1775,7 @@ public class ManagerMenu
 					}
 					else
 					{
-						Location locationObj = locationCtr.getCompleteLocation(instructorZipcode, instructorCountry, instructorCiy);
+						Location locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
 						if(locationObj == null)
 						{
 							locationCtr.insertLocation(instructorZipcode, instructorCountry, instructorCiy);
@@ -1813,8 +1803,8 @@ public class ManagerMenu
 				if(instructorIdTextField.getText().equals("") == true || instructorNameTextField.getText().equals("") == true ||
 						instructorCityTextField.getText().equals("") == true || instructorCountryTextField.getText().equals("") == true ||
 						instructorZipcodeTextField.getText().equals("") == true || instructorAddressTextField.getText().equals("") == true ||
-						instructorSalaryTextField.getText().equals("") == true || instructorPriceTextField.getText().equals("") == true ||
-						instructorStatusComboBox.getSelectedItem().equals(null) == true || instructorPasswordTextField.getText().equals("") == true)
+						instructorSalaryTextField.getText().equals("") == true || instructorPriceTextField.getText().equals("") == true ||instructorPasswordTextField.getText().equals("") == true ||
+						instructorStatusComboBox.getSelectedItem() == null || instructorActivityTypeComboBox.getSelectedItem() == null)
 				{
 					JOptionPane.showMessageDialog(null, "An instructor attribute might be missing. Please insert all needed instructor attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -1862,7 +1852,7 @@ public class ManagerMenu
 						else
 						{
 							Location locationObj =  new Location();
-							locationObj = locationCtr.getCompleteLocation(instructorZipcode, instructorCountry, instructorCiy);
+							locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
 							if(locationObj == null)
 							{
 								locationCtr.insertLocation(instructorZipcode, instructorCountry, instructorCiy);
@@ -1924,7 +1914,7 @@ public class ManagerMenu
 		
 		JPanel facilityAttributesPanel = new JPanel();
 		facilityAttributesPanel.setBorder(new TitledBorder(null, "Facility attributes:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		facilityAttributesPanel.setBounds(10, 11, 650, 110);
+		facilityAttributesPanel.setBounds(10, 11, 650, 80);
 		FacilityPanel.add(facilityAttributesPanel);
 		facilityAttributesPanel.setLayout(null);
 		
@@ -1980,17 +1970,6 @@ public class ManagerMenu
 		statusComboBox.setSelectedItem(null);
 		statusComboBox.setBounds(88, 44, 220, 20);
 		facilityAttributesPanel.add(statusComboBox);
-		
-		JButton facilityNoFacility = new JButton("No activity");
-		facilityNoFacility.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e)
-			{
-				activityTypeComboBox.setSelectedItem(null);
-			}
-		});
-		facilityNoFacility.setFont(new Font("Arial", Font.PLAIN, 11));
-		facilityNoFacility.setBounds(499, 75, 140, 23);
-		facilityAttributesPanel.add(facilityNoFacility);
 		
 		JPanel facilityOptionsPanel = new JPanel();
 		facilityOptionsPanel.setBorder(new TitledBorder(null, "Facility", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -2145,7 +2124,7 @@ public class ManagerMenu
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if(facilityNameTextField.getText().equals("") == true || statusComboBox.getSelectedItem().equals(null) ==true)
+				if(facilityNameTextField.getText().equals("") == true || statusComboBox.getSelectedItem() == null || activityTypeComboBox.getSelectedItem() == null)
 				{
 					JOptionPane.showMessageDialog(null, "A facility attribute might be missing. Please insert all needed facility attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -2188,7 +2167,8 @@ public class ManagerMenu
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(facilityIdTextField.getText().equals("") == true || facilityNameTextField.getText().equals("") == true || statusComboBox.getSelectedItem().equals(null) == true)
+				if(facilityIdTextField.getText().equals("") == true || facilityNameTextField.getText().equals("") == true ||
+						statusComboBox.getSelectedItem() == null || activityTypeComboBox.getSelectedItem() == null)
 				{
 					JOptionPane.showMessageDialog(null, "Some facility attributes have not been inserted. Please insert all facility attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -2746,33 +2726,29 @@ public class ManagerMenu
 			}
 		};
 		
-		travelAgencyTableModel.setColumnIdentifiers(new String[] {"CVR", "Name", "Zipcode", "Country", "City", "Address", "PhoneNo", "Email"});
+		//travelAgencyTableModel.setColumnIdentifiers(new String[] {"CVR", "Name", "ZIP code", "Country", "City", "Address", "PhoneNo", "Email"});
+		travelAgencyTableModel.setColumnIdentifiers(new String[] {"CVR", "Name", "PhoneNo", "Email"});
 		
 		for(TravelAgency travelAgencyObj : completeTravelAgencyList)
 		{
-			int travelAgencyZipcode;
-			String travelAgencyCountry = new String();
-			String travelAgencyCity = new String();
+			/*int travelAgencyZipcode = travelAgencyObj.getZipCode();
+			String travelAgencyCountry = travelAgencyObj.getCountry();
 			Location locationObj = new Location();
-				
-			if(locationObj == null)
+			locationObj = locationCtr.getLocation(travelAgencyZipcode, travelAgencyCountry);
+			String travelAgencyCity = new String("");
+			if(locationObj != null)
 			{
-			     travelAgencyZipcode = 0;
-			}
-			else
-			{
-				travelAgencyZipcode = travelAgencyObj.getZipCode();
-				travelAgencyCountry = travelAgencyObj.getCountry();
 				travelAgencyCity = locationObj.getCity();
-			}
+			}*/
+			
 			travelAgencyTableModel.addRow(new String[]
 					{
 					String.valueOf(travelAgencyObj.getCVR()),
 					travelAgencyObj.getName(),
-					String.valueOf(travelAgencyObj.getZipCode()),
-					travelAgencyObj.getAddress(),
-					travelAgencyObj.getCountry(),
-					locationObj.getCity(),
+					//String.valueOf(travelAgencyZipcode),
+					//travelAgencyCountry,
+					//travelAgencyCity,
+					//travelAgencyObj.getAddress(),
 					travelAgencyObj.getPhoneNo(),
 					travelAgencyObj.getEmail()
 					});
@@ -2798,33 +2774,27 @@ public class ManagerMenu
 					travelAgencyObj = travelCtr.getTravelAgencyByCVR(travelAgencyCVR);
 					String travelAgencyName = travelAgencyObj.getName();
 					int travelAgencyZipcode = travelAgencyObj.getZipCode();
-					String stringTravelAgencyZipcode = String.valueOf(locationObj.getZipCode());
-					String travelAgencyCountry = locationObj.getCountry();
-					String travelAgencyCity = locationObj.getCity();
+					String stringTravelAgencyZipcode = String.valueOf(travelAgencyZipcode);
+					String travelAgencyCountry = travelAgencyObj.getCountry();
 					String travelAgencyAddress = travelAgencyObj.getAddress();
 					String travelAgencyPhoneNo = travelAgencyObj.getPhoneNo();
 					String travelAgencyEmail = travelAgencyObj.getEmail();
-					if(locationObj == null)
+					
+					locationObj = locationCtr.getLocation(travelAgencyZipcode, travelAgencyCountry);
+					String travelAgencyCity = new String("");
+					if(locationObj != null)
 					{
-						travelAgencyZipcode = 0;
-					}
-					else
-					{
-						travelAgencyZipcode = locationObj.getZipCode();
-						travelAgencyCountry = locationObj.getCountry();
 						travelAgencyCity = locationObj.getCity();
 					}
 					
 					travelAgencyCVRTextField.setText(stringTravelAgencyCVR);
 					travelAgencyNameTextField.setText(travelAgencyName);
-					travelAgencyZipcodeTextField.setText(travelAgencyCity);
+					travelAgencyCityTextField.setText(travelAgencyCity);
 					travelAgencyCountryTextField.setText(travelAgencyCountry);
-					travelAgencyCityTextField.setText(stringTravelAgencyZipcode);
+					travelAgencyZipcodeTextField.setText(stringTravelAgencyZipcode);
 					travelAgencyAddressTextField.setText(travelAgencyAddress);
 					travelAgencyPhoneNoTextField.setText(travelAgencyPhoneNo);
 					travelAgencyEmailTextField.setText(travelAgencyEmail);
-					
-					
 				}
 			}
 		});
@@ -2836,12 +2806,12 @@ public class ManagerMenu
 	{
 		travelAgencyCVRTextField.setText("");
 		travelAgencyNameTextField.setText("");
-		travelAgencyZipcodeTextField.setText("");
+		travelAgencyCityTextField.setText("");
 		travelAgencyCountryTextField.setText("");
-		guestCityTextField.setText("");
-		guestAddressTextField.setText("");
-		guestPhoneNoTextField.setText("");
-		guestEmailTextField.setText("");
+		travelAgencyZipcodeTextField.setText("");
+		travelAgencyAddressTextField.setText("");
+		travelAgencyPhoneNoTextField.setText("");
+		travelAgencyEmailTextField.setText("");
 	}
 	
 	public void clearTravelAgencyTable()
