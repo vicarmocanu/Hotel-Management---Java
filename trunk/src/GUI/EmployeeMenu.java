@@ -32,8 +32,12 @@ public class EmployeeMenu
 	private JTextField txtStatus;
 	private JTable table;
 	private JScrollPane scrollPane;
-	private JTextField txtArrivalDate;
-	private JTextField txtDeparturedate;
+	private JTextField txtDd;
+	private JTextField txtMm;
+	private JTextField txtYyyy;
+	private JTextField txtDepDD;
+	private JTextField txtDepmm;
+	private JTextField txtDepyyyy;
 	
 	public EmployeeMenu()
 	{
@@ -158,23 +162,59 @@ public class EmployeeMenu
 		panel_1.add(txtStatus);
 		txtStatus.setColumns(10);
 		
-		JLabel lblDdmmyyyy = new JLabel("YYYY:MM:DD");
+		JLabel lblDdmmyyyy = new JLabel("DD:MM:YYYY");
 		lblDdmmyyyy.setBounds(278, 59, 76, 14);
 		panel_1.add(lblDdmmyyyy);
 		
-		JLabel lblDdmmyyyy_1 = new JLabel("YYYY:MM:DD");
+		JLabel lblDdmmyyyy_1 = new JLabel("DD:MM:YYYY");
 		lblDdmmyyyy_1.setBounds(679, 59, 70, 14);
 		panel_1.add(lblDdmmyyyy_1);
 		
-		txtArrivalDate = new JTextField();
-		txtArrivalDate.setBounds(96, 56, 172, 20);
-		panel_1.add(txtArrivalDate);
-		txtArrivalDate.setColumns(10);
+		txtDd = new JTextField();
+		txtDd.setBounds(96, 56, 28, 20);
+		panel_1.add(txtDd);
+		txtDd.setColumns(10);
 		
-		txtDeparturedate = new JTextField();
-		txtDeparturedate.setBounds(485, 56, 184, 20);
-		panel_1.add(txtDeparturedate);
-		txtDeparturedate.setColumns(10);
+		JLabel label = new JLabel(":");
+		label.setBounds(134, 59, 10, 14);
+		panel_1.add(label);
+		
+		txtMm = new JTextField();
+		txtMm.setBounds(144, 56, 28, 20);
+		panel_1.add(txtMm);
+		txtMm.setColumns(10);
+		
+		JLabel label_1 = new JLabel(":");
+		label_1.setBounds(182, 59, 10, 14);
+		panel_1.add(label_1);
+		
+		txtYyyy = new JTextField();
+		txtYyyy.setBounds(202, 56, 66, 20);
+		panel_1.add(txtYyyy);
+		txtYyyy.setColumns(10);
+		
+		txtDepDD = new JTextField();
+		txtDepDD.setBounds(485, 56, 28, 20);
+		panel_1.add(txtDepDD);
+		txtDepDD.setColumns(10);
+		
+		JLabel label_2 = new JLabel(":");
+		label_2.setBounds(523, 59, 10, 14);
+		panel_1.add(label_2);
+		
+		txtDepmm = new JTextField();
+		txtDepmm.setBounds(533, 56, 28, 20);
+		panel_1.add(txtDepmm);
+		txtDepmm.setColumns(10);
+		
+		JLabel label_3 = new JLabel(":");
+		label_3.setBounds(571, 59, 10, 14);
+		panel_1.add(label_3);
+		
+		txtDepyyyy = new JTextField();
+		txtDepyyyy.setBounds(583, 56, 86, 20);
+		panel_1.add(txtDepyyyy);
+		txtDepyyyy.setColumns(10);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -189,6 +229,9 @@ public class EmployeeMenu
 			public void actionPerformed(ActionEvent arg0)
 			{
 				RoomBookingCtr rbCtr=new RoomBookingCtr();
+				
+				String txtArrivalDate = txtYyyy.getText()+txtMm.getText()+txtDd.getText();
+				String txtDeparturedate = txtDepyyyy.getText()+txtDepmm.getText()+txtDepDD.getText();
 				
 				if(!txtRoomBookingId.getText().equals(""))
 				{
@@ -237,9 +280,9 @@ public class EmployeeMenu
 						System.out.println("Exception: " + e);
 					}
 				}
-				else if(!txtArrivalDate.getText().equals(""))
+				else if(!txtArrivalDate.equals(""))
 				{
-					int arrival = Integer.parseInt(txtArrivalDate.getText());
+					int arrival = Integer.parseInt(txtArrivalDate);
 					ArrayList<RoomBooking> rbList=new ArrayList<RoomBooking>();
 					rbList=rbCtr.findRoomBookingByArrival(arrival);
 					
@@ -290,9 +333,9 @@ public class EmployeeMenu
 						System.out.println("Exception: " + e);
 					}
 				}
-				else if(!txtDeparturedate.getText().equals(""))
+				else if(!txtDeparturedate.equals(""))
 				{
-					int departure = Integer.parseInt(txtDeparturedate.getText());
+					int departure = Integer.parseInt(txtDeparturedate);
 					ArrayList<RoomBooking> rbList=new ArrayList<RoomBooking>();
 					rbList=rbCtr.findRoomBookingByDeparture(departure);
 					
@@ -359,7 +402,10 @@ public class EmployeeMenu
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				RoomBookingCtr rbCtr=new RoomBookingCtr();
+				RoomBookingCtr rbCtr=new RoomBookingCtr();				
+
+				String txtArrivalDate = txtYyyy.getText()+txtMm.getText()+txtDd.getText();
+				String txtDeparturedate = txtDepyyyy.getText()+txtDepmm.getText()+txtDepDD.getText();
 				
 				if(txtRoomBookingId.getText().equals("")!=true)
 				{
@@ -369,15 +415,15 @@ public class EmployeeMenu
 					RoomBooking rb1=rbCtr.findRoomBookingByID(rbId);
 					if(rb1!=null)
 					{
-						if(txtArrivalDate.getText().equals("")!=true || 
+						if(txtArrivalDate.equals("")!=true || 
 							txtNumberOfChildren.getText().equals("")!=true ||
 							txtStatus.getText().equals("")!=true ||
-							txtDeparturedate.getText().equals("")!=true)
+							txtDeparturedate.equals("")!=true)
 						{
-							int arrival=Integer.parseInt(txtArrivalDate.getText());
+							int arrival=Integer.parseInt(txtArrivalDate);
 							int children=Integer.parseInt(txtNumberOfChildren.getText());
 							String status=txtStatus.getText();
-							int departure=Integer.parseInt(txtDeparturedate.getText());
+							int departure=Integer.parseInt(txtDeparturedate);
 							
 							rbCtr.updateBooking(rbId, arrival, departure, status, children);
 							
@@ -414,18 +460,21 @@ public class EmployeeMenu
 			{
 				public void actionPerformed(ActionEvent arg0) 
 				{
-					if(txtArrivalDate.getText().equals("")==true || txtDeparturedate.getText().equals("")==true || txtNumberOfChildren.getText().equals("")==true || txtStatus.getText().equals("")==true)
+					String txtArrivalDate = txtYyyy.getText()+txtMm.getText()+txtDd.getText();
+					String txtDeparturedate = txtDepyyyy.getText()+txtDepmm.getText()+txtDepDD.getText();
+					
+					if(txtArrivalDate.equals("")==true || txtDeparturedate.equals("")==true || txtNumberOfChildren.getText().equals("")==true || txtStatus.getText().equals("")==true)
 					{
 						JOptionPane.showMessageDialog(null, "Please insert all data!", "Error!", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
 						RoomBookingCtr rbCtr=new RoomBookingCtr();
-						int arrival=Integer.parseInt(txtArrivalDate.getText());
-						int departure=Integer.parseInt(txtDeparturedate.getText());
+						int arrival=Integer.parseInt(txtArrivalDate);
+						int departure=Integer.parseInt(txtDeparturedate);
 						String status=txtStatus.getText();
 						int numberOfChildren=Integer.parseInt(txtNumberOfChildren.getText());
-						System.out.println(txtArrivalDate.getText());
+						System.out.println(txtArrivalDate);
 						int bookingId = rbCtr.createNewBooking(arrival, departure, status, numberOfChildren);
 						
 						DefaultTableModel tdm=(DefaultTableModel)table.getModel();
@@ -446,15 +495,17 @@ public class EmployeeMenu
 				public void actionPerformed(ActionEvent arg0)
 				{
 					RoomBookingCtr rbCtr=new RoomBookingCtr();
+					String txtArrivalDate = txtYyyy.getText()+txtMm.getText()+txtDd.getText();
+					String txtDeparturedate = txtDepyyyy.getText()+txtDepmm.getText()+txtDepDD.getText();
 					
-					if(txtArrivalDate.getText().equals("") || txtDeparturedate.getText().equals(""))
+					if(txtArrivalDate.equals("") || txtDeparturedate.equals(""))
 					{
 						JOptionPane.showMessageDialog(null, "Please insert arrival date and departure date.", "Error!", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
-						int arrival=Integer.parseInt(txtArrivalDate.getText());
-						int departure=Integer.parseInt(txtDeparturedate.getText());
+						int arrival=Integer.parseInt(txtArrivalDate);
+						int departure=Integer.parseInt(txtDeparturedate);
 						
 						ArrayList<Room> rlList=new ArrayList<Room>();
 						rlList=rbCtr.findAvailableRooms(arrival, departure);
@@ -540,8 +591,12 @@ public class EmployeeMenu
 	private void putValuesOnTheScreen(RoomBooking rbObj)
 	{
 		txtRoomBookingId.setText(String.valueOf(rbObj.getId()));
-		txtArrivalDate.setText(String.valueOf(rbObj.getArrivalDate()));
-		txtDeparturedate.setText(String.valueOf(rbObj.getDepartureDate()));
+		txtDd.setText(String.valueOf(rbObj.getArrivalDate()).substring(6, 8));
+		txtMm.setText(String.valueOf(rbObj.getArrivalDate()).substring(4, 6));
+		txtYyyy.setText(String.valueOf(rbObj.getArrivalDate()).substring(0, 4));
+		txtDepDD.setText(String.valueOf(rbObj.getArrivalDate()).substring(6, 8));
+		txtDepmm.setText(String.valueOf(rbObj.getArrivalDate()).substring(4, 6));
+		txtDepyyyy.setText(String.valueOf(rbObj.getArrivalDate()).substring(0, 4));
 		txtNumberOfChildren.setText(String.valueOf(rbObj.getNumberOfChildren()));
 		txtStatus.setText(rbObj.getStatus());
 	}
@@ -549,8 +604,12 @@ public class EmployeeMenu
 	private void clearValues()
 	{
 		txtRoomBookingId.setText(null);
-		txtArrivalDate.setText(null);
-		txtDeparturedate.setText(null);
+		txtDd.setText(null);
+		txtMm.setText(null);
+		txtYyyy.setText(null);
+		txtDepDD.setText(null);
+		txtDepmm.setText(null);
+		txtDepyyyy.setText(null);
 		txtNumberOfChildren.setText(null);
 		txtStatus.setText(null);
 		
