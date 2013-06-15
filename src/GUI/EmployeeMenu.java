@@ -18,6 +18,7 @@ public class EmployeeMenu
 	public EmployeeMenu()
 	{
 		initialize();
+		frame.setVisible(true);
 	}
 	
 	private void initialize()
