@@ -19,5 +19,7 @@ public interface IFDBTravelAgency
 	public int deleteTravelAgencyByCvr(int cvr);
 	
 	public int deleteTravelAgencyByName(String name);
+	
+	public int getTravelAgencyInstances(int cvr, String name, int zipcode, String country, String address);
 
 }

@@ -576,7 +576,12 @@ public class ManagerMenu
 					}
 					else
 					{
-						locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
+						Location locationObj = locationCtr.getCompleteLocation(guestZipcode, guestCountry, guestCity);
+						if(locationObj == null)
+						{
+							locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
+						}
+						
 						personCtr.insertPerson(guestName, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
 						guestCtr.insertGuest(guestName, travelAgencyCVR, guestType);
 						clearGuestPanel();
@@ -901,12 +906,15 @@ public class ManagerMenu
 		travelAgencyOptionsPanel.add(travelAgencySearchButton);
 		
 		JButton travelAgencyCreateButton = new JButton("Create");
-		travelAgencyCreateButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(travelAgencyCVRTextField.getText().equals("") == true && travelAgencyNameTextField.getText().equals("") == true && travelAgencyZipcodeTextField.getText().equals("") == true &&
-						travelAgencyCountryTextField.getText().equals("") == true && travelAgencyCityTextField.getText().equals("") == true && travelAgencyAddressTextField.getText().equals("") == true)
+		travelAgencyCreateButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if(travelAgencyCVRTextField.getText().equals("") == true || travelAgencyNameTextField.getText().equals("") == true || 
+						travelAgencyZipcodeTextField.getText().equals("") == true || travelAgencyCountryTextField.getText().equals("") == true ||
+						travelAgencyCityTextField.getText().equals("") == true || travelAgencyAddressTextField.getText().equals("") == true)
 				{
-					JOptionPane.showMessageDialog(null, "An travel agency attribute might be missing. Please insert all necessary travel agency attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "A travel agency attribute might be missing. Please insert all necessary travel agency attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
@@ -920,17 +928,28 @@ public class ManagerMenu
 					int travelAgencyZipcode = Integer.parseInt(stringtravelAgencyZipcode);
 					
 					String travelAgencyCountry = travelAgencyCountryTextField.getText();
-					String travelAgencyCity = travelAgencyCityTextField.getText();					
+					String travelAgencyCity = travelAgencyCityTextField.getText();
 					String travelAgencyPhoneNo = travelAgencyPhoneNoTextField.getText();
 					String travelAgencyEmail = travelAgencyEmailTextField.getText();
 					
-					locationCtr.insertLocation(travelAgencyCVR, travelAgencyCountry, travelAgencyCity);
-					travelCtr.insertTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyAddress, travelAgencyCountry, travelAgencyPhoneNo, travelAgencyEmail);
-					clearTable();
-					clearValues();
-					JOptionPane.showMessageDialog(null, "Travel Agency has been successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
+					if(travelCtr.getTravelAgencyByCVR(travelAgencyCVR) != null)
+					{
+						JOptionPane.showMessageDialog(null, "Cannot register the same travel agency twice.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						Location locationObj = locationCtr.getCompleteLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
+						if(locationObj == null)
+						{
+							locationCtr.insertLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
+						}
+						
+						travelCtr.insertTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyAddress, travelAgencyCountry, travelAgencyPhoneNo, travelAgencyEmail);
+						clearTable();
+						clearValues();
+						JOptionPane.showMessageDialog(null, "Travel agency has been successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
-			
 			}
 		});
 		travelAgencyCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -938,21 +957,32 @@ public class ManagerMenu
 		travelAgencyOptionsPanel.add(travelAgencyCreateButton);
 		
 		JButton travelAgencyUpdateButton = new JButton("Update");
-		travelAgencyUpdateButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if(travelAgencyCVRTextField.getText().equals("") != true)
+		travelAgencyUpdateButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(travelAgencyCVRTextField.getText().equals("") == true || travelAgencyNameTextField.getText().equals("") == true || 
+						travelAgencyZipcodeTextField.getText().equals("") == true || travelAgencyCountryTextField.getText().equals("") == true
+						|| travelAgencyCityTextField.getText().equals("") == true || travelAgencyAddressTextField.getText().equals("") == true)
 				{
-					String stringtravelAgencyCVRTextField = travelAgencyCVRTextField.getText();
-					int travelAgencyCVR = Integer.parseInt(stringtravelAgencyCVRTextField);
-					TravelAgency travelAgencyObj = new TravelAgency();
-					travelAgencyObj = travelCtr.getTravelAgencyByCVR(travelAgencyCVR);
-					
-					if(travelAgencyObj != null)
+					JOptionPane.showMessageDialog(null, "Some travel agency attributes have not been inserted. Please insert all necessary travel agency attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					if(travelAgencyCVRTextField.getText().equals("") != true)
 					{
-						if(travelAgencyCVRTextField.getText().equals("") != true || travelAgencyNameTextField.getText().equals("") != true || travelAgencyZipcodeTextField.getText().equals("") != true || travelAgencyCountryTextField.getText().equals("") != true
-								|| travelAgencyCityTextField.getText().equals("") != true || travelAgencyAddressTextField.getText().equals("") != true || travelAgencyPhoneNoTextField.getText().equals("") != true || travelAgencyEmailTextField.getText().equals("") != true)
-						{					
+						String stringtravelAgencyCVRTextField = travelAgencyCVRTextField.getText();
+						int travelAgencyCVR = Integer.parseInt(stringtravelAgencyCVRTextField);
+						TravelAgency travelAgencyObj = new TravelAgency();
+						travelAgencyObj = travelCtr.getTravelAgencyByCVR(travelAgencyCVR);
+						
+						if(travelAgencyObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "The wanted travel agency does not exist. Please .", "Error!", JOptionPane.ERROR_MESSAGE);
+							
+						}
+						else
+						{
 							String travelAgencyName = travelAgencyNameTextField.getText();
 							String travelAgencyAddress = travelAgencyAddressTextField.getText();
 							
@@ -964,57 +994,25 @@ public class ManagerMenu
 							String travelAgencyPhoneNo = travelAgencyPhoneNoTextField.getText();
 							String travelAgencyEmail = travelAgencyEmailTextField.getText();
 							
-							locationCtr.updateLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
-							travelCtr.updateTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyCountry, travelAgencyAddress, travelAgencyPhoneNo, travelAgencyEmail);
-							clearTable();
-							clearValues();
-							JOptionPane.showMessageDialog(null, "Travel Agency updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(null, "Some Travel Agency attributes have not been inserted. Please insert all Travel Agency attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
-						}
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "The wanted Travel Agency does not exist in the system. Please check CVR/name.", "Error!", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-				else
-				{
-					if(travelAgencyNameTextField.getText().equals("") != true)
-					{
-						String travelAgencyName = travelAgencyNameTextField.getText();
-						TravelAgency travelAgencyObj = new TravelAgency();
-						travelAgencyObj = travelCtr.getTravelAgencyByName(travelAgencyName);
-						
-						if(travelAgencyObj != null)
-						{
-							if(travelAgencyCVRTextField.getText().equals("") != true)
+							if(travelCtr.checkTravelAgencyInstanceCount(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyCountry, travelAgencyAddress) == false)
 							{
-								int travelAgencyCVR = travelAgencyObj.getCVR();
-								
-								String stringtravelAgencyCVR = travelAgencyCVRTextField.getText();
-								int travelAgencyCVR1 = Integer.parseInt(stringtravelAgencyCVR);
-								
-								locationCtr.updateLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
-								clearTable();
-								clearValues();
-								JOptionPane.showMessageDialog(null, "Facility updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "You may not update with an already existing travel agency on this cvr.", "Error!", JOptionPane.ERROR_MESSAGE);
 							}
 							else
 							{
-								JOptionPane.showMessageDialog(null, "Some activity attributes have not been inserted. Please insert all activity attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+								Location locationObj =  new Location();
+								locationObj = locationCtr.getCompleteLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
+								if(locationObj == null)
+								{
+									locationCtr.insertLocation(travelAgencyZipcode, travelAgencyCountry, travelAgencyCity);
+								}
 							}
+							
+							travelCtr.updateTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyCountry, travelAgencyAddress, travelAgencyPhoneNo, travelAgencyEmail);
+							clearTable();
+							clearValues();
+							JOptionPane.showMessageDialog(null, "Travel agency updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
-						else
-						{
-							JOptionPane.showMessageDialog(null, "The wanted activity does not exist in the system. Please check id/name.", "Error!", JOptionPane.ERROR_MESSAGE);
-						}
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the activity you wish to update.", "Error!", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -1937,7 +1935,12 @@ public class ManagerMenu
 					}
 					else
 					{
-						locationCtr.insertLocation(instructorZipcode, instructorCountry, instructorCiy);
+						Location locationObj = locationCtr.getCompleteLocation(instructorZipcode, instructorCountry, instructorCiy);
+						if(locationObj == null)
+						{
+							locationCtr.insertLocation(instructorZipcode, instructorCountry, instructorCiy);
+						}
+						
 						personCtr.insertPerson(instructorName, instructorAddress, instructorZipcode, instructorCountry, instructorPhoneNo, instructorEmail, "Instructor", instructorPassword);
 						employeeCtr.insertEmployee(instructorName, instructorSalary);
 						instructorCtr.insertInstructor(instructorName, activityTypeId, instructorPrice, instructorStatus);

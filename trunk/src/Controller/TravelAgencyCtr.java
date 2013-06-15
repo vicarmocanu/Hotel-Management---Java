@@ -87,4 +87,24 @@ public class TravelAgencyCtr
 		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
 		return dbTravelAgency.deleteTravelAgencyByName(name);
 	}
+	
+	public boolean checkTravelAgencyInstanceCount(int cvr, String name, int zipcode, String country, String address)
+	{
+		boolean check = false;
+		int instances = 0;
+		
+		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
+		instances = dbTravelAgency.getTravelAgencyInstances(cvr, name, zipcode, country, address);
+		
+		if(instances == 0)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+		}
+		
+		return check;
+	}
 }
