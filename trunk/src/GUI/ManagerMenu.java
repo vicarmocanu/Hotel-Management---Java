@@ -29,6 +29,7 @@ import Controller.GuestCtr;
 import Controller.InstructorCtr;
 import Controller.LocationCtr;
 import Controller.PersonCtr;
+import Controller.TeamCtr;
 import Controller.TravelAgencyCtr;
 import Model.ActivityType;
 import Model.Facility;
@@ -48,6 +49,7 @@ public class ManagerMenu
 	private LocationCtr locationCtr = new LocationCtr();
 	private InstructorCtr instructorCtr = new InstructorCtr();
 	private EmployeeCtr employeeCtr = new EmployeeCtr();
+	private TeamCtr teamCtr = new TeamCtr();
 
 	private JFrame frame;
 	private JLabel dinamicLabel;
@@ -247,7 +249,6 @@ public class ManagerMenu
 		guestPasswordLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestPasswordTextField = new JTextField();
-		guestPasswordTextField.setEditable(false);
 		guestPasswordTextField.setBounds(531, 41, 80, 20);
 		guestAttributesPanel.add(guestPasswordTextField);
 		guestPasswordTextField.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -576,7 +577,7 @@ public class ManagerMenu
 			{
 				if(guestIdTextField.getText().equals("") == true || guestNameTextField.getText().equals("") == true || guestCityTextField.getText().equals("") == true ||
 						guestCountryTextField.getText().equals("") == true || guestZipcodeTextField.getText().equals("") == true || guestAddressTextField.getText().equals("") == true ||
-								guestGuestTypeComboBox.getSelectedItem().equals(null) == true)
+								guestGuestTypeComboBox.getSelectedItem().equals(null) == true || guestPasswordTextField.getText().equals("") == true)
 			
 				{
 					JOptionPane.showMessageDialog(null, "A guest attribute might be missing. Please insert all needed guest attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -604,7 +605,7 @@ public class ManagerMenu
 						String guestPhoneNo = guestPhoneNoTextField.getText();
 						String guestEmail = guestEmailTextField.getText();
 						String guestType =(String) guestGuestTypeComboBox.getSelectedItem();
-						String guestPassword = personCtr.getPersonPassword(guestName, stringGuestZipcode, guestCountry, guestAddress);
+						String guestPassword = guestPasswordTextField.getText();
 						
 						int travelAgencyCVR = 0;
 						if(guestTravelAgencyComboBox.getSelectedItem() == null)
@@ -671,6 +672,7 @@ public class ManagerMenu
 						}
 						else
 						{
+							teamCtr.deleteTeamsByLeader(guestId);
 							guestCtr.deleteGuest(guestId);
 							personCtr.deletePerson(guestId);
 							clearGuestPanel();
@@ -1472,7 +1474,6 @@ public class ManagerMenu
 		
 		instructorPasswordTextField = new JTextField();
 		instructorPasswordTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		instructorPasswordTextField.setEditable(false);
 		instructorPasswordTextField.setColumns(10);
 		instructorPasswordTextField.setBounds(531, 41, 80, 20);
 		instructorAttributePanel.add(instructorPasswordTextField);
@@ -1531,6 +1532,17 @@ public class ManagerMenu
 		instructorStatusComboBox.setBounds(218, 66, 122, 20);
 		instructorAttributePanel.add(instructorStatusComboBox);
 		
+		JButton noActivityButton = new JButton("No activity");
+		noActivityButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				instructorActivityTypeComboBox.setSelectedItem(null);
+			}
+		});
+		noActivityButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		noActivityButton.setBounds(558, 66, 104, 25);
+		instructorAttributePanel.add(noActivityButton);
+		
 		JPanel instructorOptionsPanel = new JPanel();
 		instructorOptionsPanel.setLayout(null);
 		instructorOptionsPanel.setBorder(new TitledBorder(null, "Instructor options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -1575,8 +1587,13 @@ public class ManagerMenu
 							double instructorPrice = instructorObj.getPrice();
 							String stringInstructorPrice = String.valueOf(instructorPrice);
 							String instructorStatus = instructorObj.getStatus();
+							
+							String activityTypeName = new String("");
 							ActivityType activityTypeObj = instructorObj.getActivityType();
-							String activityTypeName = activityTypeObj.getName();
+							if(activityTypeObj != null)
+							{
+								activityTypeName = activityTypeObj.getName();
+							}
 							
 							Location locationObj = new Location();
 							locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
@@ -1594,7 +1611,15 @@ public class ManagerMenu
 							instructorSalaryTextField.setText(stringInstructorSalary);
 							instructorPriceTextField.setText(stringInstructorPrice);
 							instructorStatusComboBox.setSelectedItem(instructorStatus);
-							instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+							
+							if(activityTypeName.equals("") == true)
+							{
+								instructorActivityTypeComboBox.setSelectedItem(null);
+							}
+							else
+							{
+								instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+							}
 						}
 					}
 					else
@@ -1628,8 +1653,13 @@ public class ManagerMenu
 								double instructorPrice = instructorObj.getPrice();
 								String stringInstructorPrice = String.valueOf(instructorPrice);
 								String instructorStatus = instructorObj.getStatus();
+								
+								String activityTypeName = new String("");
 								ActivityType activityTypeObj = instructorObj.getActivityType();
-								String activityTypeName = activityTypeObj.getName();
+								if(activityTypeObj != null)
+								{
+									activityTypeName = activityTypeObj.getName();
+								}
 								
 								Location locationObj = new Location();
 								locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
@@ -1647,7 +1677,15 @@ public class ManagerMenu
 								instructorSalaryTextField.setText(stringInstructorSalary);
 								instructorPriceTextField.setText(stringInstructorPrice);
 								instructorStatusComboBox.setSelectedItem(instructorStatus);
-								instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+								
+								if(activityTypeName.equals("") == true)
+								{
+									instructorActivityTypeComboBox.setSelectedItem(null);
+								}
+								else
+								{
+									instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+								}
 							}
 						}
 						else
@@ -1679,8 +1717,13 @@ public class ManagerMenu
 									double instructorPrice = instructorObj.getPrice();
 									String stringInstructorPrice = String.valueOf(instructorPrice);
 									String instructorStatus = instructorObj.getStatus();
+									
+									String activityTypeName = new String("");
 									ActivityType activityTypeObj = instructorObj.getActivityType();
-									String activityTypeName = activityTypeObj.getName();
+									if(activityTypeObj != null)
+									{
+										activityTypeName = activityTypeObj.getName();
+									}
 									
 									Location locationObj = new Location();
 									locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
@@ -1698,7 +1741,15 @@ public class ManagerMenu
 									instructorSalaryTextField.setText(stringInstructorSalary);
 									instructorPriceTextField.setText(stringInstructorPrice);
 									instructorStatusComboBox.setSelectedItem(instructorStatus);
-									instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+									
+									if(activityTypeName.equals("") == true)
+									{
+										instructorActivityTypeComboBox.setSelectedItem(null);
+									}
+									else
+									{
+										instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+									}
 								}
 							}
 						}
@@ -1718,8 +1769,7 @@ public class ManagerMenu
 				if(instructorNameTextField.getText().equals("") == true || instructorCityTextField.getText().equals("") == true ||
 						instructorCountryTextField.getText().equals("") == true || instructorZipcodeTextField.getText().equals("") == true ||
 						instructorAddressTextField.getText().equals("") == true || instructorSalaryTextField.getText().equals("") == true ||
-						instructorPriceTextField.getText().equals("") == true || instructorStatusComboBox.getSelectedItem().equals(null) == true ||
-						instructorActivityTypeComboBox.getSelectedItem().equals(null) == true)
+						instructorPriceTextField.getText().equals("") == true || instructorStatusComboBox.getSelectedItem().equals(null) == true)
 				{
 					JOptionPane.showMessageDialog(null, "An instructor attribute might be missing. Please insert all needed instructor attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -1735,13 +1785,18 @@ public class ManagerMenu
 					String instructorEmail = instructorEmailTextField.getText();
 					String instructorPassword = personCtr.getPersonPassword(instructorName, stringInstructorZipcode, instructorCountry, instructorAddress);
 					String stringInstructorSalary = instructorSalaryTextField.getText();
-					int instructorSalary = Integer.parseInt(stringInstructorSalary);
+					double instructorSalary = Double.parseDouble(stringInstructorSalary);
 					String stringInstructorPrice = instructorPriceTextField.getText();
-					int instructorPrice = Integer.parseInt(stringInstructorPrice);
+					double instructorPrice = Double.parseDouble(stringInstructorPrice);
 					String instructorStatus = (String) instructorStatusComboBox.getSelectedItem();
-					String activityTypeName = (String) instructorActivityTypeComboBox.getSelectedItem();
-					ActivityType activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
-					int activityTypeId = activityTypeObj.getID();
+					
+					int activityTypeId = 0;
+					if(instructorActivityTypeComboBox.getSelectedItem() != null)
+					{
+						String activityTypeName = (String) instructorActivityTypeComboBox.getSelectedItem();
+						ActivityType activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
+						activityTypeId = activityTypeObj.getID();
+					}
 					
 					if(personCtr.searchPersonByName(instructorName) != null)
 					{
@@ -1753,6 +1808,8 @@ public class ManagerMenu
 						personCtr.insertPerson(instructorName, instructorAddress, instructorZipcode, instructorCountry, instructorPhoneNo, instructorEmail, "Instructor", instructorPassword);
 						employeeCtr.insertEmployee(instructorName, instructorSalary);
 						instructorCtr.insertInstructor(instructorName, activityTypeId, instructorPrice, instructorStatus);
+						clearInstructorPanel();
+						clearInstructorTable();
 						JOptionPane.showMessageDialog(null, "Instructor successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
@@ -1771,7 +1828,7 @@ public class ManagerMenu
 						instructorCityTextField.getText().equals("") == true || instructorCountryTextField.getText().equals("") == true ||
 						instructorZipcodeTextField.getText().equals("") == true || instructorAddressTextField.getText().equals("") == true ||
 						instructorSalaryTextField.getText().equals("") == true || instructorPriceTextField.getText().equals("") == true ||
-						instructorStatusComboBox.getSelectedItem().equals(null) == true || instructorActivityTypeComboBox.getSelectedItem().equals(null) == true)
+						instructorStatusComboBox.getSelectedItem().equals(null) == true || instructorPasswordTextField.getText().equals("") == true)
 				{
 					JOptionPane.showMessageDialog(null, "An instructor attribute might be missing. Please insert all needed instructor attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -1797,15 +1854,20 @@ public class ManagerMenu
 						String instructorAddress = instructorAddressTextField.getText();
 						String instructorPhoneNo = instructorPhoneNoTextField.getText();
 						String instructorEmail = instructorEmailTextField.getText();
-						String instructorPassword = personCtr.getPersonPassword(instructorName, stringInstructorZipcode, instructorCountry, instructorAddress);
+						String instructorPassword = instructorPasswordTextField.getText();
 						String stringInstructorSalary = instructorSalaryTextField.getText();
-						int instructorSalary = Integer.parseInt(stringInstructorSalary);
+						double instructorSalary = Double.parseDouble(stringInstructorSalary);
 						String stringInstructorPrice = instructorPriceTextField.getText();
-						int instructorPrice = Integer.parseInt(stringInstructorPrice);
+						double instructorPrice = Double.parseDouble(stringInstructorPrice);
 						String instructorStatus = (String) instructorStatusComboBox.getSelectedItem();
-						String activityTypeName = (String) instructorActivityTypeComboBox.getSelectedItem();
-						ActivityType activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
-						int activityTypeId = activityTypeObj.getID();
+						
+						int activityTypeId = 0;
+						if(instructorActivityTypeComboBox.getSelectedItem() != null)
+						{
+							String activityTypeName = (String) instructorActivityTypeComboBox.getSelectedItem();
+							ActivityType activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
+							activityTypeId = activityTypeObj.getID();
+						}
 						
 						if(personCtr.checkPersonInstanceCount(instructorId, instructorName, instructorZipcode, instructorCountry, instructorAddress) == false)
 						{
@@ -1822,6 +1884,9 @@ public class ManagerMenu
 							personCtr.updatePerson(instructorId, instructorName, instructorAddress, instructorZipcode, instructorCountry, instructorPhoneNo, instructorEmail, "Instructor", instructorPassword);
 							employeeCtr.updateEmployee(instructorId, instructorSalary);
 							instructorCtr.updateInstructor(instructorId, activityTypeId, instructorPrice, instructorStatus);
+							
+							clearInstructorPanel();
+							clearInstructorTable();
 							
 							JOptionPane.showMessageDialog(null, "Instructor updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
@@ -1859,6 +1924,10 @@ public class ManagerMenu
 						else
 						{
 							instructorCtr.deleteInstructorById(instructorId);
+							
+							clearInstructorPanel();
+							clearInstructorTable();
+							
 							JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
@@ -1879,6 +1948,10 @@ public class ManagerMenu
 							{
 								int instructorId = personObj.getId();
 								instructorCtr.deleteInstructorById(instructorId);
+								
+								clearInstructorPanel();
+								clearInstructorTable();
+								
 								JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
 							}
 						}
@@ -1899,6 +1972,10 @@ public class ManagerMenu
 								else
 								{
 									instructorCtr.deleteInstructorById(instructorId);
+									
+									clearInstructorPanel();
+									clearInstructorTable();
+									
 									JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
 								}
 							}
@@ -1912,11 +1989,27 @@ public class ManagerMenu
 		instructorOptionsPanel.add(instructorDeleteButton);
 		
 		JButton instructorAllButton = new JButton("All");
+		instructorAllButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				clearInstructorPanel();
+				clearInstructorTable();
+				
+				instructorTable.setModel(getInstructorTableModel());
+			}
+		});
 		instructorAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		instructorAllButton.setBounds(6, 160, 90, 25);
 		instructorOptionsPanel.add(instructorAllButton);
 		
 		JButton instructorClearAllButton = new JButton("Clear all");
+		instructorClearAllButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				clearInstructorPanel();
+				clearInstructorTable();
+			}
+		});
 		instructorClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		instructorClearAllButton.setBounds(10, 325, 104, 25);
 		InstructorPanel.add(instructorClearAllButton);
@@ -1935,7 +2028,7 @@ public class ManagerMenu
 		
 		JPanel facilityAttributesPanel = new JPanel();
 		facilityAttributesPanel.setBorder(new TitledBorder(null, "Facility attributes:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		facilityAttributesPanel.setBounds(29, 20, 700, 80);
+		facilityAttributesPanel.setBounds(10, 11, 650, 110);
 		FacilityPanel.add(facilityAttributesPanel);
 		facilityAttributesPanel.setLayout(null);
 		
@@ -1950,17 +2043,17 @@ public class ManagerMenu
 		facilityIdTextField.setColumns(10);
 		
 		JLabel facilityNameLabel = new JLabel("Facility name:");
-		facilityNameLabel.setBounds(388, 19, 86, 14);
+		facilityNameLabel.setBounds(337, 22, 86, 14);
 		facilityAttributesPanel.add(facilityNameLabel);
 		facilityNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		facilityNameTextField = new JTextField();
-		facilityNameTextField.setBounds(470, 16, 220, 20);
+		facilityNameTextField.setBounds(419, 19, 220, 20);
 		facilityAttributesPanel.add(facilityNameTextField);
 		facilityNameTextField.setColumns(10);
 		
 		JLabel activityTypeLabel = new JLabel("Activity type:");
-		activityTypeLabel.setBounds(6, 56, 86, 14);
+		activityTypeLabel.setBounds(337, 47, 86, 14);
 		facilityAttributesPanel.add(activityTypeLabel);
 		activityTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
@@ -1976,11 +2069,11 @@ public class ManagerMenu
 			}
 		}
 		activityTypeComboBox.setSelectedItem(null);
-		activityTypeComboBox.setBounds(91, 53, 220, 20);
+		activityTypeComboBox.setBounds(419, 44, 220, 20);
 		facilityAttributesPanel.add(activityTypeComboBox);
 		
 		JLabel statusLabel = new JLabel("Status:");
-		statusLabel.setBounds(388, 56, 86, 14);
+		statusLabel.setBounds(6, 47, 86, 14);
 		facilityAttributesPanel.add(statusLabel);
 		statusLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
@@ -1989,12 +2082,23 @@ public class ManagerMenu
 		statusComboBox.addItem("Under construction");
 		statusComboBox.addItem("Cleaning");
 		statusComboBox.setSelectedItem(null);
-		statusComboBox.setBounds(470, 53, 220, 20);
+		statusComboBox.setBounds(88, 44, 220, 20);
 		facilityAttributesPanel.add(statusComboBox);
+		
+		JButton facilityNoFacility = new JButton("No activity");
+		facilityNoFacility.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				activityTypeComboBox.setSelectedItem(null);
+			}
+		});
+		facilityNoFacility.setFont(new Font("Arial", Font.PLAIN, 11));
+		facilityNoFacility.setBounds(499, 75, 140, 23);
+		facilityAttributesPanel.add(facilityNoFacility);
 		
 		JPanel facilityOptionsPanel = new JPanel();
 		facilityOptionsPanel.setBorder(new TitledBorder(null, "Facility", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		facilityOptionsPanel.setBounds(29, 111, 146, 192);
+		facilityOptionsPanel.setBounds(10, 132, 146, 192);
 		FacilityPanel.add(facilityOptionsPanel);
 		facilityOptionsPanel.setLayout(null);
 		
@@ -2288,7 +2392,7 @@ public class ManagerMenu
 		facilityAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		facilityTableScrollPane = new JScrollPane();
-		facilityTableScrollPane.setBounds(185, 125, 630, 230);
+		facilityTableScrollPane.setBounds(166, 132, 649, 299);
 		FacilityPanel.add(facilityTableScrollPane);
 		
 		facilityTable = new JTable();
@@ -2305,7 +2409,7 @@ public class ManagerMenu
 			}
 		});
 		facilityClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		facilityClearAllButton.setBounds(29, 381, 134, 25);
+		facilityClearAllButton.setBounds(10, 325, 146, 25);
 		FacilityPanel.add(facilityClearAllButton);
 		frame.setUndecorated(true);
 	}
@@ -2601,5 +2705,138 @@ public class ManagerMenu
 		guestTable.setModel(new DefaultTableModel());
 	}
 	
+	public DefaultTableModel getInstructorTableModel()
+	{
+		LinkedList<Instructor> completeInstructorList = new LinkedList<Instructor>();
+		completeInstructorList = instructorCtr.getAllInstructors();
+		
+		DefaultTableModel instructorTableModel = new DefaultTableModel()
+		{
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				//all cells false
+				return false;
+			}
+		};
+		
+		instructorTableModel.setColumnIdentifiers(new String[] {"Id", "Name", "Password", "Salary", "Activity", "Price", "Status"});
+		
+		for(Instructor instructorObj : completeInstructorList)
+		{
+			String activityTypeName = new String("None - please select");
+			ActivityType activityTypeObj = new ActivityType();
+			activityTypeObj = instructorObj.getActivityType();
+			if(activityTypeObj != null)
+			{
+				activityTypeName = activityTypeObj.getName();
+			}
+			
+			instructorTableModel.addRow(new String[]
+					{
+					String.valueOf(instructorObj.getId()),
+					instructorObj.getName(),
+					instructorObj.getPassword(),
+					String.valueOf(instructorObj.getSalary()),
+					activityTypeName,
+					String.valueOf(instructorObj.getPrice()),
+					instructorObj.getStatus()
+					});
+		}
+		
+		instructorTable.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = instructorTable.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				Instructor instructorObj = new Instructor();
+				
+				int selectedRow = instructorTable.getSelectedRow();
+				if(selectedRow > -1)
+				{
+					String selectedData = (String) instructorTable.getValueAt(selectedRow, 0);
+					int instructorId = Integer.parseInt(selectedData);
+					String stringInstructorId = String.valueOf(instructorId);
+					
+					instructorObj = instructorCtr.getInstructorById(instructorId);
+					
+					String instructorName = instructorObj.getName();
+					String instructorCountry = instructorObj.getCountry();
+					int instructorZipcode = instructorObj.getZipcode();
+					String stringInstructorZipcode = String.valueOf(instructorZipcode);
+					String instructorAddress = instructorObj.getAddress();
+					String instructorPhoneNo = instructorObj.getPhoneNo();
+					String instructorEmail = instructorObj.getEmail();
+					String instructorPassword = instructorObj.getPassword();
+					double instructorSalary = instructorObj.getSalary();
+					String stringInstructorSalary = String.valueOf(instructorSalary);
+					double instructorPrice = instructorObj.getPrice();
+					String stringInstructorPrice = String.valueOf(instructorPrice);
+					String instructorStatus = instructorObj.getStatus();
+					
+					String activityTypeName = new String("");
+					ActivityType activityTypeObj = instructorObj.getActivityType();
+					if(activityTypeObj != null)
+					{
+						activityTypeName = activityTypeObj.getName();
+					}
+					
+					Location locationObj = new Location();
+					locationObj = locationCtr.getLocation(instructorZipcode, instructorCountry);
+					String instructorCity = locationObj.getCity();
+					
+					instructorIdTextField.setText(stringInstructorId);
+					instructorNameTextField.setText(instructorName);
+					instructorCityTextField.setText(instructorCity);
+					instructorCountryTextField.setText(instructorCountry);
+					instructorZipcodeTextField.setText(stringInstructorZipcode);
+					instructorAddressTextField.setText(instructorAddress);
+					instructorPhoneNoTextField.setText(instructorPhoneNo);
+					instructorEmailTextField.setText(instructorEmail);
+					instructorPasswordTextField.setText(instructorPassword);
+					instructorSalaryTextField.setText(stringInstructorSalary);
+					instructorPriceTextField.setText(stringInstructorPrice);
+					instructorStatusComboBox.setSelectedItem(instructorStatus);
+					
+					if(activityTypeName.equals("") == true)
+					{
+						instructorActivityTypeComboBox.setSelectedItem(null);
+					}
+					else
+					{
+						instructorActivityTypeComboBox.setSelectedItem(activityTypeName);
+					}
+				}
+			}
+		});
+		
+		return instructorTableModel;
+	}
 	
+	public void clearInstructorPanel()
+	{
+		instructorIdTextField.setText("");
+		instructorNameTextField.setText("");
+		instructorCityTextField.setText("");
+		instructorCountryTextField.setText("");
+		instructorZipcodeTextField.setText("");
+		instructorAddressTextField.setText("");
+		instructorPhoneNoTextField.setText("");
+		instructorEmailTextField.setText("");
+		instructorPasswordTextField.setText("");
+		instructorSalaryTextField.setText("");
+		instructorPriceTextField.setText("");
+		instructorStatusComboBox.setSelectedItem(null);
+		instructorActivityTypeComboBox.setSelectedItem(null);
+	}
+	
+	public void clearInstructorTable()
+	{
+		instructorTable.setCellSelectionEnabled(false);
+		instructorTable.setModel(new DefaultTableModel());
+	}
 }

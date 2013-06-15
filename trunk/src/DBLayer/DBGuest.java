@@ -154,6 +154,7 @@ public class DBGuest implements IFDBGuest
 			{
 				rbObj.setTravelAgency(null);
 			}
+			
 			rbObj.setGuestType(results.getString("guestType"));
 			
 			

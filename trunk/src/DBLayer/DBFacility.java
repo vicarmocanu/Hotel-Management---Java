@@ -34,7 +34,7 @@ public class DBFacility implements IFDBFacility
 	{
 		Facility facilityObj=new Facility();
 		
-		IFDBActivityType dbActivity=new DBActivityType();
+		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
 		
 		try
@@ -42,8 +42,17 @@ public class DBFacility implements IFDBFacility
 			facilityObj.setId(results.getInt("id"));
 			facilityObj.setName(results.getString("name"));
 			
-			activityTypeObj = dbActivity.getActivityTypeByID(results.getInt("forActivity"));
-			facilityObj.setActivity(activityTypeObj);
+			int activityTypeId = results.getInt("forActivity");
+			if(activityTypeId == 0)
+			{
+				facilityObj.setActivity(null);
+			}
+			else
+			{
+				activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
+				facilityObj.setActivity(activityTypeObj);
+			}
+			
 			facilityObj.setStatus(results.getString("status"));
 		}
 		catch(Exception e)
@@ -142,7 +151,7 @@ public class DBFacility implements IFDBFacility
 	}
 
 	@Override
-	public int insertFacility(Facility facility) throws Exception
+	public int insertFacility(Facility facilityObj) throws Exception
 	{
 		//call to get the next facility id
 		int nextFacilityId = GetMax.getMaxId("SELECT MAX(id) FROM Facility");
@@ -150,7 +159,7 @@ public class DBFacility implements IFDBFacility
 		System.out.println("Next facility id = " + nextFacilityId);
 		
 		int result = -1;
-		Facility facilityObj =facility;
+		
 		ActivityType activityTypeObj = facilityObj.getActivity();
 		String query = new String();
 		

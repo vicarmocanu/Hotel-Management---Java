@@ -37,20 +37,29 @@ public class DBInstructor implements IFDBInstructor
 		IFDBEmployee dbEmployee = new DBEmployee();
 		Employee employeeObj = new Employee();
 		
-		IFDBActivityType dbActivivityType = new DBActivityType();
+		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
 		
 		try
 		{
 			int employeeId = results.getInt("employeeId");
 			instructorObj.setId(results.getInt("employeeId"));
-			activityTypeObj = dbActivivityType.getActivityTypeByID(results.getInt("activityType"));
-			instructorObj.setActivityType(activityTypeObj);
+			
+			int activityTypeId = results.getInt("activityType");
+			if(activityTypeId == 0)
+			{
+				instructorObj.setActivityType(null);
+			}
+			else
+			{
+				activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
+				instructorObj.setActivityType(activityTypeObj);
+			}
+			
 			instructorObj.setPrice(results.getDouble("price"));
 			instructorObj.setStatus(results.getString("status"));
 			
 			employeeObj = dbEmployee.getEmployeeById(employeeId);
-			
 			instructorObj.setName(employeeObj.getName());
 			instructorObj.setZipcode(employeeObj.getZipcode());
 			instructorObj.setCountry(employeeObj.getCountry());
@@ -75,7 +84,7 @@ public class DBInstructor implements IFDBInstructor
 		ResultSet results;
 		Instructor instructorObj=new Instructor();		
 		String query = buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -108,7 +117,7 @@ public class DBInstructor implements IFDBInstructor
 		ResultSet results;
 		LinkedList<Instructor> instructorList=new LinkedList<Instructor>();
 		String query =  buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -148,11 +157,22 @@ public class DBInstructor implements IFDBInstructor
 	{
 		int result = -1;
 		
-		String query = "INSERT INTO Instructor(employeeId, activityType, price, status) VALUES ('" +
-		instructorObj.getId() + "," + 
-				instructorObj.getActivityType().getID() + "','" +
-		instructorObj.getPrice() + "','" +
-				instructorObj.getStatus() + "')";
+		String query = new String();
+		ActivityType activityTypeObj = new ActivityType();
+		activityTypeObj = instructorObj.getActivityType();
+		
+		if(activityTypeObj != null)
+		{
+			query = "INSERT INTO Instructor(employeeId, activityType, price, status) VALUES ('" +
+					instructorObj.getId() + "','" + instructorObj.getActivityType().getID() + "','" +
+					instructorObj.getPrice() + "','" + instructorObj.getStatus() + "')";
+		}
+		else
+		{
+			query = "INSERT INTO Instructor(employeeId, price, status) VALUES ('" +
+					instructorObj.getId() + "','" + instructorObj.getPrice() + "','" +
+					instructorObj.getStatus() + "')";
+		}
 		
 		System.out.println("Insert query: " + query);
 	    try
@@ -172,15 +192,27 @@ public class DBInstructor implements IFDBInstructor
 	
 	public int updateInstructor(Instructor instructorObj)
 	{
-		Instructor instructorNewObj= instructorObj;
-		
-		String query="UPDATE Instructor SET " +
-		"activityType= '" + instructorNewObj.getActivityType().getID() + "', " +
-		"price= '" + instructorNewObj.getPrice() + "' " +
-		"status= '" + instructorNewObj.getStatus() + "' " +
-		"WHERE employeeId= '" + instructorNewObj.getId() + "'";
-		
 		int result=-1;
+		String query = new String();
+		ActivityType activityTypeObj = new ActivityType();
+		activityTypeObj = instructorObj.getActivityType();
+		
+		if(activityTypeObj != null)
+		{
+			query = "UPDATE Instructor SET activityType= '" + instructorObj.getActivityType().getID() + "', " +
+		"price= '" + instructorObj.getPrice() + "', " +
+					"status= '" + instructorObj.getStatus() + "' " +
+		"WHERE employeeId= '" + instructorObj.getId() + "'";
+		}
+		else
+		{
+			query = "UPDATE Instructor SET activityType= '0', " +
+					"price= '" + instructorObj.getPrice() + "', " +
+								"status= '" + instructorObj.getStatus() + "' " +
+					"WHERE employeeId= '" + instructorObj.getId() + "'";
+		}
+		
+		
 		System.out.println("Update query: " + query);
 		
 		try
