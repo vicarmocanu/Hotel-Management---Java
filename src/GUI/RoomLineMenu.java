@@ -22,7 +22,6 @@ import DBLayer.GetMax;
 import Model.Guest;
 import Model.Location;
 import Model.Room;
-import Model.TravelAgency;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -45,6 +44,7 @@ public class RoomLineMenu {
 	private JTextField txtBookingId;
 	private JTable table;
 	private JScrollPane scrollPane;
+	private JTextField txtCity;
 
 	/**
 	 * Create the application.
@@ -161,20 +161,20 @@ public class RoomLineMenu {
 		txtConfirmPassword.setColumns(10);
 		
 		JLabel lblType = new JLabel("Type:");
-		lblType.setBounds(216, 110, 46, 14);
+		lblType.setBounds(216, 142, 46, 14);
 		panel_1.add(lblType);
 		
 		txtGuestType = new JTextField();
-		txtGuestType.setBounds(304, 107, 130, 20);
+		txtGuestType.setBounds(304, 139, 130, 20);
 		panel_1.add(txtGuestType);
 		txtGuestType.setColumns(10);
 		
 		JLabel lblTravelAgency = new JLabel("Travel agency:");
-		lblTravelAgency.setBounds(216, 142, 79, 14);
+		lblTravelAgency.setBounds(215, 175, 79, 14);
 		panel_1.add(lblTravelAgency);
 		
 		txtTravelAgency = new JTextField();
-		txtTravelAgency.setBounds(304, 139, 130, 20);
+		txtTravelAgency.setBounds(304, 172, 130, 20);
 		panel_1.add(txtTravelAgency);
 		txtTravelAgency.setColumns(10);
 		
@@ -197,7 +197,7 @@ public class RoomLineMenu {
 				}
 			}
 		});
-		btnSearch.setBounds(206, 171, 89, 23);
+		btnSearch.setBounds(246, 202, 89, 23);
 		panel_1.add(btnSearch);
 		
 		JButton btnCreate = new JButton("Create");
@@ -219,6 +219,7 @@ public class RoomLineMenu {
 					String name = txtName.getText();
 					String guestAddress = txtAddress.getText();
 					String guestCountry = txtCountry.getText();
+					String guestCity = txtCity.getText();
 					String guestEmail = txtEmail.getText();
 					String guestPhoneNo = txtPhone.getText();
 					int guestZipcode = Integer.parseInt(txtZipcode.getText());
@@ -246,7 +247,7 @@ public class RoomLineMenu {
 				}
 			}
 		});
-		btnCreate.setBounds(326, 171, 89, 23);
+		btnCreate.setBounds(345, 202, 89, 23);
 		panel_1.add(btnCreate);
 		
 		/*JButton btnUpdate = new JButton("Update");
@@ -322,14 +323,14 @@ public class RoomLineMenu {
 		txtBookingId.setColumns(10);
 		txtBookingId.setText(String.valueOf(bookingId));
 		
-		JButton btnClear = new JButton("Clear");
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				clearValues();
-			}
-		});
-		btnClear.setBounds(206, 202, 89, 23);
-		panel_1.add(btnClear);
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setBounds(216, 110, 46, 14);
+		panel_1.add(lblCity);
+		
+		txtCity = new JTextField();
+		txtCity.setBounds(304, 107, 130, 20);
+		panel_1.add(txtCity);
+		txtCity.setColumns(10);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Room information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -432,6 +433,15 @@ public class RoomLineMenu {
 		});
 		btnShowAvailableRooms.setBounds(208, 20, 148, 23);
 		panel.add(btnShowAvailableRooms);
+		
+		JButton btnClear = new JButton("Clear");
+		btnClear.setBounds(20, 458, 89, 23);
+		frame.getContentPane().add(btnClear);
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				clearValues();
+			}
+		});
 	}
 	
 	private void putValuesOnTheScreen(Guest guest)
@@ -452,6 +462,7 @@ public class RoomLineMenu {
 		txtName.setText(null);
 		txtAddress.setText(null);
 		txtCountry.setText(null);
+		txtCity.setText(null);
 		txtEmail.setText(null);
 		txtPhone.setText(null);
 		txtGuestType.setText(null);
