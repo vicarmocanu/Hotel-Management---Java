@@ -14,8 +14,8 @@ public class DBRoomType implements IFDBRoomType {
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
-	public RoomType findRoomTypeByCategory(String category) {
-		return singleWhere("category='"+category+"'", false);
+	public RoomType findRoomTypeByCategory(String category, boolean retrieveAssiciation) {
+		return singleWhere("category='"+category+"'", retrieveAssiciation);
 	}
 	
 	private String buildQuery(String wClause)

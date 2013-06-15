@@ -86,7 +86,7 @@ public class DBRoom implements IFDBRoom {
 				if(retrieveAssociation)
 				{//Build RoomType as well
 					IFDBRoomType dbRoomType = new DBRoomType();
-					RoomType roomTypeObj = dbRoomType.findRoomTypeByCategory(roomObj.getRoomType().getCategory());
+					RoomType roomTypeObj = dbRoomType.findRoomTypeByCategory(roomObj.getRoomType().getCategory(),false);
 					System.out.println("Room type is selected.");
 					roomObj.setRoomType(roomTypeObj);
 				}
@@ -126,7 +126,7 @@ public class DBRoom implements IFDBRoom {
 				IFDBRoomType dbRoomType = new DBRoomType();
 				for(Room roomObj : roomList)
 				{					
-					RoomType roomTypeObj = dbRoomType.findRoomTypeByCategory(roomObj.getRoomType().getCategory());
+					RoomType roomTypeObj = dbRoomType.findRoomTypeByCategory(roomObj.getRoomType().getCategory(),false);
 					System.out.println("Room type is selected.");
 					roomObj.setRoomType(roomTypeObj);
 				}
