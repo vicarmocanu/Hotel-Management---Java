@@ -3,7 +3,7 @@ package Model;
 public class RoomType {
 	private String category;
 	private String description;
-	private double price;
+	private float price;
 	
 	//Constructor
 	public RoomType()
@@ -14,7 +14,7 @@ public class RoomType {
 		this.category = category;
 	}
 	
-	public RoomType(String category, String description, double price) {
+	public RoomType(String category, String description, float price) {
 		this.category = category;
 		this.description = description;
 		this.price = price;
@@ -37,11 +37,11 @@ public class RoomType {
 		this.description = description;
 	}
 
-	public double getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}		
 }
