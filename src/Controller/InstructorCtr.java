@@ -3,6 +3,7 @@ package Controller;
 import java.util.LinkedList;
 
 import DBLayer.DBActivityType;
+import DBLayer.DBConnection1;
 import DBLayer.DBInstructor;
 import DBLayer.DBPerson;
 import DBLayer.IFDBActivityType;
@@ -39,19 +40,36 @@ public class InstructorCtr
 		personReferenceObj = dbPerson.searchPersonByName(instructorName, true);
 		int referenceId = personReferenceObj.getId();
 		
-		IFDBActivityType dbActivityType = new DBActivityType();
-		ActivityType activityTypeObj = new ActivityType();
-		activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
-		
 		Instructor instructorObj = new Instructor();
 		instructorObj.setId(referenceId);
 		
-		if(activityTypeObj != null)
+		IFDBActivityType dbActivityType = new DBActivityType();
+		ActivityType activityTypeObj = new ActivityType();
+		if(activityTypeId == 0)
 		{
+			activityTypeObj = null;
 			instructorObj.setActivityType(activityTypeObj);
 		}
+		else
+		{
+			activityTypeObj = dbActivityType.getActivityTypeByID(activityTypeId);
+			instructorObj.setActivityType(activityTypeObj);
+		}
+		
 		instructorObj.setStatus(status);
 		instructorObj.setPrice(price);
+		
+		try
+		{
+			DBConnection1.startTransaction();
+			DBInstructor dbInstructor = new DBInstructor();
+			dbInstructor.insertInstructor(instructorObj);
+			DBConnection1.commitTransaction();
+		}
+		catch(Exception e)
+		{
+			DBConnection1.rollbackTransaction();
+		}
 	}
 	
 	public int updateInstructor(int employeeId, int activityTypeId, double price, String status)
@@ -87,5 +105,4 @@ public class InstructorCtr
 		availableInstructorForActivityList =dbInstructor.getActivityAvailableInstructors(activityTypeId, status);
 		return availableInstructorForActivityList;
 	}
-
 }
