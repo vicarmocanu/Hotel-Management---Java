@@ -14,11 +14,16 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import Controller.GuestCtr;
+import Controller.LocationCtr;
+import Controller.PersonCtr;
 import Controller.RoomBookingCtr;
 import Controller.TravelAgencyCtr;
 import DBLayer.GetMax;
 import Model.Guest;
+import Model.Location;
 import Model.Room;
+import Model.TravelAgency;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -206,20 +211,37 @@ public class RoomLineMenu {
 				}
 				else
 				{
-					GuestCtr guestCtr=new GuestCtr();
+					GuestCtr guestCtr = new GuestCtr();
+					PersonCtr personCtr = new PersonCtr();
+					LocationCtr locationCtr = new LocationCtr();
 					TravelAgencyCtr travelAgencyCtr = new TravelAgencyCtr();
 					
 					String name = txtName.getText();
-					String address = txtAddress.getText();
-					String country = txtCountry.getText();
-					String email = txtEmail.getText();
-					String phone = txtPhone.getText();
-					int zipcode = Integer.parseInt(txtZipcode.getText());
+					String guestAddress = txtAddress.getText();
+					String guestCountry = txtCountry.getText();
+					String guestEmail = txtEmail.getText();
+					String guestPhoneNo = txtPhone.getText();
+					int guestZipcode = Integer.parseInt(txtZipcode.getText());
 					int travelAgency = travelAgencyCtr.getTravelAgencyByName(txtTravelAgency.getText()).getCVR();
-					String password=txtPassword.getText();
-					String guestType=txtGuestType.getText();
+					String guestPassword=txtPassword.getText();
+					String guestType=txtGuestType.getText();				
+					
+					if(personCtr.searchPersonByName(name) != null)
+					{
+						JOptionPane.showMessageDialog(null, "Cannot register the same guest twice.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						Location locationObj = locationCtr.getCompleteLocation(guestZipcode, guestCountry, guestCity);
+						if(locationObj == null)
+						{
+							locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
+						}
 						
-					guestCtr.insertGuest(name, address, zipcode, country, phone, email, password, guestType, travelAgency);
+						personCtr.insertPerson(name, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
+						guestCtr.insertGuest(name, travelAgency, guestType);
+						JOptionPane.showMessageDialog(null, "Guest successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
+					}			
 					txtGuestid.setText(String.valueOf(GetMax.getMaxId("Select max(personId) from Guest")));								
 				}
 			}
