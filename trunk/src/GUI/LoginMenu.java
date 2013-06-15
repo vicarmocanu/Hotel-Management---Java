@@ -125,9 +125,15 @@ public class LoginMenu
 						}	
 						else if(loginCtr.checkEmployee(universalId))
 						{
-							EmployeeMainMenu.getInstance();
+							EmployeeMenu employeeMenu = new EmployeeMenu();
+							personObj = dbPerson.searchPersonById(universalId, true);
+							String personName = personObj.getName();
+							
+							textField.setText("");
+							passwordField.setText("");
+							frame.dispose();
 						}
-						else if(loginCtr.checkManager(universalId))
+						else if(loginCtr.checkManager(universalId) == true)
 						{
 							ManagerMenu managerMainMenu = new ManagerMenu();
 							personObj = dbPerson.searchPersonById(universalId, true);

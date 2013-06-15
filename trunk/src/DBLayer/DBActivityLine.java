@@ -79,7 +79,7 @@ public class DBActivityLine implements IFDBActivityLine
 		return activityLineObj;
 	}
 	
-	private ActivityLine singleWhere(String wClause, boolean retrieveAssociation)
+	private ActivityLine singleWhere(String wClause)
 	{
 		ResultSet results;
 		ActivityLine activityLineObj = new ActivityLine();
@@ -97,64 +97,9 @@ public class DBActivityLine implements IFDBActivityLine
 				activityLineObj = buildActivityLine(results);
 				stmt.close();
 			}
-			if(retrieveAssociation)
-			{//activity, activity booking, facility, instructor, team reference
-				IFDBActivityType dbActivityType = new DBActivityType();
-				ActivityType activityTypeObj = new ActivityType();
-				activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID());
-				if(activityTypeObj != null)
-				{
-					activityLineObj.setActivity(activityTypeObj);
-					System.out.println("Activity type is selected.");
-				}
-				
-				IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
-				ActivityBooking activityBookingObj = new ActivityBooking();
-				activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId());
-				if(activityBookingObj != null)
-				{
-					activityLineObj.setActivityBooking(activityBookingObj);
-					System.out.println("Activity booking is selected.");
-				}
-				
-				IFDBFacility dbFacility = new DBFacility();
-				Facility facilityObj = new Facility();
-				facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId());
-				if(facilityObj != null)
-				{
-					activityLineObj.setFacility(facilityObj);
-					System.out.println("Facility is selected.");
-				}
-				
-				IFDBInstructor dbInstructor = new DBInstructor();
-				Instructor instructorObj = new Instructor();
-				instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId());
-				if(instructorObj != null)
-				{
-					activityLineObj.setInstructor(instructorObj);
-					System.out.println("Instructor is selected.");
-				}
-				else
-				{
-					System.out.println("No instructor selection.");
-				}
-				
-				IFDBTeam dbTeam = new DBTeam();
-				Team teamObj = new Team();
-				teamObj = dbTeam.getTeamById(activityLineObj.getTeam().getId());
-				if(teamObj != null)
-				{
-					activityLineObj.setTeam(teamObj);
-					System.out.println("Team is selected.");
-				}
-				else
-				{
-					System.out.println("No team selection.");
-				}
-			}
 			else
 			{
-				activityLineObj=null;
+				activityLineObj = null;
 			}
 		}
 		catch(Exception e)
@@ -164,7 +109,7 @@ public class DBActivityLine implements IFDBActivityLine
 		return activityLineObj;
 	}
 	
-	private LinkedList<ActivityLine> miscWhere(String wClause, boolean retrieveAssociation)
+	private LinkedList<ActivityLine> miscWhere(String wClause)
 	{
 		ResultSet results;
 		LinkedList<ActivityLine> activityLineList=new LinkedList<ActivityLine>();
@@ -184,64 +129,6 @@ public class DBActivityLine implements IFDBActivityLine
 				activityLineList.add(activityLineObj);
 			}
 			stmt.close();
-			if(retrieveAssociation)
-			{//activity, activity booking, facility, instructor, team reference
-				IFDBActivityType dbActivityType = new DBActivityType();
-				IFDBInstructor dbInstructor = new DBInstructor();
-				IFDBFacility dbFacility = new DBFacility();
-				IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
-				IFDBTeam dbTeam = new DBTeam();
-				for(ActivityLine activityLineObj : activityLineList)
-				{
-					ActivityType activityTypeObj = new ActivityType();
-					activityTypeObj = dbActivityType.getActivityTypeByID(activityLineObj.getActivity().getID());
-					if(activityTypeObj != null)
-					{
-						activityLineObj.setActivity(activityTypeObj);
-						System.out.println("Activity type is selected.");
-					}
-					
-					ActivityBooking activityBookingObj = new ActivityBooking();
-					activityBookingObj = dbActivityBooking.getActivityBookingById(activityLineObj.getActivityBooking().getId());
-					if(activityBookingObj != null)
-					{
-						activityLineObj.setActivityBooking(activityBookingObj);
-						System.out.println("Activity booking is selected.");
-					}
-					
-					Facility facilityObj = new Facility();
-					facilityObj = dbFacility.getFacilityById(activityLineObj.getFacility().getId());
-					if(facilityObj != null)
-					{
-						activityLineObj.setFacility(facilityObj);
-						System.out.println("Facility is selected.");
-					}
-					
-					Instructor instructorObj = new Instructor();
-					instructorObj = dbInstructor.getInstructorById(activityLineObj.getInstructor().getId());
-					if(instructorObj != null)
-					{
-						activityLineObj.setInstructor(instructorObj);
-						System.out.println("Instructor is selected.");
-					}
-					else
-					{
-						System.out.println("No instructor selection.");
-					}
-					
-					Team teamObj = new Team();
-					teamObj = dbTeam.getTeamById(activityLineObj.getTeam().getId());
-					if(teamObj != null)
-					{
-						activityLineObj.setTeam(teamObj);
-						System.out.println("Team is selected.");
-					}
-					else
-					{
-						System.out.println("No team selection.");
-					}
-				}
-			}
 		}
 		catch(Exception e)
 		{
@@ -253,17 +140,17 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 	
 	@Override
-	public ActivityLine getActivityLine(int bookingId, String startHour, boolean retrieveAssociation)
+	public ActivityLine getActivityLine(int bookingId, String startHour)
 	{
 		String wClause = " bookingId= '" + bookingId + "'" + " AND startHour= '" + startHour +"'";
-		return singleWhere(wClause, retrieveAssociation);
+		return singleWhere(wClause);
 	}
 
 	@Override
-	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId, boolean retrieveAssociation)
+	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId)
 	{
 		String wClause = " bookingId= '" + bookingId + "'";
-		return miscWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause);
 	}
 
 	@Override
@@ -273,7 +160,7 @@ public class DBActivityLine implements IFDBActivityLine
 		String query = new String();
 		
 		ActivityType activityTypeObj = activityLine.getActivity();
-		ActivityBooking activityBookingObj = activityLine.getActivityBooking();
+		ActivityBooking activityBookingObj = activityLine.getActivityBooking();		
 		Facility facilityObj = activityLine.getFacility();		
 		Instructor instructorObj = activityLine.getInstructor();
 		Team teamObj = activityLine.getTeam();
@@ -348,33 +235,37 @@ public class DBActivityLine implements IFDBActivityLine
 		if(instructorObj == null && teamObj == null)
 		{
 			query = "UPDATE ActivityLine SET " +
-		" activityId= '" + activityTypeObj.getID() + "', " + 
-					" date= '" + activityLineObj.getDate() + "', " + 
+		" activityId= '" + activityTypeObj.getID() + "', " +
+					" date= '" + activityLineObj.getDate() + "', " +
 		" startHour= '" + activityLineObj.getStartHour() + "', " +
 					" endHour= '" + activityLineObj.getEndHour() + "', " +
-		" facilityId= '" + facilityObj.getId() + "' " + 
+		" facilityId= '" + facilityObj.getId() + "', " +
+					" instructorId= '0', " +
+		" teamId= '0' " +
 					"WHERE bookingId = '" + activityBookingObj.getId() + "'";
 		}
 		if(instructorObj !=null)
 		{
 			query = "UPDATE ActivityLine SET " +
-		" activityId= '" + activityTypeObj.getID() + "', " + 
-					" date= '" + activityLineObj.getDate() + "', " + 
+		" activityId= '" + activityTypeObj.getID() + "', " +
+					" date= '" + activityLineObj.getDate() + "', " +
 		" startHour= '" + activityLineObj.getStartHour() + "', " +
-								" endHour= '" + activityLineObj.getEndHour() + "', " +
+					" endHour= '" + activityLineObj.getEndHour() + "', " +
 		" facilityId= '" + facilityObj.getId() + "', " +
-								" instructorId= '" + instructorObj.getId() + "' " +
-		"WHERE bookingId = '" + activityBookingObj.getId() + "'";
+					" instructorId= '" + instructorObj.getId() + "', " +
+		" teamId= '0' " +
+					"WHERE bookingId = '" + activityBookingObj.getId() + "'";
 		}
 		if(teamObj != null)
 		{
 			query = "UPDATE ActivityLine SET " +
-					" activityId= '" + activityTypeObj.getID() + "', " + 
-								" date= '" + activityLineObj.getDate() + "', " + 
-					" startHour= '" + activityLineObj.getStartHour() + "', " +
-											" endHour= '" + activityLineObj.getEndHour() + "', " +
-					" facilityId= '" + facilityObj.getId() + "', " +
-											" teamId= '" + teamObj.getId() + "' " +
+		" activityId= '" + activityTypeObj.getID() + "', " +
+					" date= '" + activityLineObj.getDate() + "', " +
+		" startHour= '" + activityLineObj.getStartHour() + "', " +
+					" endHour= '" + activityLineObj.getEndHour() + "', " +
+		" facilityId= '" + facilityObj.getId() + "', " +
+					" teamId= '" + teamObj.getId() + "', " +
+		" instructorId= '0', " +
 					"WHERE bookingId = '" + activityBookingObj.getId() + "'";
 		}
 		
@@ -445,19 +336,25 @@ public class DBActivityLine implements IFDBActivityLine
 	@Override
 	public int getActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId)
 	{
-		int instances = 0;		
+		int instances = 0;
+		
 		ResultSet results;
-		String query = "SELECT COUNT(activityId, bookingId, date, startHour, facilityId) AS activityLineInstances1 FROM ActivityLine " + 
+		
+		String query = "SELECT COUNT(*) AS activityLineInstances1 FROM ActivityLine " + 
 		"WHERE activityId= '" + activityId + "' AND bookingId= '" +  bookingId + "' AND date = '" + date + "' AND startHour= '" + startHour + "' AND facilityId= '" + facilityId + "'";
-		;		
 		System.out.println(query);
 		
 		try
 		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
-			results = stmt.executeQuery(query);			
-			instances = results.getInt("activityLineInstances1");
+			results = stmt.executeQuery(query);
+			
+			while( results.next() )
+			{
+				instances = results.getInt("activityLineInstances1");
+				System.out.println("Activity line instances1= " + instances);
+			}
 			stmt.close();
 		}
 		catch(Exception e)
@@ -472,7 +369,7 @@ public class DBActivityLine implements IFDBActivityLine
 	{
 		int instances = 0;		
 		ResultSet results;
-		String query = "SELECT COUNT(date, startHour, instructorId) AS activityLineInstances2 FROM ActivityLine " + 
+		String query = "SELECT COUNT(*) AS activityLineInstances2 FROM ActivityLine " + 
 		" WHERE date='" + date + "' AND startHour= '" +  startHour + "' AND instructorId= '" + instructorId + "'";
 		System.out.println(query);
 		
@@ -480,8 +377,13 @@ public class DBActivityLine implements IFDBActivityLine
 		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
-			results = stmt.executeQuery(query);			
-			instances = results.getInt("activityLineInstances2");
+			results = stmt.executeQuery(query);		
+			
+			while( results.next() )
+			{
+				instances = results.getInt("activityLineInstances2");
+				System.out.println("Activity line instances2= " + instances);
+			}
 			stmt.close();
 		}
 		catch(Exception e)
@@ -496,7 +398,7 @@ public class DBActivityLine implements IFDBActivityLine
 	{
 		int numbers = 0;		
 		ResultSet results;
-		String query = "SELECT COUNT(bookingId, date) AS activityLineNumbers FROM ActivityLine " + 
+		String query = "SELECT COUNT(*) AS activityLineNumbers FROM ActivityLine " + 
 		" WHERE bookingId='" + bookingId + "' AND date= '" +  date + "'";
 		System.out.println(query);
 		
@@ -504,9 +406,15 @@ public class DBActivityLine implements IFDBActivityLine
 		{
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
-			results = stmt.executeQuery(query);			
-			numbers = results.getInt("activityLineNumbers");
+			results = stmt.executeQuery(query);
+			
+			while( results.next() )
+			{
+				numbers = results.getInt("activityLineInstances2");
+				System.out.println("Number of activity lines per booking= " + numbers);
+			}
 			stmt.close();
+			
 		}
 		catch(Exception e)
 		{
@@ -516,10 +424,10 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 
 	@Override
-	public LinkedList<ActivityLine> getDateActivityLines(String date,boolean retrieveAssociation) 
+	public LinkedList<ActivityLine> getDateActivityLines(String date) 
 	{
 		String wClause = " date= '" + date + "'";
-		return miscWhere(wClause, retrieveAssociation);
+		return miscWhere(wClause);
 	}
 
 }

@@ -134,7 +134,7 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		ActivityLine activityLineObj= new ActivityLine();
-		activityLineObj = dbActivityLine.getActivityLine(bookingId, startHour, true);
+		activityLineObj = dbActivityLine.getActivityLine(bookingId, startHour);
 		return activityLineObj;
 	}
 	
@@ -142,7 +142,7 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		LinkedList<ActivityLine> bookingActivityLines = new LinkedList<ActivityLine>();
-		bookingActivityLines = dbActivityLine.getActivityLinesForActivityBooking(bookingId, true);
+		bookingActivityLines = dbActivityLine.getActivityLinesForActivityBooking(bookingId);
 		return bookingActivityLines;
 	}
 	
@@ -365,7 +365,7 @@ public class ActivityBookingCtr
 	{
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		LinkedList<ActivityLine> dateActivityLines = new LinkedList<ActivityLine>();
-		dateActivityLines = dbActivityLine.getDateActivityLines(date, true);
+		dateActivityLines = dbActivityLine.getDateActivityLines(date);
 		return dateActivityLines;
 		
 	}

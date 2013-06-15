@@ -6,13 +6,13 @@ import Model.ActivityLine;
 public interface IFDBActivityLine
 {
 	//get an activity line
-	public ActivityLine getActivityLine(int bookingId, String startHour, boolean retrieveAssociation);
+	public ActivityLine getActivityLine(int bookingId, String startHour);
 	
 	//get all activity lines for a booking
-	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId, boolean retrieveAssociation);
+	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId);
 	
 	//get all activity lines for a date
-	public LinkedList<ActivityLine> getDateActivityLines(String date, boolean retrieveAssociation);
+	public LinkedList<ActivityLine> getDateActivityLines(String date);
 	
 	//insert activity line
 	public int insertActivityLine(ActivityLine activityLine) throws Exception;
