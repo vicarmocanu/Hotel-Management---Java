@@ -58,7 +58,7 @@ public class DBRoom implements IFDBRoom {
 	
 	private String buildQuery(String wClause)
 	{
-		String query = "SELECT * FROM Room";
+		String query = "SELECT DISTINCT * FROM Room";
 		
 		if(wClause.length()>0)
 		{
