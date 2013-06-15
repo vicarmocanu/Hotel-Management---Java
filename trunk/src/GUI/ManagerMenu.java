@@ -1470,7 +1470,7 @@ public class ManagerMenu
 		JButton btnEmployeeSearch = new JButton("Search");
 		btnEmployeeSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(employeeIdTextField.getText().equals("")==true || employeeNameTextField.getText().equals("")==true)
+				if(employeeIdTextField.getText().equals("")==true && employeeNameTextField.getText().equals("")==true)
 				{
 					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted employee.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
