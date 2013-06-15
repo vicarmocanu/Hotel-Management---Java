@@ -594,9 +594,9 @@ public class EmployeeMenu
 		txtDd.setText(String.valueOf(rbObj.getArrivalDate()).substring(6, 8));
 		txtMm.setText(String.valueOf(rbObj.getArrivalDate()).substring(4, 6));
 		txtYyyy.setText(String.valueOf(rbObj.getArrivalDate()).substring(0, 4));
-		txtDepDD.setText(String.valueOf(rbObj.getArrivalDate()).substring(6, 8));
-		txtDepmm.setText(String.valueOf(rbObj.getArrivalDate()).substring(4, 6));
-		txtDepyyyy.setText(String.valueOf(rbObj.getArrivalDate()).substring(0, 4));
+		txtDepDD.setText(String.valueOf(rbObj.getDepartureDate()).substring(6, 8));
+		txtDepmm.setText(String.valueOf(rbObj.getDepartureDate()).substring(4, 6));
+		txtDepyyyy.setText(String.valueOf(rbObj.getDepartureDate()).substring(0, 4));
 		txtNumberOfChildren.setText(String.valueOf(rbObj.getNumberOfChildren()));
 		txtStatus.setText(rbObj.getStatus());
 	}
