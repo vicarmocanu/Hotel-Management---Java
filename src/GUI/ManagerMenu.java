@@ -963,6 +963,16 @@ public class ManagerMenu
 		travelAgencyOptionsPanel.add(travelAgencyUpdateButton);
 		
 		JButton travelAgencyAllButton = new JButton("All");
+		travelAgencyAllButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent arg0)
+				{
+					clearTravelAgencyPanel();
+					clearTravelAgencyTable();
+					
+					travelAgencyTable.setModel(getTravelAgencyTableModel());
+				}
+		});
 		travelAgencyAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyAllButton.setBounds(6, 124, 134, 25);
 		travelAgencyOptionsPanel.add(travelAgencyAllButton);
@@ -976,6 +986,13 @@ public class ManagerMenu
 		travelAgencyScrollPane.setViewportView(travelAgencyTable);
 		
 		JButton travelAgencyClearAllButton = new JButton("Clear all");
+		travelAgencyClearAllButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				clearTable();
+				clearValues();
+			}
+		});
 		travelAgencyClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyClearAllButton.setBounds(10, 261, 146, 25);
 		TravelAgencyPanel.add(travelAgencyClearAllButton);
@@ -2315,7 +2332,7 @@ public class ManagerMenu
 		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
 		{
 			
-			@Override
+			
 			public void valueChanged(ListSelectionEvent e)
 			{
 				Facility facilityObj = new Facility();
@@ -2454,7 +2471,7 @@ public class ManagerMenu
 		DefaultTableModel guestTableModel = new DefaultTableModel()
 		{
 			private static final long serialVersionUID = 1L;
-			@Override
+			
 			public boolean isCellEditable(int row, int column)
 			{
 				//all cells false
@@ -2712,4 +2729,126 @@ public class ManagerMenu
 		instructorTable.setCellSelectionEnabled(false);
 		instructorTable.setModel(new DefaultTableModel());
 	}
+	
+	public DefaultTableModel getTravelAgencyTableModel()
+	{
+		LinkedList<TravelAgency> completeTravelAgencyList = new LinkedList<TravelAgency>();
+		completeTravelAgencyList = travelCtr.getAllTravelAgencies();
+		
+		DefaultTableModel travelAgencyTableModel = new DefaultTableModel()
+		{
+			private static final long serialVersionUID = 1L;
+			
+			public boolean isCellEditable(int row, int column)
+			{
+				//all cells false
+				return false;
+			}
+		};
+		
+		travelAgencyTableModel.setColumnIdentifiers(new String[] {"CVR", "Name", "Zipcode", "Country", "City", "Address", "PhoneNo", "Email"});
+		
+		for(TravelAgency travelAgencyObj : completeTravelAgencyList)
+		{
+			int travelAgencyZipcode;
+			String travelAgencyCountry = new String();
+			String travelAgencyCity = new String();
+			Location locationObj = new Location();
+				
+			if(locationObj == null)
+			{
+			     travelAgencyZipcode = 0;
+			}
+			else
+			{
+				travelAgencyZipcode = travelAgencyObj.getZipCode();
+				travelAgencyCountry = travelAgencyObj.getCountry();
+				travelAgencyCity = locationObj.getCity();
+			}
+			travelAgencyTableModel.addRow(new String[]
+					{
+					String.valueOf(travelAgencyObj.getCVR()),
+					travelAgencyObj.getName(),
+					String.valueOf(travelAgencyObj.getZipCode()),
+					travelAgencyObj.getAddress(),
+					travelAgencyObj.getCountry(),
+					locationObj.getCity(),
+					travelAgencyObj.getPhoneNo(),
+					travelAgencyObj.getEmail()
+					});
+		}
+		
+		travelAgencyTable.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = travelAgencyTable.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				TravelAgency travelAgencyObj = new TravelAgency();
+				Location locationObj = new Location();
+				
+				int selectedRow = travelAgencyTable.getSelectedRow();
+				if(selectedRow > -1)
+				{
+					String selectedData = (String) travelAgencyTable.getValueAt(selectedRow, 0);
+					int travelAgencyCVR = Integer.parseInt(selectedData);
+					String stringTravelAgencyCVR = String.valueOf(travelAgencyCVR);
+					
+					travelAgencyObj = travelCtr.getTravelAgencyByCVR(travelAgencyCVR);
+					String travelAgencyName = travelAgencyObj.getName();
+					int travelAgencyZipcode = travelAgencyObj.getZipCode();
+					String stringTravelAgencyZipcode = String.valueOf(locationObj.getZipCode());
+					String travelAgencyCountry = locationObj.getCountry();
+					String travelAgencyCity = locationObj.getCity();
+					String travelAgencyAddress = travelAgencyObj.getAddress();
+					String travelAgencyPhoneNo = travelAgencyObj.getPhoneNo();
+					String travelAgencyEmail = travelAgencyObj.getEmail();
+					if(locationObj == null)
+					{
+						travelAgencyZipcode = 0;
+					}
+					else
+					{
+						travelAgencyZipcode = locationObj.getZipCode();
+						travelAgencyCountry = locationObj.getCountry();
+						travelAgencyCity = locationObj.getCity();
+					}
+					
+					travelAgencyCVRTextField.setText(stringTravelAgencyCVR);
+					travelAgencyNameTextField.setText(travelAgencyName);
+					travelAgencyZipcodeTextField.setText(travelAgencyCity);
+					travelAgencyCountryTextField.setText(travelAgencyCountry);
+					travelAgencyCityTextField.setText(stringTravelAgencyZipcode);
+					travelAgencyAddressTextField.setText(travelAgencyAddress);
+					travelAgencyPhoneNoTextField.setText(travelAgencyPhoneNo);
+					travelAgencyEmailTextField.setText(travelAgencyEmail);
+					
+					
+				}
+			}
+		});
+		
+		return travelAgencyTableModel;
+	}
+	
+	public void clearTravelAgencyPanel()
+	{
+		travelAgencyCVRTextField.setText("");
+		travelAgencyNameTextField.setText("");
+		travelAgencyZipcodeTextField.setText("");
+		travelAgencyCountryTextField.setText("");
+		guestCityTextField.setText("");
+		guestAddressTextField.setText("");
+		guestPhoneNoTextField.setText("");
+		guestEmailTextField.setText("");
+	}
+	
+	public void clearTravelAgencyTable()
+	{
+		travelAgencyTable.setCellSelectionEnabled(false);
+		travelAgencyTable.setModel(new DefaultTableModel());
+	}
+	
+	
 }
