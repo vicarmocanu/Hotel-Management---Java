@@ -37,7 +37,7 @@ public class DBRoomType implements IFDBRoomType {
 		try {
 			roomTypeObj.setCategory(result.getString("category"));
 			roomTypeObj.setDescription(result.getString("description"));
-			roomTypeObj.setPrice(result.getDouble("price"));
+			roomTypeObj.setPrice(result.getFloat("price"));
 		} catch (Exception e) {
 			System.out.println("Error in building the room type object");
 		}
