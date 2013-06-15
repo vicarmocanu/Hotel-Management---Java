@@ -33,13 +33,13 @@ public class DBTravelAgency implements IFDBTravelAgency
 		
 		try
 		{
-			travelAgencyObj.setCVR(results.getInt(1));
-			travelAgencyObj.setName(results.getString(2));
-			travelAgencyObj.setZipCode(results.getInt(3));
-			travelAgencyObj.setCountry(results.getString(4));
-			travelAgencyObj.setAddress(results.getString(5));
-			travelAgencyObj.setPhoneNo(results.getString(6));
-			travelAgencyObj.setEmail(results.getString(7));
+			travelAgencyObj.setCVR(results.getInt("cvr"));
+			travelAgencyObj.setName(results.getString("name"));
+			travelAgencyObj.setZipCode(results.getInt("zipcode"));
+			travelAgencyObj.setCountry(results.getString("country"));
+			travelAgencyObj.setAddress(results.getString("address"));
+			travelAgencyObj.setPhoneNo(results.getString("phoneNo"));
+			travelAgencyObj.setEmail(results.getString("email"));
 		}
 		catch(Exception e)
 		{
@@ -66,22 +66,22 @@ public class DBTravelAgency implements IFDBTravelAgency
 			{
 				travelAgencyObj = buildTravelAgency(results);
 				stmt.close();
-			}
-			if(retrieveAssociation)
-			{//location selection
-				IFDBLocation dbLocation = new DBLocation();
-				Location location = new Location();
-				location = dbLocation.getLocation(travelAgencyObj.getZipCode(), travelAgencyObj.getCountry());
-				if(location != null)
-				{
-					travelAgencyObj.setZipCode(location.getZipCode());
-					travelAgencyObj.setCountry(location.getCountry());
-					System.out.println("Location selection.");
+				if(retrieveAssociation)
+				{//location selection
+					IFDBLocation dbLocation = new DBLocation();
+					Location location = new Location();
+					location = dbLocation.getLocation(travelAgencyObj.getZipCode(), travelAgencyObj.getCountry());
+					if(location != null)
+					{
+						travelAgencyObj.setZipCode(location.getZipCode());
+						travelAgencyObj.setCountry(location.getCountry());
+						System.out.println("Location selection.");
+					}
 				}
 			}
 			else
 			{
-				travelAgencyObj =null;
+				travelAgencyObj = null;
 			}
 		}
 		catch (Exception e)
