@@ -29,7 +29,6 @@ import Controller.GuestCtr;
 import Controller.InstructorCtr;
 import Controller.LocationCtr;
 import Controller.PersonCtr;
-import Controller.TeamCtr;
 import Controller.TravelAgencyCtr;
 import Model.ActivityType;
 import Model.Facility;
@@ -49,7 +48,6 @@ public class ManagerMenu
 	private LocationCtr locationCtr = new LocationCtr();
 	private InstructorCtr instructorCtr = new InstructorCtr();
 	private EmployeeCtr employeeCtr = new EmployeeCtr();
-	private TeamCtr teamCtr = new TeamCtr();
 
 	private JFrame frame;
 	private JLabel dinamicLabel;
@@ -130,7 +128,7 @@ public class ManagerMenu
 		frame = new JFrame();
 		frame.setFont(new Font("Dialog", Font.PLAIN, 14));
 		frame.setBackground(Color.WHITE);
-		frame.setBounds(100, 100, 850, 600);
+		frame.setBounds(100, 100, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -144,11 +142,11 @@ public class ManagerMenu
 			}
 		});
 		logOffButton.setFont(new Font("Tahoma", Font.BOLD, 15));
-		logOffButton.setBounds(715, 550, 125, 39);
+		logOffButton.setBounds(865, 550, 125, 39);
 		frame.getContentPane().add(logOffButton);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 830, 528);
+		tabbedPane.setBounds(10, 11, 970, 528);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel WelcomePanel = new JPanel();
@@ -171,111 +169,111 @@ public class ManagerMenu
 		
 		JPanel guestAttributesPanel = new JPanel();
 		guestAttributesPanel.setBorder(new TitledBorder(null, "Guest attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		guestAttributesPanel.setBounds(6, 11, 768, 93);
+		guestAttributesPanel.setBounds(6, 11, 949, 93);
 		GuestPanel.add(guestAttributesPanel);
 		guestAttributesPanel.setLayout(null);
 		
 		JLabel guestIdLabel = new JLabel("Id:");
-		guestIdLabel.setBounds(6, 19, 46, 14);
+		guestIdLabel.setBounds(16, 19, 46, 14);
 		guestAttributesPanel.add(guestIdLabel);
 		guestIdLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestIdTextField = new JTextField();
-		guestIdTextField.setBounds(70, 16, 80, 20);
+		guestIdTextField.setBounds(70, 16, 100, 20);
 		guestAttributesPanel.add(guestIdTextField);
 		guestIdTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestIdTextField.setColumns(10);
 		
 		JLabel guestNameLabel = new JLabel("Name:");
-		guestNameLabel.setBounds(160, 19, 46, 14);
+		guestNameLabel.setBounds(186, 19, 46, 14);
 		guestAttributesPanel.add(guestNameLabel);
 		guestNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestNameTextField = new JTextField();
-		guestNameTextField.setBounds(240, 16, 80, 20);
+		guestNameTextField.setBounds(239, 16, 100, 20);
 		guestAttributesPanel.add(guestNameTextField);
 		guestNameTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestNameTextField.setColumns(10);
 		
 		JLabel guestCityLabel = new JLabel("City:");
-		guestCityLabel.setBounds(330, 19, 86, 14);
+		guestCityLabel.setBounds(401, 19, 80, 14);
 		guestAttributesPanel.add(guestCityLabel);
 		guestCityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestCityTextField = new JTextField();
-		guestCityTextField.setBounds(372, 16, 80, 20);
+		guestCityTextField.setBounds(439, 16, 100, 20);
 		guestAttributesPanel.add(guestCityTextField);
 		guestCityTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestCityTextField.setColumns(10);
 		
 		JLabel guestCountryLabel = new JLabel("Country:");
-		guestCountryLabel.setBounds(462, 19, 86, 14);
+		guestCountryLabel.setBounds(577, 19, 80, 14);
 		guestAttributesPanel.add(guestCountryLabel);
 		guestCountryLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestCountryTextField = new JTextField();
-		guestCountryTextField.setBounds(531, 16, 80, 20);
+		guestCountryTextField.setBounds(639, 16, 100, 20);
 		guestAttributesPanel.add(guestCountryTextField);
 		guestCountryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestCountryTextField.setColumns(10);
 		
 		JLabel guestZipcodeLabel = new JLabel("Zipcode:");
-		guestZipcodeLabel.setBounds(621, 19, 86, 14);
+		guestZipcodeLabel.setBounds(777, 19, 80, 14);
 		guestAttributesPanel.add(guestZipcodeLabel);
 		guestZipcodeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestZipcodeTextField = new JTextField();
-		guestZipcodeTextField.setBounds(682, 16, 80, 20);
+		guestZipcodeTextField.setBounds(839, 16, 100, 20);
 		guestAttributesPanel.add(guestZipcodeTextField);
 		guestZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestZipcodeTextField.setColumns(10);
 		
 		JLabel guestAddressLabel = new JLabel("Address:");
-		guestAddressLabel.setBounds(6, 44, 86, 14);
+		guestAddressLabel.setBounds(16, 44, 86, 14);
 		guestAttributesPanel.add(guestAddressLabel);
 		guestAddressLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestAddressTextField = new JTextField();
-		guestAddressTextField.setBounds(70, 41, 80, 20);
+		guestAddressTextField.setBounds(70, 41, 100, 20);
 		guestAttributesPanel.add(guestAddressTextField);
 		guestAddressTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestAddressTextField.setColumns(10);
 		
 		JLabel guestPhoneNoLabel = new JLabel("Phone no:");
-		guestPhoneNoLabel.setBounds(160, 44, 86, 14);
+		guestPhoneNoLabel.setBounds(186, 44, 80, 14);
 		guestAttributesPanel.add(guestPhoneNoLabel);
 		guestPhoneNoLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestPhoneNoTextField = new JTextField();
-		guestPhoneNoTextField.setBounds(240, 41, 80, 20);
+		guestPhoneNoTextField.setBounds(239, 41, 100, 20);
 		guestAttributesPanel.add(guestPhoneNoTextField);
 		guestPhoneNoTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestPhoneNoTextField.setColumns(10);
 		
 		JLabel guestEmailLabel = new JLabel("E-mail:");
-		guestEmailLabel.setBounds(330, 44, 86, 14);
+		guestEmailLabel.setBounds(401, 44, 80, 14);
 		guestAttributesPanel.add(guestEmailLabel);
 		guestEmailLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestEmailTextField = new JTextField();
-		guestEmailTextField.setBounds(372, 41, 80, 20);
+		guestEmailTextField.setBounds(439, 41, 100, 20);
 		guestAttributesPanel.add(guestEmailTextField);
 		guestEmailTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestEmailTextField.setColumns(10);
 		
 		JLabel guestPasswordLabel = new JLabel("Password:");
-		guestPasswordLabel.setBounds(462, 44, 86, 14);
+		guestPasswordLabel.setBounds(577, 44, 80, 14);
 		guestAttributesPanel.add(guestPasswordLabel);
 		guestPasswordLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestPasswordTextField = new JTextField();
-		guestPasswordTextField.setBounds(531, 41, 80, 20);
+		guestPasswordTextField.setBounds(639, 41, 100, 20);
 		guestAttributesPanel.add(guestPasswordTextField);
 		guestPasswordTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestPasswordTextField.setColumns(10);
 		
 		JLabel guestGuestTypeLabel = new JLabel("Guest type:");
-		guestGuestTypeLabel.setBounds(621, 44, 86, 14);
+		guestGuestTypeLabel.setBounds(777, 44, 80, 14);
 		guestAttributesPanel.add(guestGuestTypeLabel);
 		guestGuestTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
@@ -315,13 +313,13 @@ public class ManagerMenu
 		guestGuestTypeComboBox.addItem("Business");
 		guestGuestTypeComboBox.addItem("Family");
 		guestGuestTypeComboBox.setSelectedItem(null);
-		guestGuestTypeComboBox.setBounds(682, 41, 80, 20);
+		guestGuestTypeComboBox.setBounds(839, 41, 100, 20);
 		guestAttributesPanel.add(guestGuestTypeComboBox);
 		
 		JPanel guestOptionsMenu = new JPanel();
 		guestOptionsMenu.setLayout(null);
-		guestOptionsMenu.setBorder(new TitledBorder(null, "Guest options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		guestOptionsMenu.setBounds(6, 108, 104, 192);
+		guestOptionsMenu.setBorder(new TitledBorder(null, "Guest", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		guestOptionsMenu.setBounds(6, 108, 140, 157);
 		GuestPanel.add(guestOptionsMenu);
 		
 		JButton guestSearchButton = new JButton("Search");
@@ -528,7 +526,7 @@ public class ManagerMenu
 			}
 		});
 		guestSearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		guestSearchButton.setBounds(6, 16, 90, 25);
+		guestSearchButton.setBounds(6, 16, 124, 25);
 		guestOptionsMenu.add(guestSearchButton);
 		
 		JButton guestCreateButton = new JButton("Create");
@@ -592,7 +590,7 @@ public class ManagerMenu
 			}
 		});
 		guestCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		guestCreateButton.setBounds(6, 52, 90, 25);
+		guestCreateButton.setBounds(6, 52, 124, 25);
 		guestOptionsMenu.add(guestCreateButton);
 		
 		JButton guestUpdateButton = new JButton("Update");
@@ -669,92 +667,8 @@ public class ManagerMenu
 			}
 		});
 		guestUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		guestUpdateButton.setBounds(6, 88, 90, 25);
+		guestUpdateButton.setBounds(6, 88, 124, 25);
 		guestOptionsMenu.add(guestUpdateButton);
-		
-		JButton guestDeleteButton = new JButton("Delete");
-		guestDeleteButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
-				if(guestIdTextField.getText().equals("")==true && guestNameTextField.getText().equals("")==true)
-				{
-					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted guest.", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					if(guestNameTextField.getText().equals("") == true)
-					{
-						String stringGuestId = guestIdTextField.getText();
-						int guestId = Integer.parseInt(stringGuestId);
-						
-						Guest guestObj = new Guest();
-						guestObj = guestCtr.searchGuestById(guestId);
-						
-						if(guestObj == null)
-						{
-							JOptionPane.showMessageDialog(null, "There is no guest by this id. Please insert a valid guest id.", "Error!", JOptionPane.ERROR_MESSAGE);
-						}
-						else
-						{
-							teamCtr.deleteTeamsByLeader(guestId);
-							guestCtr.deleteGuest(guestId);
-							personCtr.deletePerson(guestId);
-							clearGuestPanel();
-							clearGuestTable();
-							JOptionPane.showMessageDialog(null, "Guest successfully removed", "Info", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-					else
-					{
-						if(guestIdTextField.getText().equals("") == true)
-						{
-							String guestName = guestNameTextField.getText();
-							
-							Person personObj = new Person();
-							personObj = personCtr.searchPersonByName(guestName);
-							
-							if(personObj == null || personObj.getPersonType().equals("Guest") == false)
-							{
-								JOptionPane.showMessageDialog(null, "There is no guest by this name. Please insert a valid guest name.", "Error!", JOptionPane.ERROR_MESSAGE);
-							}
-							else
-							{
-								int guestId = personObj.getId();
-								guestCtr.deleteGuest(guestId);
-								personCtr.deletePerson(guestId);
-								JOptionPane.showMessageDialog(null, "Guest successfully removed", "Info", JOptionPane.INFORMATION_MESSAGE);
-							}
-						}
-						else
-						{
-							if(guestIdTextField.getText().equals("") != true && guestNameTextField.getText().equals("") != true)
-							{
-								String stringGuestId = guestIdTextField.getText();
-								int guestId = Integer.parseInt(stringGuestId);
-								
-								Guest guestObj = new Guest();
-								guestObj = guestCtr.searchGuestById(guestId);
-								
-								if(guestObj == null)
-								{
-									JOptionPane.showMessageDialog(null, "There is no guest by this id. Please insert a valid guest id.", "Error!", JOptionPane.ERROR_MESSAGE);
-								}
-								else
-								{
-									guestCtr.deleteGuest(guestId);
-									personCtr.deletePerson(guestId);
-									JOptionPane.showMessageDialog(null, "Guest successfully removed", "Info", JOptionPane.INFORMATION_MESSAGE);
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-		guestDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		guestDeleteButton.setBounds(6, 124, 90, 25);
-		guestOptionsMenu.add(guestDeleteButton);
 		
 		JButton guestAllButton = new JButton("All");
 		guestAllButton.addActionListener(new ActionListener()
@@ -768,7 +682,7 @@ public class ManagerMenu
 			}
 		});
 		guestAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		guestAllButton.setBounds(6, 160, 90, 25);
+		guestAllButton.setBounds(6, 124, 124, 25);
 		guestOptionsMenu.add(guestAllButton);
 		
 		JButton guestClearAllButton = new JButton("Clear all");
@@ -781,11 +695,11 @@ public class ManagerMenu
 			}
 		});
 		guestClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		guestClearAllButton.setBounds(6, 311, 104, 25);
+		guestClearAllButton.setBounds(6, 276, 140, 25);
 		GuestPanel.add(guestClearAllButton);
 		
 		JScrollPane guestTableScrollPane = new JScrollPane();
-		guestTableScrollPane.setBounds(120, 115, 695, 304);
+		guestTableScrollPane.setBounds(156, 115, 799, 374);
 		GuestPanel.add(guestTableScrollPane);
 		
 		guestTable = new JTable();
@@ -798,7 +712,7 @@ public class ManagerMenu
 		
 		JPanel travelAgencyAttributesPanel = new JPanel();
 		travelAgencyAttributesPanel.setBorder(new TitledBorder(null, "Travel agency attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		travelAgencyAttributesPanel.setBounds(26, 34, 567, 68);
+		travelAgencyAttributesPanel.setBounds(10, 11, 646, 68);
 		TravelAgencyPanel.add(travelAgencyAttributesPanel);
 		travelAgencyAttributesPanel.setLayout(null);
 		
@@ -809,40 +723,40 @@ public class ManagerMenu
 		
 		travelAgencyCVRTextField = new JTextField();
 		travelAgencyCVRTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyCVRTextField.setBounds(57, 16, 80, 20);
+		travelAgencyCVRTextField.setBounds(57, 16, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyCVRTextField);
 		travelAgencyCVRTextField.setColumns(10);
 		
 		JLabel travelAgencyNameLabel = new JLabel("Name:");
-		travelAgencyNameLabel.setBounds(147, 19, 86, 14);
+		travelAgencyNameLabel.setBounds(167, 19, 86, 14);
 		travelAgencyAttributesPanel.add(travelAgencyNameLabel);
 		travelAgencyNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyNameTextField = new JTextField();
 		travelAgencyNameTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyNameTextField.setBounds(201, 16, 80, 20);
+		travelAgencyNameTextField.setBounds(211, 16, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyNameTextField);
 		travelAgencyNameTextField.setColumns(10);
 		
 		JLabel travelAgencyCityLabel = new JLabel("City:");
-		travelAgencyCityLabel.setBounds(287, 19, 86, 14);
+		travelAgencyCityLabel.setBounds(321, 19, 86, 14);
 		travelAgencyAttributesPanel.add(travelAgencyCityLabel);
 		travelAgencyCityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyCityTextField = new JTextField();
 		travelAgencyCityTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyCityTextField.setBounds(341, 16, 80, 20);
+		travelAgencyCityTextField.setBounds(375, 16, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyCityTextField);
 		travelAgencyCityTextField.setColumns(10);
 		
 		JLabel travelAgencyCountryLabel = new JLabel("Country:");
-		travelAgencyCountryLabel.setBounds(431, 19, 86, 14);
+		travelAgencyCountryLabel.setBounds(485, 19, 86, 14);
 		travelAgencyAttributesPanel.add(travelAgencyCountryLabel);
 		travelAgencyCountryLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyCountryTextField = new JTextField();
 		travelAgencyCountryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyCountryTextField.setBounds(481, 16, 80, 20);
+		travelAgencyCountryTextField.setBounds(533, 16, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyCountryTextField);
 		travelAgencyCountryTextField.setColumns(10);
 		
@@ -853,47 +767,47 @@ public class ManagerMenu
 		
 		travelAgencyZipcodeTextField = new JTextField();
 		travelAgencyZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyZipcodeTextField.setBounds(57, 41, 80, 20);
+		travelAgencyZipcodeTextField.setBounds(57, 41, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyZipcodeTextField);
 		travelAgencyZipcodeTextField.setColumns(10);
 		
 		JLabel travelAgencyAddressLabel = new JLabel("Address:");
-		travelAgencyAddressLabel.setBounds(147, 44, 86, 14);
+		travelAgencyAddressLabel.setBounds(167, 44, 86, 14);
 		travelAgencyAttributesPanel.add(travelAgencyAddressLabel);
 		travelAgencyAddressLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyAddressTextField = new JTextField();
 		travelAgencyAddressTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyAddressTextField.setBounds(201, 41, 80, 20);
+		travelAgencyAddressTextField.setBounds(211, 41, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyAddressTextField);
 		travelAgencyAddressTextField.setColumns(10);
 		
 		JLabel travelAgencyPhoneNoLabel = new JLabel("Phone no:");
-		travelAgencyPhoneNoLabel.setBounds(287, 44, 86, 14);
+		travelAgencyPhoneNoLabel.setBounds(321, 44, 86, 14);
 		travelAgencyAttributesPanel.add(travelAgencyPhoneNoLabel);
 		travelAgencyPhoneNoLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyPhoneNoTextField = new JTextField();
 		travelAgencyPhoneNoTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyPhoneNoTextField.setBounds(341, 41, 80, 20);
+		travelAgencyPhoneNoTextField.setBounds(375, 41, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyPhoneNoTextField);
 		travelAgencyPhoneNoTextField.setColumns(10);
 		
 		JLabel travelAgencyEmailLabel = new JLabel("E-mail:");
-		travelAgencyEmailLabel.setBounds(431, 44, 86, 14);
+		travelAgencyEmailLabel.setBounds(485, 44, 86, 14);
 		travelAgencyAttributesPanel.add(travelAgencyEmailLabel);
 		travelAgencyEmailLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		travelAgencyEmailTextField = new JTextField();
 		travelAgencyEmailTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyEmailTextField.setBounds(481, 41, 80, 20);
+		travelAgencyEmailTextField.setBounds(533, 41, 100, 20);
 		travelAgencyAttributesPanel.add(travelAgencyEmailTextField);
 		travelAgencyEmailTextField.setColumns(10);
 		
 		JPanel travelAgencyOptionsPanel = new JPanel();
 		travelAgencyOptionsPanel.setLayout(null);
 		travelAgencyOptionsPanel.setBorder(new TitledBorder(null, "Travel agency", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		travelAgencyOptionsPanel.setBounds(26, 113, 146, 192);
+		travelAgencyOptionsPanel.setBounds(10, 90, 146, 160);
 		TravelAgencyPanel.add(travelAgencyOptionsPanel);
 		
 		JButton travelAgencySearchButton = new JButton("Search");
@@ -947,6 +861,20 @@ public class ManagerMenu
 						travelCtr.insertTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyAddress, travelAgencyCountry, travelAgencyPhoneNo, travelAgencyEmail);
 						clearTable();
 						clearValues();
+						
+						guestTravelAgencyComboBox.removeAllItems();
+						LinkedList<TravelAgency> allTravelAgenciesList = new LinkedList<TravelAgency>();
+						allTravelAgenciesList = travelCtr.getAllTravelAgencies();
+						if(allTravelAgenciesList.isEmpty() == false)
+						{
+							for(TravelAgency listElementTravelAgencyObj: allTravelAgenciesList)
+							{
+								String comboBoxItem = listElementTravelAgencyObj.getName();
+								guestTravelAgencyComboBox.addItem(comboBoxItem);
+							}
+						}
+						
+						guestTravelAgencyComboBox.setSelectedItem(null);
 						JOptionPane.showMessageDialog(null, "Travel agency has been successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
@@ -1011,6 +939,19 @@ public class ManagerMenu
 							travelCtr.updateTravelAgency(travelAgencyCVR, travelAgencyName, travelAgencyZipcode, travelAgencyCountry, travelAgencyAddress, travelAgencyPhoneNo, travelAgencyEmail);
 							clearTable();
 							clearValues();
+							
+							guestTravelAgencyComboBox.removeAllItems();
+							LinkedList<TravelAgency> allTravelAgenciesList = new LinkedList<TravelAgency>();
+							allTravelAgenciesList = travelCtr.getAllTravelAgencies();
+							if(allTravelAgenciesList.isEmpty() == false)
+							{
+								for(TravelAgency listElementTravelAgencyObj: allTravelAgenciesList)
+								{
+									String comboBoxItem = listElementTravelAgencyObj.getName();
+									guestTravelAgencyComboBox.addItem(comboBoxItem);
+								}
+							}
+							
 							JOptionPane.showMessageDialog(null, "Travel agency updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
@@ -1021,18 +962,13 @@ public class ManagerMenu
 		travelAgencyUpdateButton.setBounds(6, 88, 134, 25);
 		travelAgencyOptionsPanel.add(travelAgencyUpdateButton);
 		
-		JButton travelAgencyDeleteButton = new JButton("Delete");
-		travelAgencyDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyDeleteButton.setBounds(6, 124, 134, 25);
-		travelAgencyOptionsPanel.add(travelAgencyDeleteButton);
-		
 		JButton travelAgencyAllButton = new JButton("All");
 		travelAgencyAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyAllButton.setBounds(6, 160, 134, 25);
+		travelAgencyAllButton.setBounds(6, 124, 134, 25);
 		travelAgencyOptionsPanel.add(travelAgencyAllButton);
 		
 		JScrollPane travelAgencyScrollPane = new JScrollPane();
-		travelAgencyScrollPane.setBounds(182, 113, 633, 245);
+		travelAgencyScrollPane.setBounds(166, 90, 789, 399);
 		TravelAgencyPanel.add(travelAgencyScrollPane);
 		
 		travelAgencyTable = new JTable();
@@ -1041,7 +977,7 @@ public class ManagerMenu
 		
 		JButton travelAgencyClearAllButton = new JButton("Clear all");
 		travelAgencyClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		travelAgencyClearAllButton.setBounds(26, 368, 134, 25);
+		travelAgencyClearAllButton.setBounds(10, 261, 146, 25);
 		TravelAgencyPanel.add(travelAgencyClearAllButton);
 		
 		JPanel RoomPanel = new JPanel();
@@ -1053,7 +989,7 @@ public class ManagerMenu
 		
 		JPanel activityTypeAttributesPanel = new JPanel();
 		activityTypeAttributesPanel.setBorder(new TitledBorder(null, "Activity type attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		activityTypeAttributesPanel.setBounds(30, 19, 636, 43);
+		activityTypeAttributesPanel.setBounds(10, 11, 636, 43);
 		ActivityTypePanel.add(activityTypeAttributesPanel);
 		activityTypeAttributesPanel.setLayout(null);
 		
@@ -1090,7 +1026,7 @@ public class ManagerMenu
 		JPanel activityTypesOptionsPanel = new JPanel();
 		activityTypesOptionsPanel.setLayout(null);
 		activityTypesOptionsPanel.setBorder(new TitledBorder(null, "Activity", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		activityTypesOptionsPanel.setBounds(30, 73, 150, 203);
+		activityTypesOptionsPanel.setBounds(10, 65, 150, 168);
 		ActivityTypePanel.add(activityTypesOptionsPanel);
 		
 		JButton activityTypeSearchButton = new JButton("Search");
@@ -1234,8 +1170,27 @@ public class ManagerMenu
 						}
 						instructorActivityTypeComboBox.setSelectedItem(null);
 						
+						
+						activityTypeComboBox.removeAllItems();
+						allActivityTypesList = activityTypeCtr.getAllActivityTypes();
+						if(allActivityTypesList.isEmpty()==false)
+						{
+							for(ActivityType activityTypeObj : allActivityTypesList)
+							{
+								String comboBoxItem = activityTypeObj.getName();
+								activityTypeComboBox.addItem(comboBoxItem);
+							}
+						}
+						activityTypeComboBox.setSelectedItem(null);
+						
 						clearActivityTypePanel();
 						clearActivityTypeTable();
+						
+						clearInstructorPanel();
+						clearInstructorTable();
+						
+						clearFacilityPanel();
+						clearFacilityTable();
 						
 						JOptionPane.showMessageDialog(null, "Activity type successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -1308,8 +1263,26 @@ public class ManagerMenu
 							}
 							instructorActivityTypeComboBox.setSelectedItem(null);
 							
+							activityTypeComboBox.removeAllItems();
+							allActivityTypesList = activityTypeCtr.getAllActivityTypes();
+							if(allActivityTypesList.isEmpty()==false)
+							{
+								for(ActivityType activityObj : allActivityTypesList)
+								{
+									String comboBoxItem = activityObj.getName();
+									activityTypeComboBox.addItem(comboBoxItem);
+								}
+							}
+							activityTypeComboBox.setSelectedItem(null);
+							
 							clearActivityTypePanel();
 							clearActivityTypeTable();
+							
+							clearInstructorPanel();
+							clearInstructorTable();
+							
+							clearFacilityPanel();
+							clearFacilityTable();
 							
 							JOptionPane.showMessageDialog(null, "Activity type updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						}
@@ -1320,146 +1293,6 @@ public class ManagerMenu
 		activityTypeUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		activityTypeUpdateButton.setBounds(6, 96, 134, 25);
 		activityTypesOptionsPanel.add(activityTypeUpdateButton);
-		
-		JButton activityTypeDeleteButton = new JButton("Delete");
-		activityTypeDeleteButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if(activityTypeIdTextField.getText().equals("")==true && activityTypeNameTextField.getText().equals("")==true)
-				{
-					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted activity type.", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					if(activityTypeNameTextField.getText().equals("") == true)
-					{
-						String stringActivityTypeId = activityTypeIdTextField.getText();
-						int activityTypeId = Integer.parseInt(stringActivityTypeId);
-						
-						ActivityType activityTypeObj = new ActivityType();
-						activityTypeObj = activityTypeCtr.getActivityTypeByID(activityTypeId);
-						
-						if(activityTypeObj == null)
-						{
-							JOptionPane.showMessageDialog(null, "There is no activity type by this id. Please insert a valid activity type id.", "Error!", JOptionPane.ERROR_MESSAGE);
-						}
-						else
-						{
-							activityTypeCtr.deleteActivityTypeByID(activityTypeId);
-							LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
-							
-							activityTypeComboBox.removeAllItems();
-							allActivityTypesList = activityTypeCtr.getAllActivityTypes();
-							if(allActivityTypesList.isEmpty()==false)
-							{
-								for(ActivityType activityTypeListObj : allActivityTypesList)
-								{
-									String comboBoxItem = activityTypeListObj.getName();
-									activityTypeComboBox.addItem(comboBoxItem);
-								}
-							}
-							activityTypeComboBox.setSelectedItem(null);
-							
-							instructorActivityTypeComboBox.removeAllItems();
-							allActivityTypesList = activityTypeCtr.getAllActivityTypes();
-							if(allActivityTypesList.isEmpty()==false)
-							{
-								for(ActivityType activityTypeListObj : allActivityTypesList)
-								{
-									String comboBoxItem = activityTypeListObj.getName();
-									instructorActivityTypeComboBox.addItem(comboBoxItem);
-								}
-							}
-							instructorActivityTypeComboBox.setSelectedItem(null);
-							
-							clearActivityTypePanel();
-							clearActivityTypeTable();
-							
-							JOptionPane.showMessageDialog(null, "Activity type successfully removed from the system.", "Info", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-					else
-					{
-						if(activityTypeIdTextField.getText().equals("") == true)
-						{
-							String activityTypeName = activityTypeNameTextField.getText();
-							
-							ActivityType activityTypeObj = new ActivityType();
-							activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
-							
-							if(activityTypeObj == null)
-							{
-								JOptionPane.showMessageDialog(null, "There is no activity type by this name. Please insert a valid activity type name.", "Error!", JOptionPane.ERROR_MESSAGE);
-							}
-							else
-							{
-								activityTypeCtr.deleteActivityTypeByName(activityTypeName);
-								
-								activityTypeComboBox.removeAllItems();
-								LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
-								allActivityTypesList = activityTypeCtr.getAllActivityTypes();
-								if(allActivityTypesList.isEmpty()==false)
-								{
-									for(ActivityType activityTypeListObj : allActivityTypesList)
-									{
-										String comboBoxItem = activityTypeListObj.getName();
-										activityTypeComboBox.addItem(comboBoxItem);
-									}
-								}
-								activityTypeComboBox.setSelectedItem(null);
-								
-								clearActivityTypePanel();
-								clearActivityTypeTable();
-								
-								JOptionPane.showMessageDialog(null, "Activity type successfully removed from the system.", "Info", JOptionPane.INFORMATION_MESSAGE);
-							}
-						}
-						else
-						{
-							if(activityTypeIdTextField.getText().equals("") != true && activityTypeNameTextField.getText().equals("") != true)
-							{
-								String stringActivityTypeId = activityTypeIdTextField.getText();
-								int activityTypeId = Integer.parseInt(stringActivityTypeId);
-								
-								ActivityType activityTypeObj = new ActivityType();
-								activityTypeObj = activityTypeCtr.getActivityTypeByID(activityTypeId);
-								
-								if(activityTypeObj == null)
-								{
-									JOptionPane.showMessageDialog(null, "There is no activity type by this id. Please insert a valid activity type id.", "Error!", JOptionPane.ERROR_MESSAGE);
-								}
-								else
-								{
-									activityTypeCtr.deleteActivityTypeByID(activityTypeId);
-									
-									activityTypeComboBox.removeAllItems();
-									LinkedList<ActivityType> allActivityTypesList = new LinkedList<ActivityType>();
-									allActivityTypesList = activityTypeCtr.getAllActivityTypes();
-									if(allActivityTypesList.isEmpty()==false)
-									{
-										for(ActivityType activityTypeListObj : allActivityTypesList)
-										{
-											String comboBoxItem = activityTypeListObj.getName();
-											activityTypeComboBox.addItem(comboBoxItem);
-										}
-									}
-									activityTypeComboBox.setSelectedItem(null);
-									
-									clearActivityTypePanel();
-									clearActivityTypeTable();
-									
-									JOptionPane.showMessageDialog(null, "Activity type successfully removed from the system.", "Info", JOptionPane.INFORMATION_MESSAGE);
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-		activityTypeDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		activityTypeDeleteButton.setBounds(6, 132, 134, 25);
-		activityTypesOptionsPanel.add(activityTypeDeleteButton);
 		
 		JButton activityTypeAllButton = new JButton("All");
 		activityTypeAllButton.addActionListener(new ActionListener() {
@@ -1472,11 +1305,11 @@ public class ManagerMenu
 			}
 		});
 		activityTypeAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		activityTypeAllButton.setBounds(6, 168, 134, 25);
+		activityTypeAllButton.setBounds(6, 132, 134, 25);
 		activityTypesOptionsPanel.add(activityTypeAllButton);
 		
 		JScrollPane activityTypeTableScrollPane = new JScrollPane();
-		activityTypeTableScrollPane.setBounds(190, 73, 560, 240);
+		activityTypeTableScrollPane.setBounds(170, 65, 785, 424);
 		ActivityTypePanel.add(activityTypeTableScrollPane);
 		
 		activityTypeTable = new JTable();
@@ -1493,7 +1326,7 @@ public class ManagerMenu
 			}
 		});
 		activityTypeClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		activityTypeClearAllButton.setBounds(30, 334, 134, 25);
+		activityTypeClearAllButton.setBounds(10, 244, 150, 25);
 		ActivityTypePanel.add(activityTypeClearAllButton);
 		
 		JPanel EmployeePanel = new JPanel();
@@ -1626,7 +1459,7 @@ public class ManagerMenu
 			}
 		}
 		instructorActivityTypeComboBox.setSelectedItem(null);
-		instructorActivityTypeComboBox.setBounds(426, 67, 122, 20);
+		instructorActivityTypeComboBox.setBounds(426, 67, 222, 20);
 		instructorAttributePanel.add(instructorActivityTypeComboBox);
 		
 		JLabel instructorSalaryLabel = new JLabel("Salary:");
@@ -1671,13 +1504,13 @@ public class ManagerMenu
 			}
 		});
 		noActivityButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		noActivityButton.setBounds(558, 66, 104, 25);
+		noActivityButton.setBounds(658, 65, 104, 25);
 		instructorAttributePanel.add(noActivityButton);
 		
 		JPanel instructorOptionsPanel = new JPanel();
 		instructorOptionsPanel.setLayout(null);
-		instructorOptionsPanel.setBorder(new TitledBorder(null, "Instructor options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		instructorOptionsPanel.setBounds(10, 122, 104, 192);
+		instructorOptionsPanel.setBorder(new TitledBorder(null, "Instructor", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		instructorOptionsPanel.setBounds(10, 122, 130, 159);
 		InstructorPanel.add(instructorOptionsPanel);
 		
 		JButton instructorSearchButton = new JButton("Search");
@@ -1889,7 +1722,7 @@ public class ManagerMenu
 			}
 		});
 		instructorSearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		instructorSearchButton.setBounds(6, 16, 90, 25);
+		instructorSearchButton.setBounds(6, 16, 114, 25);
 		instructorOptionsPanel.add(instructorSearchButton);
 		
 		JButton instructorCreateButton = new JButton("Create");
@@ -1952,7 +1785,7 @@ public class ManagerMenu
 			}
 		});
 		instructorCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		instructorCreateButton.setBounds(6, 52, 90, 25);
+		instructorCreateButton.setBounds(6, 52, 114, 25);
 		instructorOptionsPanel.add(instructorCreateButton);
 		
 		JButton instructorUpdateButton = new JButton("Update");
@@ -2031,98 +1864,8 @@ public class ManagerMenu
 			}
 		});
 		instructorUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		instructorUpdateButton.setBounds(6, 88, 90, 25);
+		instructorUpdateButton.setBounds(6, 88, 114, 25);
 		instructorOptionsPanel.add(instructorUpdateButton);
-		
-		JButton instructorDeleteButton = new JButton("Delete");
-		instructorDeleteButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if(instructorIdTextField.getText().equals("")==true && instructorNameTextField.getText().equals("")==true)
-				{
-					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted instructor.", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					if(instructorNameTextField.getText().equals("") == true)
-					{
-						String stringInstructorId = instructorIdTextField.getText();
-						int instructorId = Integer.parseInt(stringInstructorId);
-						
-						Instructor instructorObj = new Instructor();
-						instructorObj = instructorCtr.getInstructorById(instructorId);
-						
-						if(instructorObj == null)
-						{
-							JOptionPane.showMessageDialog(null, "There is no instructor by this id. Please insert a valid instructor id.", "Error!", JOptionPane.ERROR_MESSAGE);
-						}
-						else
-						{
-							instructorCtr.deleteInstructorById(instructorId);
-							
-							clearInstructorPanel();
-							clearInstructorTable();
-							
-							JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-					else
-					{
-						if(instructorIdTextField.getText().equals("") == true)
-						{
-							String instructorName = instructorNameTextField.getText();
-							
-							Person personObj = new Person();
-							personObj = personCtr.searchPersonByName(instructorName);
-							
-							if(personObj == null || personObj.getPersonType().equals("Instructor") == false)
-							{
-								JOptionPane.showMessageDialog(null, "There is no instructor by this name. Please insert a valid instructor name.", "Error!", JOptionPane.ERROR_MESSAGE);
-							}
-							else
-							{
-								int instructorId = personObj.getId();
-								instructorCtr.deleteInstructorById(instructorId);
-								
-								clearInstructorPanel();
-								clearInstructorTable();
-								
-								JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
-							}
-						}
-						else
-						{
-							if(instructorIdTextField.getText().equals("") != true && instructorNameTextField.getText().equals("") != true)
-							{
-								String stringInstructorId = instructorIdTextField.getText();
-								int instructorId = Integer.parseInt(stringInstructorId);
-								
-								Instructor instructorObj = new Instructor();
-								instructorObj = instructorCtr.getInstructorById(instructorId);
-								
-								if(instructorObj == null)
-								{
-									JOptionPane.showMessageDialog(null, "There is no instructor by this id. Please insert a valid instructor id.", "Error!", JOptionPane.ERROR_MESSAGE);
-								}
-								else
-								{
-									instructorCtr.deleteInstructorById(instructorId);
-									
-									clearInstructorPanel();
-									clearInstructorTable();
-									
-									JOptionPane.showMessageDialog(null, "Instructor successfully removed.", "Info", JOptionPane.INFORMATION_MESSAGE);
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-		instructorDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		instructorDeleteButton.setBounds(6, 124, 90, 25);
-		instructorOptionsPanel.add(instructorDeleteButton);
 		
 		JButton instructorAllButton = new JButton("All");
 		instructorAllButton.addActionListener(new ActionListener() {
@@ -2135,7 +1878,7 @@ public class ManagerMenu
 			}
 		});
 		instructorAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		instructorAllButton.setBounds(6, 160, 90, 25);
+		instructorAllButton.setBounds(6, 124, 114, 25);
 		instructorOptionsPanel.add(instructorAllButton);
 		
 		JButton instructorClearAllButton = new JButton("Clear all");
@@ -2147,11 +1890,11 @@ public class ManagerMenu
 			}
 		});
 		instructorClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		instructorClearAllButton.setBounds(10, 325, 104, 25);
+		instructorClearAllButton.setBounds(10, 292, 130, 25);
 		InstructorPanel.add(instructorClearAllButton);
 		
 		JScrollPane instructorTableScrollPane = new JScrollPane();
-		instructorTableScrollPane.setBounds(124, 122, 691, 275);
+		instructorTableScrollPane.setBounds(150, 122, 805, 367);
 		InstructorPanel.add(instructorTableScrollPane);
 		
 		instructorTable = new JTable();
@@ -2234,7 +1977,7 @@ public class ManagerMenu
 		
 		JPanel facilityOptionsPanel = new JPanel();
 		facilityOptionsPanel.setBorder(new TitledBorder(null, "Facility", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		facilityOptionsPanel.setBounds(10, 132, 146, 192);
+		facilityOptionsPanel.setBounds(10, 132, 146, 159);
 		FacilityPanel.add(facilityOptionsPanel);
 		facilityOptionsPanel.setLayout(null);
 		
@@ -2477,89 +2220,6 @@ public class ManagerMenu
 		facilityOptionsPanel.add(facilityUpdateButton);
 		facilityUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JButton facilityDeleteButton = new JButton("Delete");
-		facilityDeleteButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if(facilityIdTextField.getText().equals("")==true && facilityNameTextField.getText().equals("")==true)
-				{
-					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted facility.", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					if(facilityNameTextField.getText().equals("") == true)
-					{
-						String stringFacilityId = facilityIdTextField.getText();
-						int facilityId = Integer.parseInt(stringFacilityId);
-						
-						Facility facilityObj = new Facility();
-						facilityObj = facilityCtr.getFacilityById(facilityId);
-						
-						if(facilityObj == null)
-						{
-							JOptionPane.showMessageDialog(null, "There is no facility by this id. Please insert a valid facility id.", "Error!", JOptionPane.ERROR_MESSAGE);
-						}
-						else
-						{
-							facilityCtr.deleteFacility(facilityId);
-							clearFacilityTable();
-							clearFacilityPanel();
-							JOptionPane.showMessageDialog(null, "Facility successfully removed from the system.", "Info", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-					else
-					{
-						if(facilityIdTextField.getText().equals("") == true)
-						{
-							String facilityName = facilityNameTextField.getText();
-							
-							Facility facilityObj = new Facility();
-							facilityObj = facilityCtr.getFacilityByName(facilityName);
-							if(facilityObj == null)
-							{
-								JOptionPane.showMessageDialog(null, "There is not facility by this name. Please insert a valid facility name.", "Error!", JOptionPane.ERROR_MESSAGE);
-							}
-							else
-							{
-								int facilityId = facilityObj.getId();
-								facilityCtr.deleteFacility(facilityId);
-								clearFacilityTable();
-								clearFacilityPanel();
-								JOptionPane.showMessageDialog(null, "Facility successfully removed from the system.", "Info", JOptionPane.INFORMATION_MESSAGE);
-							}
-						}
-						else
-						{
-							if(facilityIdTextField.getText().equals("") != true && facilityNameTextField.getText().equals("") != true)
-							{
-								String stringFacilityId = facilityIdTextField.getText();
-								int facilityId = Integer.parseInt(stringFacilityId);
-								
-								Facility facilityObj = new Facility();
-								facilityObj = facilityCtr.getFacilityById(facilityId);
-								
-								if(facilityObj == null)
-								{
-									JOptionPane.showMessageDialog(null, "There is no facility by this id. Please insert a valid facility id.", "Error!", JOptionPane.ERROR_MESSAGE);
-								}
-								else
-								{
-									facilityCtr.deleteFacility(facilityId);
-									clearFacilityTable();
-									clearFacilityPanel();
-									JOptionPane.showMessageDialog(null, "Facility successfully removed from the system.", "Info", JOptionPane.INFORMATION_MESSAGE);
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-		facilityDeleteButton.setBounds(6, 124, 134, 25);
-		facilityOptionsPanel.add(facilityDeleteButton);
-		facilityDeleteButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		
 		JButton facilityAllButton = new JButton("All");
 		facilityAllButton.addActionListener(new ActionListener()
 		{
@@ -2571,12 +2231,12 @@ public class ManagerMenu
 				facilityTable.setModel(getFacilityTableModel());
 			}
 		});
-		facilityAllButton.setBounds(6, 160, 134, 25);
+		facilityAllButton.setBounds(6, 124, 134, 25);
 		facilityOptionsPanel.add(facilityAllButton);
 		facilityAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		facilityTableScrollPane = new JScrollPane();
-		facilityTableScrollPane.setBounds(166, 132, 649, 299);
+		facilityTableScrollPane.setBounds(166, 132, 789, 357);
 		FacilityPanel.add(facilityTableScrollPane);
 		
 		facilityTable = new JTable();
@@ -2593,7 +2253,7 @@ public class ManagerMenu
 			}
 		});
 		facilityClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		facilityClearAllButton.setBounds(10, 325, 146, 25);
+		facilityClearAllButton.setBounds(10, 302, 146, 25);
 		FacilityPanel.add(facilityClearAllButton);
 		frame.setUndecorated(true);
 	}
