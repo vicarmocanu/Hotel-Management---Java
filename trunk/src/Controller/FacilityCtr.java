@@ -49,32 +49,58 @@ public class FacilityCtr
 	
 	public void insertFacility(String name, int activityId, String status)
 	{
-		IFDBActivityType dbActivity = new DBActivityType();
-		ActivityType activityObj = dbActivity.getActivityTypeByID(activityId);
+		Facility facilityObj = new Facility();
+		facilityObj.setName(name);
+		facilityObj.setStatus(status);
 		
-		Facility facilityObj = new Facility(name, activityObj, status);
+		IFDBActivityType dbActivityType = new DBActivityType();
+		ActivityType activityTypeObj = new ActivityType();
+		if(activityId == 0)
+		{
+			activityTypeObj = null;
+			facilityObj.setActivity(activityTypeObj);
+		}
+		else
+		{
+			activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
+			facilityObj.setActivity(activityTypeObj);
+		}
 		
 		try
-		 {
-			 DBConnection1.startTransaction();
-			 DBFacility dbFacility = new DBFacility();
-			 dbFacility.insertFacility(facilityObj);
-			 DBConnection1.commitTransaction();
-		 }
-		 catch(Exception e)
-		 {
-			 DBConnection1.rollbackTransaction();
-		 }
+		{
+			DBConnection1.startTransaction();
+			DBFacility dbFacility = new DBFacility();
+			dbFacility.insertFacility(facilityObj);
+			DBConnection1.commitTransaction();
+		}
+		catch(Exception e)
+		{
+			DBConnection1.rollbackTransaction();
+		}
 	}
 	
 	public int updateFacility(int id, String name, int activityId, String status)
 	{
 		IFDBFacility dbFacility = new DBFacility();
+		Facility facilityObj = new Facility();
+		facilityObj.setId(id);
+		facilityObj.setName(name);
+		facilityObj.setStatus(status);
+		
 		IFDBActivityType dbActivity = new DBActivityType();
+		ActivityType activityTypeObj = new ActivityType();
 		
-		ActivityType activityObj = dbActivity.getActivityTypeByID(activityId);
+		if(activityId == 0)
+		{
+			activityTypeObj = null;
+			facilityObj.setActivity(activityTypeObj);
+		}
+		else
+		{
+			activityTypeObj = dbActivity.getActivityTypeByID(activityId);
+			facilityObj.setActivity(activityTypeObj);
+		}
 		
-		Facility facilityObj = new Facility(id, name, activityObj, status);
 		return dbFacility.updateFacility(facilityObj);
 	}
 	

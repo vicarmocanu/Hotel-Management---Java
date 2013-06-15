@@ -2264,15 +2264,28 @@ public class ManagerMenu
 						else
 						{
 							String facilityName = facilityObj.getName();
+							String status = facilityObj.getStatus();
+							
+							String activityTypeName = new String("");
 							ActivityType activityTypeObj = new ActivityType();
 							activityTypeObj = facilityObj.getActivity();
-							String activityTypeName = activityTypeObj.getName();
-							String status = facilityObj.getStatus();
+							if(activityTypeObj != null)
+							{
+								activityTypeName = activityTypeObj.getName();
+							}
 							
 							facilityIdTextField.setText(stringFacilityId);
 							facilityNameTextField.setText(facilityName);
-							activityTypeComboBox.setSelectedItem(activityTypeName);
 							statusComboBox.setSelectedItem(status);
+							
+							if(activityTypeName.equals("") == true)
+							{
+								activityTypeComboBox.setSelectedItem(null);
+							}
+							else
+							{
+								activityTypeComboBox.setSelectedItem(activityTypeName);
+							}
 						}
 					}
 					else
@@ -2291,15 +2304,28 @@ public class ManagerMenu
 							{
 								int facilityId = facilityObj.getId();
 								String stringFacilityId = String.valueOf(facilityId);
+								String status = facilityObj.getStatus();
+								
+								String activityTypeName = new String("");
 								ActivityType activityTypeObj = new ActivityType();
 								activityTypeObj = facilityObj.getActivity();
-								String activityTypeName = activityTypeObj.getName();
-								String status = facilityObj.getStatus();
+								if(activityTypeObj != null)
+								{
+									activityTypeName = activityTypeObj.getName();
+								}
 								
 								facilityIdTextField.setText(stringFacilityId);
 								facilityNameTextField.setText(facilityName);
-								activityTypeComboBox.setSelectedItem(activityTypeName);
 								statusComboBox.setSelectedItem(status);
+								
+								if(activityTypeName.equals("") == true)
+								{
+									activityTypeComboBox.setSelectedItem(null);
+								}
+								else
+								{
+									activityTypeComboBox.setSelectedItem(activityTypeName);
+								}
 							}
 						}
 						else
@@ -2319,15 +2345,28 @@ public class ManagerMenu
 								else
 								{
 									String facilityName = facilityObj.getName();
+									String status = facilityObj.getStatus();
+									
+									String activityTypeName = new String("");
 									ActivityType activityTypeObj = new ActivityType();
 									activityTypeObj = facilityObj.getActivity();
-									String activityTypeName = activityTypeObj.getName();
-									String status = facilityObj.getStatus();
+									if(activityTypeObj != null)
+									{
+										activityTypeName = activityTypeObj.getName();
+									}
 									
 									facilityIdTextField.setText(stringFacilityId);
 									facilityNameTextField.setText(facilityName);
-									activityTypeComboBox.setSelectedItem(activityTypeName);
 									statusComboBox.setSelectedItem(status);
+									
+									if(activityTypeName.equals("") == true)
+									{
+										activityTypeComboBox.setSelectedItem(null);
+									}
+									else
+									{
+										activityTypeComboBox.setSelectedItem(activityTypeName);
+									}
 								}
 							}
 						}
@@ -2346,7 +2385,7 @@ public class ManagerMenu
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if(facilityNameTextField.getText().equals("") == true || activityTypeComboBox.getSelectedItem().equals(null) == true || statusComboBox.getSelectedItem().equals(null) ==true)
+				if(facilityNameTextField.getText().equals("") == true || statusComboBox.getSelectedItem().equals(null) ==true)
 				{
 					JOptionPane.showMessageDialog(null, "A facility attribute might be missing. Please insert all needed facility attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -2355,9 +2394,14 @@ public class ManagerMenu
 					String facilityName = facilityNameTextField.getText();
 					
 					ActivityType activityTypeObj = new ActivityType();
-					String activityName = String.valueOf(activityTypeComboBox.getSelectedItem());
-					activityTypeObj = activityTypeCtr.getActivityTypeByName(activityName);
-					int activityTypeId = activityTypeObj.getID();
+					
+					int activityId = 0;
+					if(activityTypeComboBox.getSelectedItem() != null)
+					{
+						String activityTypeName = (String) activityTypeComboBox.getSelectedItem();
+						activityTypeObj = activityTypeCtr.getActivityTypeByName(activityTypeName);
+						activityId = activityTypeObj.getID();
+					}
 					
 					String status = String.valueOf(statusComboBox.getSelectedItem());
 					
@@ -2368,7 +2412,7 @@ public class ManagerMenu
 					else
 					{
 						
-						facilityCtr.insertFacility(facilityName, activityTypeId, status);
+						facilityCtr.insertFacility(facilityName, activityId, status);
 						clearFacilityTable();
 						clearFacilityPanel();
 						JOptionPane.showMessageDialog(null, "Facility successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -2384,7 +2428,7 @@ public class ManagerMenu
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(facilityIdTextField.getText().equals("") == true || facilityNameTextField.getText().equals("") == true || activityTypeComboBox.getSelectedItem().equals(null) == true || statusComboBox.getSelectedItem().equals(null) == true)
+				if(facilityIdTextField.getText().equals("") == true || facilityNameTextField.getText().equals("") == true || statusComboBox.getSelectedItem().equals(null) == true)
 				{
 					JOptionPane.showMessageDialog(null, "Some facility attributes have not been inserted. Please insert all facility attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -2404,9 +2448,13 @@ public class ManagerMenu
 						String facilityName = facilityNameTextField.getText();
 						
 						ActivityType activityTypeObj = new ActivityType();
-						String activityName = String.valueOf(activityTypeComboBox.getSelectedItem());
-						activityTypeObj = activityTypeCtr.getActivityTypeByName(activityName);
-						int activityId = activityTypeObj.getID();
+						int activityId = 0;
+						if(activityTypeComboBox.getSelectedItem() != null)
+						{
+							String activityName = String.valueOf(activityTypeComboBox.getSelectedItem());
+							activityTypeObj = activityTypeCtr.getActivityTypeByName(activityName);
+							activityId = activityTypeObj.getID();
+						}
 						
 						String status = String.valueOf(statusComboBox.getSelectedItem());
 						
@@ -2577,12 +2625,21 @@ public class ManagerMenu
 		{
 			for(Facility facilityObj : facilityCompleteList)
 			{
+				int activityTypeId = 0;
+				String activityTypeName = new String("None - please select");
+				ActivityType activityTypeObj = new ActivityType();
+				activityTypeObj = facilityObj.getActivity();
+				if(activityTypeObj != null)
+				{
+					activityTypeName = activityTypeObj.getName();
+					activityTypeId = activityTypeObj.getID();
+				}
 				facilityTableModel.addRow(new String[]
 						{
 						String.valueOf(facilityObj.getId()),
 						facilityObj.getName(),
-						String.valueOf(facilityObj.getActivity().getID()),
-						facilityObj.getActivity().getName(),
+						String.valueOf(activityTypeId),
+						activityTypeName,
 						facilityObj.getStatus()
 						});
 			}
@@ -2609,12 +2666,32 @@ public class ManagerMenu
 					String selectedData = (String) facilityTable.getValueAt(selectedRow, 0);
 					
 					int facilityId = Integer.parseInt(selectedData);
-					
+					String stringFacilityId = String.valueOf(facilityId);
 					facilityObj = facilityCtr.getFacilityById(facilityId);
-					facilityIdTextField.setText(String.valueOf(facilityObj.getId()));
-					facilityNameTextField.setText(facilityObj.getName());
-					activityTypeComboBox.setSelectedItem(facilityObj.getActivity().getName());
-					statusComboBox.setSelectedItem(facilityObj.getStatus());
+					
+					String facilityName = facilityObj.getName();
+					String status = facilityObj.getStatus();
+					
+					String activityTypeName = new String("");
+					ActivityType activityTypeObj = new ActivityType();
+					activityTypeObj = facilityObj.getActivity();
+					if(activityTypeObj != null)
+					{
+						activityTypeName = activityTypeObj.getName();
+					}
+					
+					facilityIdTextField.setText(stringFacilityId);
+					facilityNameTextField.setText(facilityName);
+					statusComboBox.setSelectedItem(status);
+					
+					if(activityTypeName.equals("") == true)
+					{
+						activityTypeComboBox.setSelectedItem(null);
+					}
+					else
+					{
+						activityTypeComboBox.setSelectedItem(activityTypeName);
+					}
 				}
 				
 			}

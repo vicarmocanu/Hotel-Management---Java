@@ -159,7 +159,7 @@ private Connection con;
 			
 			if (results.next())
 			{
-				rbObj = buildPerson(results);				
+				rbObj = buildPerson(results);
 				stmt.close();
 				if(retrieveAssociation)
 				{//location selection

@@ -212,7 +212,6 @@ public class DBInstructor implements IFDBInstructor
 					"WHERE employeeId= '" + instructorObj.getId() + "'";
 		}
 		
-		
 		System.out.println("Update query: " + query);
 		
 		try
