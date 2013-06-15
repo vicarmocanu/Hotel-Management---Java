@@ -37,6 +37,7 @@ import Model.Instructor;
 import Model.Location;
 import Model.Person;
 import Model.TravelAgency;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 public class ManagerMenu
 {
@@ -96,6 +97,17 @@ public class ManagerMenu
 	private JTable instructorTable;
 	private JComboBox<String> instructorActivityTypeComboBox;
 	private JComboBox<String> instructorStatusComboBox;
+	private JTable employeeTable;
+	private JTextField employeeIdTextField;
+	private JTextField employeeNameTextField;
+	private JTextField employeeZipcodeTextField;
+	private JTextField employeeCountryTextField;
+	private JTextField employeeCityTextField;
+	private JTextField employeeAddressTextField;
+	private JTextField employeePhoneNoTextField;
+	private JTextField employeeEmailTextField;
+	private JTextField employeePasswordTextField;
+	private JTextField employeeSalaryTextField;
 	
 	public ManagerMenu()
 	{
@@ -1349,6 +1361,154 @@ public class ManagerMenu
 		JPanel EmployeePanel = new JPanel();
 		tabbedPane.addTab("Employee menu", null, EmployeePanel, null);
 		EmployeePanel.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 11, 905, 86);
+		EmployeePanel.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblEmployeeAttributes = DefaultComponentFactory.getInstance().createTitle("Employee attributes");
+		lblEmployeeAttributes.setBounds(10, 0, 122, 14);
+		panel.add(lblEmployeeAttributes);
+		
+		JLabel lblId = new JLabel("Id");
+		lblId.setBounds(10, 25, 46, 14);
+		panel.add(lblId);
+		
+		employeeIdTextField = new JTextField();
+		employeeIdTextField.setBounds(30, 22, 86, 20);
+		panel.add(employeeIdTextField);
+		employeeIdTextField.setColumns(10);
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setBounds(126, 25, 46, 14);
+		panel.add(lblName);
+		
+		employeeNameTextField = new JTextField();
+		employeeNameTextField.setBounds(160, 22, 86, 20);
+		panel.add(employeeNameTextField);
+		employeeNameTextField.setColumns(10);
+		
+		JLabel lblZipcode = new JLabel("Zipcode");
+		lblZipcode.setBounds(256, 25, 46, 14);
+		panel.add(lblZipcode);
+		
+		employeeZipcodeTextField = new JTextField();
+		employeeZipcodeTextField.setBounds(302, 22, 86, 20);
+		panel.add(employeeZipcodeTextField);
+		employeeZipcodeTextField.setColumns(10);
+		
+		JLabel lblCountry = new JLabel("Country");
+		lblCountry.setBounds(398, 25, 46, 14);
+		panel.add(lblCountry);
+		
+		employeeCountryTextField = new JTextField();
+		employeeCountryTextField.setBounds(443, 22, 86, 20);
+		panel.add(employeeCountryTextField);
+		employeeCountryTextField.setColumns(10);
+		
+		JLabel lblCity = new JLabel("City");
+		lblCity.setBounds(539, 25, 46, 14);
+		panel.add(lblCity);
+		
+		employeeCityTextField = new JTextField();
+		employeeCityTextField.setBounds(566, 22, 86, 20);
+		panel.add(employeeCityTextField);
+		employeeCityTextField.setColumns(10);
+		
+		JLabel lblAddress = new JLabel("Address");
+		lblAddress.setBounds(662, 25, 46, 14);
+		panel.add(lblAddress);
+		
+		employeeAddressTextField = new JTextField();
+		employeeAddressTextField.setBounds(710, 22, 86, 20);
+		panel.add(employeeAddressTextField);
+		employeeAddressTextField.setColumns(10);
+		
+		JLabel lblPhoneNo = new JLabel("PhoneNo");
+		lblPhoneNo.setBounds(10, 61, 46, 14);
+		panel.add(lblPhoneNo);
+		
+		employeePhoneNoTextField = new JTextField();
+		employeePhoneNoTextField.setBounds(59, 58, 86, 20);
+		panel.add(employeePhoneNoTextField);
+		employeePhoneNoTextField.setColumns(10);
+		
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setBounds(160, 61, 46, 14);
+		panel.add(lblEmail);
+		
+		employeeEmailTextField = new JTextField();
+		employeeEmailTextField.setBounds(195, 58, 86, 20);
+		panel.add(employeeEmailTextField);
+		employeeEmailTextField.setColumns(10);
+		
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(291, 61, 46, 14);
+		panel.add(lblPassword);
+		
+		employeePasswordTextField = new JTextField();
+		employeePasswordTextField.setBounds(345, 58, 86, 20);
+		panel.add(employeePasswordTextField);
+		employeePasswordTextField.setColumns(10);
+		
+		JLabel lblSalary = new JLabel("Salary");
+		lblSalary.setBounds(443, 61, 46, 14);
+		panel.add(lblSalary);
+		
+		employeeSalaryTextField = new JTextField();
+		employeeSalaryTextField.setBounds(479, 58, 86, 20);
+		panel.add(employeeSalaryTextField);
+		employeeSalaryTextField.setColumns(10);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(10, 108, 193, 368);
+		EmployeePanel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JButton btnEmployeeSearch = new JButton("Search");
+		btnEmployeeSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEmployeeSearch.setBounds(10, 23, 173, 29);
+		panel_1.add(btnEmployeeSearch);
+		
+		JButton btnEmployeeCreate = new JButton("Create");
+		btnEmployeeCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEmployeeCreate.setBounds(10, 63, 173, 29);
+		panel_1.add(btnEmployeeCreate);
+		
+		JButton btnEmployeeUpdate = new JButton("Update");
+		btnEmployeeUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEmployeeUpdate.setBounds(10, 103, 173, 29);
+		panel_1.add(btnEmployeeUpdate);
+		
+		JButton btnEmployeeAll = new JButton("All");
+		btnEmployeeAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEmployeeAll.setBounds(10, 143, 173, 29);
+		panel_1.add(btnEmployeeAll);
+		
+		JButton btnClearAll = new JButton("Clear All");
+		btnClearAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnClearAll.setBounds(10, 183, 173, 29);
+		panel_1.add(btnClearAll);
+		
+		employeeTable = new JTable();
+		employeeTable.setBounds(213, 108, 742, 368);
+		EmployeePanel.add(employeeTable);
 		
 		JPanel InstructorPanel = new JPanel();
 		tabbedPane.addTab("Instructor menu", null, InstructorPanel, null);
@@ -2819,6 +2979,4 @@ public class ManagerMenu
 		travelAgencyTable.setCellSelectionEnabled(false);
 		travelAgencyTable.setModel(new DefaultTableModel());
 	}
-	
-	
 }
