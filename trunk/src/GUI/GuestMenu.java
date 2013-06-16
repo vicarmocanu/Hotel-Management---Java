@@ -18,7 +18,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ActivityBookingCtr;
@@ -242,11 +245,59 @@ public class GuestMenu
 		createActivityBookingButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		JButton searchActivityBookingButton = new JButton("Activate activity lines");
+		searchActivityBookingButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				int guestId = universalId;
+				if(dayComboBox.getSelectedItem() == null || monthComboBox.getSelectedItem() ==null || yearComboBox.getSelectedItem() == null)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert the date of booking.", "Error!", JOptionPane.ERROR_MESSAGE);
+					activityLineDisabler();
+				}
+				else
+				{
+					String day = (String) dayComboBox.getSelectedItem();
+					String month = (String) monthComboBox.getSelectedItem();
+					String year = (String) yearComboBox.getSelectedItem();
+					String date = day + "-" + month + "-" + year;
+					
+					if(DateCheck.isDateValid(date) != true)
+					{
+						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
+						activityLineDisabler();
+					}
+					else
+					{
+						ActivityBooking activityBookingObj = new ActivityBooking();
+						activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestId, date, "Made");
+						if(activityBookingObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "There is no made activity booking by this date. Please insert a valid activity booking date.", "Error!", JOptionPane.ERROR_MESSAGE);
+							activityLineDisabler();
+						}
+						else
+						{
+							activityLineEnabler();
+							bookingId = activityBookingObj.getId();
+						}
+					}
+				}
+			}
+		});
 		searchActivityBookingButton.setBounds(4, 105, 225, 25);
 		activityBookingPanel.add(searchActivityBookingButton);
 		searchActivityBookingButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		JButton getAllActivityBookingsButton = new JButton("All");
+		getAllActivityBookingsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				activityLineDisabler();
+				
+				activityBookingsTable.setModel(getActivityBookingTableModel());
+			}
+		});
 		getAllActivityBookingsButton.setBounds(6, 141, 225, 25);
 		activityBookingPanel.add(getAllActivityBookingsButton);
 		getAllActivityBookingsButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -847,5 +898,76 @@ public class GuestMenu
 		addActivityLineButton.setEnabled(false);
 		cancelActivityLineButton.setEnabled(false);
 		allActivityLinesButton.setEnabled(false);
+	}
+	
+	private DefaultTableModel getActivityBookingTableModel()
+	{
+		int guestId = universalId;
+		
+		LinkedList<ActivityBooking> activityBookingList = new LinkedList<ActivityBooking>();
+		activityBookingList = activityBookingCtr.getActivityBookingsForGuest(guestId);
+				
+		DefaultTableModel activityBookingTableModel = new DefaultTableModel()
+		{
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				//all cells false
+				return false;
+			}
+		};
+		
+		activityBookingTableModel.setColumnIdentifiers(new String[] {"BookingId", "Date", "Status"});
+		
+		try
+		{
+			for(ActivityBooking activityBookingObj : activityBookingList)
+			{
+				activityBookingTableModel.addRow(new String[]
+						{
+						String.valueOf(activityBookingObj.getId()),
+						activityBookingObj.getDate(),
+						activityBookingObj.getStatus()
+						});
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception: " + e);
+		}
+		
+		activityBookingsTable.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = activityBookingsTable.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				ActivityBooking activityBookingObj = new ActivityBooking();
+				
+				int selectedRow = activityBookingsTable.getSelectedRow();
+				if(selectedRow > -1)
+				{
+					String stringBookingId = (String) activityBookingsTable.getValueAt(selectedRow, 0);
+					bookingId = Integer.parseInt(stringBookingId);
+					
+					activityBookingObj = activityBookingCtr.getActivityBookingById(bookingId);
+					
+					String date = activityBookingObj.getDate();
+					String day = date.substring(0,2);
+					String month = date.substring(3,5);
+					String year = date.substring(6,10);
+					
+					dayComboBox.setSelectedItem(day);
+					monthComboBox.setSelectedItem(month);
+					yearComboBox.setSelectedItem(year);
+				}
+			}
+		});
+		
+		
+		return activityBookingTableModel;
 	}
 }
