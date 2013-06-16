@@ -570,6 +570,10 @@ public class GuestMenu
 					String stringNumberOfParticipants = String.valueOf(numberOfParticipants);
 					teamNumberOfParticipantsTextField.setText(stringNumberOfParticipants);
 				}
+				else
+				{
+					teamNumberOfParticipantsTextField.setText("");
+				}
 			}
 		});
 		
@@ -583,37 +587,29 @@ public class GuestMenu
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(allAvailableActivitiesComboBox.getSelectedItem() == null)
+				int guestID = universalId;
+				
+				LinkedList<Team> leaderListTeam = new LinkedList<Team>();
+				leaderListTeam = teamCtr.getTeamsByLeaderId(guestID);
+				if(leaderListTeam.isEmpty() == true)
 				{
-					JOptionPane.showMessageDialog(null,  "Please insert the activity first.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "There are no teams", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
-					int guestID = universalId;
-					
-					LinkedList<Team> leaderListTeam = new LinkedList<Team>();
-					leaderListTeam = teamCtr.getTeamsByLeaderId(guestID);
-					if(leaderListTeam.isEmpty() == true)
+					for(Team teamObj : leaderListTeam)
 					{
-						JOptionPane.showMessageDialog(null, "There are no teams", "Error!", JOptionPane.ERROR_MESSAGE);
-					}
-					else
-					{
-						for(Team teamObj : leaderListTeam)
-						{
-							int teamId = teamObj.getId();
-							String stringTeamId = String.valueOf(teamId);
-							
-							activityBookingAllTeamsComboBox.addItem(stringTeamId);
-						}
+						int teamId = teamObj.getId();
+						String stringTeamId = String.valueOf(teamId);
 						
-						availableInstructorsComboBox.setSelectedItem(null);
-						availableInstructorsComboBox.removeAllItems();
-						availableInstructorsComboBox.setEnabled(false);
-						
-						getInstructorsButton.setEnabled(false);
+						activityBookingAllTeamsComboBox.addItem(stringTeamId);
 					}
 					
+					availableInstructorsComboBox.setSelectedItem(null);
+					availableInstructorsComboBox.removeAllItems();
+					availableInstructorsComboBox.setEnabled(false);
+					
+					getInstructorsButton.setEnabled(false);
 				}
 			}
 		});
@@ -660,6 +656,60 @@ public class GuestMenu
 		activityLine.setLayout(null);
 		
 		addActivityLineButton = new JButton("Add");
+		addActivityLineButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(dayComboBox.getSelectedItem().equals(null) == true || monthComboBox.getSelectedItem().equals(null) == true || yearComboBox.getSelectedItem().equals("") == true ||
+						allAvailableActivitiesComboBox.getSelectedItem().equals(null) == true || startHoursComboBox.getSelectedItem().equals(null) == true || availableFacilityComboBox.getSelectedItem().equals(null) == true)
+				{
+					JOptionPane.showMessageDialog(null, "Please select the activity, facility, date and starting hour for the activity you wish to book.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					//16-06-2013 01:00:00 000
+					String day = (String) dayComboBox.getSelectedItem();
+					String month = (String) monthComboBox.getSelectedItem();
+					String year = (String) yearComboBox.getSelectedItem();
+					String startHour = (String) startHoursComboBox.getSelectedItem();
+					
+					String inputDate = day + "-" + month + "-" + year;
+					String insertDate = year + "-" + month + "-" + day;
+					String time = day + "-" + month + "-" + year + " " + startHour;
+					
+					String activityName = (String) allAvailableActivitiesComboBox.getSelectedItem();
+					ActivityType activityTypeObj = new ActivityType();
+					activityTypeObj = activityCtr.getActivityTypeByName(activityName);
+					int activityId = activityTypeObj.getID();
+					int maxNumberOfParticipants = activityTypeObj.getMaxParticipants();
+					
+					String facilityName = (String) availableFacilityComboBox.getSelectedItem();
+					Facility facilityObj = new Facility();
+					facilityObj = facilityCtr.getFacilityByName(facilityName);
+					int facilityId = facilityObj.getId();
+					
+					String stringTeamId = (String) comboBox.getSelectedItem();
+					Team teamObj = new Team();					
+					int teamId = 0;
+					int numberOfParticipants = 0;
+					if(stringTeamId != null)
+					{
+						teamId = Integer.parseInt(stringTeamId);
+						teamObj = teamCtr.getTeamById(teamId);
+						numberOfParticipants = teamObj.getNumberOfParticipants();
+					}
+					
+					String instructorName = (String) comboBox_7.getSelectedItem();
+					int instructorId = 0;
+					if(instructorName != null)
+					{
+						Instructor instructorObj = new Instructor();
+						instructorObj = (Instructor) personCtr.searchPersonByName(instructorName);
+						instructorId = instructorObj.getId();
+					}
+				}
+			}
+		});
 		addActivityLineButton.setEnabled(false);
 		addActivityLineButton.setBounds(6, 16, 225, 25);
 		activityLine.add(addActivityLineButton);
