@@ -1364,7 +1364,7 @@ public class ManagerMenu
 		EmployeePanel.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 905, 86);
+		panel.setBounds(10, 11, 945, 86);
 		EmployeePanel.add(panel);
 		panel.setLayout(null);
 		
@@ -1462,12 +1462,158 @@ public class ManagerMenu
 		panel.add(employeeSalaryTextField);
 		employeeSalaryTextField.setColumns(10);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(213, 108, 742, 381);
+		EmployeePanel.add(scrollPane);
+		
+		employeeTable = new JTable();
+		employeeTable.setFillsViewportHeight(true);
+		scrollPane.setViewportView(employeeTable);
+		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(10, 108, 193, 368);
+		panel_1.setBorder(new TitledBorder(null, "Employee", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBounds(10, 108, 193, 212);
 		EmployeePanel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JButton btnEmployeeSearch = new JButton("Search");
+		btnEmployeeSearch.setBounds(6, 16, 177, 29);
+		panel_1.add(btnEmployeeSearch);
+		
+		JButton btnEmployeeCreate = new JButton("Create");
+		btnEmployeeCreate.setBounds(6, 56, 177, 29);
+		panel_1.add(btnEmployeeCreate);
+		
+		JButton btnEmployeeUpdate = new JButton("Update");
+		btnEmployeeUpdate.setBounds(6, 96, 177, 29);
+		panel_1.add(btnEmployeeUpdate);
+		
+		JButton btnEmployeeAll = new JButton("All");
+		btnEmployeeAll.setBounds(6, 136, 177, 29);
+		panel_1.add(btnEmployeeAll);
+		
+		JButton btnClearAll = new JButton("Clear All");
+		btnClearAll.setBounds(6, 176, 177, 29);
+		panel_1.add(btnClearAll);
+		btnClearAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				clearEmployeePanel();
+				clearEmployeeTable();
+			}
+		});
+		btnEmployeeAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearEmployeePanel();
+				clearEmployeeTable();
+				
+				employeeTable.setModel(getEmployeeTableModel());
+			}
+		});
+		btnEmployeeUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(employeeIdTextField.getText().equals("") == true || employeeNameTextField.getText().equals("") == true ||
+						employeeCityTextField.getText().equals("") == true || employeeCountryTextField.getText().equals("") == true ||
+						employeeZipcodeTextField.getText().equals("") == true || employeeAddressTextField.getText().equals("") == true ||
+						employeeSalaryTextField.getText().equals("") == true || employeePasswordTextField.getText().equals("") == true )
+				{
+					JOptionPane.showMessageDialog(null, "An employee attribute might be missing. Please insert all needed employee attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String stringEmployeeId = employeeIdTextField.getText();
+					int employeeId = Integer.parseInt(stringEmployeeId);
+					
+					Employee employeeObj = new Employee();
+					employeeObj = employeeCtr.getEmployeeById(employeeId);
+				
+					if(employeeObj == null)
+					{
+						JOptionPane.showMessageDialog(null, "The wanted employee does not exist in the system. Please check employee list.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						String employeeName = employeeNameTextField.getText();
+						String employeeCiy = employeeCityTextField.getText();
+						String employeeCountry = employeeCountryTextField.getText();
+						String stringEmployeeZipcode = employeeZipcodeTextField.getText();
+						int employeeZipcode = Integer.parseInt(stringEmployeeZipcode);
+						String employeeAddress = employeeAddressTextField.getText();
+						String employeePhoneNo = employeePhoneNoTextField.getText();
+						String employeeEmail = employeeEmailTextField.getText();
+						String employeePassword = employeePasswordTextField.getText();
+						String stringEmployeeSalary = employeeSalaryTextField.getText();
+						double employeeSalary = Double.parseDouble(stringEmployeeSalary);
+						
+						if(personCtr.checkPersonInstanceCount(employeeId, employeeName, employeeZipcode, employeeCountry, employeeAddress) == false)
+						{
+							JOptionPane.showMessageDialog(null, "You may not update with an already existing employee on this id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							Location locationObj =  new Location();
+							locationObj = locationCtr.getLocation(employeeZipcode, employeeCountry);
+							if(locationObj == null)
+							{
+								locationCtr.insertLocation(employeeZipcode, employeeCountry, employeeCiy);
+							}
+							personCtr.updatePerson(employeeId, employeeName, employeeAddress,employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, "Instructor", employeePassword);
+							employeeCtr.updateEmployee(employeeId, employeeSalary);
+							
+							clearInstructorPanel();
+							clearInstructorTable();
+							
+							JOptionPane.showMessageDialog(null, "Employee updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+				}
+			}
+		});
+		btnEmployeeCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(employeeIdTextField.getText().equals("") == true || employeeNameTextField.getText().equals("") == true || employeeCityTextField.getText().equals("") == true ||
+						employeeCountryTextField.getText().equals("") == true || employeeZipcodeTextField.getText().equals("") == true ||
+								employeeAddressTextField.getText().equals("") == true || employeeSalaryTextField.getText().equals("") == true || employeePasswordTextField.getText().equals("") == true ||
+								employeePhoneNoTextField.getText().equals("") == true || employeeEmailTextField.getText().equals("") == true)
+				{
+					JOptionPane.showMessageDialog(null, "An employee attribute might be missing. Please insert all needed employee attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String employeeName =  employeeNameTextField.getText();
+					String employeeCiy =  employeeCityTextField.getText();
+					String employeeCountry =  employeeCountryTextField.getText();
+					String stringEmployeeZipcode =  employeeZipcodeTextField.getText();
+					int employeeZipcode = Integer.parseInt(stringEmployeeZipcode);
+					String employeeAddress =  employeeAddressTextField.getText();
+					String employeePhoneNo =  employeePhoneNoTextField.getText();
+					String employeeEmail =  employeeEmailTextField.getText();
+					String employeePassword = employeePasswordTextField.getText();
+					String stringEmployeeSalary = employeeSalaryTextField.getText();
+					double employeeSalary = Double.parseDouble(stringEmployeeSalary);
+					
+					if(personCtr.searchPersonByName(employeeName) != null)
+					{
+						JOptionPane.showMessageDialog(null, "Cannot register the same employee twice.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						Location locationObj = locationCtr.getLocation( employeeZipcode,  employeeCountry);
+						if(locationObj == null)
+						{
+							locationCtr.insertLocation( employeeZipcode,  employeeCountry, employeeCiy);
+						}
+						
+						personCtr.insertPerson(employeeName, employeeAddress, employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, "Employee", employeePassword);
+						employeeCtr.insertEmployee(employeeName, employeeSalary);
+						clearInstructorPanel();
+						clearInstructorTable();
+						JOptionPane.showMessageDialog(null, "Employee successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		});
 		btnEmployeeSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(employeeIdTextField.getText().equals("")==true && employeeNameTextField.getText().equals("")==true)
@@ -1527,7 +1673,7 @@ public class ManagerMenu
 							Person personObj = new Person();
 							personObj = personCtr.searchPersonByName(employeeName);
 							
-							if(personObj == null || personObj.getPersonType().equals("Employee") == false)
+							if(personObj == null)
 							{
 								JOptionPane.showMessageDialog(null, "There is no employee by this name. Please insert a valid employee name.", "Error!", JOptionPane.ERROR_MESSAGE);
 							}
@@ -1613,147 +1759,6 @@ public class ManagerMenu
 				}
 			}
 		});
-		btnEmployeeSearch.setBounds(10, 23, 173, 29);
-		panel_1.add(btnEmployeeSearch);
-		
-		JButton btnEmployeeCreate = new JButton("Create");
-		btnEmployeeCreate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(employeeIdTextField.getText().equals("") == true || employeeNameTextField.getText().equals("") == true || employeeCityTextField.getText().equals("") == true ||
-						employeeCountryTextField.getText().equals("") == true || employeeZipcodeTextField.getText().equals("") == true ||
-								employeeAddressTextField.getText().equals("") == true || employeeSalaryTextField.getText().equals("") == true || employeePasswordTextField.getText().equals("") == true ||
-								employeePhoneNoTextField.getText().equals("") == true || employeeEmailTextField.getText().equals("") == true)
-				{
-					JOptionPane.showMessageDialog(null, "An employee attribute might be missing. Please insert all needed employee attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					String employeeName =  employeeNameTextField.getText();
-					String employeeCiy =  employeeCityTextField.getText();
-					String employeeCountry =  employeeCountryTextField.getText();
-					String stringEmployeeZipcode =  employeeZipcodeTextField.getText();
-					int employeeZipcode = Integer.parseInt(stringEmployeeZipcode);
-					String employeeAddress =  employeeAddressTextField.getText();
-					String employeePhoneNo =  employeePhoneNoTextField.getText();
-					String employeeEmail =  employeeEmailTextField.getText();
-					String employeePassword = employeePasswordTextField.getText();
-					String stringEmployeeSalary = employeeSalaryTextField.getText();
-					double employeeSalary = Double.parseDouble(stringEmployeeSalary);
-					
-					if(personCtr.searchPersonByName(employeeName) != null)
-					{
-						JOptionPane.showMessageDialog(null, "Cannot register the same employee twice.", "Error!", JOptionPane.ERROR_MESSAGE);
-					}
-					else
-					{
-						Location locationObj = locationCtr.getLocation( employeeZipcode,  employeeCountry);
-						if(locationObj == null)
-						{
-							locationCtr.insertLocation( employeeZipcode,  employeeCountry, employeeCiy);
-						}
-						
-						personCtr.insertPerson(employeeName, employeeAddress, employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, "Employee", employeePassword);
-						employeeCtr.insertEmployee(employeeName, employeeSalary);
-						clearInstructorPanel();
-						clearInstructorTable();
-						JOptionPane.showMessageDialog(null, "Employee successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-			}
-		});
-		btnEmployeeCreate.setBounds(10, 63, 173, 29);
-		panel_1.add(btnEmployeeCreate);
-		
-		JButton btnEmployeeUpdate = new JButton("Update");
-		btnEmployeeUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if(employeeIdTextField.getText().equals("") == true || employeeNameTextField.getText().equals("") == true ||
-						employeeCityTextField.getText().equals("") == true || employeeCountryTextField.getText().equals("") == true ||
-						employeeZipcodeTextField.getText().equals("") == true || employeeAddressTextField.getText().equals("") == true ||
-						employeeSalaryTextField.getText().equals("") == true || employeePasswordTextField.getText().equals("") == true )
-				{
-					JOptionPane.showMessageDialog(null, "An employee attribute might be missing. Please insert all needed employee attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					String stringEmployeeId = employeeIdTextField.getText();
-					int employeeId = Integer.parseInt(stringEmployeeId);
-					
-					Employee employeeObj = new Employee();
-					employeeObj = employeeCtr.getEmployeeById(employeeId);
-				
-					if(employeeObj == null)
-					{
-						JOptionPane.showMessageDialog(null, "The wanted employee does not exist in the system. Please check employee list.", "Error!", JOptionPane.ERROR_MESSAGE);
-					}
-					else
-					{
-						String employeeName = employeeNameTextField.getText();
-						String employeeCiy = employeeCityTextField.getText();
-						String employeeCountry = employeeCountryTextField.getText();
-						String stringEmployeeZipcode = employeeZipcodeTextField.getText();
-						int employeeZipcode = Integer.parseInt(stringEmployeeZipcode);
-						String employeeAddress = employeeAddressTextField.getText();
-						String employeePhoneNo = employeePhoneNoTextField.getText();
-						String employeeEmail = employeeEmailTextField.getText();
-						String employeePassword = employeePasswordTextField.getText();
-						String stringEmployeeSalary = employeeSalaryTextField.getText();
-						double employeeSalary = Double.parseDouble(stringEmployeeSalary);
-						
-						if(personCtr.checkPersonInstanceCount(employeeId, employeeName, employeeZipcode, employeeCountry, employeeAddress) == false)
-						{
-							JOptionPane.showMessageDialog(null, "You may not update with an already existing employee on this id.", "Error!", JOptionPane.ERROR_MESSAGE);
-						}
-						else
-						{
-							Location locationObj =  new Location();
-							locationObj = locationCtr.getLocation(employeeZipcode, employeeCountry);
-							if(locationObj == null)
-							{
-								locationCtr.insertLocation(employeeZipcode, employeeCountry, employeeCiy);
-							}
-							personCtr.updatePerson(employeeId, employeeName, employeeAddress,employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, "Instructor", employeePassword);
-							employeeCtr.updateEmployee(employeeId, employeeSalary);
-							
-							clearInstructorPanel();
-							clearInstructorTable();
-							
-							JOptionPane.showMessageDialog(null, "Employee updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-				}
-			}
-		});
-		btnEmployeeUpdate.setBounds(10, 103, 173, 29);
-		panel_1.add(btnEmployeeUpdate);
-		
-		JButton btnEmployeeAll = new JButton("All");
-		btnEmployeeAll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearEmployeePanel();
-				clearEmployeeTable();
-				
-				employeeTable.setModel(getEmployeeTableModel());
-			}
-		});
-		btnEmployeeAll.setBounds(10, 143, 173, 29);
-		panel_1.add(btnEmployeeAll);
-		
-		JButton btnClearAll = new JButton("Clear All");
-		btnClearAll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e)
-			{
-				clearEmployeePanel();
-				clearEmployeeTable();
-			}
-		});
-		btnClearAll.setBounds(10, 183, 173, 29);
-		panel_1.add(btnClearAll);
-		
-		employeeTable = new JTable();
-		employeeTable.setBounds(213, 108, 742, 368);
-		EmployeePanel.add(employeeTable);
 		
 		JPanel InstructorPanel = new JPanel();
 		tabbedPane.addTab("Instructor menu", null, InstructorPanel, null);
@@ -2996,11 +3001,15 @@ public class ManagerMenu
 			}
 		};
 		
-		employeeTableModel.setColumnIdentifiers(new String[] {"Id", "Name", "Zipcode", "Country", "City", "Address", "PhoneNo","Email","Password", "Salary"});
+		
+		employeeTableModel.setColumnIdentifiers(new String[] {"Id", "Name", "Zipcode", "Country", "City", "Address", "PhoneNo", "Email", "Password", "Salary"});
 		
 		for(Employee employeeObj : completeEmployeeList)
 		{
+			int employeeZipcode = employeeObj.getZipcode();
+			String employeeCountry = employeeObj.getCountry();
 			Location locationObj = new Location();
+			locationObj = locationCtr.getLocation(employeeZipcode, employeeCountry);
 			
 			employeeTableModel.addRow(new String[]
 					{
@@ -3051,16 +3060,16 @@ public class ManagerMenu
 					locationObj = locationCtr.getLocation(employeeZipcode, employeeCountry);
 					String employeeCity = locationObj.getCity();
 					
-					instructorIdTextField.setText(stringEmployeeId);
-					instructorNameTextField.setText(employeeName);
-					instructorCityTextField.setText(employeeCity);
-					instructorCountryTextField.setText(employeeCountry);
-					instructorZipcodeTextField.setText(stringEmployeeZipcode);
-					instructorAddressTextField.setText(employeeAddress);
-					instructorPhoneNoTextField.setText(employeePhoneNo);
-					instructorEmailTextField.setText(employeeEmail);
-					instructorPasswordTextField.setText(employeePassword);
-					instructorSalaryTextField.setText(stringEmployeeSalary);
+					employeeIdTextField.setText(stringEmployeeId);
+					employeeNameTextField.setText(employeeName);
+					employeeCityTextField.setText(employeeCity);
+					employeeCountryTextField.setText(employeeCountry);
+					employeeZipcodeTextField.setText(stringEmployeeZipcode);
+					employeeAddressTextField.setText(employeeAddress);
+					employeePhoneNoTextField.setText(employeePhoneNo);
+					employeeEmailTextField.setText(employeeEmail);
+					employeePasswordTextField.setText(employeePassword);
+					employeeSalaryTextField.setText(stringEmployeeSalary);
 				}
 			}
 		});
