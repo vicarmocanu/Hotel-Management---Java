@@ -1526,7 +1526,7 @@ public class ManagerMenu
 					int employeeId = Integer.parseInt(stringEmployeeId);
 					
 					Employee employeeObj = new Employee();
-					employeeObj = employeeCtr.getEmployeeById(employeeId);
+					employeeObj = employeeCtr.getEmployeeById(employeeId);	
 				
 					if(employeeObj == null)
 					{
@@ -1545,6 +1545,7 @@ public class ManagerMenu
 						String employeePassword = employeePasswordTextField.getText();
 						String stringEmployeeSalary = employeeSalaryTextField.getText();
 						double employeeSalary = Double.parseDouble(stringEmployeeSalary);
+						String personType = employeeObj.getPersonType();
 						
 						if(personCtr.checkPersonInstanceCount(employeeId, employeeName, employeeZipcode, employeeCountry, employeeAddress) == false)
 						{
@@ -1558,7 +1559,7 @@ public class ManagerMenu
 							{
 								locationCtr.insertLocation(employeeZipcode, employeeCountry, employeeCiy);
 							}
-							personCtr.updatePerson(employeeId, employeeName, employeeAddress,employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, "Instructor", employeePassword);
+							personCtr.updatePerson(employeeId, employeeName, employeeAddress,employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, personType, employeePassword);
 							employeeCtr.updateEmployee(employeeId, employeeSalary);
 							
 							clearInstructorPanel();
@@ -3002,27 +3003,20 @@ public class ManagerMenu
 		};
 		
 		
-		employeeTableModel.setColumnIdentifiers(new String[] {"Id", "Name", "Zipcode", "Country", "City", "Address", "PhoneNo", "Email", "Password", "Salary"});
+		employeeTableModel.setColumnIdentifiers(new String[] {"Id", "Name","Employee Type", "PhoneNo", "Email", "Password", "Salary"});
 		
 		for(Employee employeeObj : completeEmployeeList)
 		{
-			int employeeZipcode = employeeObj.getZipcode();
-			String employeeCountry = employeeObj.getCountry();
-			Location locationObj = new Location();
-			locationObj = locationCtr.getLocation(employeeZipcode, employeeCountry);
 			
 			employeeTableModel.addRow(new String[]
 					{
 					String.valueOf(employeeObj.getId()),
 					employeeObj.getName(),
-					String.valueOf(employeeObj.getZipcode()),
-					employeeObj.getCountry(),
-					locationObj.getCity(),
-					employeeObj.getAddress(),
+					employeeObj.getPersonType(),
 					employeeObj.getPhoneNo(),
 					employeeObj.getEmail(),
 					employeeObj.getPassword(),
-					String.valueOf(employeeObj.getSalary()),
+					String.valueOf(employeeObj.getSalary())
 					});
 		}
 		
