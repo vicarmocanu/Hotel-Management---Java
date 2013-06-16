@@ -59,18 +59,30 @@ public class DBActivityLine implements IFDBActivityLine
 			activityLineObj.setFacility(facilityObj);
 			
 			Instructor instructorObj =new Instructor();
-			instructorObj = dbInstructor.getInstructorById(results.getInt("instructorId"));
-			if(instructorObj != null)
+			int instructorID = results.getInt("instructorId");
+			if(instructorID == 0)
 			{
+				activityLineObj.setInstructor(null);
+			}
+			else
+			{
+				instructorObj = dbInstructor.getInstructorById(instructorID);
 				activityLineObj.setInstructor(instructorObj);
 			}
 			
 			Team teamObj = new Team();
-			teamObj = dbTeam.getTeamById(results.getInt("teamId"));
-			if(teamObj != null)
+			int teamId = results.getInt("teamId");
+			if(teamId == 0)
 			{
+				activityLineObj.setTeam(null);
+			}
+			else
+			{
+				teamObj = dbTeam.getTeamById(teamId);
 				activityLineObj.setTeam(teamObj);
 			}
+			
+			activityLineObj.setStatus(results.getString("status"));
 		}
 		catch(Exception e)
 		{
@@ -140,9 +152,9 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 	
 	@Override
-	public ActivityLine getActivityLine(int bookingId, String startHour)
+	public ActivityLine getActivityLine(int bookingId, String startHour, String status)
 	{
-		String wClause = " bookingId= '" + bookingId + "'" + " AND startHour= '" + startHour +"'";
+		String wClause = " bookingId= '" + bookingId + "'" + " AND startHour= '" + startHour +"' AND status= '" + status + "'";
 		return singleWhere(wClause);
 	}
 
@@ -167,41 +179,44 @@ public class DBActivityLine implements IFDBActivityLine
 		
 		if(instructorObj == null && teamObj == null)
 		{
-			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId) VALUES ('" +
+			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId, status) VALUES ('" +
 					activityTypeObj.getID() + "','" + 
 					activityBookingObj.getId() + "','" +
 					activityLine.getDate() + "','" + 
 					activityLine.getStartHour() + "','" +
 					activityLine.getEndHour() + "','" +
-					facilityObj.getId() + "')";
+					facilityObj.getId() + "','" + 
+					activityLine.getStatus() + "')";
 			
 			System.out.println("Insertion query: " + query);
 		}
 		
 		if(instructorObj != null)
 		{
-			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId, instructorId) VALUES ('" +
+			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId, instructorId, status) VALUES ('" +
 					activityTypeObj.getID() + "','" + 
 					activityBookingObj.getId() + "','" +
 					activityLine.getDate() + "','" + 
 					activityLine.getStartHour() + "','" +
 					activityLine.getEndHour() + "','" +
 					facilityObj.getId() + "','" +
-					instructorObj.getId() + "')";
+					instructorObj.getId() + "','" + 
+					activityLine.getStatus() + "')";
 			
 			System.out.println("Insertion query: " + query);
 		}
 		
 		if(teamObj !=null)
 		{
-			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId, teamId) VALUES ('" +
+			query = "INSERT INTO ActivityLine(activityId, bookingId, date, startHour, endHour, facilityId, teamId, status) VALUES ('" +
 					activityTypeObj.getID() + "','" + 
 					activityBookingObj.getId() + "','" +
 					activityLine.getDate() + "','" + 
 					activityLine.getStartHour() + "','" +
 					activityLine.getEndHour() + "','" +
 					facilityObj.getId() + "','" +
-					teamObj.getId() + "')";
+					teamObj.getId() + "','" + 
+					activityLine.getStatus() + "')";
 			
 			System.out.println("Insertion query: " + query);
 		}
@@ -241,8 +256,9 @@ public class DBActivityLine implements IFDBActivityLine
 					" endHour= '" + activityLineObj.getEndHour() + "', " +
 		" facilityId= '" + facilityObj.getId() + "', " +
 					" instructorId= '0', " +
-		" teamId= '0' " +
-					"WHERE bookingId = '" + activityBookingObj.getId() + "'";
+		" teamId= '0', " +
+					" status = '" + activityLineObj.getStatus() + "' " +
+		"WHERE bookingId = '" + activityBookingObj.getId() + "'";
 		}
 		if(instructorObj !=null)
 		{
@@ -253,8 +269,9 @@ public class DBActivityLine implements IFDBActivityLine
 					" endHour= '" + activityLineObj.getEndHour() + "', " +
 		" facilityId= '" + facilityObj.getId() + "', " +
 					" instructorId= '" + instructorObj.getId() + "', " +
-		" teamId= '0' " +
-					"WHERE bookingId = '" + activityBookingObj.getId() + "'";
+		" teamId= '0', " +
+					" status = '" + activityLineObj.getStatus() + "' " +
+		"WHERE bookingId = '" + activityBookingObj.getId() + "'";
 		}
 		if(teamObj != null)
 		{
@@ -266,7 +283,8 @@ public class DBActivityLine implements IFDBActivityLine
 		" facilityId= '" + facilityObj.getId() + "', " +
 					" teamId= '" + teamObj.getId() + "', " +
 		" instructorId= '0', " +
-					"WHERE bookingId = '" + activityBookingObj.getId() + "'";
+					" status = '" + activityLineObj.getStatus() + "' " +
+		"WHERE bookingId = '" + activityBookingObj.getId() + "'";
 		}
 		
 		int result=-1;
@@ -341,7 +359,8 @@ public class DBActivityLine implements IFDBActivityLine
 		ResultSet results;
 		
 		String query = "SELECT COUNT(*) AS activityLineInstances1 FROM ActivityLine " + 
-		"WHERE activityId= '" + activityId + "' AND bookingId= '" +  bookingId + "' AND date = '" + date + "' AND startHour= '" + startHour + "' AND facilityId= '" + facilityId + "'";
+		"WHERE activityId= '" + activityId + "' AND bookingId= '" +  bookingId + "' AND date = '" + date + "' AND startHour= '" + startHour + "' AND facilityId= '" + facilityId + "'" + 
+				" AND status<>'Canceled' ";
 		System.out.println(query);
 		
 		try
@@ -370,7 +389,8 @@ public class DBActivityLine implements IFDBActivityLine
 		int instances = 0;		
 		ResultSet results;
 		String query = "SELECT COUNT(*) AS activityLineInstances2 FROM ActivityLine " + 
-		" WHERE date='" + date + "' AND startHour= '" +  startHour + "' AND instructorId= '" + instructorId + "'";
+		" WHERE date='" + date + "' AND startHour= '" +  startHour + "' AND instructorId= '" + instructorId + "'" +
+				" AND status<>'Canceled' ";
 		System.out.println(query);
 		
 		try
@@ -399,7 +419,7 @@ public class DBActivityLine implements IFDBActivityLine
 		int numbers = 0;		
 		ResultSet results;
 		String query = "SELECT COUNT(*) AS activityLineNumbers FROM ActivityLine " + 
-		" WHERE bookingId='" + bookingId + "' AND date= '" +  date + "'";
+		" WHERE bookingId='" + bookingId + "' AND date= '" +  date + "' AND status<>'Canceled' ";
 		System.out.println(query);
 		
 		try
@@ -410,7 +430,7 @@ public class DBActivityLine implements IFDBActivityLine
 			
 			while( results.next() )
 			{
-				numbers = results.getInt("activityLineInstances2");
+				numbers = results.getInt("activityLineNumbers");
 				System.out.println("Number of activity lines per booking= " + numbers);
 			}
 			stmt.close();
@@ -426,7 +446,14 @@ public class DBActivityLine implements IFDBActivityLine
 	@Override
 	public LinkedList<ActivityLine> getDateActivityLines(String date) 
 	{
-		String wClause = " date= '" + date + "'";
+		String wClause = " date= '" + date + "' AND status<>'Canceled'";
+		return miscWhere(wClause);
+	}
+	
+	@Override
+	public LinkedList<ActivityLine> getInstructorActivityLinesSchedule(String date, int instructorId)
+	{
+		String wClause = " date= '" + date + "' AND instructorId= '" + instructorId + "' AND status<>'Canceled'";
 		return miscWhere(wClause);
 	}
 

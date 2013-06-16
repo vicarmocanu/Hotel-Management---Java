@@ -21,9 +21,11 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Controller.ActivityBookingCtr;
 import Controller.DateCheck;
 import Controller.GuestCtr;
 import Controller.TeamCtr;
+import Model.ActivityBooking;
 import Model.Guest;
 import Model.Participant;
 import Model.Team;
@@ -31,9 +33,12 @@ import Model.Team;
 public class GuestMenu
 {
 	private int universalId;
+	private int bookingId;
+	
 	private TeamCtr teamCtr = new TeamCtr();
 	private GuestCtr guestCtr = new GuestCtr();
 	private DateCheck dateCheck = new DateCheck();
+	private ActivityBookingCtr activityBookingCtr = new ActivityBookingCtr();
 	
 	private JFrame frame;
 	private JTable teamTable;
@@ -49,6 +54,18 @@ public class GuestMenu
 	private JComboBox<String> dayComboBox;
 	private JComboBox<String> monthComboBox;
 	private JComboBox<String> yearComboBox;
+	private JComboBox<String> allAvailableActivitiesComboBox;
+	private JComboBox<String> startHoursComboBox;
+	private JComboBox<String> availableFacilityComboBox;
+	private JComboBox<String> availableInstructorsComboBox;
+	private JButton getAvailableFacilitiesButton;
+	private JButton getInstructorsButton;
+	private JButton instructorClearButton;
+	private JButton getTeamsButton;
+	private JButton teamClearButton;
+	private JButton addActivityLineButton;
+	private JButton cancelActivityLineButton;
+	private JButton allActivityLinesButton;
 
 	public GuestMenu()
 	{
@@ -99,7 +116,7 @@ public class GuestMenu
 		panel_2.setLayout(null);
 		
 		JPanel activityBookingPanel = new JPanel();
-		activityBookingPanel.setBorder(new TitledBorder(null, "Activity booking options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		activityBookingPanel.setBorder(new TitledBorder(null, "Activity booking", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		activityBookingPanel.setBounds(10, 11, 237, 177);
 		panel_2.add(activityBookingPanel);
 		activityBookingPanel.setLayout(null);
@@ -168,14 +185,63 @@ public class GuestMenu
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
+				int guestID = universalId;
+				String activityBookingStatus = "Made";
 				
+				if(dayComboBox.getSelectedItem() == null || monthComboBox.getSelectedItem() == null || yearComboBox.getSelectedItem() == null)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert the date of booking.", "Error!", JOptionPane.ERROR_MESSAGE);
+					activityLineDisabler();
+				}
+				else
+				{
+					String day = (String) dayComboBox.getSelectedItem();
+					String month = (String) monthComboBox.getSelectedItem();
+					String year = (String) yearComboBox.getSelectedItem();
+					String date = day + "-" + month + "-" + year;
+					
+					if(DateCheck.isDateValid(date) != true)
+					{
+						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
+						activityLineDisabler();
+					}
+					else
+					{
+						if(dateCheck.checkIfDateIsOlder(date) != true)
+						{
+							JOptionPane.showMessageDialog(null, "Cannot insert a date older than the current date.", "Error!", JOptionPane.ERROR_MESSAGE);
+							activityLineDisabler();
+						}
+						else
+						{
+							if(activityBookingCtr.activityBookingCompleteCheck(date, guestID) != true)
+							{
+								JOptionPane.showMessageDialog(null, "Cannot make two bookings on the same date.", "Error!", JOptionPane.ERROR_MESSAGE);
+								activityLineDisabler();
+							}
+							else
+							{
+								activityBookingCtr.insertActivityBooking(guestID, date, activityBookingStatus);
+								JOptionPane.showMessageDialog(null, "Activity booking made successfully. You can add up to four activities.", "Info", JOptionPane.INFORMATION_MESSAGE);
+								
+								ActivityBooking activityBookingObj = new ActivityBooking();
+								activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestID, date, activityBookingStatus);
+								bookingId = activityBookingObj.getId();
+								
+								activityLineEnabler();
+							}
+						}
+					}
+				}
+				
+			
 			}
 		});
 		createActivityBookingButton.setBounds(4, 70, 225, 25);
 		activityBookingPanel.add(createActivityBookingButton);
 		createActivityBookingButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JButton searchActivityBookingButton = new JButton("Search");
+		JButton searchActivityBookingButton = new JButton("Activate activity lines");
 		searchActivityBookingButton.setBounds(4, 105, 225, 25);
 		activityBookingPanel.add(searchActivityBookingButton);
 		searchActivityBookingButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -196,7 +262,8 @@ public class GuestMenu
 		activityPanel.add(activityLabel);
 		activityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JComboBox<String> allAvailableActivitiesComboBox = new JComboBox<String>();
+		allAvailableActivitiesComboBox = new JComboBox<String>();
+		allAvailableActivitiesComboBox.setEnabled(false);
 		allAvailableActivitiesComboBox.setBounds(57, 16, 170, 20);
 		activityPanel.add(allAvailableActivitiesComboBox);
 		allAvailableActivitiesComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -217,7 +284,8 @@ public class GuestMenu
 		activityPanel.add(startHourLabel);
 		startHourLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JComboBox<String> startHoursComboBox = new JComboBox<String>();
+		startHoursComboBox = new JComboBox<String>();
+		startHoursComboBox.setEnabled(false);
 		startHoursComboBox.setBounds(104, 66, 123, 20);
 		activityPanel.add(startHoursComboBox);
 		
@@ -232,12 +300,14 @@ public class GuestMenu
 		facilityPanel.add(facilityLabel);
 		facilityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JComboBox<String> availableFacilityComboBox = new JComboBox<String>();
+		availableFacilityComboBox = new JComboBox<String>();
+		availableFacilityComboBox.setEnabled(false);
 		availableFacilityComboBox.setBounds(57, 16, 170, 20);
 		facilityPanel.add(availableFacilityComboBox);
 		availableFacilityComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JButton getAvailableFacilitiesButton = new JButton("Get facilities");
+		getAvailableFacilitiesButton = new JButton("Get facilities");
+		getAvailableFacilitiesButton.setEnabled(false);
 		getAvailableFacilitiesButton.setBounds(6, 43, 225, 25);
 		facilityPanel.add(getAvailableFacilitiesButton);
 		getAvailableFacilitiesButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -253,17 +323,20 @@ public class GuestMenu
 		instructorPanel.add(instructorNameLabel);
 		instructorNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JComboBox<String> availableInstructorsComboBox = new JComboBox<String>();
+		availableInstructorsComboBox = new JComboBox<String>();
+		availableInstructorsComboBox.setEnabled(false);
 		availableInstructorsComboBox.setBounds(60, 16, 170, 20);
 		instructorPanel.add(availableInstructorsComboBox);
 		availableInstructorsComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JButton getInstructorsButton = new JButton("Get instructors");
+		getInstructorsButton = new JButton("Get instructors");
+		getInstructorsButton.setEnabled(false);
 		getInstructorsButton.setBounds(6, 40, 225, 25);
 		instructorPanel.add(getInstructorsButton);
 		getInstructorsButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JButton instructorClearButton = new JButton("Clear");
+		instructorClearButton = new JButton("Clear");
+		instructorClearButton.setEnabled(false);
 		instructorClearButton.setBounds(6, 68, 225, 25);
 		instructorPanel.add(instructorClearButton);
 		instructorClearButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -280,37 +353,43 @@ public class GuestMenu
 		teamPanel.add(activityTeamIdLabel);
 		
 		activityBookingAllTeamsComboBox = new JComboBox<String>();
+		activityBookingAllTeamsComboBox.setEnabled(false);
 		activityBookingAllTeamsComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
 		activityBookingAllTeamsComboBox.setBounds(60, 16, 170, 20);
 		teamPanel.add(activityBookingAllTeamsComboBox);
 		
-		JButton getTeamsButton = new JButton("Get instructors");
+		getTeamsButton = new JButton("Get teams");
+		getTeamsButton.setEnabled(false);
 		getTeamsButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		getTeamsButton.setBounds(6, 40, 225, 25);
 		teamPanel.add(getTeamsButton);
 		
-		JButton teamClearButton = new JButton("Clear");
+		teamClearButton = new JButton("Clear");
+		teamClearButton.setEnabled(false);
 		teamClearButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		teamClearButton.setBounds(6, 68, 225, 25);
 		teamPanel.add(teamClearButton);
 		
 		JPanel activityLine = new JPanel();
-		activityLine.setBorder(new TitledBorder(null, "Activity line options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		activityLine.setBorder(new TitledBorder(null, "Activity line", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		activityLine.setBounds(583, 389, 237, 107);
 		panel_2.add(activityLine);
 		activityLine.setLayout(null);
 		
-		JButton addActivityLineButton = new JButton("Add");
+		addActivityLineButton = new JButton("Add");
+		addActivityLineButton.setEnabled(false);
 		addActivityLineButton.setBounds(6, 16, 225, 25);
 		activityLine.add(addActivityLineButton);
 		addActivityLineButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JButton removeActivityLineButton = new JButton("Remove");
-		removeActivityLineButton.setBounds(6, 46, 225, 25);
-		activityLine.add(removeActivityLineButton);
-		removeActivityLineButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		cancelActivityLineButton = new JButton("Cancel activity");
+		cancelActivityLineButton.setEnabled(false);
+		cancelActivityLineButton.setBounds(6, 46, 225, 25);
+		activityLine.add(cancelActivityLineButton);
+		cancelActivityLineButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
-		JButton allActivityLinesButton = new JButton("All");
+		allActivityLinesButton = new JButton("All");
+		allActivityLinesButton.setEnabled(false);
 		allActivityLinesButton.setBounds(6, 75, 225, 25);
 		activityLine.add(allActivityLinesButton);
 		allActivityLinesButton.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -726,5 +805,47 @@ public class GuestMenu
 	{
 		allTeamsComboBox.setSelectedItem(null);
 		participantIdTextField.setText("");
+	}
+	
+	public void activityLineEnabler()
+	{
+		allAvailableActivitiesComboBox.setEnabled(true);		
+		startHoursComboBox.setEnabled(true);
+		
+		availableFacilityComboBox.setEnabled(true);
+		getAvailableFacilitiesButton.setEnabled(true);
+		
+		availableInstructorsComboBox.setEnabled(true);
+		getInstructorsButton.setEnabled(true);
+		instructorClearButton.setEnabled(true);
+		
+		activityBookingAllTeamsComboBox.setEnabled(true);
+		getTeamsButton.setEnabled(true);
+		teamClearButton.setEnabled(true);
+		
+		addActivityLineButton.setEnabled(true);
+		cancelActivityLineButton.setEnabled(true);
+		allActivityLinesButton.setEnabled(true);
+	}
+	
+	public void activityLineDisabler()
+	{
+		allAvailableActivitiesComboBox.setEnabled(false);		
+		startHoursComboBox.setEnabled(false);
+		
+		availableFacilityComboBox.setEnabled(false);
+		getAvailableFacilitiesButton.setEnabled(false);
+		
+		availableInstructorsComboBox.setEnabled(false);
+		getInstructorsButton.setEnabled(false);
+		instructorClearButton.setEnabled(false);
+		
+		activityBookingAllTeamsComboBox.setEnabled(false);
+		getTeamsButton.setEnabled(false);
+		teamClearButton.setEnabled(false);
+		
+		addActivityLineButton.setEnabled(false);
+		cancelActivityLineButton.setEnabled(false);
+		allActivityLinesButton.setEnabled(false);
 	}
 }

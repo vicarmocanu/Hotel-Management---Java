@@ -6,7 +6,7 @@ import Model.ActivityLine;
 public interface IFDBActivityLine
 {
 	//get an activity line
-	public ActivityLine getActivityLine(int bookingId, String startHour);
+	public ActivityLine getActivityLine(int bookingId, String startHour, String status);
 	
 	//get all activity lines for a booking
 	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId);
@@ -34,4 +34,7 @@ public interface IFDBActivityLine
 	
 	//method to avoid more than 4 activity lines in a booking
 	public int getNumberOfActivityLinesInActivityBooking(int bookingId, String date);
+	
+	//method to get the instructor date schedule
+	public LinkedList<ActivityLine> getInstructorActivityLinesSchedule(String date, int instructorId);
 }
