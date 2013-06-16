@@ -25,11 +25,17 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ActivityBookingCtr;
+import Controller.ActivityCtr;
 import Controller.DateCheck;
+import Controller.FacilityCtr;
 import Controller.GuestCtr;
+import Controller.InstructorCtr;
 import Controller.TeamCtr;
 import Model.ActivityBooking;
+import Model.ActivityType;
+import Model.Facility;
 import Model.Guest;
+import Model.Instructor;
 import Model.Participant;
 import Model.Team;
 
@@ -42,6 +48,9 @@ public class GuestMenu
 	private GuestCtr guestCtr = new GuestCtr();
 	private DateCheck dateCheck = new DateCheck();
 	private ActivityBookingCtr activityBookingCtr = new ActivityBookingCtr();
+	private ActivityCtr activityCtr = new ActivityCtr();
+	private FacilityCtr facilityCtr = new FacilityCtr();
+	private InstructorCtr instructorCtr = new InstructorCtr();
 	
 	private JFrame frame;
 	private JTable teamTable;
@@ -69,6 +78,7 @@ public class GuestMenu
 	private JButton addActivityLineButton;
 	private JButton cancelActivityLineButton;
 	private JButton allActivityLinesButton;
+	private JTextField teamNumberOfParticipantsTextField;
 
 	public GuestMenu()
 	{
@@ -201,34 +211,35 @@ public class GuestMenu
 					String day = (String) dayComboBox.getSelectedItem();
 					String month = (String) monthComboBox.getSelectedItem();
 					String year = (String) yearComboBox.getSelectedItem();
-					String date = day + "-" + month + "-" + year;
+					String inputDate = day + "-" + month + "-" + year;
+					String insertDate = year + "-" + month + "-" + day;
 					
-					if(DateCheck.isDateValid(date) != true)
+					if(DateCheck.isDateValid(inputDate) != true)
 					{
 						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
 						activityLineDisabler();
 					}
 					else
 					{
-						if(dateCheck.checkIfDateIsOlder(date) != true)
+						if(dateCheck.checkIfDateIsOlder(inputDate) != true)
 						{
 							JOptionPane.showMessageDialog(null, "Cannot insert a date older than the current date.", "Error!", JOptionPane.ERROR_MESSAGE);
 							activityLineDisabler();
 						}
 						else
 						{
-							if(activityBookingCtr.activityBookingCompleteCheck(date, guestID) != true)
+							if(activityBookingCtr.activityBookingCompleteCheck(insertDate, guestID) != true)
 							{
 								JOptionPane.showMessageDialog(null, "Cannot make two bookings on the same date.", "Error!", JOptionPane.ERROR_MESSAGE);
 								activityLineDisabler();
 							}
 							else
 							{
-								activityBookingCtr.insertActivityBooking(guestID, date, activityBookingStatus);
+								activityBookingCtr.insertActivityBooking(guestID, insertDate, activityBookingStatus);
 								JOptionPane.showMessageDialog(null, "Activity booking made successfully. You can add up to four activities.", "Info", JOptionPane.INFORMATION_MESSAGE);
 								
 								ActivityBooking activityBookingObj = new ActivityBooking();
-								activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestID, date, activityBookingStatus);
+								activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestID, insertDate, activityBookingStatus);
 								bookingId = activityBookingObj.getId();
 								
 								activityLineEnabler();
@@ -260,9 +271,10 @@ public class GuestMenu
 					String day = (String) dayComboBox.getSelectedItem();
 					String month = (String) monthComboBox.getSelectedItem();
 					String year = (String) yearComboBox.getSelectedItem();
-					String date = day + "-" + month + "-" + year;
+					String inputDate = day + "-" + month + "-" + year;
+					String insertDate = year + "-" + month + "-" + day;
 					
-					if(DateCheck.isDateValid(date) != true)
+					if(DateCheck.isDateValid(inputDate) != true)
 					{
 						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
 						activityLineDisabler();
@@ -270,7 +282,7 @@ public class GuestMenu
 					else
 					{
 						ActivityBooking activityBookingObj = new ActivityBooking();
-						activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestId, date, "Made");
+						activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestId, insertDate, "Made");
 						if(activityBookingObj == null)
 						{
 							JOptionPane.showMessageDialog(null, "There is no made activity booking by this date. Please insert a valid activity booking date.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -314,6 +326,46 @@ public class GuestMenu
 		activityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		allAvailableActivitiesComboBox = new JComboBox<String>();
+		allAvailableActivitiesComboBox.setSelectedItem(null);
+		LinkedList<ActivityType> allActivityTypeList = new LinkedList<ActivityType>();
+		allActivityTypeList = activityCtr.getAllActivityTypes();
+		if(allActivityTypeList.isEmpty() == false)
+		{
+			for(ActivityType activityTypeObj : allActivityTypeList)
+			{
+				String activityTypeName = activityTypeObj.getName();
+				allAvailableActivitiesComboBox.addItem(activityTypeName);
+			}
+		}
+		else
+		{
+			allAvailableActivitiesComboBox.removeAllItems();
+		}
+		
+		allAvailableActivitiesComboBox.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				availableFacilityComboBox.removeAllItems();
+				availableInstructorsComboBox.removeAllItems();
+				getTeamsButton.setEnabled(true);
+				
+				if(allAvailableActivitiesComboBox.getSelectedItem() != null)
+				{
+					String activityName = (String) allAvailableActivitiesComboBox.getSelectedItem();
+					ActivityType activityTypeObj = new ActivityType();
+					activityTypeObj = activityCtr.getActivityTypeByName(activityName);
+					int maxNumberOfParticipants = activityTypeObj.getMaxParticipants();
+					String stringMaxNumberOfParticipants = String.valueOf(maxNumberOfParticipants);
+					maxParticipantsTextBox.setText(stringMaxNumberOfParticipants);
+				}
+				else
+				{
+					maxParticipantsTextBox.setText("");
+				}
+			}
+		});
 		allAvailableActivitiesComboBox.setEnabled(false);
 		allAvailableActivitiesComboBox.setBounds(57, 16, 170, 20);
 		activityPanel.add(allAvailableActivitiesComboBox);
@@ -336,6 +388,15 @@ public class GuestMenu
 		startHourLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		startHoursComboBox = new JComboBox<String>();
+		startHoursComboBox.setSelectedItem(null);
+		LinkedList<String> activityBookingHours = new LinkedList<String>();
+		activityBookingHours = dateCheck.getStartHours();
+		for(String hour : activityBookingHours)
+		{
+			String insertedHour = hour;
+			startHoursComboBox.addItem(insertedHour);
+		}
+		startHoursComboBox.setSelectedItem(null);
 		startHoursComboBox.setEnabled(false);
 		startHoursComboBox.setBounds(104, 66, 123, 20);
 		activityPanel.add(startHoursComboBox);
@@ -358,6 +419,41 @@ public class GuestMenu
 		availableFacilityComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		getAvailableFacilitiesButton = new JButton("Get facilities");
+		getAvailableFacilitiesButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if(allAvailableActivitiesComboBox.getSelectedItem() == null)
+				{
+					JOptionPane.showMessageDialog(null,  "Please insert the activity type first.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String activityName = (String) allAvailableActivitiesComboBox.getSelectedItem();
+					ActivityType activityTypeObj = new ActivityType();
+					activityTypeObj = activityCtr.getActivityTypeByName(activityName);
+					int activityId = activityTypeObj.getID();
+					
+					String desiredStatus = "Available";
+					
+					LinkedList<Facility> availableFacilitiesForActivity = new LinkedList<Facility>();
+					availableFacilitiesForActivity = facilityCtr.getAvailableFacilitiesForActivity(activityId, desiredStatus);
+					
+					if(availableFacilitiesForActivity.isEmpty() == true)
+					{
+						JOptionPane.showMessageDialog(null, "No available facilities", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						for(Facility facilityObj : availableFacilitiesForActivity)
+						{
+							String facilityName = facilityObj.getName();
+							availableFacilityComboBox.addItem(facilityName);
+						}
+					}
+				}
+			}
+		});
 		getAvailableFacilitiesButton.setEnabled(false);
 		getAvailableFacilitiesButton.setBounds(6, 43, 225, 25);
 		facilityPanel.add(getAvailableFacilitiesButton);
@@ -381,12 +477,66 @@ public class GuestMenu
 		availableInstructorsComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		getInstructorsButton = new JButton("Get instructors");
+		getInstructorsButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(allAvailableActivitiesComboBox.getSelectedItem() == null)
+				{
+					JOptionPane.showMessageDialog(null,  "Please insert the activity first.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String activityName = (String) allAvailableActivitiesComboBox.getSelectedItem();
+					ActivityType activityTypeObj = new ActivityType();
+					activityTypeObj = activityCtr.getActivityTypeByName(activityName);
+					int activityId = activityTypeObj.getID();
+					
+					String desiredStatus = "Available";
+					
+					LinkedList<Instructor> availableInstructorForActivity = new LinkedList<Instructor>();
+					availableInstructorForActivity = instructorCtr.getAvailableInstructorsForActivityList(activityId, desiredStatus);
+					
+					if(availableInstructorForActivity.isEmpty() == true)
+					{
+						JOptionPane.showMessageDialog(null, "No available instructors.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						for(Instructor instructorObj : availableInstructorForActivity)
+						{
+							String instructorName = instructorObj.getName();
+							availableInstructorsComboBox.addItem(instructorName);
+						}
+						
+						activityBookingAllTeamsComboBox.setSelectedItem(null);
+						activityBookingAllTeamsComboBox.removeAllItems();
+						activityBookingAllTeamsComboBox.setEnabled(false);
+						getTeamsButton.setEnabled(false);
+					}
+				}
+			}
+		});
 		getInstructorsButton.setEnabled(false);
 		getInstructorsButton.setBounds(6, 40, 225, 25);
 		instructorPanel.add(getInstructorsButton);
 		getInstructorsButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		instructorClearButton = new JButton("Clear");
+		instructorClearButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				availableInstructorsComboBox.setSelectedItem(null);
+				availableInstructorsComboBox.removeAllItems();
+				
+				activityBookingAllTeamsComboBox.setSelectedItem(null);
+				activityBookingAllTeamsComboBox.removeAllItems();
+				activityBookingAllTeamsComboBox.setEnabled(true);
+				
+				getTeamsButton.setEnabled(true);
+			}
+		});
 		instructorClearButton.setEnabled(false);
 		instructorClearButton.setBounds(6, 68, 225, 25);
 		instructorPanel.add(instructorClearButton);
@@ -395,7 +545,7 @@ public class GuestMenu
 		JPanel teamPanel = new JPanel();
 		teamPanel.setLayout(null);
 		teamPanel.setBorder(new TitledBorder(null, "Team", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		teamPanel.setBounds(257, 389, 237, 100);
+		teamPanel.setBounds(257, 389, 272, 100);
 		panel_2.add(teamPanel);
 		
 		JLabel activityTeamIdLabel = new JLabel("Team:");
@@ -404,22 +554,104 @@ public class GuestMenu
 		teamPanel.add(activityTeamIdLabel);
 		
 		activityBookingAllTeamsComboBox = new JComboBox<String>();
+		
+		activityBookingAllTeamsComboBox.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if(activityBookingAllTeamsComboBox.getSelectedItem() != null)
+				{
+					String stringTeamId = (String) activityBookingAllTeamsComboBox.getSelectedItem();
+					int teamId = Integer.parseInt(stringTeamId);
+					Team teamObj = new Team();
+					teamObj = teamCtr.getTeamById(teamId);
+					int numberOfParticipants = teamObj.getNumberOfParticipants();
+					String stringNumberOfParticipants = String.valueOf(numberOfParticipants);
+					teamNumberOfParticipantsTextField.setText(stringNumberOfParticipants);
+				}
+			}
+		});
+		
 		activityBookingAllTeamsComboBox.setEnabled(false);
 		activityBookingAllTeamsComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
-		activityBookingAllTeamsComboBox.setBounds(60, 16, 170, 20);
+		activityBookingAllTeamsComboBox.setBounds(60, 16, 65, 20);
 		teamPanel.add(activityBookingAllTeamsComboBox);
 		
 		getTeamsButton = new JButton("Get teams");
+		getTeamsButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(allAvailableActivitiesComboBox.getSelectedItem() == null)
+				{
+					JOptionPane.showMessageDialog(null,  "Please insert the activity first.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					int guestID = universalId;
+					
+					LinkedList<Team> leaderListTeam = new LinkedList<Team>();
+					leaderListTeam = teamCtr.getTeamsByLeaderId(guestID);
+					if(leaderListTeam.isEmpty() == true)
+					{
+						JOptionPane.showMessageDialog(null, "There are no teams", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						for(Team teamObj : leaderListTeam)
+						{
+							int teamId = teamObj.getId();
+							String stringTeamId = String.valueOf(teamId);
+							
+							activityBookingAllTeamsComboBox.addItem(stringTeamId);
+						}
+						
+						availableInstructorsComboBox.setSelectedItem(null);
+						availableInstructorsComboBox.removeAllItems();
+						availableInstructorsComboBox.setEnabled(false);
+						
+						getInstructorsButton.setEnabled(false);
+					}
+					
+				}
+			}
+		});
 		getTeamsButton.setEnabled(false);
 		getTeamsButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		getTeamsButton.setBounds(6, 40, 225, 25);
+		getTeamsButton.setBounds(6, 40, 256, 25);
 		teamPanel.add(getTeamsButton);
 		
 		teamClearButton = new JButton("Clear");
+		teamClearButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				activityBookingAllTeamsComboBox.setSelectedItem(null);
+				activityBookingAllTeamsComboBox.removeAllItems();
+				
+				availableInstructorsComboBox.setSelectedItem(null);
+				availableInstructorsComboBox.removeAllItems();
+				availableInstructorsComboBox.setEnabled(true);
+				
+				getInstructorsButton.setEnabled(true);
+			}
+		});
 		teamClearButton.setEnabled(false);
 		teamClearButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		teamClearButton.setBounds(6, 68, 225, 25);
+		teamClearButton.setBounds(6, 68, 256, 25);
 		teamPanel.add(teamClearButton);
+		
+		JLabel teamNumberOfParticipantsLabel = new JLabel("Participants:");
+		teamNumberOfParticipantsLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		teamNumberOfParticipantsLabel.setBounds(135, 19, 90, 14);
+		teamPanel.add(teamNumberOfParticipantsLabel);
+		
+		teamNumberOfParticipantsTextField = new JTextField();
+		teamNumberOfParticipantsTextField.setEditable(false);
+		teamNumberOfParticipantsTextField.setColumns(10);
+		teamNumberOfParticipantsTextField.setBounds(198, 16, 65, 20);
+		teamPanel.add(teamNumberOfParticipantsTextField);
 		
 		JPanel activityLine = new JPanel();
 		activityLine.setBorder(new TitledBorder(null, "Activity line", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -881,16 +1113,21 @@ public class GuestMenu
 	
 	public void activityLineDisabler()
 	{
-		allAvailableActivitiesComboBox.setEnabled(false);		
+		allAvailableActivitiesComboBox.setSelectedItem(null);
+		allAvailableActivitiesComboBox.setEnabled(false);
+		startHoursComboBox.setSelectedItem(null);
 		startHoursComboBox.setEnabled(false);
 		
+		availableFacilityComboBox.setSelectedItem(null);
 		availableFacilityComboBox.setEnabled(false);
 		getAvailableFacilitiesButton.setEnabled(false);
 		
+		availableInstructorsComboBox.setSelectedItem(null);
 		availableInstructorsComboBox.setEnabled(false);
 		getInstructorsButton.setEnabled(false);
 		instructorClearButton.setEnabled(false);
 		
+		activityBookingAllTeamsComboBox.setSelectedItem(null);
 		activityBookingAllTeamsComboBox.setEnabled(false);
 		getTeamsButton.setEnabled(false);
 		teamClearButton.setEnabled(false);
@@ -956,8 +1193,8 @@ public class GuestMenu
 					activityBookingObj = activityBookingCtr.getActivityBookingById(bookingId);
 					
 					String date = activityBookingObj.getDate();
-					String day = date.substring(0,2);
-					String month = date.substring(3,5);
+					String day = date.substring(3,5);
+					String month = date.substring(0,2);
 					String year = date.substring(6,10);
 					
 					dayComboBox.setSelectedItem(day);
