@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import Model.ActivityBooking;
 import Model.Guest;
@@ -11,6 +14,7 @@ import Model.Guest;
 public class DBActivityBooking implements IFDBActivityBooking 
 {
 	private Connection con;
+	final static String DATE_FORMAT = "MM-dd-yyyy";
 	
 	public DBActivityBooking()
 	{
@@ -44,7 +48,12 @@ public class DBActivityBooking implements IFDBActivityBooking
 			guestObj = dbGuest.searchGuestById(guestId);
 			activityBookingObj.setGuest(guestObj);
 			
-			activityBookingObj.setDate(results.getString("date"));
+			Date activityBookingDate = results.getDate("date");
+			String stringActivityBookingDate = new String();
+			DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+			stringActivityBookingDate = df.format(activityBookingDate);
+			activityBookingObj.setDate(stringActivityBookingDate);
+			
 			activityBookingObj.setStatus(results.getString("status"));
 		}
 		catch(Exception e)

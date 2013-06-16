@@ -1,9 +1,15 @@
 package Test;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import Controller.DateCheck;
 
 public class TestDate
 {
+	final static String DATE_FORMAT = "dd-MM-yyyy";
 
 	/**
 	 * @param args
@@ -67,5 +73,28 @@ public class TestDate
 		{
 			System.out.println("ok");
 		}
+	}
+	
+	public static boolean isDateValid(String date) 
+	{
+		try
+		{
+			DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+			df.setLenient(false);
+			df.parse(date);
+			return true;
+		} 
+		catch (ParseException e)
+		{
+			return false;
+		}
+	}
+	
+	public static String dateConverter(Date date)
+	{
+		String stringDate = new String();
+		DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+		stringDate = df.format(date);
+		return stringDate;
 	}
 }
