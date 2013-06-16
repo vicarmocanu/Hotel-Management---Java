@@ -339,11 +339,11 @@ public class RoomLineMenu {
 		panel.setLayout(null);
 		
 		JLabel lblRoomNumber = new JLabel("Room number:");
-		lblRoomNumber.setBounds(10, 24, 70, 14);
+		lblRoomNumber.setBounds(10, 24, 97, 14);
 		panel.add(lblRoomNumber);
 		
 		txtRoomNumber = new JTextField();
-		txtRoomNumber.setBounds(90, 21, 86, 20);
+		txtRoomNumber.setBounds(117, 21, 97, 20);
 		panel.add(txtRoomNumber);
 		txtRoomNumber.setColumns(10);
 		
@@ -431,7 +431,7 @@ public class RoomLineMenu {
 				}					
 			}
 		});
-		btnShowAvailableRooms.setBounds(208, 20, 148, 23);
+		btnShowAvailableRooms.setBounds(286, 20, 148, 23);
 		panel.add(btnShowAvailableRooms);
 		
 		JButton btnClear = new JButton("Clear");
