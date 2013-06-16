@@ -58,6 +58,9 @@ public class RoomBookingCtr {
 		ArrayList<RoomBooking> rbl=dbrb.findRoomBookingsWithDates(arrival, departure, false);
 		IFDBRoom dbroom = new DBRoom();
 		
+		IFDBRoomLine dbrl = new DBRoomLine();
+		ArrayList<RoomLine> rll = new ArrayList<>();
+		
 		ArrayList<Room> rooms = new ArrayList<>();
 		
 		if(rbl.isEmpty())
@@ -68,12 +71,18 @@ public class RoomBookingCtr {
 		{
 			for(RoomBooking rb : rbl)
 			{
-				IFDBRoomLine dbrl = new DBRoomLine();
-				ArrayList<RoomLine> rll = dbrl.findRoomLinesForBooking(rb.getId(), true);
+				rll.addAll(dbrl.findRoomLinesForBooking(rb.getId(), true));				
+			}
+			for(RoomLine rl:rll)
+			{				
+				rooms.addAll(dbroom.findDifferentRooms(rl.getRoom().getNumber(), true));
 				
-				for(RoomLine rl:rll)
+				for(int i=0; i<rooms.size();i++)
 				{
-					rooms.addAll(dbroom.findDifferentRooms(rl.getRoom().getNumber(), true));
+					if(rl.getRoom().getNumber()==rooms.get(i).getNumber())
+					{
+						rooms.remove(i);
+					}
 				}
 			}
 		}
