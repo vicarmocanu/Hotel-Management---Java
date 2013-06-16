@@ -826,6 +826,131 @@ public class ManagerMenu
 		JButton travelAgencySearchButton = new JButton("Search");
 		travelAgencySearchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(travelAgencyCVRTextField.getText().equals("")==true && travelAgencyNameTextField.getText().equals("")==true)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted  Travel Agency.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					if(travelAgencyNameTextField.getText().equals("") == true)
+					{
+						String stringTravelAgencyCVR = travelAgencyCVRTextField.getText();
+						int travelAgencyCVR = Integer.parseInt(stringTravelAgencyCVR);
+						
+						TravelAgency travelAgencyObj = new TravelAgency();
+						travelAgencyObj = travelCtr.getTravelAgencyByCVR(travelAgencyCVR);
+						
+						if(travelAgencyObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "There is no Travel Agency by this id. Please insert a valid  Travel Agency id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							
+							String travelAgencyName = travelAgencyObj.getName();
+							String travelAgencyAddress = travelAgencyObj.getAddress();
+							String travelAgencyCountry = travelAgencyObj.getCountry();
+							String travelAgencyPhoneNo = travelAgencyObj.getPhoneNo();
+							String travelAgencyEmail = travelAgencyObj.getEmail();
+							int travelAgencyZipCode = travelAgencyObj.getZipCode();
+							String stringTravelAgencyZipCode = String.valueOf(travelAgencyZipCode);
+							
+							
+							Location locationObj = new Location();
+							locationObj = locationCtr.getLocation(travelAgencyZipCode, travelAgencyCountry);
+							String travelAgencyCity = locationObj.getCity();
+							
+							travelAgencyCVRTextField.setText(stringTravelAgencyCVR);
+							travelAgencyNameTextField.setText(travelAgencyName);
+							travelAgencyAddressTextField.setText(travelAgencyAddress);
+							travelAgencyCountryTextField.setText(travelAgencyCountry);
+							travelAgencyPhoneNoTextField.setText(travelAgencyPhoneNo);
+							travelAgencyEmailTextField.setText(travelAgencyEmail);
+							travelAgencyZipcodeTextField.setText(stringTravelAgencyZipCode);
+							travelAgencyCityTextField.setText(travelAgencyCity);
+							
+						}
+					}
+					else
+					{
+						if(travelAgencyCVRTextField.getText().equals("") == true)
+						{
+							String travelAgencyName = travelAgencyNameTextField.getText();
+							
+							TravelAgency travelAgencyObj = new TravelAgency();
+							travelAgencyObj = travelCtr.getTravelAgencyByName(travelAgencyName);
+							if(travelAgencyObj == null)
+							{
+								JOptionPane.showMessageDialog(null, "There is not Travel Agency by this name. Please insert a valid Travel Agency name.", "Error!", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								int travelAgencyCVR = travelAgencyObj.getCVR();
+								String stringTravelAgencyCVR = String.valueOf(travelAgencyCVR);
+								int travelAgencyZipCode = travelAgencyObj.getZipCode();
+								String stringTravelAgencyZipCode = String.valueOf(travelAgencyZipCode);
+								String travelAgencyAddress = travelAgencyObj.getAddress();
+								String travelAgencyCountry = travelAgencyObj.getCountry();
+								String travelAgencyPhoneNo = travelAgencyObj.getPhoneNo();
+								String travelAgencyEmail = travelAgencyObj.getEmail();
+								
+								Location locationObj = new Location();
+								String travelAgencyCity = locationObj.getCity();
+								
+								travelAgencyCVRTextField.setText(stringTravelAgencyCVR);
+								travelAgencyNameTextField.setText(travelAgencyName);
+								travelAgencyAddressTextField.setText(travelAgencyAddress);
+								travelAgencyCountryTextField.setText(travelAgencyCountry);
+								travelAgencyPhoneNoTextField.setText(travelAgencyPhoneNo);
+								travelAgencyEmailTextField.setText(travelAgencyEmail);
+								travelAgencyZipcodeTextField.setText(stringTravelAgencyZipCode);
+								travelAgencyCityTextField.setText(travelAgencyCity);
+								
+							}
+						}
+						else
+						{
+							if(travelAgencyCVRTextField.getText().equals("") != true && travelAgencyNameTextField.getText().equals("") != true)
+							{
+								String stringTravelAgencyCVR = travelAgencyCVRTextField.getText();
+								int travelAgencyCVR = Integer.parseInt(stringTravelAgencyCVR);
+								
+								TravelAgency travelAgencyObj = new TravelAgency();
+								travelAgencyObj = travelCtr.getTravelAgencyByCVR(travelAgencyCVR);
+								
+								if(travelAgencyObj == null)
+								{
+									JOptionPane.showMessageDialog(null, "There is no Travel Agency by this id. Please insert a valid Travel Agency id.", "Error!", JOptionPane.ERROR_MESSAGE);
+								}
+								else
+								{
+									String travelAgencyName = travelAgencyObj.getName();
+									String travelAgencyAddress = travelAgencyObj.getAddress();
+									String travelAgencyCountry = travelAgencyObj.getCountry();
+									String travelAgencyPhoneNo = travelAgencyObj.getPhoneNo();
+									String travelAgencyEmail = travelAgencyObj.getEmail();
+									int travelAgencyZipCode = travelAgencyObj.getZipCode();
+									String stringTravelAgencyZipCode = String.valueOf(travelAgencyZipCode);
+									
+									
+									Location locationObj = new Location();
+									locationObj = locationCtr.getLocation(travelAgencyZipCode, travelAgencyCountry);
+									String travelAgencyCity = locationObj.getCity();
+									
+									travelAgencyCVRTextField.setText(stringTravelAgencyCVR);
+									travelAgencyNameTextField.setText(travelAgencyName);
+									travelAgencyAddressTextField.setText(travelAgencyAddress);
+									travelAgencyCountryTextField.setText(travelAgencyCountry);
+									travelAgencyPhoneNoTextField.setText(travelAgencyPhoneNo);
+									travelAgencyEmailTextField.setText(travelAgencyEmail);
+									travelAgencyZipcodeTextField.setText(stringTravelAgencyZipCode);
+									travelAgencyCityTextField.setText(travelAgencyCity);
+									
+								}
+							}
+						}
+					}
+				}
 			}
 		});
 		travelAgencySearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
