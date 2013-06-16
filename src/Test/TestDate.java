@@ -68,7 +68,7 @@ public class TestDate
 			System.out.println("ok");
 		}
 		
-		String time = new String("16-06-2013 02:20");
+		String time = new String("16-06-2013 22:00");
 		if(datecheck.checkIfTimeIsOlder(time) == false)
 		{
 			System.out.println("ok");
