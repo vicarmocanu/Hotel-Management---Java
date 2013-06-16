@@ -44,11 +44,11 @@ public class ActivityBookingCtr
 		return activityBookingObj;
 	}
 	
-	public ActivityBooking getActivityBookingForDate(int guestId, String date)
+	public ActivityBooking getActivityBookingForDate(int guestId, String date, String status)
 	{
 		IFDBActivityBooking dbActivityBooking = new DBActivityBooking();
 		ActivityBooking activityBookingObj = new ActivityBooking();
-		activityBookingObj = dbActivityBooking.getActivityBookingForDate(guestId, date);
+		activityBookingObj = dbActivityBooking.getActivityBookingForDate(guestId, date, status);
 		return activityBookingObj;
 	}
 	
@@ -74,7 +74,6 @@ public class ActivityBookingCtr
 		else
 		{
 			check = false;
-			System.out.println("Number of activity bookings on date: " + instances);
 		}
 		
 		return check;
@@ -130,11 +129,11 @@ public class ActivityBookingCtr
 		return dbActivityBooking.deleteActivityBookingForDate(guestId, date);
 	}
 	
-	public ActivityLine getActivityLine(int bookingId, String startHour)
+	public ActivityLine getActivityLine(int bookingId, String startHour, String status)
 	{
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		ActivityLine activityLineObj= new ActivityLine();
-		activityLineObj = dbActivityLine.getActivityLine(bookingId, startHour);
+		activityLineObj = dbActivityLine.getActivityLine(bookingId, startHour, status);
 		return activityLineObj;
 	}
 	
@@ -201,7 +200,7 @@ public class ActivityBookingCtr
 		return check;
 	}
 	
-	public void insertSimpleActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId)
+	public void insertSimpleActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, String status)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
@@ -223,6 +222,7 @@ public class ActivityBookingCtr
 		activityLineObj.setStartHour(startHour);
 		activityLineObj.setEndHour(endHour);
 		activityLineObj.setFacility(facilityObj);
+		activityLineObj.setStatus(status);
 		
 		try
 		{
@@ -237,7 +237,7 @@ public class ActivityBookingCtr
 		 }
 	}
 	
-	public void insertInstructorActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int instructorId)
+	public void insertInstructorActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int instructorId, String status)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
@@ -261,6 +261,7 @@ public class ActivityBookingCtr
 		activityLineObj.setStartHour(startHour);
 		activityLineObj.setEndHour(endHour);
 		activityLineObj.setFacility(facilityObj);
+		activityLineObj.setStatus(status);
 		activityLineObj.setInstructor(instructorObj);
 		
 		try
@@ -276,7 +277,7 @@ public class ActivityBookingCtr
 		 }
 	}
 	
-	public void insertTeamActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int teamId)
+	public void insertTeamActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int teamId, String status)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
@@ -300,6 +301,7 @@ public class ActivityBookingCtr
 		activityLineObj.setStartHour(startHour);
 		activityLineObj.setEndHour(endHour);
 		activityLineObj.setFacility(facilityObj);
+		activityLineObj.setStatus(status);
 		activityLineObj.setTeam(teamObj);
 		
 		try
@@ -315,7 +317,7 @@ public class ActivityBookingCtr
 		 }
 	}
 	
-	public int updateActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int teamId, int instructorId)
+	public int updateActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int teamId, int instructorId, String status)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
@@ -343,6 +345,7 @@ public class ActivityBookingCtr
 		activityLineObj.setEndHour(endHour);
 		activityLineObj.setFacility(facilityObj);
 		activityLineObj.setTeam(teamObj);
+		activityLineObj.setStatus(status);
 		activityLineObj.setInstructor(instructorObj);
 		
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
@@ -367,6 +370,13 @@ public class ActivityBookingCtr
 		LinkedList<ActivityLine> dateActivityLines = new LinkedList<ActivityLine>();
 		dateActivityLines = dbActivityLine.getDateActivityLines(date);
 		return dateActivityLines;
-		
+	}
+	
+	public LinkedList<ActivityLine> getInstructorActivityLinesSchedule(String date, int instructorId)
+	{
+		IFDBActivityLine dbActivityLine = new DBActivityLine();
+		LinkedList<ActivityLine> instructorActivityLineSchedule = new LinkedList<ActivityLine>();
+		instructorActivityLineSchedule = dbActivityLine.getInstructorActivityLinesSchedule(date, instructorId);
+		return instructorActivityLineSchedule;
 	}
 }

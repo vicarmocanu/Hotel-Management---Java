@@ -131,9 +131,9 @@ public class DBActivityBooking implements IFDBActivityBooking
 	}	
 
 	@Override
-	public ActivityBooking getActivityBookingForDate(int guestId, String date)
+	public ActivityBooking getActivityBookingForDate(int guestId, String date, String status)
 	{
-		String wClause = " guestId= '" + guestId + "' AND date= '" + date + "'";
+		String wClause = " guestId= '" + guestId + "' AND date= '" + date + "' AND status= '" + status + "'";
 		return singleWhere(wClause);
 	}
 	
@@ -247,10 +247,12 @@ public class DBActivityBooking implements IFDBActivityBooking
 	@Override
 	public int getActivityBookingInstances(String date, int guestId)
 	{
-		int instances = 0;		
+		int instances = 0;
+		
 		ResultSet results;
+		
 		String query = "SELECT COUNT(*) AS activityBokingInstances FROM ActivityBooking " + 
-		" WHERE date='" +  date + "' AND guestId='" + guestId + "'";
+		" WHERE date='" +  date + "' AND guestId='" + guestId + "' AND status<>'Canceled'";
 		System.out.println(query);
 		
 		try

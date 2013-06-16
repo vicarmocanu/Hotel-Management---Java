@@ -33,23 +33,25 @@ public class DateCheck
 		boolean check = false;
 		
 		String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-		System.out.println("Current day: " + timeStamp);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try
 		{
 			Date currentDate = sdf.parse(timeStamp);
-			Date myDate = sdf.parse(date);
+			System.out.println("Current day: " + currentDate);
 			
-			if(myDate.before(currentDate) == true)
+			Date myDate = sdf.parse(date);
+			System.out.println("My day: " + myDate);
+			
+			if(myDate.compareTo(currentDate) <0)
 			{
 				check = false;
 			}
-			if(myDate.equals(myDate) == true)
+			if(myDate.compareTo(currentDate) == 0)
 			{
 				check = true;
 			}
-			if(myDate.after(currentDate) == true)
+			if(myDate.compareTo(currentDate) >0)
 			{
 				check = true;
 			}
@@ -65,32 +67,45 @@ public class DateCheck
 	{
 		boolean check = false;
 		
-		String timeStamp = new SimpleDateFormat("dd-MM-yyyy hh:mm").format(Calendar.getInstance().getTime());
-		System.out.println("Current time: " + timeStamp);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss SSS");
+		Date currentDate = Calendar.getInstance().getTime();
+		String stringCurrentDate = df.format(currentDate);
+		Date parsedCurrentDate = new Date();
 		try
 		{
-			Date currentTime = sdf.parse(timeStamp);
-			Date myTime = sdf.parse(time);
-			
-			if(myTime.before(currentTime));
-			{
-				check = false;
-			}
-			if(myTime.equals(currentTime))
-			{
-				check = true;
-			}
-			if(myTime.after(currentTime) == true)
-			{
-				check = true;
-			}
+			parsedCurrentDate = df.parse(stringCurrentDate);
+			System.out.println("Current time: " + parsedCurrentDate);
 		}
-		catch(ParseException e)
+		catch (ParseException e)
 		{
-			System.out.println("exception: " + e);
+			e.printStackTrace();
 		}
+		
+		String myTime = time + ":00 000";
+		Date parseMyTime = new Date();
+		try
+		{
+			parseMyTime = df.parse(myTime);
+			System.out.println("My time: " + parseMyTime);
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if(parseMyTime.compareTo(parsedCurrentDate)<0)
+		{
+			check = false;
+		}
+		if(parseMyTime.compareTo(parsedCurrentDate) == 0)
+		{
+			check = true;
+		}
+		if(parseMyTime.compareTo(parsedCurrentDate)>0)
+		{
+			check = true;
+		}
+		
 		return check;
 	}
 	

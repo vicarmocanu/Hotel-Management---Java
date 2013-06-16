@@ -12,14 +12,12 @@ public class ActivityLine
 	private Facility facility;
 	private Instructor instructor;
 	private Team team;
-	
-	
-	
+	private String status;
 	
 	//constructor
 	public ActivityLine (ActivityType activity, ActivityBooking activityBooking,
 			String date, String startHour, String endHour, Facility facility,
-			Instructor instructor, Team team)
+			Instructor instructor, Team team, String status)
 	{
 		this.activity=activity;
 		this.activityBooking=activityBooking;
@@ -29,6 +27,7 @@ public class ActivityLine
 		this.facility=facility;
 		this.instructor=instructor;
 		this.setTeam(team);
+		this.setStatus(status);
 	}
 	
 	public ActivityLine ()
@@ -107,6 +106,16 @@ public class ActivityLine
 	public void setTeam(Team team)
 	{
 		this.team = team;
+	}
+
+	public String getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(String status)
+	{
+		this.status = status;
 	}
 
 }

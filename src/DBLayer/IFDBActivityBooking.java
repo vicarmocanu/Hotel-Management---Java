@@ -13,7 +13,7 @@ public interface IFDBActivityBooking
 	public ActivityBooking getActivityBookingById(int id);
 	
 	//method to get an activity booking that occurred at a particular date for a guest
-	public ActivityBooking getActivityBookingForDate(int guestId, String date);
+	public ActivityBooking getActivityBookingForDate(int guestId, String date, String status);
 	
 	//method to get all the activity bookings a guest has made
 	public LinkedList<ActivityBooking> getActivityBookingsForGuest(int guestId);
@@ -21,7 +21,7 @@ public interface IFDBActivityBooking
 	//method to insert a new activity booking
 	public int insertActivityBooking(ActivityBooking activityBooking) throws Exception;
 	
-	//method to update an activity booking
+	//method to update/cancel an activity booking 
 	public int updateActivityBookingStatus(ActivityBooking activityBooking);
 	
 	//method to delete an activity booking by its id
@@ -32,4 +32,5 @@ public interface IFDBActivityBooking
 	
 	//method to avoid double activity booking per date
 	public int getActivityBookingInstances(String date, int guestId);
+	
 }
