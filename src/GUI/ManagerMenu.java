@@ -895,6 +895,7 @@ public class ManagerMenu
 								String travelAgencyEmail = travelAgencyObj.getEmail();
 								
 								Location locationObj = new Location();
+								locationObj = locationCtr.getLocation(travelAgencyZipCode, travelAgencyCountry);
 								String travelAgencyCity = locationObj.getCity();
 								
 								travelAgencyCVRTextField.setText(stringTravelAgencyCVR);
@@ -931,7 +932,6 @@ public class ManagerMenu
 									String travelAgencyEmail = travelAgencyObj.getEmail();
 									int travelAgencyZipCode = travelAgencyObj.getZipCode();
 									String stringTravelAgencyZipCode = String.valueOf(travelAgencyZipCode);
-									
 									
 									Location locationObj = new Location();
 									locationObj = locationCtr.getLocation(travelAgencyZipCode, travelAgencyCountry);
