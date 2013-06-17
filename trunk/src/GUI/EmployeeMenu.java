@@ -43,16 +43,16 @@ public class EmployeeMenu
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTable table_1;
+	private JTextField guestIdTextField;
+	private JTextField guestTextFieldAddress;
+	private JTextField guestNameTextField;
+	private JTextField guestTextFieldTravelAgency;
+	private JTextField guestTextFieldEmail;
+	private JTextField guestCityTextField;
+	private JTextField guestPasswordTextField;
+	private JTextField guestCountryTextField;
+	private JTextField guestZipcodeTextField;
+	private JTable guestTable;
 	
 	public EmployeeMenu()
 	{
@@ -108,26 +108,26 @@ public class EmployeeMenu
 		label_16.setBounds(16, 14, 46, 14);
 		GuestPanel.add(label_16);
 		
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_4.setColumns(10);
-		textField_4.setBounds(70, 11, 100, 20);
-		GuestPanel.add(textField_4);
+		guestIdTextField = new JTextField();
+		guestIdTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestIdTextField.setColumns(10);
+		guestIdTextField.setBounds(70, 11, 100, 20);
+		GuestPanel.add(guestIdTextField);
 		
-		textField_5 = new JTextField();
-		textField_5.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_5.setColumns(10);
-		textField_5.setBounds(70, 36, 100, 20);
-		GuestPanel.add(textField_5);
+		guestTextFieldAddress = new JTextField();
+		guestTextFieldAddress.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestTextFieldAddress.setColumns(10);
+		guestTextFieldAddress.setBounds(70, 36, 100, 20);
+		GuestPanel.add(guestTextFieldAddress);
 		
-		JComboBox<String> comboBox_8 = new JComboBox<String>();
-		comboBox_8.setBounds(84, 61, 122, 20);
-		GuestPanel.add(comboBox_8);
+		JComboBox<String> guestTravelAgencyComboBox = new JComboBox<String>();
+		guestTravelAgencyComboBox.setBounds(84, 61, 122, 20);
+		GuestPanel.add(guestTravelAgencyComboBox);
 		
-		JButton button_11 = new JButton("No travel agency");
-		button_11.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_11.setBounds(216, 59, 146, 25);
-		GuestPanel.add(button_11);
+		JButton noTravelAgencyButton = new JButton("No travel agency");
+		noTravelAgencyButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		noTravelAgencyButton.setBounds(216, 59, 146, 25);
+		GuestPanel.add(noTravelAgencyButton);
 		
 		JLabel label_17 = new JLabel("Phone no:");
 		label_17.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -139,17 +139,17 @@ public class EmployeeMenu
 		label_18.setBounds(186, 14, 46, 14);
 		GuestPanel.add(label_18);
 		
-		textField_6 = new JTextField();
-		textField_6.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_6.setColumns(10);
-		textField_6.setBounds(239, 11, 100, 20);
-		GuestPanel.add(textField_6);
+		guestNameTextField = new JTextField();
+		guestNameTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestNameTextField.setColumns(10);
+		guestNameTextField.setBounds(239, 11, 100, 20);
+		GuestPanel.add(guestNameTextField);
 		
-		textField_7 = new JTextField();
-		textField_7.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_7.setColumns(10);
-		textField_7.setBounds(239, 36, 100, 20);
-		GuestPanel.add(textField_7);
+		guestTextFieldTravelAgency = new JTextField();
+		guestTextFieldTravelAgency.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestTextFieldTravelAgency.setColumns(10);
+		guestTextFieldTravelAgency.setBounds(239, 36, 100, 20);
+		GuestPanel.add(guestTextFieldTravelAgency);
 		
 		JLabel label_19 = new JLabel("City:");
 		label_19.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -161,17 +161,17 @@ public class EmployeeMenu
 		label_20.setBounds(401, 39, 80, 14);
 		GuestPanel.add(label_20);
 		
-		textField_8 = new JTextField();
-		textField_8.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_8.setColumns(10);
-		textField_8.setBounds(439, 36, 100, 20);
-		GuestPanel.add(textField_8);
+		guestTextFieldEmail = new JTextField();
+		guestTextFieldEmail.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestTextFieldEmail.setColumns(10);
+		guestTextFieldEmail.setBounds(439, 36, 100, 20);
+		GuestPanel.add(guestTextFieldEmail);
 		
-		textField_9 = new JTextField();
-		textField_9.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_9.setColumns(10);
-		textField_9.setBounds(439, 11, 100, 20);
-		GuestPanel.add(textField_9);
+		guestCityTextField = new JTextField();
+		guestCityTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCityTextField.setColumns(10);
+		guestCityTextField.setBounds(439, 11, 100, 20);
+		GuestPanel.add(guestCityTextField);
 		
 		JLabel label_21 = new JLabel("Country:");
 		label_21.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -183,17 +183,17 @@ public class EmployeeMenu
 		label_22.setBounds(577, 39, 80, 14);
 		GuestPanel.add(label_22);
 		
-		textField_10 = new JTextField();
-		textField_10.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_10.setColumns(10);
-		textField_10.setBounds(639, 36, 100, 20);
-		GuestPanel.add(textField_10);
+		guestPasswordTextField = new JTextField();
+		guestPasswordTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPasswordTextField.setColumns(10);
+		guestPasswordTextField.setBounds(639, 36, 100, 20);
+		GuestPanel.add(guestPasswordTextField);
 		
-		textField_11 = new JTextField();
-		textField_11.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_11.setColumns(10);
-		textField_11.setBounds(639, 11, 100, 20);
-		GuestPanel.add(textField_11);
+		guestCountryTextField = new JTextField();
+		guestCountryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCountryTextField.setColumns(10);
+		guestCountryTextField.setBounds(639, 11, 100, 20);
+		GuestPanel.add(guestCountryTextField);
 		
 		JLabel label_23 = new JLabel("Zipcode:");
 		label_23.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -205,15 +205,15 @@ public class EmployeeMenu
 		label_24.setBounds(749, 39, 80, 14);
 		GuestPanel.add(label_24);
 		
-		textField_12 = new JTextField();
-		textField_12.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_12.setColumns(10);
-		textField_12.setBounds(815, 11, 100, 20);
-		GuestPanel.add(textField_12);
+		guestZipcodeTextField = new JTextField();
+		guestZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestZipcodeTextField.setColumns(10);
+		guestZipcodeTextField.setBounds(815, 11, 100, 20);
+		GuestPanel.add(guestZipcodeTextField);
 		
-		JComboBox<String> comboBox_9 = new JComboBox<String>();
-		comboBox_9.setBounds(815, 36, 100, 20);
-		GuestPanel.add(comboBox_9);
+		JComboBox<String> guestTypeComboBox = new JComboBox<String>();
+		guestTypeComboBox.setBounds(815, 36, 100, 20);
+		GuestPanel.add(guestTypeComboBox);
 		
 		JPanel panel_13 = new JPanel();
 		panel_13.setLayout(null);
@@ -221,35 +221,39 @@ public class EmployeeMenu
 		panel_13.setBounds(0, 92, 140, 157);
 		GuestPanel.add(panel_13);
 		
-		JButton button_12 = new JButton("Search");
-		button_12.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_12.setBounds(6, 16, 124, 25);
-		panel_13.add(button_12);
+		JButton guestSearchButton = new JButton("Search");
+		guestSearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestSearchButton.setBounds(6, 16, 124, 25);
+		panel_13.add(guestSearchButton);
 		
-		JButton button_13 = new JButton("Create");
-		button_13.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_13.setBounds(6, 52, 124, 25);
-		panel_13.add(button_13);
+		JButton guestCreateButton = new JButton("Create");
+		guestCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCreateButton.setBounds(6, 52, 124, 25);
+		panel_13.add(guestCreateButton);
 		
-		JButton button_14 = new JButton("Update");
-		button_14.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_14.setBounds(6, 88, 124, 25);
-		panel_13.add(button_14);
+		JButton guestUpdateButton = new JButton("Update");
+		guestUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestUpdateButton.setBounds(6, 88, 124, 25);
+		panel_13.add(guestUpdateButton);
 		
-		JButton button_15 = new JButton("All");
-		button_15.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_15.setBounds(6, 124, 124, 25);
-		panel_13.add(button_15);
+		JButton guestAllButton = new JButton("All");
+		guestAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestAllButton.setBounds(6, 124, 124, 25);
+		panel_13.add(guestAllButton);
 		
-		JButton button_16 = new JButton("Clear all");
-		button_16.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_16.setBounds(0, 260, 140, 25);
-		GuestPanel.add(button_16);
+		JButton guestClearButton = new JButton("Clear all");
+		guestClearButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestClearButton.setBounds(0, 260, 140, 25);
+		GuestPanel.add(guestClearButton);
 		
-		table_1 = new JTable();
-		table_1.setFillsViewportHeight(true);
-		table_1.setBounds(151, 92, 787, 342);
-		GuestPanel.add(table_1);
+		JScrollPane guestTableScrollPane = new JScrollPane();
+		guestTableScrollPane.setBounds(156, 107, 789, 344);
+		GuestPanel.add(guestTableScrollPane);
+		
+		guestTable = new JTable();
+		guestTable.setFillsViewportHeight(true);
+		guestTable.setBounds(151, 92, 787, 342);
+		GuestPanel.add(guestTable);
 		
 		//delete room booking button
 		/*JButton btnDelete = new JButton("Delete");
