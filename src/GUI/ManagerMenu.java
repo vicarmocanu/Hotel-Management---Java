@@ -38,7 +38,7 @@ import Model.Instructor;
 import Model.Location;
 import Model.Person;
 import Model.TravelAgency;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
+//import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 public class ManagerMenu
 {
@@ -1495,104 +1495,10 @@ public class ManagerMenu
 		tabbedPane.addTab("Employee menu", null, EmployeePanel, null);
 		EmployeePanel.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 815, 86);
-		EmployeePanel.add(panel);
-		panel.setLayout(null);
-		
+		/*
 		JLabel lblEmployeeAttributes = DefaultComponentFactory.getInstance().createTitle("Employee attributes");
 		lblEmployeeAttributes.setBounds(10, 0, 122, 14);
-		panel.add(lblEmployeeAttributes);
-		
-		JLabel lblId = new JLabel("Id:");
-		lblId.setBounds(10, 25, 46, 14);
-		panel.add(lblId);
-		
-		employeeIdTextField = new JTextField();
-		employeeIdTextField.setBounds(30, 22, 86, 20);
-		panel.add(employeeIdTextField);
-		employeeIdTextField.setColumns(10);
-		
-		JLabel lblName = new JLabel("Name:");
-		lblName.setBounds(126, 25, 46, 14);
-		panel.add(lblName);
-		
-		employeeNameTextField = new JTextField();
-		employeeNameTextField.setBounds(160, 22, 86, 20);
-		panel.add(employeeNameTextField);
-		employeeNameTextField.setColumns(10);
-		
-		JLabel lblZipcode = new JLabel("Zipcode:");
-		lblZipcode.setBounds(256, 25, 46, 14);
-		panel.add(lblZipcode);
-		
-		employeeZipcodeTextField = new JTextField();
-		employeeZipcodeTextField.setBounds(302, 22, 86, 20);
-		panel.add(employeeZipcodeTextField);
-		employeeZipcodeTextField.setColumns(10);
-		
-		JLabel lblCountry = new JLabel("Country:");
-		lblCountry.setBounds(398, 25, 46, 14);
-		panel.add(lblCountry);
-		
-		employeeCountryTextField = new JTextField();
-		employeeCountryTextField.setBounds(443, 22, 86, 20);
-		panel.add(employeeCountryTextField);
-		employeeCountryTextField.setColumns(10);
-		
-		JLabel lblCity = new JLabel("City:");
-		lblCity.setBounds(539, 25, 46, 14);
-		panel.add(lblCity);
-		
-		employeeCityTextField = new JTextField();
-		employeeCityTextField.setBounds(566, 22, 86, 20);
-		panel.add(employeeCityTextField);
-		employeeCityTextField.setColumns(10);
-		
-		JLabel lblAddress = new JLabel("Address:");
-		lblAddress.setBounds(662, 25, 46, 14);
-		panel.add(lblAddress);
-		
-		employeeAddressTextField = new JTextField();
-		employeeAddressTextField.setBounds(718, 22, 86, 20);
-		panel.add(employeeAddressTextField);
-		employeeAddressTextField.setColumns(10);
-		
-		JLabel lblPhoneNo = new JLabel("PhoneNo:");
-		lblPhoneNo.setBounds(10, 61, 58, 14);
-		panel.add(lblPhoneNo);
-		
-		employeePhoneNoTextField = new JTextField();
-		employeePhoneNoTextField.setBounds(63, 58, 86, 20);
-		panel.add(employeePhoneNoTextField);
-		employeePhoneNoTextField.setColumns(10);
-		
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setBounds(160, 61, 46, 14);
-		panel.add(lblEmail);
-		
-		employeeEmailTextField = new JTextField();
-		employeeEmailTextField.setBounds(194, 58, 86, 20);
-		panel.add(employeeEmailTextField);
-		employeeEmailTextField.setColumns(10);
-		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(290, 61, 57, 14);
-		panel.add(lblPassword);
-		
-		employeePasswordTextField = new JTextField();
-		employeePasswordTextField.setBounds(346, 58, 86, 20);
-		panel.add(employeePasswordTextField);
-		employeePasswordTextField.setColumns(10);
-		
-		JLabel lblSalary = new JLabel("Salary:");
-		lblSalary.setBounds(443, 61, 46, 14);
-		panel.add(lblSalary);
-		
-		employeeSalaryTextField = new JTextField();
-		employeeSalaryTextField.setBounds(484, 58, 86, 20);
-		panel.add(employeeSalaryTextField);
-		employeeSalaryTextField.setColumns(10);
+		*/
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(213, 107, 732, 344);
@@ -1627,6 +1533,102 @@ public class ManagerMenu
 		JButton btnClearAll = new JButton("Clear All");
 		btnClearAll.setBounds(6, 176, 177, 29);
 		panel_1.add(btnClearAll);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(10, 11, 806, 79);
+		EmployeePanel.add(panel_2);
+		panel_2.setBorder(new TitledBorder(null, "Employee attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setLayout(null);
+		
+		JLabel lblId = new JLabel("Id:");
+		lblId.setBounds(6, 19, 46, 14);
+		panel_2.add(lblId);
+		
+		employeeIdTextField = new JTextField();
+		employeeIdTextField.setBounds(26, 16, 86, 20);
+		panel_2.add(employeeIdTextField);
+		employeeIdTextField.setColumns(10);
+		
+		JLabel lblName = new JLabel("Name:");
+		lblName.setBounds(122, 19, 46, 14);
+		panel_2.add(lblName);
+		
+		employeeNameTextField = new JTextField();
+		employeeNameTextField.setBounds(156, 16, 86, 20);
+		panel_2.add(employeeNameTextField);
+		employeeNameTextField.setColumns(10);
+		
+		JLabel lblZipcode = new JLabel("Zipcode:");
+		lblZipcode.setBounds(252, 19, 46, 14);
+		panel_2.add(lblZipcode);
+		
+		employeeZipcodeTextField = new JTextField();
+		employeeZipcodeTextField.setBounds(298, 16, 86, 20);
+		panel_2.add(employeeZipcodeTextField);
+		employeeZipcodeTextField.setColumns(10);
+		
+		JLabel lblCountry = new JLabel("Country:");
+		lblCountry.setBounds(394, 19, 46, 14);
+		panel_2.add(lblCountry);
+		
+		employeeCountryTextField = new JTextField();
+		employeeCountryTextField.setBounds(439, 16, 86, 20);
+		panel_2.add(employeeCountryTextField);
+		employeeCountryTextField.setColumns(10);
+		
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setBounds(535, 19, 46, 14);
+		panel_2.add(lblCity);
+		
+		employeeCityTextField = new JTextField();
+		employeeCityTextField.setBounds(562, 16, 86, 20);
+		panel_2.add(employeeCityTextField);
+		employeeCityTextField.setColumns(10);
+		
+		JLabel lblAddress = new JLabel("Address:");
+		lblAddress.setBounds(658, 19, 46, 14);
+		panel_2.add(lblAddress);
+		
+		employeeAddressTextField = new JTextField();
+		employeeAddressTextField.setBounds(714, 16, 86, 20);
+		panel_2.add(employeeAddressTextField);
+		employeeAddressTextField.setColumns(10);
+		
+		JLabel lblPhoneNo = new JLabel("PhoneNo:");
+		lblPhoneNo.setBounds(6, 55, 58, 14);
+		panel_2.add(lblPhoneNo);
+		
+		employeePhoneNoTextField = new JTextField();
+		employeePhoneNoTextField.setBounds(59, 52, 86, 20);
+		panel_2.add(employeePhoneNoTextField);
+		employeePhoneNoTextField.setColumns(10);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setBounds(156, 55, 46, 14);
+		panel_2.add(lblEmail);
+		
+		employeeEmailTextField = new JTextField();
+		employeeEmailTextField.setBounds(190, 52, 86, 20);
+		panel_2.add(employeeEmailTextField);
+		employeeEmailTextField.setColumns(10);
+		
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(286, 55, 57, 14);
+		panel_2.add(lblPassword);
+		
+		employeePasswordTextField = new JTextField();
+		employeePasswordTextField.setBounds(342, 52, 86, 20);
+		panel_2.add(employeePasswordTextField);
+		employeePasswordTextField.setColumns(10);
+		
+		JLabel lblSalary = new JLabel("Salary:");
+		lblSalary.setBounds(439, 55, 46, 14);
+		panel_2.add(lblSalary);
+		
+		employeeSalaryTextField = new JTextField();
+		employeeSalaryTextField.setBounds(480, 52, 86, 20);
+		panel_2.add(employeeSalaryTextField);
+		employeeSalaryTextField.setColumns(10);
 		btnClearAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
