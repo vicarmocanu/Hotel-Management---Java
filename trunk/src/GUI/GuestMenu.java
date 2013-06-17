@@ -950,7 +950,7 @@ public class GuestMenu
 		
 		allTeamsComboBox = new JComboBox<String>();
 		allTeamsComboBox.setSelectedItem(null);
-		allTeamsComboBox.setBounds(77, 28, 100, 20);
+		allTeamsComboBox.setBounds(67, 28, 100, 20);
 		panel_1.add(allTeamsComboBox);
 		
 		JPanel teamOptions = new JPanel();
@@ -1051,7 +1051,7 @@ public class GuestMenu
 		
 		participantIdTextField = new JTextField();
 		participantIdTextField.setFont(new Font("Arial", Font.PLAIN, 11));
-		participantIdTextField.setBounds(119, 206, 130, 20);
+		participantIdTextField.setBounds(105, 206, 130, 20);
 		panel_1.add(participantIdTextField);
 		participantIdTextField.setColumns(10);
 		
@@ -1195,7 +1195,7 @@ public class GuestMenu
 			}
 		});
 		teamClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		teamClearAllButton.setBounds(31, 382, 125, 25);
+		teamClearAllButton.setBounds(42, 380, 125, 25);
 		panel_1.add(teamClearAllButton);
 		
 		JButton getLeaderTeamsButton = new JButton("Get teams");
@@ -1220,7 +1220,7 @@ public class GuestMenu
 			}
 		});
 		getLeaderTeamsButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		getLeaderTeamsButton.setBounds(187, 27, 125, 25);
+		getLeaderTeamsButton.setBounds(177, 26, 125, 25);
 		panel_1.add(getLeaderTeamsButton);
 		
 		JButton logOffButton = new JButton("Log Off");
