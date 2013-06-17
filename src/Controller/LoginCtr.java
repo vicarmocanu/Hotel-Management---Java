@@ -12,7 +12,7 @@ public class LoginCtr
 		boolean check = false;
 		Person personToCheck = new Person();
 		IFDBPerson dbPerson = new DBPerson();
-		personToCheck = dbPerson.searchPersonById(id, true);
+		personToCheck = dbPerson.searchPersonById(id, false);
 		
 		if(personToCheck !=null)
 		{
@@ -34,7 +34,7 @@ public class LoginCtr
 		boolean check = false;
 		Person personToCheck = new Person();
 		IFDBPerson dbPerson = new DBPerson();
-		personToCheck = dbPerson.searchPersonById(id, true);
+		personToCheck = dbPerson.searchPersonById(id, false);
 		
 		if(personToCheck !=null)
 		{
@@ -56,7 +56,7 @@ public class LoginCtr
 		boolean check = false;
 		Person personToCheck = new Person();
 		IFDBPerson dbPerson = new DBPerson();
-		personToCheck = dbPerson.searchPersonById(id, true);
+		personToCheck = dbPerson.searchPersonById(id, false);
 		
 		if(personToCheck !=null)
 		{
@@ -78,7 +78,7 @@ public class LoginCtr
 		boolean check = false;
 		Person personToCheck = new Person();
 		IFDBPerson dbPerson = new DBPerson();
-		personToCheck = dbPerson.searchPersonById(id, true);
+		personToCheck = dbPerson.searchPersonById(id, false);
 		if(personToCheck !=null)
 		{
 			String correctPassword = personToCheck.getPassword();
