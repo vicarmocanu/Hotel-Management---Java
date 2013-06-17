@@ -50,6 +50,7 @@ import Controller.LocationCtr;
 
 public class EmployeeMenu
 {
+	private JLabel dinamicLabel;
 	private int bookingId;
 	private int guestId;
 	private LinkedList<ActivityBooking> activityBookingList = new LinkedList<ActivityBooking>();
@@ -146,7 +147,18 @@ public class EmployeeMenu
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel WelcomePanel = new JPanel();
-		tabbedPane.addTab("Main", null, WelcomePanel, null);
+		tabbedPane.addTab("Main menu", null, WelcomePanel, null);
+		WelcomePanel.setLayout(null);
+		
+		JLabel welcomeLabel = new JLabel("Welcome,");
+		welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		welcomeLabel.setBounds(42, 34, 115, 25);
+		WelcomePanel.add(welcomeLabel);
+		
+		dinamicLabel = new JLabel("EMPLOYEE");
+		dinamicLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		dinamicLabel.setBounds(145, 34, 216, 25);
+		WelcomePanel.add(dinamicLabel);
 		
 		//delete room booking button
 		/*JButton btnDelete = new JButton("Delete");
@@ -690,11 +702,29 @@ public class EmployeeMenu
 		guestOptionsPanel.add(guestUpdateButton);
 		
 		JButton guestAllButton = new JButton("All");
+		guestAllButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				clearGuestPanel();
+				clearGuestTable();
+				
+				guestTable.setModel(getGuestTableModel());
+			}
+		});
 		guestAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestAllButton.setBounds(6, 124, 124, 25);
 		guestOptionsPanel.add(guestAllButton);
 		
 		JButton guestClearAllButton = new JButton("Clear all");
+		guestClearAllButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				clearGuestPanel();
+				clearGuestTable();
+			}
+		});
 		guestClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestClearAllButton.setBounds(10, 283, 140, 25);
 		GuestPanel.add(guestClearAllButton);
@@ -2482,5 +2512,10 @@ public class EmployeeMenu
 		});
 		
 		return guestTableModel;
+	}
+	
+	public void setDinamicLabel(String employeeName)
+	{
+		dinamicLabel.setText(employeeName);
 	}
 }
