@@ -197,7 +197,7 @@ public class EmployeeMenu
 		panel.add(btnDelete);*/
 		
 		JPanel GuestPanel = new JPanel();
-		tabbedPane.addTab("Guest", null, GuestPanel, null);
+		tabbedPane.addTab("Guest menu", null, GuestPanel, null);
 		GuestPanel.setLayout(null);
 		
 		JPanel guestAttributesPanel = new JPanel();
@@ -738,7 +738,7 @@ public class EmployeeMenu
 		guestTableScrollPane.setViewportView(guestTable);
 		
 		JPanel RoomBookingPanel = new JPanel();
-		tabbedPane.addTab("Room booking", null, RoomBookingPanel, null);	
+		tabbedPane.addTab("Room booking menu", null, RoomBookingPanel, null);	
 		RoomBookingPanel.setLayout(null);
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Booking data", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -1207,7 +1207,7 @@ public class EmployeeMenu
 		//end room booking panel
 		
 		JPanel ActivityBookingPanel = new JPanel();
-		tabbedPane.addTab("Activity booking", null, ActivityBookingPanel, null);
+		tabbedPane.addTab("Activity booking menu", null, ActivityBookingPanel, null);
 		ActivityBookingPanel.setLayout(null);
 		
 		JPanel activityBookingPanel = new JPanel();
