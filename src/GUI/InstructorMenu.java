@@ -231,7 +231,7 @@ public class InstructorMenu
 		universalId = newUniversalId;
 	}
 	
-	public void clearTable()
+	private void clearTable()
 	{
 		table.setModel(new DefaultTableModel());
 	}
