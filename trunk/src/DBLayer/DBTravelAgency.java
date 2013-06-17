@@ -45,9 +45,11 @@ public class DBTravelAgency implements IFDBTravelAgency
 		{
 			System.out.println("Exception in building the travel agency object: " + e);
 		}
+		
 		return travelAgencyObj;
 	}
 	
+	//single where selection
 	private TravelAgency singleWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
@@ -92,6 +94,7 @@ public class DBTravelAgency implements IFDBTravelAgency
 		return travelAgencyObj;
 	}
 	
+	//misc where selection
 	private LinkedList<TravelAgency> miscWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
@@ -137,36 +140,40 @@ public class DBTravelAgency implements IFDBTravelAgency
 		return list;
 	}
 	
+	@Override
 	public LinkedList<TravelAgency> getAllTravelAgencies(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
 	}
 	
+	@Override
 	public TravelAgency getTravelAgencyByCVR(int cvr, boolean retrieveAssociation)
 	{
 		String wClause = " cvr= '" + cvr + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 	
+	@Override
 	public TravelAgency getTravelAgencyByName(String name, boolean retrieveAssociation)
 	{
 		String wClause = " name= '" + name + "'";
 		return singleWhere(wClause, retrieveAssociation);
 	}
 	
+	@Override
 	public int insertTravelAgency(TravelAgency travelAgency) throws Exception
 	{
-		String query = "INSERT INTO TravelAgency(cvr, name, zipcode, country, address, phoneNo, email) VALUES('" +
-	travelAgency.getCVR()+"','"+
-				travelAgency.getName()+"','"+
-	travelAgency.getZipCode()+ "','"+
-				travelAgency.getCountry()+"','"+
-	travelAgency.getAddress()+"','"+
-				travelAgency.getPhoneNo()+"','"+
-	travelAgency.getEmail()+"')";
-		
 		int rc = -1;
-		System.out.println("Insert query: " + query);
+		
+		String query = "INSERT INTO TravelAgency(cvr, name, zipcode, country, address, phoneNo, email) VALUES('" +
+		travelAgency.getCVR()+"','"+
+				travelAgency.getName()+"','"+
+		travelAgency.getZipCode()+ "','"+
+				travelAgency.getCountry()+"','"+
+		travelAgency.getAddress()+"','"+
+				travelAgency.getPhoneNo()+"','"+
+		travelAgency.getEmail()+"')";
+		System.out.println("Insertion query: " + query);
 
 		try
 		{
@@ -183,11 +190,12 @@ public class DBTravelAgency implements IFDBTravelAgency
 		return rc;
 	}
 	
+	@Override
 	public int updateTravelAgency(TravelAgency travelAgency)
 	{
-		TravelAgency travelAgencytravelAgency = travelAgency;
-		
 		int rc = -1;
+		
+		TravelAgency travelAgencytravelAgency = travelAgency;
 		
 		String query = "UPDATE TravelAgency SET " +
 		"name='"+travelAgencytravelAgency.getName()+"', "+
@@ -215,6 +223,7 @@ public class DBTravelAgency implements IFDBTravelAgency
 		return rc;
 	}
 	
+	@Override
 	public int deleteTravelAgencyByCvr(int cvr)
 	{
 		int rc=-1;
@@ -237,6 +246,7 @@ public class DBTravelAgency implements IFDBTravelAgency
 		return(rc);
 	}
 	
+	@Override
 	public int deleteTravelAgencyByName(String name)
 	{
 		int rc=-1;

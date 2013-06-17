@@ -32,5 +32,4 @@ public interface IFDBActivityBooking
 	
 	//method to avoid double activity booking per date
 	public int getActivityBookingInstances(String date, int guestId);
-	
 }

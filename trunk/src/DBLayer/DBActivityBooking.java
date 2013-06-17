@@ -64,13 +64,14 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return activityBookingObj;
 	}
 	
+	//single where selection
 	private ActivityBooking singleWhere(String wClause)
 	{
 		ResultSet results;
 		
 		ActivityBooking activityBookingObj=new ActivityBooking();		
 		String query = buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -95,13 +96,14 @@ public class DBActivityBooking implements IFDBActivityBooking
 		return activityBookingObj;
 	}
 	
+	//misc where selection
 	private LinkedList<ActivityBooking> miscWhere(String wClause)
 	{
 		ResultSet results;
 		
 		LinkedList<ActivityBooking> activityBookingList = new LinkedList<ActivityBooking>();
 		String query =  buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{

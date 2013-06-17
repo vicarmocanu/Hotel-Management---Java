@@ -17,6 +17,7 @@ private Connection con;
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
+	@Override
 	public int insertLocation(Location loc) throws Exception
 	{
 		String query = "INSERT INTO Location(zipcode, country, city) VALUES('" +
@@ -26,7 +27,7 @@ private Connection con;
 		
 		int rc = -1;
 		
-		System.out.println("Insert query: " + query);
+		System.out.println("Insertion query: " + query);
 		
 		try
 		{
@@ -37,13 +38,13 @@ private Connection con;
 		}
 		catch (SQLException ex)
 		{
-			System.out.println("Insert exception: " + ex);
+			System.out.println("Insertion exception: " + ex);
 		}
 		
 		return rc;
 	}
 
-	
+	@Override
 	public int updateLocation(Location loc)
 	{
 		int rc = -1;
@@ -124,6 +125,7 @@ private Connection con;
 		return rbObj;
 	}
 	
+	//single where selection
 	private Location singleWhere(String wClause)
 	{
 		ResultSet results;
@@ -184,9 +186,11 @@ private Connection con;
 			System.out.println("Multiple selection query exception: "+e);
 			e.printStackTrace();
 		}
+		
 		return list;
 	}
 	
+	@Override
 	public LinkedList<Location> getAllLocations()
 	{
 		return miscWhere("");

@@ -31,7 +31,6 @@ public class DBEmployee implements IFDBEmployee
 	private Employee buildEmployee(ResultSet results)
 	{
 		Employee employeeObj= new Employee();
-		
 		IFDBPerson dbPerson = new DBPerson();
 		Person personObj = new Person();
 		
@@ -63,6 +62,7 @@ public class DBEmployee implements IFDBEmployee
 	private Employee singleWhere (String wClause)
 	{
 		ResultSet results;
+		
 		Employee employeeObj=new Employee();		
 		String query = buildQuery(wClause);
 		System.out.println(query);
@@ -96,6 +96,7 @@ public class DBEmployee implements IFDBEmployee
 	private LinkedList<Employee> miscWhere (String wClause)
 	{
 		ResultSet results;
+		
 		LinkedList<Employee> employeeList=new LinkedList<Employee>();
 		String query =  buildQuery(wClause);
 		System.out.println(query);
@@ -112,9 +113,7 @@ public class DBEmployee implements IFDBEmployee
 				employeeObj =buildEmployee(results);
 				employeeList.add(employeeObj);
 			}
-			
 			stmt.close();
-			
 		}
 		catch(Exception e)
 		{
@@ -125,25 +124,28 @@ public class DBEmployee implements IFDBEmployee
 		return employeeList;
 	}
 
+	@Override
 	public LinkedList<Employee> getAllEmployees()
 	{
 		return miscWhere("");
 	}
 	
+	@Override
 	public Employee getEmployeeById(int personId)
 	{
 		String wClause = "  personId= '" + personId + "'";
 		return singleWhere(wClause);
 	}
 	
+	@Override
 	public int insertEmployee(Employee employeeObj) throws Exception
 	{
 		int result = -1;
 		
 		String query = "INSERT INTO Employee(personId, salary) VALUES ('" +
 		employeeObj.getId() + "','" + employeeObj.getSalary() +   "')";
+		System.out.println("Insertion query: " + query);
 		
-		System.out.println("Insert query: " + query);
 	    try
 	    {
 	    	Statement stmt = con.createStatement();
@@ -153,22 +155,22 @@ public class DBEmployee implements IFDBEmployee
 	    }
 	    catch(SQLException e)
 	    {
-	    	System.out.println("Insert exception: " + e);
+	    	System.out.println("Insertion exception: " + e);
 	    }
 	    
 	    return(result);
 	}
 	
+	@Override
 	public int updateEmployee(Employee employeeObj)
 	{
+		int result=-1;
+		
 		Employee employeeNewObj=employeeObj;
 		
 		String query="UPDATE Employee SET " +
 		"salary= '" + employeeNewObj.getSalary() + "' " +		
 		"WHERE personId= '" + employeeNewObj.getId() + "'";
-		
-		int result=-1;
-		
 		System.out.println("Update query: " + query);
 		
 		try
@@ -186,6 +188,7 @@ public class DBEmployee implements IFDBEmployee
 		return(result);
 	}
 	
+	@Override
 	public int deleteEmployeeById(int id)
 	{
 		int result=-1;

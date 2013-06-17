@@ -18,6 +18,7 @@ private Connection con;
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
+	@Override
 	public int insertPerson(Person prs) throws Exception
 	{
 		//call to get the next person id
@@ -25,9 +26,9 @@ private Connection con;
 		nextPersonId = nextPersonId + 1;
 		System.out.println("Next person id = " + nextPersonId);
 		
+		int rc = -1;
 		
 		String query = "INSERT INTO Person(id, name, zipcode, country, address, phoneNo, email, personType, password) VALUES('" +
-		
 				nextPersonId + "','" +
 				prs.getName()+"','"+
 				prs.getZipcode()+ "','"+
@@ -37,9 +38,8 @@ private Connection con;
 				prs.getEmail()+"','"+
 				prs.getPersonType()+"','"+
 				prs.getPassword()+"')";
-		
-		int rc = -1;
 		System.out.println("Insertion query: " + query);
+		
 		try
 		{
 			Statement stmt = con.createStatement();
@@ -49,11 +49,12 @@ private Connection con;
 		}
 		catch (SQLException ex)
 		{
-			System.out.println("Insert exception: " + ex);
+			System.out.println("Insertion exception: " + ex);
 		}
 		return rc;
 	}
 	
+	@Override
 	public int updatePerson(Person prs)
 	{
 		int rc = -1;
@@ -83,18 +84,18 @@ private Connection con;
 		}
 		
 		return rc;
-
 	}
-
 	
+	@Override
 	public int deletePerson(int prsId)
 	{
 		int rc=-1;
 		  
 	  	String query="DELETE FROM Person WHERE id= '" +
 				prsId + "'";
-                System.out.println(query);
-	  	try{ 
+                System.out.println("Delete query: " + query);
+	  	try
+	  	{ 
 	 		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
 	 	  	rc = stmt.executeUpdate(query);
@@ -105,7 +106,6 @@ private Connection con;
    	    }
 		return(rc);
 	}
-	
 	
 	private String buildQuery(String wClause)
 	{
@@ -143,6 +143,7 @@ private Connection con;
 		return rbObj;
 	}
 	
+	//single where selection
 	private Person singleWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
@@ -173,7 +174,6 @@ private Connection con;
 						System.out.println("Location selection.");
 					}
 				}
-				
 			}
 			else
 			{
@@ -189,9 +189,11 @@ private Connection con;
 		return rbObj;
 	}
 	
+	//misc where selection
 	private LinkedList<Person> miscWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
+		
 		LinkedList<Person> list = new LinkedList<Person>();
 		String query = buildQuery(wClause);
 		
@@ -230,14 +232,17 @@ private Connection con;
 			System.out.println("Multiple query selection exception: "+e);
 			e.printStackTrace();
 		}
+		
 		return list;
 	}
 	
+	@Override
 	public LinkedList<Person> getAllPerson(boolean retriveAssociation)
 	{
 		return miscWhere("", retriveAssociation);
 	}
 
+	@Override
 	public Person searchPersonById(int id,
 			boolean retriveAssociation)
 	{
@@ -245,7 +250,7 @@ private Connection con;
 		return singleWhere(wClause, retriveAssociation);
 	}
 
-	
+	@Override
 	public Person searchPersonByName(String name, boolean retriveAssociation)
 	{
 		String wClause = " name= '" + name + "'";
@@ -283,5 +288,4 @@ private Connection con;
 		}
 		return instances;
 	}
-
 }

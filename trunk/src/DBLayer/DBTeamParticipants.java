@@ -48,6 +48,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		return teamParticipantObj;
 	}
 	
+	//single selection where
 	private Participant singleWhere(String wClause)
 	{
 		ResultSet results;
@@ -75,6 +76,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		return participantObj;
 	}
 	
+	//misc selection where
 	private LinkedList<Participant> miscWhere(String wClause)
 	{
 		ResultSet results;
@@ -120,7 +122,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		
 		String query = "INSERT INTO TeamParticipants(teamId, participantId) VALUES ('" + teamParticipant.getTeam().getId() + "','" +
 		teamParticipant.getGuest().getId() + "')";
-		System.out.println("Inserti query: " + query);
+		System.out.println("Insertiion query: " + query);
 		
 		try
 		{
@@ -131,7 +133,7 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Insert exception: " + e);
+			System.out.println("Insertion exception: " + e);
 		}
 		return(result);
 	}
@@ -219,5 +221,4 @@ public class DBTeamParticipants implements IFDBTeamParticipants
 		}
 		return instances;
 	}
-
 }
