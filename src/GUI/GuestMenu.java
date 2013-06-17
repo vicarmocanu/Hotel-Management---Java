@@ -1338,7 +1338,7 @@ public class GuestMenu
 		participantIdTextField.setText("");
 	}
 	
-	public void activityLineEnabler()
+	private void activityLineEnabler()
 	{
 		allAvailableActivitiesComboBox.setSelectedItem(null);
 		allAvailableActivitiesComboBox.setEnabled(true);
@@ -1364,7 +1364,7 @@ public class GuestMenu
 		allActivityLinesButton.setEnabled(true);
 	}
 	
-	public void activityLineDisabler()
+	private void activityLineDisabler()
 	{
 		allAvailableActivitiesComboBox.setSelectedItem(null);
 		allAvailableActivitiesComboBox.setEnabled(false);
