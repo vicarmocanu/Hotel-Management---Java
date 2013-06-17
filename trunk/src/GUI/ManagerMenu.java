@@ -595,9 +595,11 @@ public class ManagerMenu
 						
 						personCtr.insertPerson(guestName, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
 						guestCtr.insertGuest(guestName, travelAgencyCVR, guestType);
+						
+						JOptionPane.showMessageDialog(null, "Guest successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
 						clearGuestPanel();
 						clearGuestTable();
-						JOptionPane.showMessageDialog(null, "Guest successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
+						guestTable.setModel(getGuestTableModel());
 					}
 				}
 			}
@@ -671,9 +673,11 @@ public class ManagerMenu
 							
 							personCtr.updatePerson(guestId, guestName, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
 							guestCtr.updateGuest(guestId, guestType, travelAgencyCVR);
+							
+							JOptionPane.showMessageDialog(null, "Guest updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 							clearGuestPanel();
 							clearGuestTable();
-							JOptionPane.showMessageDialog(null, "Guest updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							guestTable.setModel(getGuestTableModel());
 						}
 					}
 				}
@@ -1014,6 +1018,11 @@ public class ManagerMenu
 						
 						guestTravelAgencyComboBox.setSelectedItem(null);
 						JOptionPane.showMessageDialog(null, "Travel agency has been successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
+						
+						clearTravelAgencyPanel();
+						clearTravelAgencyTable();
+						travelAgencyTable.setModel(getTravelAgencyTableModel());
+						
 					}
 				}
 			}
@@ -1090,6 +1099,9 @@ public class ManagerMenu
 								}
 								
 								JOptionPane.showMessageDialog(null, "Travel agency updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+								clearTravelAgencyPanel();
+								clearTravelAgencyTable();
+								travelAgencyTable.setModel(getTravelAgencyTableModel());
 							}
 						}
 					}
@@ -1348,6 +1360,8 @@ public class ManagerMenu
 						clearFacilityTable();
 						
 						JOptionPane.showMessageDialog(null, "Activity type successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
+						
+						activityTypeTable.setModel(getActivityTypeTableModel());
 					}
 				}
 			}
@@ -1440,6 +1454,7 @@ public class ManagerMenu
 							clearFacilityTable();
 							
 							JOptionPane.showMessageDialog(null, "Activity type updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							activityTypeTable.setModel(getActivityTypeTableModel());
 						}
 					}
 				}
@@ -1686,11 +1701,12 @@ public class ManagerMenu
 							}
 							personCtr.updatePerson(employeeId, employeeName, employeeAddress,employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, personType, employeePassword);
 							employeeCtr.updateEmployee(employeeId, employeeSalary);
-							
+							JOptionPane.showMessageDialog(null, "Employee updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 							clearInstructorPanel();
 							clearInstructorTable();
-							
-							JOptionPane.showMessageDialog(null, "Employee updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							clearEmployeePanel();
+							clearEmployeeTable();
+							employeeTable.setModel(getEmployeeTableModel());
 						}
 					}
 				}
@@ -1733,9 +1749,13 @@ public class ManagerMenu
 						
 						personCtr.insertPerson(employeeName, employeeAddress, employeeZipcode, employeeCountry, employeePhoneNo, employeeEmail, "Employee", employeePassword);
 						employeeCtr.insertEmployee(employeeName, employeeSalary);
+						
+						JOptionPane.showMessageDialog(null, "Employee successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
 						clearInstructorPanel();
 						clearInstructorTable();
-						JOptionPane.showMessageDialog(null, "Employee successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
+						clearEmployeePanel();
+						clearEmployeeTable();
+						employeeTable.setModel(getEmployeeTableModel());
 					}
 				}
 			}
@@ -2320,9 +2340,11 @@ public class ManagerMenu
 						personCtr.insertPerson(instructorName, instructorAddress, instructorZipcode, instructorCountry, instructorPhoneNo, instructorEmail, "Instructor", instructorPassword);
 						employeeCtr.insertEmployee(instructorName, instructorSalary);
 						instructorCtr.insertInstructor(instructorName, activityTypeId, instructorPrice, instructorStatus);
+						JOptionPane.showMessageDialog(null, "Instructor successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
 						clearInstructorPanel();
 						clearInstructorTable();
-						JOptionPane.showMessageDialog(null, "Instructor successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
+						clearEmployeeTable();
+						instructorTable.setModel(getInstructorTableModel());
 					}
 				}
 			}
@@ -2396,11 +2418,11 @@ public class ManagerMenu
 							personCtr.updatePerson(instructorId, instructorName, instructorAddress, instructorZipcode, instructorCountry, instructorPhoneNo, instructorEmail, "Instructor", instructorPassword);
 							employeeCtr.updateEmployee(instructorId, instructorSalary);
 							instructorCtr.updateInstructor(instructorId, activityTypeId, instructorPrice, instructorStatus);
-							
+							JOptionPane.showMessageDialog(null, "Instructor updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 							clearInstructorPanel();
 							clearInstructorTable();
-							
-							JOptionPane.showMessageDialog(null, "Instructor updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							clearEmployeeTable();
+							instructorTable.setModel(getInstructorTableModel());
 						}
 					}
 				}
@@ -2686,12 +2708,11 @@ public class ManagerMenu
 					}
 					else
 					{
-						
 						facilityCtr.insertFacility(facilityName, activityId, status);
+						JOptionPane.showMessageDialog(null, "Facility successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
 						clearFacilityTable();
 						clearFacilityPanel();
-						JOptionPane.showMessageDialog(null, "Facility successfully inserted.", "Info", JOptionPane.INFORMATION_MESSAGE);
-						
+						facilityTable.setModel(getFacilityTableModel());
 					}
 				}
 			}
@@ -2741,9 +2762,10 @@ public class ManagerMenu
 						else
 						{
 							facilityCtr.updateFacility(facilityId, facilityName, activityId, status);
+							JOptionPane.showMessageDialog(null, "Facility updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
 							clearFacilityTable();
 							clearFacilityPanel();
-							JOptionPane.showMessageDialog(null, "Facility updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							facilityTable.setModel(getFacilityTableModel());
 						}
 					}
 				}

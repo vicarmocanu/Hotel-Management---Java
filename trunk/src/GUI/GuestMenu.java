@@ -221,6 +221,8 @@ public class GuestMenu
 					if(DateCheck.isDateValid(inputDate) != true)
 					{
 						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
+						clearActivityLinePanels();
+						clearActivityLinesTable();
 						activityLineDisabler();
 					}
 					else
@@ -228,6 +230,8 @@ public class GuestMenu
 						if(dateCheck.checkIfDateIsOlder(inputDate) != true)
 						{
 							JOptionPane.showMessageDialog(null, "Cannot insert a date older than the current date.", "Error!", JOptionPane.ERROR_MESSAGE);
+							clearActivityLinePanels();
+							clearActivityLinesTable();
 							activityLineDisabler();
 						}
 						else
@@ -235,6 +239,8 @@ public class GuestMenu
 							if(activityBookingCtr.activityBookingCompleteCheck(insertDate, guestID) != true)
 							{
 								JOptionPane.showMessageDialog(null, "Cannot make two bookings on the same date.", "Error!", JOptionPane.ERROR_MESSAGE);
+								clearActivityLinePanels();
+								clearActivityLinesTable();
 								activityLineDisabler();
 							}
 							else
@@ -246,6 +252,10 @@ public class GuestMenu
 								activityBookingObj = activityBookingCtr.getActivityBookingForDate(guestID, insertDate, activityBookingStatus);
 								bookingId = activityBookingObj.getId();
 								selectedDateTextField.setText(inputDate);
+								clearActivityBookingTable();
+								activityBookingsTable.setModel(getActivityBookingTableModel());
+								clearActivityLinePanels();
+								clearActivityLinesTable();
 								activityLineEnabler();
 							}
 						}
@@ -268,6 +278,8 @@ public class GuestMenu
 				if(dayComboBox.getSelectedItem() == null || monthComboBox.getSelectedItem() ==null || yearComboBox.getSelectedItem() == null)
 				{
 					JOptionPane.showMessageDialog(null, "Please insert the date of booking.", "Error!", JOptionPane.ERROR_MESSAGE);
+					clearActivityLinePanels();
+					clearActivityLinesTable();
 					activityLineDisabler();
 				}
 				else
@@ -281,6 +293,8 @@ public class GuestMenu
 					if(DateCheck.isDateValid(inputDate) != true)
 					{
 						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
+						clearActivityLinePanels();
+						clearActivityLinesTable();
 						activityLineDisabler();
 					}
 					else
@@ -290,6 +304,8 @@ public class GuestMenu
 						if(activityBookingObj == null)
 						{
 							JOptionPane.showMessageDialog(null, "There is no made activity booking by this date. Please insert a valid activity booking date.", "Error!", JOptionPane.ERROR_MESSAGE);
+							clearActivityLinePanels();
+							clearActivityLinesTable();
 							activityLineDisabler();
 						}
 						else
@@ -297,6 +313,8 @@ public class GuestMenu
 							activityLineEnabler();
 							selectedDateTextField.setText(inputDate);
 							bookingId = activityBookingObj.getId();
+							clearActivityLinePanels();
+							clearActivityLinesTable();
 						}
 					}
 				}
@@ -307,9 +325,12 @@ public class GuestMenu
 		searchActivityBookingButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		JButton getAllActivityBookingsButton = new JButton("All");
-		getAllActivityBookingsButton.addActionListener(new ActionListener() {
+		getAllActivityBookingsButton.addActionListener(new ActionListener()
+		{
 			public void actionPerformed(ActionEvent arg0)
 			{
+				clearActivityLinePanels();
+				clearActivityLinesTable();
 				activityLineDisabler();
 				
 				activityBookingsTable.setModel(getActivityBookingTableModel());
@@ -778,6 +799,9 @@ public class GuestMenu
 												{
 													activityBookingCtr.insertTeamActivityLine(activityId, bookingId, insertDate, startHour, facilityId, teamId, "Made");
 													JOptionPane.showMessageDialog(null, "Team activity successfully booked.", "Info", JOptionPane.INFORMATION_MESSAGE);
+													clearActivityLinePanels();
+													clearActivityLinesTable();
+													activityLinesTable.setModel(getActivityLinesTableModel());
 												}
 											}
 											if(instructorId != 0)
@@ -790,12 +814,18 @@ public class GuestMenu
 												{
 													activityBookingCtr.insertInstructorActivityLine(activityId, bookingId, insertDate, startHour, facilityId, instructorId, "Made");
 													JOptionPane.showMessageDialog(null, "Instructor activity successfully booked.", "Info", JOptionPane.INFORMATION_MESSAGE);
+													clearActivityLinePanels();
+													clearActivityLinesTable();
+													activityLinesTable.setModel(getActivityLinesTableModel());
 												}
 											}
 											if(teamId == 0 && instructorId == 0)
 											{
 												activityBookingCtr.insertSimpleActivityLine(activityId, bookingId, insertDate, startHour, facilityId, "Made");
 												JOptionPane.showMessageDialog(null, "Activity successfully booked.", "Info", JOptionPane.INFORMATION_MESSAGE);
+												clearActivityLinePanels();
+												clearActivityLinesTable();
+												activityLinesTable.setModel(getActivityLinesTableModel());
 											}
 										}
 									}
@@ -856,6 +886,9 @@ public class GuestMenu
 						{
 							activityBookingCtr.updateActivityLine(activityId, bookingId, facilityId, "Canceled");
 							JOptionPane.showMessageDialog(null, "Activity and facility booking has been canceled.");
+							clearActivityLinePanels();
+							clearActivityLinesTable();
+							activityLinesTable.setModel(getActivityLinesTableModel());
 						}
 					}
 				}
@@ -870,6 +903,8 @@ public class GuestMenu
 		allActivityLinesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
+				clearActivityLinePanels();
+				clearActivityLinesTable();
 				activityLinesTable.setModel(getActivityLinesTableModel());
 			}
 		});
@@ -1518,7 +1553,38 @@ public class GuestMenu
 				}
 			}
 		});
-		
 		return activityLinesTableModel;
 	}
+	
+	private void clearActivityLinePanels()
+	{
+		startHoursComboBox.setSelectedItem(null);
+		
+		availableFacilityComboBox.removeAllItems();
+		availableFacilityComboBox.setSelectedItem(null);
+		
+		availableInstructorsComboBox.removeAllItems();
+		availableInstructorsComboBox.setSelectedItem(null);
+		getInstructorsButton.setEnabled(true);
+		instructorClearButton.setEnabled(true);
+		
+		activityBookingAllTeamsComboBox.removeAllItems();
+		activityBookingAllTeamsComboBox.setSelectedItem(null);
+		teamNumberOfParticipantsTextField.setText("");
+		getTeamsButton.setEnabled(true);
+		teamClearButton.setEnabled(true);
+	}
+	
+	private void clearActivityLinesTable()
+	{
+		activityLinesTable.setCellSelectionEnabled(false);
+		activityLinesTable.setModel(new DefaultTableModel());
+	}
+	
+	private void clearActivityBookingTable()
+	{
+		activityBookingsTable.setCellSelectionEnabled(false);
+		activityBookingsTable.setModel(new DefaultTableModel());
+	}
+	
 }
