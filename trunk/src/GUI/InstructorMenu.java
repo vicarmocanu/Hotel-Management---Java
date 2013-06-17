@@ -60,7 +60,7 @@ public class InstructorMenu
 		welcomeLabel.setBounds(32, 28, 115, 25);
 		welcomePanel.add(welcomeLabel);
 		
-		dinamicLabel = new JLabel("GUEST");
+		dinamicLabel = new JLabel("INSTRUCTOR");
 		dinamicLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 		dinamicLabel.setBounds(135, 28, 241, 25);
 		welcomePanel.add(dinamicLabel);

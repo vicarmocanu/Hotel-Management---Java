@@ -125,6 +125,7 @@ public class LoginMenu
 							//personObj = dbPerson.searchPersonById(universalId, true);
 							personObj = personCtr.searchPersonById(universalId);
 							String personName = personObj.getName();
+							employeeMenu.setDinamicLabel(personName);
 							
 							textField.setText("");
 							passwordField.setText("");
