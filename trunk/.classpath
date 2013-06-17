@@ -3,7 +3,7 @@
 	<classpathentry excluding="DBLayer/IFDBParticipants.java" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
-	<classpathentry kind="lib" path="F:/eclipse workspace/Project/Morocco Holiday Center/Outer Libraries/sqljdbc4.jar"/>
-	<classpathentry kind="lib" path="F:/eclipse workspace/Project/Morocco Holiday Center/Outer Libraries/swing-layout-1.0.1.jar"/>
+	<classpathentry kind="lib" path="E:/UCN/Second Semester Project/Project/Morocco Holiday Center/Outer Libraries/sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="E:/UCN/Second Semester Project/Project/Morocco Holiday Center/Outer Libraries/swing-layout-1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
