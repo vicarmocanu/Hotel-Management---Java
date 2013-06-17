@@ -23,7 +23,7 @@ public class LoginCtr
 			}
 			else
 			{
-				check = false;							
+				check = false;
 			}
 		}		
 		return check;
@@ -45,7 +45,7 @@ public class LoginCtr
 			}
 			else
 			{
-				check = false;							
+				check = false;
 			}
 		}		
 		return check;
@@ -67,7 +67,29 @@ public class LoginCtr
 			}
 			else
 			{
-				check = false;							
+				check = false;
+			}
+		}		
+		return check;
+	}
+	
+	public boolean checkInstructor(int id)
+	{
+		boolean check = false;
+		Person personToCheck = new Person();
+		IFDBPerson dbPerson = new DBPerson();
+		personToCheck = dbPerson.searchPersonById(id, false);
+		
+		if(personToCheck !=null)
+		{
+			String personType = personToCheck.getPersonType();
+			if(personType.equals("Instructor") == true)
+			{
+				check = true;
+			}
+			else
+			{
+				check = false;
 			}
 		}		
 		return check;
