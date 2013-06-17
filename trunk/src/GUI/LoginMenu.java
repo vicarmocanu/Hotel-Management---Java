@@ -1,31 +1,31 @@
 package GUI;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import Controller.LoginCtr;
-import DBLayer.DBPerson;
-import DBLayer.IFDBPerson;
+import Controller.PersonCtr;
 import Model.Person;
 
 public class LoginMenu
 {
 	private static LoginMenu instance = null;
+	private PersonCtr personCtr = new PersonCtr();
+	private LoginCtr loginCtr = new LoginCtr();
 	
 	public JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
-	public int universalId;
+	private int universalId;
 	
 	/**
 	 * Launch the application.
@@ -85,8 +85,8 @@ public class LoginMenu
 			
 			public void actionPerformed(ActionEvent arg0)
 			{
-				LoginCtr loginCtr = new LoginCtr();
-				IFDBPerson dbPerson = new DBPerson();
+				
+				//IFDBPerson dbPerson = new DBPerson();
 				Person personObj = new Person();
 				
 				if(textField.getText().equals("")==true || passwordField.getPassword().equals("")==true)
@@ -95,26 +95,21 @@ public class LoginMenu
 				}
 				else
 				{
-
 					String password = String.valueOf(passwordField.getPassword());
 					universalId = Integer.parseInt(textField.getText());
-					/*test case
-					if(universalId == 11 && password.equals("aardvark")) 
-					{
-						JOptionPane.showMessageDialog(null, "The aardvark is a mammal.", "The aardvark", JOptionPane.OK_OPTION);
-						GuestMainMenu guestMainMenu = new GuestMainMenu();
-						guestMainMenu.setUniversalId(universalId);
-					}*/
+					//id/password check
 					if(loginCtr.checkPassword(universalId, password)==false)
 					{
 						JOptionPane.showMessageDialog(null, "Incorrect id/password. Please insert correct id/password.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
+						//check if guest
 						if(loginCtr.checkGuest(universalId)==true)
 						{
 							GuestMenu guestMainMenu = new GuestMenu();
-							personObj = dbPerson.searchPersonById(universalId, true);
+							//personObj = dbPerson.searchPersonById(universalId, true);
+							personObj = personCtr.searchPersonById(universalId);
 							String personName = personObj.getName();
 							guestMainMenu.setGuestName(personName);
 							guestMainMenu.setUniversalId(universalId);
@@ -122,21 +117,25 @@ public class LoginMenu
 							textField.setText("");
 							passwordField.setText("");
 							frame.dispose();
-						}	
+						}
+						//check if employee
 						else if(loginCtr.checkEmployee(universalId))
 						{
 							EmployeeMenu employeeMenu = new EmployeeMenu();
-							personObj = dbPerson.searchPersonById(universalId, true);
+							//personObj = dbPerson.searchPersonById(universalId, true);
+							personObj = personCtr.searchPersonById(universalId);
 							String personName = personObj.getName();
 							
 							textField.setText("");
 							passwordField.setText("");
 							frame.dispose();
 						}
+						//check if manager
 						else if(loginCtr.checkManager(universalId) == true)
 						{
 							ManagerMenu managerMainMenu = new ManagerMenu();
-							personObj = dbPerson.searchPersonById(universalId, true);
+							//personObj = dbPerson.searchPersonById(universalId, true);
+							personObj = personCtr.searchPersonById(universalId);
 							String personName = personObj.getName();
 							managerMainMenu.setManagerName(personName);
 							
@@ -144,10 +143,12 @@ public class LoginMenu
 							passwordField.setText("");
 							frame.dispose();
 						}
+						//check if instructor
 						else if(loginCtr.checkInstructor(universalId) == true)
 						{
 							InstructorMenu instructorMenu = new InstructorMenu();
-							personObj = dbPerson.searchPersonById(universalId, true);
+							//personObj = dbPerson.searchPersonById(universalId, true);
+							personObj = personCtr.searchPersonById(universalId);
 							String personName = personObj.getName();
 							instructorMenu.setInstructorName(personName);
 							instructorMenu.setUniversalId(universalId);
