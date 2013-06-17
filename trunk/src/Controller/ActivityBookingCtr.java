@@ -129,11 +129,11 @@ public class ActivityBookingCtr
 		return dbActivityBooking.deleteActivityBookingForDate(guestId, date);
 	}
 	
-	public ActivityLine getActivityLine(int bookingId, String startHour, String status)
+	public ActivityLine getActivityLine(int activityId, int bookingId, int facilityId)
 	{
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		ActivityLine activityLineObj= new ActivityLine();
-		activityLineObj = dbActivityLine.getActivityLine(bookingId, startHour, status);
+		activityLineObj = dbActivityLine.getActivityLine(activityId, bookingId, facilityId);
 		return activityLineObj;
 	}
 	
@@ -145,12 +145,12 @@ public class ActivityBookingCtr
 		return bookingActivityLines;
 	}
 	
-	public boolean checkActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId)
+	public boolean checkActivityLineInstances1(int activityId, int bookingId, int facilityId)
 	{
 		boolean check = false;
 		int instances = 0;
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
-		instances = dbActivityLine.getActivityLineInstances1(activityId, bookingId, date, startHour, facilityId);
+		instances = dbActivityLine.getActivityLineInstances1(activityId, bookingId, facilityId);
 		
 		if(instances<1)
 		{
@@ -170,6 +170,42 @@ public class ActivityBookingCtr
 		int instances = 0;
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		instances = dbActivityLine.getActivityLineInstances2(date, startHour, instructorId);		
+		if(instances<1)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+		}
+		
+		return check;
+	}
+	
+	public boolean checkActivityLineInstances3(int activityId, String date, String startHour, int facilityId)
+	{
+		boolean check = false;
+		int instances = 0;
+		IFDBActivityLine dbActivityLine = new DBActivityLine();
+		instances = dbActivityLine.getActivityLineInstances3(activityId, date, startHour, facilityId);
+		if(instances<1)
+		{
+			check = true;
+		}
+		else
+		{
+			check = false;
+		}
+		
+		return check;
+	}
+	
+	public boolean checkActivityLineInstances4(int bookingId, String date, String startHour)
+	{
+		boolean check = false;
+		int instances = 0;
+		IFDBActivityLine dbActivityLine = new DBActivityLine();
+		instances = dbActivityLine.getActivityLineInstances4(bookingId, date, startHour);
 		if(instances<1)
 		{
 			check = true;
@@ -317,7 +353,7 @@ public class ActivityBookingCtr
 		 }
 	}
 	
-	public int updateActivityLine(int activityId, int bookingId, String date, String startHour, int facilityId, int teamId, int instructorId, String status)
+	public int updateActivityLine(int activityId, int bookingId, int facilityId, String status)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
@@ -328,25 +364,11 @@ public class ActivityBookingCtr
 		IFDBFacility dbFacility = new DBFacility();
 		Facility facilityObj = dbFacility.getFacilityById(facilityId);
 		
-		IFDBTeam dbTeam = new DBTeam();
-		Team teamObj = dbTeam.getTeamById(teamId);
-		
-		IFDBInstructor dbInstructor = new DBInstructor();
-		Instructor instructorObj = dbInstructor.getInstructorById(instructorId);
-		
-		DateCheck dateCheck = new DateCheck();
-		String endHour = dateCheck.getEndHour(startHour);
-		
 		ActivityLine activityLineObj = new ActivityLine();
 		activityLineObj.setActivity(activityTypeObj);
 		activityLineObj.setActivityBooking(activityBookingObj);
-		activityLineObj.setDate(date);
-		activityLineObj.setStartHour(startHour);
-		activityLineObj.setEndHour(endHour);
 		activityLineObj.setFacility(facilityObj);
-		activityLineObj.setTeam(teamObj);
 		activityLineObj.setStatus(status);
-		activityLineObj.setInstructor(instructorObj);
 		
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
 		return dbActivityLine.updateActivityLine(activityLineObj);

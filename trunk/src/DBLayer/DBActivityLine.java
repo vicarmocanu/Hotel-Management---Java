@@ -152,16 +152,19 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 	
 	@Override
-	public ActivityLine getActivityLine(int bookingId, String startHour, String status)
+	public ActivityLine getActivityLine(int activityId, int bookingId, int facilityId)
 	{
-		String wClause = " bookingId= '" + bookingId + "'" + " AND startHour= '" + startHour +"' AND status= '" + status + "'";
+		String wClause = " activityId= '" + activityId + "'" + 
+	" AND bookingId= '" + bookingId +"'" + 
+			" AND facilityId= '" + facilityId + "'" +
+	" AND status<>'Canceled'";
 		return singleWhere(wClause);
 	}
 
 	@Override
 	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId)
 	{
-		String wClause = " bookingId= '" + bookingId + "'";
+		String wClause = " bookingId= '" + bookingId + "'" + " AND status<>'Canceled'";
 		return miscWhere(wClause);
 	}
 
@@ -238,56 +241,13 @@ public class DBActivityLine implements IFDBActivityLine
 	@Override
 	public int updateActivityLine(ActivityLine activityLine)
 	{
-		ActivityLine activityLineObj = activityLine;
-		String query = new String();
-		
-		ActivityType activityTypeObj = activityLine.getActivity();
-		ActivityBooking activityBookingObj = activityLine.getActivityBooking();
-		Facility facilityObj = activityLine.getFacility();		
-		Instructor instructorObj = activityLine.getInstructor();
-		Team teamObj = activityLine.getTeam();
-		
-		if(instructorObj == null && teamObj == null)
-		{
-			query = "UPDATE ActivityLine SET " +
-		" activityId= '" + activityTypeObj.getID() + "', " +
-					" date= '" + activityLineObj.getDate() + "', " +
-		" startHour= '" + activityLineObj.getStartHour() + "', " +
-					" endHour= '" + activityLineObj.getEndHour() + "', " +
-		" facilityId= '" + facilityObj.getId() + "', " +
-					" instructorId= '0', " +
-		" teamId= '0', " +
-					" status = '" + activityLineObj.getStatus() + "' " +
-		"WHERE bookingId = '" + activityBookingObj.getId() + "'";
-		}
-		if(instructorObj !=null)
-		{
-			query = "UPDATE ActivityLine SET " +
-		" activityId= '" + activityTypeObj.getID() + "', " +
-					" date= '" + activityLineObj.getDate() + "', " +
-		" startHour= '" + activityLineObj.getStartHour() + "', " +
-					" endHour= '" + activityLineObj.getEndHour() + "', " +
-		" facilityId= '" + facilityObj.getId() + "', " +
-					" instructorId= '" + instructorObj.getId() + "', " +
-		" teamId= '0', " +
-					" status = '" + activityLineObj.getStatus() + "' " +
-		"WHERE bookingId = '" + activityBookingObj.getId() + "'";
-		}
-		if(teamObj != null)
-		{
-			query = "UPDATE ActivityLine SET " +
-		" activityId= '" + activityTypeObj.getID() + "', " +
-					" date= '" + activityLineObj.getDate() + "', " +
-		" startHour= '" + activityLineObj.getStartHour() + "', " +
-					" endHour= '" + activityLineObj.getEndHour() + "', " +
-		" facilityId= '" + facilityObj.getId() + "', " +
-					" teamId= '" + teamObj.getId() + "', " +
-		" instructorId= '0', " +
-					" status = '" + activityLineObj.getStatus() + "' " +
-		"WHERE bookingId = '" + activityBookingObj.getId() + "'";
-		}
-		
 		int result=-1;
+		
+		String query = "UPDATE ActivityLine SET " + 
+		" status= '" + activityLine.getStatus() + "' "
+		+ "WHERE activityId= '" + activityLine.getActivity().getID() + "' " +
+		"AND bookingId= '" + activityLine.getActivityBooking().getId() + "' " + 
+		"AND facilityId= '" + activityLine.getFacility().getId() + "'";
 		System.out.println("Update query: " + query);
 		
 		try
@@ -352,15 +312,17 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 
 	@Override
-	public int getActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId)
+	public int getActivityLineInstances1(int activityId, int bookingId, int facilityId)
 	{
 		int instances = 0;
 		
 		ResultSet results;
 		
 		String query = "SELECT COUNT(*) AS activityLineInstances1 FROM ActivityLine " + 
-		"WHERE activityId= '" + activityId + "' AND bookingId= '" +  bookingId + "' AND date = '" + date + "' AND startHour= '" + startHour + "' AND facilityId= '" + facilityId + "'" + 
-				" AND status<>'Canceled' ";
+		"WHERE activityId= '" + activityId + "' " +
+				"AND bookingId= '" +  bookingId + "' " +
+				"AND facilityId= '" + facilityId + "' " +
+				"AND status<>'Canceled' ";
 		System.out.println(query);
 		
 		try
@@ -455,6 +417,72 @@ public class DBActivityLine implements IFDBActivityLine
 	{
 		String wClause = " date= '" + date + "' AND instructorId= '" + instructorId + "' AND status<>'Canceled'";
 		return miscWhere(wClause);
+	}
+
+	@Override
+	public int getActivityLineInstances3(int activityId, String date, String startHour, int facilityId)
+	{
+		int instances = 0;		
+		ResultSet results;
+		String query = "SELECT COUNT(*) AS activityLineInstances3 FROM ActivityLine " + 
+		" WHERE activityId= '" + activityId + "' " +
+				"AND date= '" + date + "' " +
+		"AND startHour= '" +  startHour + "' " +
+				"AND facilityId= '" + facilityId + "' " +
+		"AND status<>'Canceled' ";
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);		
+			
+			while( results.next() )
+			{
+				instances = results.getInt("activityLineInstances3");
+				System.out.println("Activity line instances3= " + instances);
+			}
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity line instance count: " + e);
+		}
+		return instances;		
+	}
+
+	@Override
+	public int getActivityLineInstances4(int bookingId, String date, String startHour)
+	{
+		int instances = 0;		
+		ResultSet results;
+		String query = "SELECT COUNT(*) AS activityLineInstances3 FROM ActivityLine " + 
+		" WHERE bookingId= '" + bookingId + "' " +
+				"AND date= '" + date + "' " +
+		"AND startHour= '" +  startHour + "' " +
+				"AND startHour= '" + startHour + "' " +
+		"AND status<>'Canceled' ";
+		System.out.println(query);
+		
+		try
+		{
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			results = stmt.executeQuery(query);		
+			
+			while( results.next() )
+			{
+				instances = results.getInt("activityLineInstances3");
+				System.out.println("Activity line instances3= " + instances);
+			}
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in returning the activity line instance count: " + e);
+		}
+		return instances;	
 	}
 
 }

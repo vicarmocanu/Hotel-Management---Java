@@ -209,7 +209,7 @@ public class DateCheck
 		String h2 = startHour.substring(1,2);
 		int intH2 = Integer.parseInt(h2);
 		
-		int intStartHour = intH1 + intH2*10;
+		int intStartHour = intH1*10 + intH2;
 		int intEndHour = intStartHour + 1;
 		String endHour = String.valueOf(intEndHour);
 		

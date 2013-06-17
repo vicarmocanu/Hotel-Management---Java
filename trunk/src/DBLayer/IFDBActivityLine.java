@@ -6,7 +6,7 @@ import Model.ActivityLine;
 public interface IFDBActivityLine
 {
 	//get an activity line
-	public ActivityLine getActivityLine(int bookingId, String startHour, String status);
+	public ActivityLine getActivityLine(int activityId, int bookingId, int facilityId);
 	
 	//get all activity lines for a booking
 	public LinkedList<ActivityLine> getActivityLinesForActivityBooking(int bookingId);
@@ -27,10 +27,16 @@ public interface IFDBActivityLine
 	public int deleteActivityLinesFromActivityBooking(int bookingId);
 	
 	//method to avoid activity line double booking - general
-	public int getActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId);
+	public int getActivityLineInstances1(int activityId, int bookingId, int facilityId);
 	
 	//method to avoid activity line -instructor- double booking
 	public int getActivityLineInstances2(String date, String startHour, int instructorId);
+	
+	//method to avoid activity line same hour booking on date
+	public int getActivityLineInstances3(int activityId, String date, String startHour, int facilityId);
+	
+	//method to avoid activity line same hour booking on date - personal
+	public int getActivityLineInstances4(int bookingId, String date, String startHour);
 	
 	//method to avoid more than 4 activity lines in a booking
 	public int getNumberOfActivityLinesInActivityBooking(int bookingId, String date);
