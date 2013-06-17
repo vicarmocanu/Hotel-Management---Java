@@ -138,28 +138,15 @@ public class ManagerMenu
 
 	private void initialize() 
 	{
-		frame = new JFrame();
+		frame = new JFrame("Manager menu");
 		frame.setFont(new Font("Dialog", Font.PLAIN, 14));
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton logOffButton = new JButton("Log Off");
-		logOffButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				frame.dispose();
-				LoginMenu loginMenu = LoginMenu.getInstance();
-				loginMenu.frame.setVisible(true);
-			}
-		});
-		logOffButton.setFont(new Font("Tahoma", Font.BOLD, 15));
-		logOffButton.setBounds(865, 550, 125, 39);
-		frame.getContentPane().add(logOffButton);
-		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 970, 528);
+		tabbedPane.setBounds(10, 11, 960, 490);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel WelcomePanel = new JPanel();
@@ -182,7 +169,7 @@ public class ManagerMenu
 		
 		JPanel guestAttributesPanel = new JPanel();
 		guestAttributesPanel.setBorder(new TitledBorder(null, "Guest attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		guestAttributesPanel.setBounds(6, 11, 949, 93);
+		guestAttributesPanel.setBounds(6, 11, 939, 93);
 		GuestPanel.add(guestAttributesPanel);
 		guestAttributesPanel.setLayout(null);
 		
@@ -231,12 +218,12 @@ public class ManagerMenu
 		guestCountryTextField.setColumns(10);
 		
 		JLabel guestZipcodeLabel = new JLabel("Zipcode:");
-		guestZipcodeLabel.setBounds(777, 19, 80, 14);
+		guestZipcodeLabel.setBounds(749, 19, 80, 14);
 		guestAttributesPanel.add(guestZipcodeLabel);
 		guestZipcodeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestZipcodeTextField = new JTextField();
-		guestZipcodeTextField.setBounds(839, 16, 100, 20);
+		guestZipcodeTextField.setBounds(815, 16, 100, 20);
 		guestAttributesPanel.add(guestZipcodeTextField);
 		guestZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestZipcodeTextField.setColumns(10);
@@ -286,7 +273,7 @@ public class ManagerMenu
 		guestPasswordTextField.setColumns(10);
 		
 		JLabel guestGuestTypeLabel = new JLabel("Guest type:");
-		guestGuestTypeLabel.setBounds(777, 44, 80, 14);
+		guestGuestTypeLabel.setBounds(749, 44, 80, 14);
 		guestAttributesPanel.add(guestGuestTypeLabel);
 		guestGuestTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
@@ -326,7 +313,7 @@ public class ManagerMenu
 		guestGuestTypeComboBox.addItem("Business");
 		guestGuestTypeComboBox.addItem("Family");
 		guestGuestTypeComboBox.setSelectedItem(null);
-		guestGuestTypeComboBox.setBounds(839, 41, 100, 20);
+		guestGuestTypeComboBox.setBounds(815, 41, 100, 20);
 		guestAttributesPanel.add(guestGuestTypeComboBox);
 		
 		JPanel guestOptionsMenu = new JPanel();
@@ -716,7 +703,7 @@ public class ManagerMenu
 		GuestPanel.add(guestClearAllButton);
 		
 		JScrollPane guestTableScrollPane = new JScrollPane();
-		guestTableScrollPane.setBounds(156, 115, 799, 374);
+		guestTableScrollPane.setBounds(156, 107, 789, 344);
 		GuestPanel.add(guestTableScrollPane);
 		
 		guestTable = new JTable();
@@ -1128,7 +1115,7 @@ public class ManagerMenu
 		travelAgencyOptionsPanel.add(travelAgencyAllButton);
 		
 		JScrollPane travelAgencyScrollPane = new JScrollPane();
-		travelAgencyScrollPane.setBounds(166, 90, 789, 399);
+		travelAgencyScrollPane.setBounds(166, 90, 779, 361);
 		TravelAgencyPanel.add(travelAgencyScrollPane);
 		
 		travelAgencyTable = new JTable();
@@ -1479,7 +1466,7 @@ public class ManagerMenu
 		activityTypesOptionsPanel.add(activityTypeAllButton);
 		
 		JScrollPane activityTypeTableScrollPane = new JScrollPane();
-		activityTypeTableScrollPane.setBounds(170, 65, 785, 424);
+		activityTypeTableScrollPane.setBounds(170, 65, 775, 386);
 		ActivityTypePanel.add(activityTypeTableScrollPane);
 		
 		activityTypeTable = new JTable();
@@ -1603,7 +1590,7 @@ public class ManagerMenu
 		employeeSalaryTextField.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(213, 108, 742, 381);
+		scrollPane.setBounds(213, 107, 732, 344);
 		EmployeePanel.add(scrollPane);
 		
 		employeeTable = new JTable();
@@ -2459,7 +2446,7 @@ public class ManagerMenu
 		InstructorPanel.add(instructorClearAllButton);
 		
 		JScrollPane instructorTableScrollPane = new JScrollPane();
-		instructorTableScrollPane.setBounds(150, 122, 805, 367);
+		instructorTableScrollPane.setBounds(150, 122, 795, 329);
 		InstructorPanel.add(instructorTableScrollPane);
 		
 		instructorTable = new JTable();
@@ -2531,7 +2518,7 @@ public class ManagerMenu
 		
 		JPanel facilityOptionsPanel = new JPanel();
 		facilityOptionsPanel.setBorder(new TitledBorder(null, "Facility", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		facilityOptionsPanel.setBounds(10, 132, 146, 159);
+		facilityOptionsPanel.setBounds(10, 102, 146, 159);
 		FacilityPanel.add(facilityOptionsPanel);
 		facilityOptionsPanel.setLayout(null);
 		
@@ -2791,7 +2778,7 @@ public class ManagerMenu
 		facilityAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		facilityTableScrollPane = new JScrollPane();
-		facilityTableScrollPane.setBounds(166, 132, 789, 357);
+		facilityTableScrollPane.setBounds(166, 102, 779, 349);
 		FacilityPanel.add(facilityTableScrollPane);
 		
 		facilityTable = new JTable();
@@ -2808,9 +2795,22 @@ public class ManagerMenu
 			}
 		});
 		facilityClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
-		facilityClearAllButton.setBounds(10, 302, 146, 25);
+		facilityClearAllButton.setBounds(10, 272, 146, 25);
 		FacilityPanel.add(facilityClearAllButton);
-		frame.setUndecorated(true);
+		
+		JButton logOffButton = new JButton("Log Off");
+		logOffButton.setBounds(849, 512, 125, 39);
+		frame.getContentPane().add(logOffButton);
+		logOffButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				frame.dispose();
+				LoginMenu loginMenu = LoginMenu.getInstance();
+				loginMenu.frame.setVisible(true);
+			}
+		});
+		logOffButton.setFont(new Font("Tahoma", Font.BOLD, 15));
+		//frame.setUndecorated(true);
 	}
 	
 	public void setManagerName(String managerName)
