@@ -53,6 +53,7 @@ public class DBTeam implements IFDBTeam
 		return teamObj;
 	}
 	
+	//single selection where
 	private Team singleWhere(String wClause)
 	{
 		ResultSet results;
@@ -81,6 +82,7 @@ public class DBTeam implements IFDBTeam
 		return teamObj;
 	}
 	
+	//misc selection where
 	private LinkedList<Team> miscWhere(String wClause)
 	{
 		ResultSet results;
@@ -125,6 +127,7 @@ public class DBTeam implements IFDBTeam
 		return singleWhere(wClause);
 	}
 
+	@Override
 	public LinkedList<Team> getTeamsByLeaderId(int leaderId)
 	{
 		String wClause = " leaderId= '" + leaderId + "'";
@@ -185,6 +188,7 @@ public class DBTeam implements IFDBTeam
 		{
 			System.out.println("Update exception: " + e);
 		}
+		
 		return(result);
 	}
 
@@ -207,6 +211,7 @@ public class DBTeam implements IFDBTeam
 		{
 			System.out.println("Delete exception: " + e);
 		}
+		
 		return(result);
 	}
 
@@ -229,6 +234,7 @@ public class DBTeam implements IFDBTeam
 		{
 			System.out.println("Delete exception: " + e);
 		}
+		
 		return(result);
 	}
 

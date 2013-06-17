@@ -19,6 +19,7 @@ public class DBGuest implements IFDBGuest
 		con = DBConnection1.getInstance().getDBcon();
 	}
 	
+	@Override
 	public int insertGuest(Guest guest) throws Exception
 	{
 		int rc = -1;
@@ -37,9 +38,8 @@ public class DBGuest implements IFDBGuest
 		{
 			query = "INSERT INTO Guest(personId, guestType) VALUES('" + guestObj.getId() + "','" + 	guestObj.getGuestType() +  "')";
 		}
-		
-		
 		System.out.println("Insertion query: " + query);
+		
 		try
 		{
 			Statement stmt = con.createStatement();
@@ -55,11 +55,12 @@ public class DBGuest implements IFDBGuest
 		return rc;
 	}
 
-	
+	@Override
 	public int updateGuest(Guest gst)
 	{
-		Guest guest = gst;
 		int rc = -1;
+		
+		Guest guest = gst;
 		TravelAgency travelAgencyObj = new TravelAgency();
 		travelAgencyObj =guest.getTravelAgency();
 		String query = new String();
@@ -78,7 +79,6 @@ public class DBGuest implements IFDBGuest
 		"travelAgency=  '0' " +
 					"WHERE personId= '" + guest.getId() + "'";
 		}
-		
 		System.out.println("Update query: " + query);
 		
 		try
@@ -96,6 +96,7 @@ public class DBGuest implements IFDBGuest
 		return rc;
 	}
 	
+	@Override
 	public int deleteGuest(int guestId)
 	{
 		int rc=-1;
@@ -114,6 +115,7 @@ public class DBGuest implements IFDBGuest
    	    {
 	 	  	System.out.println("Delete exception: "+ex);
    	    }
+	  	
 		return(rc);
 	}
 	
@@ -132,10 +134,8 @@ public class DBGuest implements IFDBGuest
 	private Guest buildGuest(ResultSet results)
 	{
 		Guest rbObj = new Guest();
-		
 		IFDBPerson dbPerson = new DBPerson();
 		Person personObj = new Person();
-		
 		IFDBTravelAgency dbTravelAgency = new DBTravelAgency();
 		TravelAgency travelAgencyObj = new TravelAgency();
 		
@@ -156,8 +156,6 @@ public class DBGuest implements IFDBGuest
 			}
 			
 			rbObj.setGuestType(results.getString("guestType"));
-			
-			
 			personObj = dbPerson.searchPersonById(id, true);
 			rbObj.setName(personObj.getName());
 			rbObj.setZipCode(personObj.getZipcode());
@@ -176,6 +174,7 @@ public class DBGuest implements IFDBGuest
 		return rbObj;
 	}
 	
+	//single where selection
 	private Guest singleWhere(String wClause)
 	{
 		ResultSet results;
@@ -207,6 +206,7 @@ public class DBGuest implements IFDBGuest
 		return rbObj;
 	}
 	
+	//misc where selection
 	private LinkedList<Guest> miscWhere(String wClause)
 	{
 		ResultSet results;
@@ -234,23 +234,23 @@ public class DBGuest implements IFDBGuest
 		return list;
 	}
 	
+	@Override
 	public LinkedList<Guest> getAllGuests()
 	{
 		return miscWhere("");
 	}
 
+	@Override
 	public Guest searchGuestById(int personId)
 	{
 		String wClause = " personId= '" + personId + "'";
 		return singleWhere(wClause);
 	}
 	
+	@Override
 	public Guest findGuestInRoom(String date, int roomNo, boolean retrieveAssociation)
 	{
 		return singleWhere("personId=(SELECT guestId FROM RoomLine WHERE booking=(SELECT id FROM RoomBooking " +
 				"WHERE arrivalDate<='"+date+" AND departureDate>='"+date+") AND roomNo='"+roomNo+"')");
 	}
-	
-	
-
 }

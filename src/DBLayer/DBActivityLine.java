@@ -91,12 +91,13 @@ public class DBActivityLine implements IFDBActivityLine
 		return activityLineObj;
 	}
 	
+	//single where selection
 	private ActivityLine singleWhere(String wClause)
 	{
 		ResultSet results;
 		ActivityLine activityLineObj = new ActivityLine();
 		String query = buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -121,12 +122,13 @@ public class DBActivityLine implements IFDBActivityLine
 		return activityLineObj;
 	}
 	
+	//misc where selection
 	private LinkedList<ActivityLine> miscWhere(String wClause)
 	{
 		ResultSet results;
 		LinkedList<ActivityLine> activityLineList=new LinkedList<ActivityLine>();
 		String query =  buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{

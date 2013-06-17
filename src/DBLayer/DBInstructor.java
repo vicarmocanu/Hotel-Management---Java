@@ -33,10 +33,8 @@ public class DBInstructor implements IFDBInstructor
 	private Instructor buildInstructor(ResultSet results)
 	{
 		Instructor instructorObj= new Instructor();
-		
 		IFDBEmployee dbEmployee = new DBEmployee();
 		Employee employeeObj = new Employee();
-		
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
 		
@@ -58,7 +56,6 @@ public class DBInstructor implements IFDBInstructor
 			
 			instructorObj.setPrice(results.getDouble("price"));
 			instructorObj.setStatus(results.getString("status"));
-			
 			employeeObj = dbEmployee.getEmployeeById(employeeId);
 			instructorObj.setName(employeeObj.getName());
 			instructorObj.setZipcode(employeeObj.getZipcode());
@@ -82,6 +79,7 @@ public class DBInstructor implements IFDBInstructor
 	private Instructor singleWhere (String wClause)
 	{
 		ResultSet results;
+		
 		Instructor instructorObj=new Instructor();		
 		String query = buildQuery(wClause);
 		System.out.println("Query: " + query);
@@ -115,6 +113,7 @@ public class DBInstructor implements IFDBInstructor
 	private LinkedList<Instructor> miscWhere (String wClause)
 	{
 		ResultSet results;
+		
 		LinkedList<Instructor> instructorList=new LinkedList<Instructor>();
 		String query =  buildQuery(wClause);
 		System.out.println("Query: " + query);
@@ -142,17 +141,20 @@ public class DBInstructor implements IFDBInstructor
 		return instructorList;
 	}
 
+	@Override
 	public LinkedList<Instructor> getAllInstructors()
 	{
 		return miscWhere("");
 	}
 	
+	@Override
 	public Instructor getInstructorById(int employeeId)
 	{
 		String wClause = "  employeeId= '" + employeeId + "'";
 		return singleWhere(wClause);
 	}
 	
+	@Override
 	public int insertInstructor(Instructor instructorObj) throws Exception
 	{
 		int result = -1;
@@ -173,8 +175,8 @@ public class DBInstructor implements IFDBInstructor
 					instructorObj.getId() + "','" + instructorObj.getPrice() + "','" +
 					instructorObj.getStatus() + "')";
 		}
-		
 		System.out.println("Insert query: " + query);
+		
 	    try
 	    {
 	    	Statement stmt = con.createStatement();
@@ -190,9 +192,11 @@ public class DBInstructor implements IFDBInstructor
 	    return(result);
 	}
 	
+	@Override
 	public int updateInstructor(Instructor instructorObj)
 	{
 		int result=-1;
+		
 		String query = new String();
 		ActivityType activityTypeObj = new ActivityType();
 		activityTypeObj = instructorObj.getActivityType();
@@ -211,7 +215,6 @@ public class DBInstructor implements IFDBInstructor
 								"status= '" + instructorObj.getStatus() + "' " +
 					"WHERE employeeId= '" + instructorObj.getId() + "'";
 		}
-		
 		System.out.println("Update query: " + query);
 		
 		try
@@ -229,6 +232,7 @@ public class DBInstructor implements IFDBInstructor
 		return(result);
 	}
 	
+	@Override
 	public int deleteInstructorById(int employeeId)
 	{
 		int result=-1;
@@ -245,10 +249,12 @@ public class DBInstructor implements IFDBInstructor
 	  	catch(SQLException e)
 	  	{
 	  		System.out.println("Delete exception: " + e);
-	  	}	  	
+	  	}
+	  	
 	  	return(result);
 	}
 	
+	@Override
 	public LinkedList<Instructor> getActivityAvailableInstructors(int activityTypeId, String status)
 	{
 		String wClause = "  activityType= '" + activityTypeId + "' AND status='" + status + "'";

@@ -33,7 +33,6 @@ public class DBFacility implements IFDBFacility
 	private Facility buildFacility(ResultSet results)
 	{
 		Facility facilityObj=new Facility();
-		
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = new ActivityType();
 		
@@ -59,16 +58,18 @@ public class DBFacility implements IFDBFacility
 		{
 			System.out.println("Exception in building the facility object: " + e);
 		}
+		
 		return facilityObj;
 	}
 	
+	//single where selection
 	private Facility singleWhere(String wClause)
 	{
 		ResultSet results;
-		Facility facilityObj=new Facility();
 		
+		Facility facilityObj=new Facility();
 		String query = buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -90,15 +91,18 @@ public class DBFacility implements IFDBFacility
 		{
 			System.out.println("Single selection query exception: " + e);
 		}
+		
 		return facilityObj;
 	}
 	
+	//misc where selection
 	private LinkedList<Facility> miscWhere(String wClause)
 	{
 		ResultSet results;
+		
 		LinkedList<Facility> facilityList=new LinkedList<Facility>();
 		String query =  buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -178,7 +182,6 @@ public class DBFacility implements IFDBFacility
 								facilityObj.getName() + "','" +
 					facilityObj.getStatus() + "')";
 		}
-		
 		System.out.println("Insertion query: " + query);
 		
 		try
@@ -190,7 +193,7 @@ public class DBFacility implements IFDBFacility
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Insert exception: " + e);
+			System.out.println("Insertion exception: " + e);
 		}
 		
 		return(result);
@@ -200,6 +203,7 @@ public class DBFacility implements IFDBFacility
 	public int updateFacility(Facility facilityObj)
 	{
 		int result=-1;
+		
 		String query = new String();		
 		ActivityType activityTypeObj = new ActivityType();
 		activityTypeObj = facilityObj.getActivity();
@@ -264,7 +268,7 @@ public class DBFacility implements IFDBFacility
 	@Override
 	public LinkedList<Facility> getAvailableFacilitiesForActivity(int activityId, String status) 
 	{
-		String wClause = "  forActivity= '" + activityId + "' AND status='" + status + "'";
+		String wClause = " forActivity= '" + activityId + "' AND status='" + status + "'";
 		return miscWhere(wClause);
 	}
 	
@@ -274,7 +278,6 @@ public class DBFacility implements IFDBFacility
 		int instances = 0;
 		
 		ResultSet results;
-		
 		String query = "SELECT COUNT(*) AS facilityInstances FROM Facility " + 
 		" WHERE id<> '" +  id + "' AND name= '" + name + "'";
 		System.out.println(query);
@@ -296,6 +299,7 @@ public class DBFacility implements IFDBFacility
 		{
 			System.out.println("Exception in returning the facility instance count: " + e);
 		}
+		
 		return instances;
 	}
 }

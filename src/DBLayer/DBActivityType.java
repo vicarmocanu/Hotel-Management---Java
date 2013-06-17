@@ -54,7 +54,7 @@ public class DBActivityType implements IFDBActivityType
 		ActivityType activityTypeObj=new ActivityType();
 		
 		String query = buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -86,7 +86,7 @@ public class DBActivityType implements IFDBActivityType
 		ResultSet results;
 		LinkedList<ActivityType> activityTypeList=new LinkedList<ActivityType>();
 		String query =  buildQuery(wClause);
-		System.out.println(query);
+		System.out.println("Query: " + query);
 		
 		try
 		{
@@ -113,14 +113,14 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//get all activity types
-	
+	@Override
 	public LinkedList<ActivityType> getAllActivityTypes()
 	{
 		return miscWhere("");
 	}
 
 	//get an activity type by id
-	
+	@Override
 	public ActivityType getActivityTypeByID(int id)
 	{
 		String wClause = "  id= '" + id + "'";
@@ -128,7 +128,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//get an activity type by name
-	
+	@Override
 	public ActivityType getActivityTypeByName(String name)
 	{
 		String wClause = " name= '" + name + "'";
@@ -136,7 +136,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 	
 	//insert a new activity type into the database
-	
+	@Override
 	public int insertActivityType(ActivityType activityTypeObj) throws Exception
 	{
 		//call to get the next activity type id
@@ -150,7 +150,7 @@ public class DBActivityType implements IFDBActivityType
 		nextActivityTypeId + "','" +
 				activityTypeObj.getName() + "','" +
 		activityTypeObj.getMaxParticipants() +  "')";
-		System.out.println("Insert query: " + query);
+		System.out.println("Insertion query: " + query);
 		
 		try
 		{
@@ -161,24 +161,24 @@ public class DBActivityType implements IFDBActivityType
 		}
 		catch(SQLException e)
 		{
-	    	System.out.println("Insert exception: " + e);
+	    	System.out.println("Insertion exception: " + e);
 	    }
 	    
 	    return(result);
 	}
 
 	//method to update an activity type
-	
+	@Override
 	public int updateActivityType(ActivityType activityTypeObj)
 	{
+		int result=-1;
+		
 		ActivityType activityTypeNewObj=activityTypeObj;
 		
 		String query="UPDATE ActivityType SET " +
 		"name= '" + activityTypeNewObj.getName() + "', " +
 		"maxParticipants= '" + activityTypeNewObj.getMaxParticipants() + "' " + 
 		"WHERE id= '" + activityTypeNewObj.getID() + "'";
-		
-		int result=-1;
 		System.out.println("Update query: " + query);
 		
 		try
@@ -197,7 +197,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//method to delete an activity type by its id
-	
+	@Override
 	public int deleteActivityTypeByID(int id)
 	{
 		int result=-1;
@@ -220,7 +220,7 @@ public class DBActivityType implements IFDBActivityType
 	}
 
 	//method to delete an activity type by its name
-	
+	@Override
 	public int deleteActivityTypeByName(String name)
 	{
 		int result=-1;
