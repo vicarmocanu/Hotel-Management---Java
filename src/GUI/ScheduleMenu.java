@@ -189,7 +189,7 @@ public class ScheduleMenu
 				}
 			}
 		});
-		btnNewButton.setBounds(260, 30, 126, 23);
+		btnNewButton.setBounds(261, 37, 138, 34);
 		frame.getContentPane().add(btnNewButton);
 		
 		JScrollPane scrollPane = new JScrollPane();

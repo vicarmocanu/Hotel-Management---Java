@@ -195,7 +195,7 @@ public class InstructorMenu
 				}
 			}
 		});
-		button_1.setBounds(254, 30, 126, 23);
+		button_1.setBounds(258, 27, 136, 34);
 		personalSchedulePanel.add(button_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
