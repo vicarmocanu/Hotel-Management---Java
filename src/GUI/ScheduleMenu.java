@@ -119,9 +119,7 @@ public class ScheduleMenu
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if(	comboBox.getSelectedItem().equals(null) == true || 
-						comboBox_1.getSelectedItem().equals(null)  == true || 
-						comboBox_2.getSelectedItem().equals(null) == true )
+				if(	comboBox.getSelectedItem() == null || comboBox_1.getSelectedItem() == null || comboBox_2.getSelectedItem() == null)
 				{
 					JOptionPane.showMessageDialog(null, "Please insert the date for whitch the schedule is to be built.", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
@@ -130,62 +128,62 @@ public class ScheduleMenu
 					String day = (String) comboBox.getSelectedItem();
 					String month = (String) comboBox_2.getSelectedItem();
 					String year = (String) comboBox_1.getSelectedItem();
-					String date = day + "-" + month + "-" + year;
+					String inputDate = day + "-" + month + "-" + year;
+					String insertDate = year + "-" + month + "-" + day;
 					
-					if(DateCheck.isDateValid(date) != true)
+					if(DateCheck.isDateValid(inputDate) != true)
 					{
 						JOptionPane.showMessageDialog(null, "Inserted date is incorrect. Please insert a valid date", "Error!", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
-						clearTable();
-						LinkedList<ActivityLine> dateActivityLines = new LinkedList<ActivityLine>();
-						dateActivityLines = activityBookingCtr.getDateActivityLines(date);
-						
-						if(dateActivityLines.isEmpty() == false)
+						if(dateCheck.checkIfDateIsOlder(inputDate) != true)
 						{
-							DefaultTableModel model = new DefaultTableModel()
+							JOptionPane.showMessageDialog(null, "Cannot insert a date older than the current date.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							clearTable();
+							LinkedList<ActivityLine> dateActivityLines = new LinkedList<ActivityLine>();
+							dateActivityLines = activityBookingCtr.getDateActivityLines(insertDate);
+						
+							if(dateActivityLines.isEmpty() == false)
 							{
-								private static final long serialVersionUID = 1L;
-								public boolean isCellEditable(int row, int column)
+								DefaultTableModel model = new DefaultTableModel()
 								{
-									//all cells false
-									return false;
-								}
-							};
-							
-							model.setColumnIdentifiers(new String[] {"Date", "Start Hour", "Facility", "Instructor"});
-							
-							try
-							{
-									for(ActivityLine activityLineObj : dateActivityLines)
+									private static final long serialVersionUID = 1L;
+									@Override
+									public boolean isCellEditable(int row, int column)
 									{
-										String instructorName = "";
-										if(activityLineObj.getInstructor() != null)
-										{
-											instructorName = activityLineObj.getInstructor().getName();
-										}
-										
-									
-										model.addRow(new String[]
+										//all cells false
+										return false;
+									}
+								};
+								
+								model.setColumnIdentifiers(new String[] {"Date", "Start Hour", "Facility", "Instructor"});
+								
+								for(ActivityLine activityLineObj : dateActivityLines)
+								{
+									String instructorName = "";
+									if(activityLineObj.getInstructor() != null)
+									{
+										instructorName = activityLineObj.getInstructor().getName();
+									}
+									model.addRow(new String[]
 										{
 										activityLineObj.getDate(),
 										activityLineObj.getStartHour(),
 										activityLineObj.getFacility().getName(),
 										instructorName
 										});
-									}
+								}
+								
+								table.setModel(model);
 							}
-							catch(Exception e)
+							else
 							{
-								System.out.println("Exception: " + e);
+								JOptionPane.showMessageDialog(null, "There are no activity bookings on this date", "Error!", JOptionPane.ERROR_MESSAGE);
 							}
-							
-							table.setModel(model);
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(null, "There are no activity bookings on this date", "Error!", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				}
