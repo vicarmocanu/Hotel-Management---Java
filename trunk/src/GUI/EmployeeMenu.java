@@ -22,6 +22,7 @@ import Controller.RoomBookingCtr;
 import Model.Room;
 import Model.RoomBooking;
 import Model.RoomLine;
+import javax.swing.JComboBox;
 
 public class EmployeeMenu
 {
@@ -38,6 +39,10 @@ public class EmployeeMenu
 	private JTextField txtDepDD;
 	private JTextField txtDepmm;
 	private JTextField txtDepyyyy;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 	
 	public EmployeeMenu()
 	{
@@ -47,10 +52,10 @@ public class EmployeeMenu
 	
 	private void initialize()
 	{
-		frame = new JFrame();
+		frame = new JFrame("Employee menu");
 		frame.setFont(new Font("Dialog", Font.PLAIN, 14));
 		frame.setBackground(Color.WHITE);
-		frame.setBounds(100, 100, 1000, 600);
+		frame.setBounds(100, 100, 1000, 660);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -64,11 +69,11 @@ public class EmployeeMenu
 			}
 		});
 		logOffButton.setFont(new Font("Tahoma", Font.BOLD, 15));
-		logOffButton.setBounds(865, 550, 125, 39);
+		logOffButton.setBounds(845, 572, 125, 39);
 		frame.getContentPane().add(logOffButton);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 980, 528);
+		tabbedPane.setBounds(10, 11, 960, 550);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel WelcomePanel = new JPanel();
@@ -584,6 +589,258 @@ public class EmployeeMenu
 		
 		JPanel ActivityBookingPanel = new JPanel();
 		tabbedPane.addTab("Activity booking", null, ActivityBookingPanel, null);
+		ActivityBookingPanel.setLayout(null);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		panel_2.setBorder(new TitledBorder(null, "Activity booking", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBounds(10, 11, 237, 227);
+		ActivityBookingPanel.add(panel_2);
+		
+		JLabel label_4 = new JLabel("Date:");
+		label_4.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_4.setBounds(6, 33, 90, 14);
+		panel_2.add(label_4);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBorder(new TitledBorder(null, "dd", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_3.setBounds(39, 16, 57, 43);
+		panel_2.add(panel_3);
+		
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setBounds(6, 16, 45, 20);
+		panel_3.add(comboBox);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setLayout(null);
+		panel_4.setBorder(new TitledBorder(null, "MM", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_4.setBounds(97, 16, 56, 43);
+		panel_2.add(panel_4);
+		
+		JComboBox<String> comboBox_1 = new JComboBox<String>();
+		comboBox_1.setBounds(6, 16, 45, 20);
+		panel_4.add(comboBox_1);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setLayout(null);
+		panel_5.setBorder(new TitledBorder(null, "yyyy", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_5.setBounds(152, 16, 77, 43);
+		panel_2.add(panel_5);
+		
+		JComboBox<String> comboBox_2 = new JComboBox<String>();
+		comboBox_2.setBounds(6, 16, 65, 20);
+		panel_5.add(comboBox_2);
+		
+		JLabel label_5 = new JLabel("Selected date:");
+		label_5.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_5.setBounds(6, 67, 122, 14);
+		panel_2.add(label_5);
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		textField.setColumns(10);
+		textField.setBounds(91, 64, 138, 20);
+		panel_2.add(textField);
+		
+		JLabel label_6 = new JLabel("Selected date:");
+		label_6.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_6.setBounds(6, 95, 122, 14);
+		panel_2.add(label_6);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(91, 92, 138, 20);
+		panel_2.add(textField_1);
+		
+		JButton button = new JButton("Create");
+		button.setBounds(4, 120, 225, 25);
+		panel_2.add(button);
+		button.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JButton button_1 = new JButton("Activate activity lines");
+		button_1.setBounds(6, 156, 225, 25);
+		panel_2.add(button_1);
+		button_1.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JButton button_2 = new JButton("All");
+		button_2.setBounds(6, 192, 225, 25);
+		panel_2.add(button_2);
+		button_2.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setLayout(null);
+		panel_6.setBorder(new TitledBorder(null, "Activity", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_6.setBounds(10, 237, 237, 93);
+		ActivityBookingPanel.add(panel_6);
+		
+		JLabel label_7 = new JLabel("Activity:");
+		label_7.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_7.setBounds(6, 19, 90, 14);
+		panel_6.add(label_7);
+		
+		JComboBox<String> comboBox_3 = new JComboBox<String>();
+		comboBox_3.setFont(new Font("Arial", Font.PLAIN, 11));
+		comboBox_3.setEnabled(false);
+		comboBox_3.setBounds(57, 16, 170, 20);
+		panel_6.add(comboBox_3);
+		
+		JLabel label_8 = new JLabel("Max participants:");
+		label_8.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_8.setBounds(6, 44, 90, 14);
+		panel_6.add(label_8);
+		
+		textField_2 = new JTextField();
+		textField_2.setEditable(false);
+		textField_2.setColumns(10);
+		textField_2.setBounds(104, 41, 123, 20);
+		panel_6.add(textField_2);
+		
+		JLabel label_9 = new JLabel("Start hour:");
+		label_9.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_9.setBounds(6, 69, 90, 14);
+		panel_6.add(label_9);
+		
+		JComboBox<String> comboBox_4 = new JComboBox<String>();
+		comboBox_4.setEnabled(false);
+		comboBox_4.setBounds(104, 66, 123, 20);
+		panel_6.add(comboBox_4);
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setLayout(null);
+		panel_7.setBorder(new TitledBorder(null, "Facility", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_7.setBounds(10, 330, 237, 75);
+		ActivityBookingPanel.add(panel_7);
+		
+		JLabel label_10 = new JLabel("Facility:");
+		label_10.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_10.setBounds(6, 19, 90, 14);
+		panel_7.add(label_10);
+		
+		JComboBox<String> comboBox_5 = new JComboBox<String>();
+		comboBox_5.setFont(new Font("Arial", Font.PLAIN, 11));
+		comboBox_5.setEnabled(false);
+		comboBox_5.setBounds(57, 16, 170, 20);
+		panel_7.add(comboBox_5);
+		
+		JButton button_3 = new JButton("Get facilities");
+		button_3.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_3.setEnabled(false);
+		button_3.setBounds(6, 43, 225, 25);
+		panel_7.add(button_3);
+		
+		JPanel panel_8 = new JPanel();
+		panel_8.setLayout(null);
+		panel_8.setBorder(new TitledBorder(null, "Instructor", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_8.setBounds(10, 407, 237, 100);
+		ActivityBookingPanel.add(panel_8);
+		
+		JLabel label_11 = new JLabel("Instructor:");
+		label_11.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_11.setBounds(6, 19, 90, 14);
+		panel_8.add(label_11);
+		
+		JComboBox<String> comboBox_6 = new JComboBox<String>();
+		comboBox_6.setFont(new Font("Arial", Font.PLAIN, 11));
+		comboBox_6.setEnabled(false);
+		comboBox_6.setBounds(60, 16, 170, 20);
+		panel_8.add(comboBox_6);
+		
+		JButton button_4 = new JButton("Get instructors");
+		button_4.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_4.setEnabled(false);
+		button_4.setBounds(6, 40, 225, 25);
+		panel_8.add(button_4);
+		
+		JButton button_5 = new JButton("Clear");
+		button_5.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_5.setEnabled(false);
+		button_5.setBounds(6, 68, 225, 25);
+		panel_8.add(button_5);
+		
+		JPanel panel_10 = new JPanel();
+		panel_10.setLayout(null);
+		panel_10.setBorder(new TitledBorder(null, "Activity line", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_10.setBounds(708, 400, 237, 107);
+		ActivityBookingPanel.add(panel_10);
+		
+		JButton button_8 = new JButton("Add");
+		button_8.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_8.setEnabled(false);
+		button_8.setBounds(6, 11, 225, 25);
+		panel_10.add(button_8);
+		
+		JButton button_9 = new JButton("Cancel activity");
+		button_9.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_9.setEnabled(false);
+		button_9.setBounds(6, 46, 225, 25);
+		panel_10.add(button_9);
+		
+		JButton button_10 = new JButton("All");
+		button_10.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_10.setEnabled(false);
+		button_10.setBounds(6, 75, 225, 25);
+		panel_10.add(button_10);
+		
+		JPanel panel_11 = new JPanel();
+		panel_11.setLayout(null);
+		panel_11.setBorder(new TitledBorder(null, "Activity lines", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_11.setBounds(257, 237, 688, 162);
+		ActivityBookingPanel.add(panel_11);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 21, 672, 130);
+		panel_11.add(scrollPane_1);
+		
+		JPanel panel_12 = new JPanel();
+		panel_12.setLayout(null);
+		panel_12.setBorder(new TitledBorder(null, "Activity bookings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_12.setBounds(257, 11, 688, 215);
+		ActivityBookingPanel.add(panel_12);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(6, 16, 672, 188);
+		panel_12.add(scrollPane_2);
+		
+		JPanel panel_9 = new JPanel();
+		panel_9.setBounds(256, 407, 272, 100);
+		ActivityBookingPanel.add(panel_9);
+		panel_9.setLayout(null);
+		panel_9.setBorder(new TitledBorder(null, "Team", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		JLabel label_12 = new JLabel("Team:");
+		label_12.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_12.setBounds(6, 19, 90, 14);
+		panel_9.add(label_12);
+		
+		JComboBox<String> comboBox_7 = new JComboBox<String>();
+		comboBox_7.setFont(new Font("Arial", Font.PLAIN, 11));
+		comboBox_7.setEnabled(false);
+		comboBox_7.setBounds(60, 16, 65, 20);
+		panel_9.add(comboBox_7);
+		
+		JButton button_6 = new JButton("Get teams");
+		button_6.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_6.setEnabled(false);
+		button_6.setBounds(6, 40, 256, 25);
+		panel_9.add(button_6);
+		
+		JButton button_7 = new JButton("Clear");
+		button_7.setFont(new Font("Arial", Font.PLAIN, 11));
+		button_7.setEnabled(false);
+		button_7.setBounds(6, 68, 256, 25);
+		panel_9.add(button_7);
+		
+		JLabel label_13 = new JLabel("Participants:");
+		label_13.setFont(new Font("Arial", Font.PLAIN, 11));
+		label_13.setBounds(135, 19, 90, 14);
+		panel_9.add(label_13);
+		
+		textField_3 = new JTextField();
+		textField_3.setEditable(false);
+		textField_3.setColumns(10);
+		textField_3.setBounds(198, 16, 65, 20);
+		panel_9.add(textField_3);
 		
 		
 	}

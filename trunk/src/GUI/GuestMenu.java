@@ -93,7 +93,7 @@ public class GuestMenu
 
 	private void initialize()
 	{
-		frame = new JFrame();
+		frame = new JFrame("Guest menu");
 		frame.setFont(new Font("Dialog", Font.PLAIN, 14));
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 1000, 650);
