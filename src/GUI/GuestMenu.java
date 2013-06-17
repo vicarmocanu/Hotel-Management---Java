@@ -1239,6 +1239,19 @@ public class GuestMenu
 		logOffButton.setFont(new Font("Tahoma", Font.BOLD, 15));
 		logOffButton.setBounds(849, 562, 125, 39);
 		frame.getContentPane().add(logOffButton);
+		
+		JButton activityBookingScheduleButton = new JButton("Activity schedule");
+		activityBookingScheduleButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				ScheduleMenu scheduleMenu = new ScheduleMenu();
+				scheduleMenu.frame.setVisible(true);
+			}
+		});
+		activityBookingScheduleButton.setFont(new Font("Tahoma", Font.BOLD, 15));
+		activityBookingScheduleButton.setBounds(667, 562, 172, 39);
+		frame.getContentPane().add(activityBookingScheduleButton);
 	}
 	
 	public void setGuestName(String guestName)
@@ -1586,5 +1599,4 @@ public class GuestMenu
 		activityBookingsTable.setCellSelectionEnabled(false);
 		activityBookingsTable.setModel(new DefaultTableModel());
 	}
-	
 }

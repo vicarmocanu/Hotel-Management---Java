@@ -25,7 +25,7 @@ public class ScheduleMenu
 	private DateCheck dateCheck = new DateCheck();
 	private ActivityBookingCtr activityBookingCtr = new ActivityBookingCtr();
 
-	private JFrame frame;
+	public JFrame frame;
 	private JTable table;
 	JComboBox<String> comboBox;
 	JComboBox<String> comboBox_1;
@@ -47,7 +47,7 @@ public class ScheduleMenu
 	{
 		frame = new JFrame("Schedule");
 		frame.setBounds(100, 100, 900, 550);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel_3 = new JPanel();
@@ -126,8 +126,8 @@ public class ScheduleMenu
 				else
 				{
 					String day = (String) comboBox.getSelectedItem();
-					String month = (String) comboBox_2.getSelectedItem();
-					String year = (String) comboBox_1.getSelectedItem();
+					String month = (String) comboBox_1.getSelectedItem();
+					String year = (String) comboBox_2.getSelectedItem();
 					String inputDate = day + "-" + month + "-" + year;
 					String insertDate = year + "-" + month + "-" + day;
 					
