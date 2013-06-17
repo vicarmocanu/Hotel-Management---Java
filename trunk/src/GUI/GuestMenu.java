@@ -208,6 +208,8 @@ public class GuestMenu
 				if(dayComboBox.getSelectedItem() == null || monthComboBox.getSelectedItem() == null || yearComboBox.getSelectedItem() == null)
 				{
 					JOptionPane.showMessageDialog(null, "Please insert the date of booking.", "Error!", JOptionPane.ERROR_MESSAGE);
+					clearActivityLinePanels();
+					clearActivityLinesTable();
 					activityLineDisabler();
 				}
 				else
@@ -261,8 +263,6 @@ public class GuestMenu
 						}
 					}
 				}
-				
-			
 			}
 		});
 		createActivityBookingButton.setBounds(6, 86, 225, 25);
@@ -591,7 +591,6 @@ public class GuestMenu
 		teamPanel.add(activityTeamIdLabel);
 		
 		activityBookingAllTeamsComboBox = new JComboBox<String>();
-		
 		activityBookingAllTeamsComboBox.addActionListener(new ActionListener()
 		{
 			@Override
@@ -613,7 +612,6 @@ public class GuestMenu
 				}
 			}
 		});
-		
 		activityBookingAllTeamsComboBox.setEnabled(false);
 		activityBookingAllTeamsComboBox.setFont(new Font("Arial", Font.PLAIN, 11));
 		activityBookingAllTeamsComboBox.setBounds(60, 16, 65, 20);
@@ -686,11 +684,11 @@ public class GuestMenu
 		teamNumberOfParticipantsTextField.setBounds(198, 16, 65, 20);
 		teamPanel.add(teamNumberOfParticipantsTextField);
 		
-		JPanel activityLine = new JPanel();
-		activityLine.setBorder(new TitledBorder(null, "Activity line", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		activityLine.setBounds(708, 389, 237, 107);
-		panel_2.add(activityLine);
-		activityLine.setLayout(null);
+		JPanel activityLinePanel = new JPanel();
+		activityLinePanel.setBorder(new TitledBorder(null, "Activity line", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		activityLinePanel.setBounds(708, 389, 237, 107);
+		panel_2.add(activityLinePanel);
+		activityLinePanel.setLayout(null);
 		
 		addActivityLineButton = new JButton("Add");
 		addActivityLineButton.addActionListener(new ActionListener()
@@ -838,7 +836,7 @@ public class GuestMenu
 		});
 		addActivityLineButton.setEnabled(false);
 		addActivityLineButton.setBounds(6, 16, 225, 25);
-		activityLine.add(addActivityLineButton);
+		activityLinePanel.add(addActivityLineButton);
 		addActivityLineButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		cancelActivityLineButton = new JButton("Cancel activity");
@@ -896,7 +894,7 @@ public class GuestMenu
 		});
 		cancelActivityLineButton.setEnabled(false);
 		cancelActivityLineButton.setBounds(6, 46, 225, 25);
-		activityLine.add(cancelActivityLineButton);
+		activityLinePanel.add(cancelActivityLineButton);
 		cancelActivityLineButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		allActivityLinesButton = new JButton("All");
@@ -910,7 +908,7 @@ public class GuestMenu
 		});
 		allActivityLinesButton.setEnabled(false);
 		allActivityLinesButton.setBounds(6, 75, 225, 25);
-		activityLine.add(allActivityLinesButton);
+		activityLinePanel.add(allActivityLinesButton);
 		allActivityLinesButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		JPanel activityBookingTablePanel = new JPanel();
@@ -1458,6 +1456,9 @@ public class GuestMenu
 					monthComboBox.setSelectedItem(month);
 					yearComboBox.setSelectedItem(year);
 					bookingId = activityBookingObj.getId();
+					clearActivityLinePanels();
+					clearActivityLinesTable();
+					activityLineDisabler();
 				}
 			}
 		});
