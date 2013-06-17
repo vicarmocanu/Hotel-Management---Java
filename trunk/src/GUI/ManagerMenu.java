@@ -116,14 +116,14 @@ public class ManagerMenu
 		frame.setVisible(true);
 	}
 	
-	public void clearTable()
+	private void clearTable()
 	{
 		DefaultTableModel tdm=(DefaultTableModel)travelAgencyTable.getModel();
 		tdm.getDataVector().removeAllElements();
 		tdm.fireTableDataChanged();
 	}
 	
-	public void clearValues()
+	private void clearValues()
 	{
 		travelAgencyCVRTextField.setText("");
 		travelAgencyNameTextField.setText("");
@@ -2916,7 +2916,7 @@ public class ManagerMenu
 		return facilityTableModel;
 	}
 	
-	public void clearFacilityPanel()
+	private void clearFacilityPanel()
 	{
 		facilityIdTextField.setText("");
 		facilityNameTextField.setText("");
@@ -2924,13 +2924,13 @@ public class ManagerMenu
 		statusComboBox.setSelectedItem(null);
 	}
 	
-	public void clearFacilityTable()
+	private void clearFacilityTable()
 	{
 		facilityTable.setCellSelectionEnabled(false);
 		facilityTable.setModel(new DefaultTableModel());
 	}
 	
-	public DefaultTableModel getActivityTypeTableModel()
+	private DefaultTableModel getActivityTypeTableModel()
 	{
 		LinkedList<ActivityType> completeActivityTypeList = new LinkedList<ActivityType>();
 		completeActivityTypeList = activityTypeCtr.getAllActivityTypes();
@@ -2988,20 +2988,20 @@ public class ManagerMenu
 		return activityTypeModel;
 	}
 	
-	public void clearActivityTypePanel()
+	private void clearActivityTypePanel()
 	{
 		activityTypeIdTextField.setText("");
 		activityTypeNameTextField.setText("");
 		maxParticipantsTextField.setText("");
 	}
 	
-	public void clearActivityTypeTable()
+	private void clearActivityTypeTable()
 	{
 		activityTypeTable.setCellSelectionEnabled(false);
 		activityTypeTable.setModel(new DefaultTableModel());
 	}
 	
-	public DefaultTableModel getGuestTableModel()
+	private DefaultTableModel getGuestTableModel()
 	{
 		LinkedList<Guest> completeGuestList = new LinkedList<Guest>();
 		completeGuestList = guestCtr.getAllGuests();
@@ -3112,7 +3112,7 @@ public class ManagerMenu
 		return guestTableModel;
 	}
 	
-	public void clearGuestPanel()
+	private void clearGuestPanel()
 	{
 		guestIdTextField.setText("");
 		guestNameTextField.setText("");
@@ -3127,13 +3127,13 @@ public class ManagerMenu
 		guestTravelAgencyComboBox.setSelectedItem(null);
 	}
 	
-	public void clearGuestTable()
+	private void clearGuestTable()
 	{
 		guestTable.setCellSelectionEnabled(false);
 		guestTable.setModel(new DefaultTableModel());
 	}
 	
-	public DefaultTableModel getEmployeeTableModel()
+	private DefaultTableModel getEmployeeTableModel()
 	{
 		LinkedList<Employee> completeEmployeeList = new LinkedList<Employee>();
 		completeEmployeeList = employeeCtr.getAllEmployees();
@@ -3218,7 +3218,7 @@ public class ManagerMenu
 		return employeeTableModel;
 	}
 	
-	public void clearInstructorPanel()
+	private void clearInstructorPanel()
 	{
 		instructorIdTextField.setText("");
 		instructorNameTextField.setText("");
@@ -3235,13 +3235,13 @@ public class ManagerMenu
 		instructorActivityTypeComboBox.setSelectedItem(null);
 	}
 	
-	public void clearInstructorTable()
+	private void clearInstructorTable()
 	{
 		instructorTable.setCellSelectionEnabled(false);
 		instructorTable.setModel(new DefaultTableModel());
 	}
 	
-	public DefaultTableModel getTravelAgencyTableModel()
+	private DefaultTableModel getTravelAgencyTableModel()
 	{
 		LinkedList<TravelAgency> completeTravelAgencyList = new LinkedList<TravelAgency>();
 		completeTravelAgencyList = travelCtr.getAllTravelAgencies();
@@ -3333,7 +3333,7 @@ public class ManagerMenu
 		return travelAgencyTableModel;
 	}
 	
-	public void clearTravelAgencyPanel()
+	private void clearTravelAgencyPanel()
 	{
 		travelAgencyCVRTextField.setText("");
 		travelAgencyNameTextField.setText("");
@@ -3345,13 +3345,13 @@ public class ManagerMenu
 		travelAgencyEmailTextField.setText("");
 	}
 	
-	public void clearTravelAgencyTable()
+	private void clearTravelAgencyTable()
 	{
 		travelAgencyTable.setCellSelectionEnabled(false);
 		travelAgencyTable.setModel(new DefaultTableModel());
 	}
 	
-	public void clearEmployeePanel()
+	private void clearEmployeePanel()
 	{
 		employeeIdTextField.setText("");
 		employeeNameTextField.setText("");
@@ -3366,13 +3366,13 @@ public class ManagerMenu
 		
 	}
 	
-	public void clearEmployeeTable()
+	private void clearEmployeeTable()
 	{
 		employeeTable.setCellSelectionEnabled(false);
 		employeeTable.setModel(new DefaultTableModel());
 	}
 	
-	public DefaultTableModel getInstructorTableModel()
+	private DefaultTableModel getInstructorTableModel()
 	{
 		LinkedList<Instructor> completeInstructorList = new LinkedList<Instructor>();
 		completeInstructorList = instructorCtr.getAllInstructors();

@@ -201,7 +201,7 @@ public class ScheduleMenu
 		scrollPane.setViewportView(table);
 	}
 	
-	public void clearTable()
+	private void clearTable()
 	{
 		table.setModel(new DefaultTableModel());
 	}
