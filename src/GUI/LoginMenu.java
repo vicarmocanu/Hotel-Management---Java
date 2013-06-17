@@ -144,6 +144,18 @@ public class LoginMenu
 							passwordField.setText("");
 							frame.dispose();
 						}
+						else if(loginCtr.checkInstructor(universalId) == true)
+						{
+							InstructorMenu instructorMenu = new InstructorMenu();
+							personObj = dbPerson.searchPersonById(universalId, true);
+							String personName = personObj.getName();
+							instructorMenu.setInstructorName(personName);
+							instructorMenu.setUniversalId(universalId);
+							
+							textField.setText("");
+							passwordField.setText("");
+							frame.dispose();
+						}
 					}
 				}
 			}
