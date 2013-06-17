@@ -2122,7 +2122,7 @@ public class EmployeeMenu
 		tdm.fireTableDataChanged();
 	}
 	
-	public void activityLineEnabler()
+	private void activityLineEnabler()
 	{
 		allAvailableActivitiesComboBox.setSelectedItem(null);
 		allAvailableActivitiesComboBox.setEnabled(true);
@@ -2148,7 +2148,7 @@ public class EmployeeMenu
 		allActivityLinesButton.setEnabled(true);
 	}
 	
-	public void activityLineDisabler()
+	private void activityLineDisabler()
 	{
 		allAvailableActivitiesComboBox.setSelectedItem(null);
 		allAvailableActivitiesComboBox.setEnabled(false);
@@ -2382,7 +2382,7 @@ public class EmployeeMenu
 		return activityLinesTableModel;
 	}
 	
-	public void clearGuestPanel()
+	private void clearGuestPanel()
 	{
 		guestIdTextField.setText("");
 		guestNameTextField.setText("");
@@ -2397,13 +2397,13 @@ public class EmployeeMenu
 		guestTravelAgencyComboBox.setSelectedItem(null);
 	}
 	
-	public void clearGuestTable()
+	private void clearGuestTable()
 	{
 		guestTable.setCellSelectionEnabled(false);
 		guestTable.setModel(new DefaultTableModel());
 	}
 	
-	public DefaultTableModel getGuestTableModel()
+	private DefaultTableModel getGuestTableModel()
 	{
 		LinkedList<Guest> completeGuestList = new LinkedList<Guest>();
 		completeGuestList = guestCtr.getAllGuests();
