@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -31,6 +32,7 @@ import Controller.InstructorCtr;
 import Controller.PersonCtr;
 import Controller.RoomBookingCtr;
 import Controller.TeamCtr;
+import Controller.TravelAgencyCtr;
 import Model.ActivityBooking;
 import Model.ActivityLine;
 import Model.ActivityType;
@@ -42,23 +44,16 @@ import Model.Room;
 import Model.RoomBooking;
 import Model.RoomLine;
 import Model.Team;
-
-import Model.Guest;
-import Model.Location;
-import Model.Person;
-import Controller.PersonCtr;
-import Controller.GuestCtr;
-import Controller.TravelAgencyCtr;
-import Controller.LocationCtr;
 import Model.TravelAgency;
-import javax.swing.JComboBox;
+import Model.Location;
+import Controller.LocationCtr;
 
 public class EmployeeMenu
 {
 	private int bookingId;
 	private int guestId;
 	private LinkedList<ActivityBooking> activityBookingList = new LinkedList<ActivityBooking>();
-	
+	private TravelAgencyCtr travelCtr = new TravelAgencyCtr();
 	
 	private GuestCtr guestCtr = new GuestCtr();
 	private ActivityBookingCtr activityBookingCtr = new ActivityBookingCtr();
@@ -68,6 +63,7 @@ public class EmployeeMenu
 	private InstructorCtr instructorCtr = new InstructorCtr();
 	private TeamCtr teamCtr = new TeamCtr();
 	private PersonCtr personCtr = new PersonCtr();
+	private LocationCtr locationCtr = new LocationCtr();
 
 	private JFrame frame;
 	private JTextField txtRoomBookingId;
@@ -104,16 +100,18 @@ public class EmployeeMenu
 	private JButton addActivityLineButton;
 	private JButton cancelActivityLineButton;
 	private JButton allActivityLinesButton;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTable table_1;
+	private JTextField guestIdTextField;
+	private JTextField guestNameTextField;
+	private JTextField guestCityTextField;
+	private JTextField guestCountryTextField;
+	private JTextField guestZipcodeTextField;
+	private JTextField guestAddressTextField;
+	private JTextField guestPhoneNoTextField;
+	private JTextField guestEmailTextField;
+	private JTextField guestPasswordTextField;
+	private JComboBox<String> guestGuestTypeComboBox;
+	private JComboBox<String> guestTravelAgencyComboBox;
+	private JTable guestTable;
 	
 	public EmployeeMenu()
 	{
@@ -148,185 +146,7 @@ public class EmployeeMenu
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel WelcomePanel = new JPanel();
-		tabbedPane.addTab("Main menu", null, WelcomePanel, null);
-		
-		JPanel GuestPanel = new JPanel();
-		tabbedPane.addTab("Guest", null, GuestPanel, null);
-		GuestPanel.setLayout(null);
-		
-		JLabel label_14 = new JLabel("Travel agency:");
-		label_14.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_14.setBounds(6, 64, 86, 14);
-		GuestPanel.add(label_14);
-		
-		JLabel label_15 = new JLabel("Address:");
-		label_15.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_15.setBounds(16, 39, 86, 14);
-		GuestPanel.add(label_15);
-		
-		JLabel label_16 = new JLabel("Id:");
-		label_16.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_16.setBounds(16, 14, 46, 14);
-		GuestPanel.add(label_16);
-		
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_4.setColumns(10);
-		textField_4.setBounds(70, 11, 100, 20);
-		GuestPanel.add(textField_4);
-		
-		textField_5 = new JTextField();
-		textField_5.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_5.setColumns(10);
-		textField_5.setBounds(70, 36, 100, 20);
-		GuestPanel.add(textField_5);
-		
-		JComboBox<String> comboBox_8 = new JComboBox<String>();
-		comboBox_8.setBounds(84, 61, 122, 20);
-		GuestPanel.add(comboBox_8);
-		
-		JButton button_11 = new JButton("No travel agency");
-		button_11.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_11.setBounds(216, 59, 146, 25);
-		GuestPanel.add(button_11);
-		
-		JLabel label_17 = new JLabel("Phone no:");
-		label_17.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_17.setBounds(186, 39, 80, 14);
-		GuestPanel.add(label_17);
-		
-		JLabel label_18 = new JLabel("Name:");
-		label_18.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_18.setBounds(186, 14, 46, 14);
-		GuestPanel.add(label_18);
-		
-		textField_6 = new JTextField();
-		textField_6.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_6.setColumns(10);
-		textField_6.setBounds(239, 11, 100, 20);
-		GuestPanel.add(textField_6);
-		
-		textField_7 = new JTextField();
-		textField_7.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_7.setColumns(10);
-		textField_7.setBounds(239, 36, 100, 20);
-		GuestPanel.add(textField_7);
-		
-		JLabel label_19 = new JLabel("City:");
-		label_19.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_19.setBounds(401, 14, 80, 14);
-		GuestPanel.add(label_19);
-		
-		JLabel label_20 = new JLabel("E-mail:");
-		label_20.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_20.setBounds(401, 39, 80, 14);
-		GuestPanel.add(label_20);
-		
-		textField_8 = new JTextField();
-		textField_8.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_8.setColumns(10);
-		textField_8.setBounds(439, 36, 100, 20);
-		GuestPanel.add(textField_8);
-		
-		textField_9 = new JTextField();
-		textField_9.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_9.setColumns(10);
-		textField_9.setBounds(439, 11, 100, 20);
-		GuestPanel.add(textField_9);
-		
-		JLabel label_21 = new JLabel("Country:");
-		label_21.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_21.setBounds(577, 14, 80, 14);
-		GuestPanel.add(label_21);
-		
-		JLabel label_22 = new JLabel("Password:");
-		label_22.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_22.setBounds(577, 39, 80, 14);
-		GuestPanel.add(label_22);
-		
-		textField_10 = new JTextField();
-		textField_10.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_10.setColumns(10);
-		textField_10.setBounds(639, 36, 100, 20);
-		GuestPanel.add(textField_10);
-		
-		textField_11 = new JTextField();
-		textField_11.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_11.setColumns(10);
-		textField_11.setBounds(639, 11, 100, 20);
-		GuestPanel.add(textField_11);
-		
-		JLabel label_23 = new JLabel("Zipcode:");
-		label_23.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_23.setBounds(749, 14, 80, 14);
-		GuestPanel.add(label_23);
-		
-		JLabel label_24 = new JLabel("Guest type:");
-		label_24.setFont(new Font("Arial", Font.PLAIN, 11));
-		label_24.setBounds(749, 39, 80, 14);
-		GuestPanel.add(label_24);
-		
-		textField_12 = new JTextField();
-		textField_12.setFont(new Font("Arial", Font.PLAIN, 11));
-		textField_12.setColumns(10);
-		textField_12.setBounds(815, 11, 100, 20);
-		GuestPanel.add(textField_12);
-		
-		JComboBox<String> comboBox_9 = new JComboBox<String>();
-		comboBox_9.setBounds(815, 36, 100, 20);
-		GuestPanel.add(comboBox_9);
-		
-		JPanel panel_13 = new JPanel();
-		panel_13.setLayout(null);
-		panel_13.setBorder(new TitledBorder(null, "Guest", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_13.setBounds(0, 92, 140, 157);
-		GuestPanel.add(panel_13);
-		
-		JButton button_12 = new JButton("Search");
-		button_12.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button_12.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_12.setBounds(6, 16, 124, 25);
-		panel_13.add(button_12);
-		
-		JButton button_13 = new JButton("Create");
-		button_13.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button_13.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_13.setBounds(6, 52, 124, 25);
-		panel_13.add(button_13);
-		
-		JButton button_14 = new JButton("Update");
-		button_14.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button_14.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_14.setBounds(6, 88, 124, 25);
-		panel_13.add(button_14);
-		
-		JButton button_15 = new JButton("All");
-		button_15.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button_15.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_15.setBounds(6, 124, 124, 25);
-		panel_13.add(button_15);
-		
-		JButton button_16 = new JButton("Clear all");
-		button_16.setFont(new Font("Arial", Font.PLAIN, 11));
-		button_16.setBounds(0, 260, 140, 25);
-		GuestPanel.add(button_16);
-		
-		table_1 = new JTable();
-		table_1.setFillsViewportHeight(true);
-		table_1.setBounds(151, 92, 787, 342);
-		GuestPanel.add(table_1);
+		tabbedPane.addTab("Main", null, WelcomePanel, null);
 		
 		//delete room booking button
 		/*JButton btnDelete = new JButton("Delete");
@@ -363,6 +183,529 @@ public class EmployeeMenu
 		});
 		btnDelete.setBounds(6, 154, 110, 35);
 		panel.add(btnDelete);*/
+		
+		JPanel GuestPanel = new JPanel();
+		tabbedPane.addTab("Guest", null, GuestPanel, null);
+		GuestPanel.setLayout(null);
+		
+		JPanel guestAttributesPanel = new JPanel();
+		guestAttributesPanel.setLayout(null);
+		guestAttributesPanel.setBorder(new TitledBorder(null, "Guest attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		guestAttributesPanel.setBounds(10, 11, 939, 93);
+		GuestPanel.add(guestAttributesPanel);
+		
+		JLabel guestIdLabel2 = new JLabel("Id:");
+		guestIdLabel2.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestIdLabel2.setBounds(16, 19, 46, 14);
+		guestAttributesPanel.add(guestIdLabel2);
+		
+		guestIdTextField = new JTextField();
+		guestIdTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestIdTextField.setColumns(10);
+		guestIdTextField.setBounds(70, 16, 100, 20);
+		guestAttributesPanel.add(guestIdTextField);
+		
+		JLabel guestNameLabel = new JLabel("Name:");
+		guestNameLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestNameLabel.setBounds(186, 19, 46, 14);
+		guestAttributesPanel.add(guestNameLabel);
+		
+		guestNameTextField = new JTextField();
+		guestNameTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestNameTextField.setColumns(10);
+		guestNameTextField.setBounds(239, 16, 100, 20);
+		guestAttributesPanel.add(guestNameTextField);
+		
+		JLabel guestCityLabel = new JLabel("City:");
+		guestCityLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCityLabel.setBounds(401, 19, 80, 14);
+		guestAttributesPanel.add(guestCityLabel);
+		
+		guestCityTextField = new JTextField();
+		guestCityTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCityTextField.setColumns(10);
+		guestCityTextField.setBounds(439, 16, 100, 20);
+		guestAttributesPanel.add(guestCityTextField);
+		
+		JLabel guestCountryLabel = new JLabel("Country:");
+		guestCountryLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCountryLabel.setBounds(577, 19, 80, 14);
+		guestAttributesPanel.add(guestCountryLabel);
+		
+		guestCountryTextField = new JTextField();
+		guestCountryTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCountryTextField.setColumns(10);
+		guestCountryTextField.setBounds(639, 16, 100, 20);
+		guestAttributesPanel.add(guestCountryTextField);
+		
+		JLabel guestZipcodeLabel = new JLabel("Zipcode:");
+		guestZipcodeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestZipcodeLabel.setBounds(749, 19, 80, 14);
+		guestAttributesPanel.add(guestZipcodeLabel);
+		
+		guestZipcodeTextField = new JTextField();
+		guestZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestZipcodeTextField.setColumns(10);
+		guestZipcodeTextField.setBounds(815, 16, 100, 20);
+		guestAttributesPanel.add(guestZipcodeTextField);
+		
+		JLabel guestAddressLabel = new JLabel("Address:");
+		guestAddressLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestAddressLabel.setBounds(16, 44, 86, 14);
+		guestAttributesPanel.add(guestAddressLabel);
+		
+		guestAddressTextField = new JTextField();
+		guestAddressTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestAddressTextField.setColumns(10);
+		guestAddressTextField.setBounds(70, 41, 100, 20);
+		guestAttributesPanel.add(guestAddressTextField);
+		
+		JLabel guestPhoneNoLabel = new JLabel("Phone no:");
+		guestPhoneNoLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPhoneNoLabel.setBounds(186, 44, 80, 14);
+		guestAttributesPanel.add(guestPhoneNoLabel);
+		
+		guestPhoneNoTextField = new JTextField();
+		guestPhoneNoTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPhoneNoTextField.setColumns(10);
+		guestPhoneNoTextField.setBounds(239, 41, 100, 20);
+		guestAttributesPanel.add(guestPhoneNoTextField);
+		
+		JLabel guestEmailLabel = new JLabel("E-mail:");
+		guestEmailLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestEmailLabel.setBounds(401, 44, 80, 14);
+		guestAttributesPanel.add(guestEmailLabel);
+		
+		guestEmailTextField = new JTextField();
+		guestEmailTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestEmailTextField.setColumns(10);
+		guestEmailTextField.setBounds(439, 41, 100, 20);
+		guestAttributesPanel.add(guestEmailTextField);
+		
+		JLabel guestPasswordLabel = new JLabel("Password:");
+		guestPasswordLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPasswordLabel.setBounds(577, 44, 80, 14);
+		guestAttributesPanel.add(guestPasswordLabel);
+		
+		guestPasswordTextField = new JTextField();
+		guestPasswordTextField.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestPasswordTextField.setColumns(10);
+		guestPasswordTextField.setBounds(639, 41, 100, 20);
+		guestAttributesPanel.add(guestPasswordTextField);
+		
+		JLabel guestGuestTypeLabel = new JLabel("Guest type:");
+		guestGuestTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestGuestTypeLabel.setBounds(749, 44, 80, 14);
+		guestAttributesPanel.add(guestGuestTypeLabel);
+		
+		JLabel guestTravelAgencyLabel = new JLabel("Travel agency:");
+		guestTravelAgencyLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestTravelAgencyLabel.setBounds(6, 69, 86, 14);
+		guestAttributesPanel.add(guestTravelAgencyLabel);
+		
+		guestTravelAgencyComboBox = new JComboBox<String>();
+		LinkedList<TravelAgency> allTravelAgenciesList = new LinkedList<TravelAgency>();
+		allTravelAgenciesList = travelCtr.getAllTravelAgencies();
+		if(allTravelAgenciesList.isEmpty() == false)
+		{
+			for(TravelAgency listElementTravelAgencyObj: allTravelAgenciesList)
+			{
+				String comboBoxItem = listElementTravelAgencyObj.getName();
+				guestTravelAgencyComboBox.addItem(comboBoxItem);
+			}
+		}
+		guestTravelAgencyComboBox.setSelectedItem(null);
+		guestTravelAgencyComboBox.setBounds(84, 66, 122, 20);
+		guestAttributesPanel.add(guestTravelAgencyComboBox);
+		
+		JButton noTravelAgencyButton = new JButton("No travel agency");
+		noTravelAgencyButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		noTravelAgencyButton.setBounds(216, 64, 146, 25);
+		guestAttributesPanel.add(noTravelAgencyButton);
+		
+		guestGuestTypeComboBox = new JComboBox<String>();
+		guestGuestTypeComboBox.addItem("Private");
+		guestGuestTypeComboBox.addItem("Business");
+		guestGuestTypeComboBox.addItem("Family");
+		guestGuestTypeComboBox.setSelectedItem(null);
+		guestGuestTypeComboBox.setBounds(815, 41, 100, 20);
+		guestAttributesPanel.add(guestGuestTypeComboBox);
+		
+		JPanel guestOptionsPanel = new JPanel();
+		guestOptionsPanel.setLayout(null);
+		guestOptionsPanel.setBorder(new TitledBorder(null, "Guest", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		guestOptionsPanel.setBounds(10, 115, 140, 157);
+		GuestPanel.add(guestOptionsPanel);
+		
+		JButton guestSearchButton = new JButton("Search");
+		guestSearchButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(guestIdTextField.getText().equals("")==true && guestNameTextField.getText().equals("")==true)
+				{
+					JOptionPane.showMessageDialog(null, "Please insert either the id or the name of the wanted guest.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					if(guestNameTextField.getText().equals("") == true)
+					{
+						String stringGuestId = guestIdTextField.getText();
+						int guestId = Integer.parseInt(stringGuestId);
+						
+						Guest guestObj = new Guest();
+						guestObj = guestCtr.searchGuestById(guestId);
+						
+						if(guestObj == null)
+						{
+							JOptionPane.showMessageDialog(null, "There is no guest by this id. Please insert a valid guest id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							String guestName = guestObj.getName();
+							int guestZipCode = guestObj.getZipCode();
+							String stringGuestZipcode = String.valueOf(guestZipCode);
+							String guestCountry = guestObj.getCountry();
+							String guestAddress = guestObj.getAddress();
+							String guestPhoneNo = guestObj.getPhoneNo();
+							String guestEmail = guestObj.getEmail();
+							String guestPassword = guestObj.getPassword();
+							String guestType = guestObj.getGuestType();
+							
+							String travelAgencyName = new String();
+							TravelAgency travelAgencyObj = new TravelAgency();
+							travelAgencyObj = guestObj.getTravelAgency();
+							if(travelAgencyObj == null)
+							{
+								travelAgencyName = "0";
+							}
+							else
+							{
+								travelAgencyName = travelAgencyObj.getName();
+							}
+							
+							Location locationObj = new Location();
+							locationObj = locationCtr.getLocation(guestZipCode, guestCountry);
+							String guestCity = locationObj.getCity();
+							
+							guestIdTextField.setText(stringGuestId);
+							guestNameTextField.setText(guestName);
+							guestCityTextField.setText(guestCity);
+							guestCountryTextField.setText(guestCountry);
+							guestZipcodeTextField.setText(stringGuestZipcode);
+							guestAddressTextField.setText(guestAddress);
+							guestPhoneNoTextField.setText(guestPhoneNo);
+							guestEmailTextField.setText(guestEmail);
+							guestPasswordTextField.setText(guestPassword);
+							guestGuestTypeComboBox.setSelectedItem(guestType);
+							if(travelAgencyName.equals("0") == true)
+							{
+								guestTravelAgencyComboBox.setSelectedItem(null);
+							}
+							else
+							{
+								guestTravelAgencyComboBox.setSelectedItem(travelAgencyName);
+							}
+						}
+					}
+					else
+					{
+						if(guestIdTextField.getText().equals("") == true)
+						{
+							String guestName = guestNameTextField.getText();
+							
+							Person personObj = new Person();
+							personObj = personCtr.searchPersonByName(guestName);
+							
+							if(personObj == null || personObj.getPersonType().equals("Guest") == false)
+							{
+								JOptionPane.showMessageDialog(null, "There is no guest by this name. Please insert a valid guest name.", "Error!", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								int guestId = personObj.getId();
+								Guest guestObj = new Guest();
+								guestObj = guestCtr.searchGuestById(guestId);
+								String stringGuestId = String.valueOf(guestId);
+								int guestZipCode = guestObj.getZipCode();
+								String stringGuestZipcode = String.valueOf(guestZipCode);
+								String guestCountry = guestObj.getCountry();
+								String guestAddress = guestObj.getAddress();
+								String guestPhoneNo = guestObj.getPhoneNo();
+								String guestEmail = guestObj.getEmail();
+								String guestPassword = guestObj.getPassword();
+								String guestType = guestObj.getGuestType();
+															
+								String travelAgencyName = new String();
+								TravelAgency travelAgencyObj = new TravelAgency();
+								travelAgencyObj = guestObj.getTravelAgency();
+								if(travelAgencyObj == null)
+								{
+									travelAgencyName = "0";
+								}
+								else
+								{
+									travelAgencyName = travelAgencyObj.getName();
+								}
+								
+								Location locationObj = new Location();
+								locationObj = locationCtr.getLocation(guestZipCode, guestCountry);
+								String guestCity = locationObj.getCity();
+								
+								guestIdTextField.setText(stringGuestId);
+								guestNameTextField.setText(guestName);
+								guestCityTextField.setText(guestCity);
+								guestCountryTextField.setText(guestCountry);
+								guestZipcodeTextField.setText(stringGuestZipcode);
+								guestAddressTextField.setText(guestAddress);
+								guestPhoneNoTextField.setText(guestPhoneNo);
+								guestEmailTextField.setText(guestEmail);
+								guestPasswordTextField.setText(guestPassword);
+								guestGuestTypeComboBox.setSelectedItem(guestType);
+								if(travelAgencyName.equals("0") == true)
+								{
+									guestTravelAgencyComboBox.setSelectedItem(null);
+								}
+								else
+								{
+									guestTravelAgencyComboBox.setSelectedItem(travelAgencyName);
+								}
+							}
+						}
+						else
+						{
+							if(guestIdTextField.getText().equals("") != true && guestNameTextField.getText().equals("") != true)
+							{
+								String stringGuestId = guestIdTextField.getText();
+								int guestId = Integer.parseInt(stringGuestId);
+								
+								Guest guestObj = new Guest();
+								guestObj = guestCtr.searchGuestById(guestId);
+								
+								if(guestObj == null)
+								{
+									JOptionPane.showMessageDialog(null, "There is no guest by this id. Please insert a valid guest id.", "Error!", JOptionPane.ERROR_MESSAGE);
+								}
+								else
+								{
+									String guestName = guestObj.getName();
+									int guestZipCode = guestObj.getZipCode();
+									String stringGuestZipcode = String.valueOf(guestZipCode);
+									String guestCountry = guestObj.getCountry();
+									String guestAddress = guestObj.getAddress();
+									String guestPhoneNo = guestObj.getPhoneNo();
+									String guestEmail = guestObj.getEmail();
+									String guestPassword = guestObj.getPassword();
+									String guestType = guestObj.getGuestType();
+																
+									String travelAgencyName = new String();
+									TravelAgency travelAgencyObj = new TravelAgency();
+									travelAgencyObj = guestObj.getTravelAgency();
+									if(travelAgencyObj == null)
+									{
+										travelAgencyName = "0";
+									}
+									else
+									{
+										travelAgencyName = travelAgencyObj.getName();
+									}
+									
+									Location locationObj = new Location();
+									locationObj = locationCtr.getLocation(guestZipCode, guestCountry);
+									String guestCity = locationObj.getCity();
+									
+									guestIdTextField.setText(stringGuestId);
+									guestNameTextField.setText(guestName);
+									guestCityTextField.setText(guestCity);
+									guestCountryTextField.setText(guestCountry);
+									guestZipcodeTextField.setText(stringGuestZipcode);
+									guestAddressTextField.setText(guestAddress);
+									guestPhoneNoTextField.setText(guestPhoneNo);
+									guestEmailTextField.setText(guestEmail);
+									guestPasswordTextField.setText(guestPassword);									
+									guestGuestTypeComboBox.setSelectedItem(guestType);
+									
+									if(travelAgencyName.equals("0") == true)
+									{
+										guestTravelAgencyComboBox.setSelectedItem(null);
+									}
+									else
+									{
+										guestTravelAgencyComboBox.setSelectedItem(travelAgencyName);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		guestSearchButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestSearchButton.setBounds(6, 16, 124, 25);
+		guestOptionsPanel.add(guestSearchButton);
+		
+		JButton guestCreateButton = new JButton("Create");
+		guestCreateButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(guestNameTextField.getText().equals("") == true || guestCityTextField.getText().equals("") == true ||
+						guestCountryTextField.getText().equals("") == true || guestZipcodeTextField.getText().equals("") == true || guestAddressTextField.getText().equals("") == true ||
+								guestGuestTypeComboBox.getSelectedItem().equals(null) == true)
+			
+				{
+					JOptionPane.showMessageDialog(null, "A guest attribute might be missing. Please insert all needed guest attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String guestName = guestNameTextField.getText();
+					String guestCity = guestCityTextField.getText();
+					String guestCountry = guestCountryTextField.getText();
+					String stringGuestZipcode = guestZipcodeTextField.getText();
+					int guestZipcode = Integer.parseInt(stringGuestZipcode);
+					String guestAddress = guestAddressTextField.getText();
+					String guestPhoneNo = guestPhoneNoTextField.getText();
+					String guestEmail = guestEmailTextField.getText();
+					String guestPassword = personCtr.getPersonPassword(guestName, stringGuestZipcode, guestCountry, guestAddress);
+					String guestType =(String) guestGuestTypeComboBox.getSelectedItem();
+					
+					int travelAgencyCVR = 0;
+					
+					if(guestTravelAgencyComboBox.getSelectedItem() == null)
+					{
+						travelAgencyCVR = 0;
+					}
+					else
+					{
+						String travelAgencyName = (String) guestTravelAgencyComboBox.getSelectedItem();
+						TravelAgency travelAgencyObj = new TravelAgency();
+						travelAgencyObj = travelCtr.getTravelAgencyByName(travelAgencyName);
+						travelAgencyCVR = travelAgencyObj.getCVR();
+					}
+					
+					if(personCtr.searchPersonByName(guestName) != null)
+					{
+						JOptionPane.showMessageDialog(null, "Cannot register the same guest twice.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						Location locationObj = locationCtr.getLocation(guestZipcode, guestCountry);
+						if(locationObj == null)
+						{
+							locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
+						}
+						
+						personCtr.insertPerson(guestName, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
+						guestCtr.insertGuest(guestName, travelAgencyCVR, guestType);
+						
+						JOptionPane.showMessageDialog(null, "Guest successfully inserted", "Info", JOptionPane.INFORMATION_MESSAGE);
+						clearGuestPanel();
+						clearGuestTable();
+						guestTable.setModel(getGuestTableModel());
+					}
+				}
+			}
+		});
+		guestCreateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestCreateButton.setBounds(6, 52, 124, 25);
+		guestOptionsPanel.add(guestCreateButton);
+		
+		JButton guestUpdateButton = new JButton("Update");
+		guestUpdateButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(guestIdTextField.getText().equals("") == true || guestNameTextField.getText().equals("") == true || guestCityTextField.getText().equals("") == true ||
+						guestCountryTextField.getText().equals("") == true || guestZipcodeTextField.getText().equals("") == true || guestAddressTextField.getText().equals("") == true ||
+								guestGuestTypeComboBox.getSelectedItem().equals(null) == true || guestPasswordTextField.getText().equals("") == true)
+			
+				{
+					JOptionPane.showMessageDialog(null, "A guest attribute might be missing. Please insert all needed guest attributes.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String stringGuestId = guestIdTextField.getText();
+					int guestId = Integer.parseInt(stringGuestId);
+					
+					Guest guestObj = new Guest();
+					guestObj = guestCtr.searchGuestById(guestId);
+					
+					if(guestObj == null)
+					{
+						JOptionPane.showMessageDialog(null, "The wanted guest does not exist in the system. Please check guest list.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						String guestName = guestNameTextField.getText();
+						String guestCity = guestCityTextField.getText();
+						String guestCountry = guestCountryTextField.getText();
+						String stringGuestZipcode = guestZipcodeTextField.getText();
+						int guestZipcode = Integer.parseInt(stringGuestZipcode);
+						String guestAddress = guestAddressTextField.getText();
+						String guestPhoneNo = guestPhoneNoTextField.getText();
+						String guestEmail = guestEmailTextField.getText();
+						String guestType =(String) guestGuestTypeComboBox.getSelectedItem();
+						String guestPassword = guestPasswordTextField.getText();
+						
+						int travelAgencyCVR = 0;
+						if(guestTravelAgencyComboBox.getSelectedItem() == null)
+						{
+							travelAgencyCVR = 0;
+						}
+						else
+						{
+							String travelAgencyName = (String) guestTravelAgencyComboBox.getSelectedItem();
+							TravelAgency travelAgencyObj = new TravelAgency();
+							travelAgencyObj = travelCtr.getTravelAgencyByName(travelAgencyName);
+							travelAgencyCVR = travelAgencyObj.getCVR();
+						}
+						
+						if(personCtr.checkPersonInstanceCount(guestId, guestName, guestZipcode, guestCountry, guestAddress) == false)
+						{
+							JOptionPane.showMessageDialog(null, "You may not update with an already existing guest on this id.", "Error!", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							Location locationObj =  new Location();
+							locationObj = locationCtr.getLocation(guestZipcode, guestCountry);
+							if(locationObj == null)
+							{
+								locationCtr.insertLocation(guestZipcode, guestCountry, guestCity);
+							}
+							
+							personCtr.updatePerson(guestId, guestName, guestAddress, guestZipcode, guestCountry, guestPhoneNo, guestEmail, "Guest", guestPassword);
+							guestCtr.updateGuest(guestId, guestType, travelAgencyCVR);
+							
+							JOptionPane.showMessageDialog(null, "Guest updated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+							clearGuestPanel();
+							clearGuestTable();
+							guestTable.setModel(getGuestTableModel());
+						}
+					}
+				}
+			}
+		});
+		guestUpdateButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestUpdateButton.setBounds(6, 88, 124, 25);
+		guestOptionsPanel.add(guestUpdateButton);
+		
+		JButton guestAllButton = new JButton("All");
+		guestAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestAllButton.setBounds(6, 124, 124, 25);
+		guestOptionsPanel.add(guestAllButton);
+		
+		JButton guestClearAllButton = new JButton("Clear all");
+		guestClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
+		guestClearAllButton.setBounds(10, 283, 140, 25);
+		GuestPanel.add(guestClearAllButton);
+		
+		JScrollPane guestTableScrollPane = new JScrollPane();
+		guestTableScrollPane.setBounds(160, 115, 785, 396);
+		GuestPanel.add(guestTableScrollPane);
+		
+		guestTable = new JTable();
+		guestTable.setFillsViewportHeight(true);
+		guestTableScrollPane.setViewportView(guestTable);
 		
 		JPanel RoomBookingPanel = new JPanel();
 		tabbedPane.addTab("Room booking", null, RoomBookingPanel, null);	
@@ -2007,5 +2350,137 @@ public class EmployeeMenu
 			}
 		});
 		return activityLinesTableModel;
+	}
+	
+	public void clearGuestPanel()
+	{
+		guestIdTextField.setText("");
+		guestNameTextField.setText("");
+		guestCityTextField.setText("");
+		guestCountryTextField.setText("");
+		guestZipcodeTextField.setText("");
+		guestAddressTextField.setText("");
+		guestPhoneNoTextField.setText("");
+		guestEmailTextField.setText("");
+		guestPasswordTextField.setText("");									
+		guestGuestTypeComboBox.setSelectedItem(null);
+		guestTravelAgencyComboBox.setSelectedItem(null);
+	}
+	
+	public void clearGuestTable()
+	{
+		guestTable.setCellSelectionEnabled(false);
+		guestTable.setModel(new DefaultTableModel());
+	}
+	
+	public DefaultTableModel getGuestTableModel()
+	{
+		LinkedList<Guest> completeGuestList = new LinkedList<Guest>();
+		completeGuestList = guestCtr.getAllGuests();
+		
+		DefaultTableModel guestTableModel = new DefaultTableModel()
+		{
+			private static final long serialVersionUID = 1L;
+			
+			public boolean isCellEditable(int row, int column)
+			{
+				//all cells false
+				return false;
+			}
+		};
+		
+		guestTableModel.setColumnIdentifiers(new String[] {"Id", "Name", "Guest type", "Travel agency", "Password"});
+		
+		for(Guest guestObj : completeGuestList)
+		{
+			String travelAgencyName = new String();
+			TravelAgency travelAgencyObj = new TravelAgency();
+			travelAgencyObj = guestObj.getTravelAgency();
+			if(travelAgencyObj == null)
+			{
+				travelAgencyName = "0";
+			}
+			else
+			{
+				travelAgencyName = travelAgencyObj.getName();
+			}
+			guestTableModel.addRow(new String[]
+					{
+					String.valueOf(guestObj.getId()),
+					guestObj.getName(),
+					guestObj.getGuestType(),
+					travelAgencyName,
+					guestObj.getPassword()
+					});
+		}
+		
+		guestTable.setCellSelectionEnabled(true);
+		ListSelectionModel cellSelectionModel = guestTable.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				Guest guestObj = new Guest();
+				
+				int selectedRow = guestTable.getSelectedRow();
+				if(selectedRow > -1)
+				{
+					String selectedData = (String) guestTable.getValueAt(selectedRow, 0);
+					int guestId = Integer.parseInt(selectedData);
+					String stringGuestId = String.valueOf(guestId);
+					
+					guestObj = guestCtr.searchGuestById(guestId);
+					String guestName = guestObj.getName();
+					int guestZipCode = guestObj.getZipCode();
+					String stringGuestZipcode = String.valueOf(guestZipCode);
+					String guestCountry = guestObj.getCountry();
+					String guestAddress = guestObj.getAddress();
+					String guestPhoneNo = guestObj.getPhoneNo();
+					String guestEmail = guestObj.getEmail();
+					String guestPassword = guestObj.getPassword();
+					String guestType = guestObj.getGuestType();
+												
+					String travelAgencyName = new String();
+					TravelAgency travelAgencyObj = new TravelAgency();
+					travelAgencyObj = guestObj.getTravelAgency();
+					if(travelAgencyObj == null)
+					{
+						travelAgencyName = "0";
+					}
+					else
+					{
+						travelAgencyName = travelAgencyObj.getName();
+					}
+					
+					Location locationObj = new Location();
+					locationObj = locationCtr.getLocation(guestZipCode, guestCountry);
+					String guestCity = locationObj.getCity();
+					
+					guestIdTextField.setText(stringGuestId);
+					guestNameTextField.setText(guestName);
+					guestCityTextField.setText(guestCity);
+					guestCountryTextField.setText(guestCountry);
+					guestZipcodeTextField.setText(stringGuestZipcode);
+					guestAddressTextField.setText(guestAddress);
+					guestPhoneNoTextField.setText(guestPhoneNo);
+					guestEmailTextField.setText(guestEmail);
+					guestPasswordTextField.setText(guestPassword);									
+					guestGuestTypeComboBox.setSelectedItem(guestType);
+					
+					if(travelAgencyName.equals("0") == true)
+					{
+						guestTravelAgencyComboBox.setSelectedItem(null);
+					}
+					else
+					{
+						guestTravelAgencyComboBox.setSelectedItem(travelAgencyName);
+					}
+				}
+			}
+		});
+		
+		return guestTableModel;
 	}
 }
