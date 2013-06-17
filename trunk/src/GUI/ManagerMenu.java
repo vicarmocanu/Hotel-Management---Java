@@ -1133,9 +1133,14 @@ public class ManagerMenu
 		travelAgencyClearAllButton.setFont(new Font("Arial", Font.PLAIN, 11));
 		travelAgencyClearAllButton.setBounds(10, 259, 146, 35);
 		TravelAgencyPanel.add(travelAgencyClearAllButton);
+		//end travel agency panel
 		
+		//begin CRUD room panel
 		JPanel RoomPanel = new JPanel();
 		tabbedPane.addTab("Room menu", null, RoomPanel, null);
+		RoomPanel.setLayout(null);
+		
+		//end room
 		
 		JPanel ActivityTypePanel = new JPanel();
 		tabbedPane.addTab("Activity type menu", null, ActivityTypePanel, null);
