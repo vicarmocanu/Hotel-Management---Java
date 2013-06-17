@@ -1582,6 +1582,7 @@ public class EmployeeMenu
 		activityLinesTablePanel.add(activityLinesScrollPane);
 		
 		activityLinesTable = new JTable();
+		activityLinesTable.setFillsViewportHeight(true);
 		activityLinesScrollPane.setViewportView(activityLinesTable);
 		
 		JPanel activityBookingTablePanel = new JPanel();
