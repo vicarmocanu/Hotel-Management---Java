@@ -169,7 +169,7 @@ public class ManagerMenu
 		
 		JPanel guestAttributesPanel = new JPanel();
 		guestAttributesPanel.setBorder(new TitledBorder(null, "Guest attributes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		guestAttributesPanel.setBounds(10, 11, 939, 93);
+		guestAttributesPanel.setBounds(10, 11, 935, 93);
 		GuestPanel.add(guestAttributesPanel);
 		guestAttributesPanel.setLayout(null);
 		
@@ -218,12 +218,12 @@ public class ManagerMenu
 		guestCountryTextField.setColumns(10);
 		
 		JLabel guestZipcodeLabel = new JLabel("Zipcode:");
-		guestZipcodeLabel.setBounds(673, 22, 80, 14);
+		guestZipcodeLabel.setBounds(669, 19, 80, 14);
 		guestAttributesPanel.add(guestZipcodeLabel);
 		guestZipcodeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		guestZipcodeTextField = new JTextField();
-		guestZipcodeTextField.setBounds(739, 19, 100, 20);
+		guestZipcodeTextField.setBounds(739, 16, 100, 20);
 		guestAttributesPanel.add(guestZipcodeTextField);
 		guestZipcodeTextField.setFont(new Font("Arial", Font.PLAIN, 11));
 		guestZipcodeTextField.setColumns(10);
@@ -273,7 +273,7 @@ public class ManagerMenu
 		guestPasswordTextField.setColumns(10);
 		
 		JLabel guestGuestTypeLabel = new JLabel("Guest type:");
-		guestGuestTypeLabel.setBounds(673, 47, 80, 14);
+		guestGuestTypeLabel.setBounds(669, 44, 80, 14);
 		guestAttributesPanel.add(guestGuestTypeLabel);
 		guestGuestTypeLabel.setFont(new Font("Arial", Font.PLAIN, 11));
 		
@@ -313,7 +313,7 @@ public class ManagerMenu
 		guestGuestTypeComboBox.addItem("Business");
 		guestGuestTypeComboBox.addItem("Family");
 		guestGuestTypeComboBox.setSelectedItem(null);
-		guestGuestTypeComboBox.setBounds(739, 44, 100, 20);
+		guestGuestTypeComboBox.setBounds(739, 41, 100, 20);
 		guestAttributesPanel.add(guestGuestTypeComboBox);
 		
 		JPanel guestOptionsMenu = new JPanel();
@@ -1491,7 +1491,7 @@ public class ManagerMenu
 		EmployeePanel.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 945, 86);
+		panel.setBounds(10, 11, 815, 86);
 		EmployeePanel.add(panel);
 		panel.setLayout(null);
 		
@@ -1499,7 +1499,7 @@ public class ManagerMenu
 		lblEmployeeAttributes.setBounds(10, 0, 122, 14);
 		panel.add(lblEmployeeAttributes);
 		
-		JLabel lblId = new JLabel("Id");
+		JLabel lblId = new JLabel("Id:");
 		lblId.setBounds(10, 25, 46, 14);
 		panel.add(lblId);
 		
@@ -1508,7 +1508,7 @@ public class ManagerMenu
 		panel.add(employeeIdTextField);
 		employeeIdTextField.setColumns(10);
 		
-		JLabel lblName = new JLabel("Name");
+		JLabel lblName = new JLabel("Name:");
 		lblName.setBounds(126, 25, 46, 14);
 		panel.add(lblName);
 		
@@ -1517,7 +1517,7 @@ public class ManagerMenu
 		panel.add(employeeNameTextField);
 		employeeNameTextField.setColumns(10);
 		
-		JLabel lblZipcode = new JLabel("Zipcode");
+		JLabel lblZipcode = new JLabel("Zipcode:");
 		lblZipcode.setBounds(256, 25, 46, 14);
 		panel.add(lblZipcode);
 		
@@ -1526,7 +1526,7 @@ public class ManagerMenu
 		panel.add(employeeZipcodeTextField);
 		employeeZipcodeTextField.setColumns(10);
 		
-		JLabel lblCountry = new JLabel("Country");
+		JLabel lblCountry = new JLabel("Country:");
 		lblCountry.setBounds(398, 25, 46, 14);
 		panel.add(lblCountry);
 		
@@ -1535,7 +1535,7 @@ public class ManagerMenu
 		panel.add(employeeCountryTextField);
 		employeeCountryTextField.setColumns(10);
 		
-		JLabel lblCity = new JLabel("City");
+		JLabel lblCity = new JLabel("City:");
 		lblCity.setBounds(539, 25, 46, 14);
 		panel.add(lblCity);
 		
@@ -1544,48 +1544,48 @@ public class ManagerMenu
 		panel.add(employeeCityTextField);
 		employeeCityTextField.setColumns(10);
 		
-		JLabel lblAddress = new JLabel("Address");
+		JLabel lblAddress = new JLabel("Address:");
 		lblAddress.setBounds(662, 25, 46, 14);
 		panel.add(lblAddress);
 		
 		employeeAddressTextField = new JTextField();
-		employeeAddressTextField.setBounds(710, 22, 86, 20);
+		employeeAddressTextField.setBounds(718, 22, 86, 20);
 		panel.add(employeeAddressTextField);
 		employeeAddressTextField.setColumns(10);
 		
-		JLabel lblPhoneNo = new JLabel("PhoneNo");
-		lblPhoneNo.setBounds(10, 61, 46, 14);
+		JLabel lblPhoneNo = new JLabel("PhoneNo:");
+		lblPhoneNo.setBounds(10, 61, 58, 14);
 		panel.add(lblPhoneNo);
 		
 		employeePhoneNoTextField = new JTextField();
-		employeePhoneNoTextField.setBounds(59, 58, 86, 20);
+		employeePhoneNoTextField.setBounds(63, 58, 86, 20);
 		panel.add(employeePhoneNoTextField);
 		employeePhoneNoTextField.setColumns(10);
 		
-		JLabel lblEmail = new JLabel("Email");
+		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setBounds(160, 61, 46, 14);
 		panel.add(lblEmail);
 		
 		employeeEmailTextField = new JTextField();
-		employeeEmailTextField.setBounds(195, 58, 86, 20);
+		employeeEmailTextField.setBounds(194, 58, 86, 20);
 		panel.add(employeeEmailTextField);
 		employeeEmailTextField.setColumns(10);
 		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(291, 61, 46, 14);
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(290, 61, 57, 14);
 		panel.add(lblPassword);
 		
 		employeePasswordTextField = new JTextField();
-		employeePasswordTextField.setBounds(345, 58, 86, 20);
+		employeePasswordTextField.setBounds(346, 58, 86, 20);
 		panel.add(employeePasswordTextField);
 		employeePasswordTextField.setColumns(10);
 		
-		JLabel lblSalary = new JLabel("Salary");
+		JLabel lblSalary = new JLabel("Salary:");
 		lblSalary.setBounds(443, 61, 46, 14);
 		panel.add(lblSalary);
 		
 		employeeSalaryTextField = new JTextField();
-		employeeSalaryTextField.setBounds(479, 58, 86, 20);
+		employeeSalaryTextField.setBounds(484, 58, 86, 20);
 		panel.add(employeeSalaryTextField);
 		employeeSalaryTextField.setColumns(10);
 		
@@ -2053,7 +2053,7 @@ public class ManagerMenu
 		instructorStatusComboBox.addItem("Available");
 		instructorStatusComboBox.addItem("Unavailable");
 		instructorStatusComboBox.setSelectedItem(null);
-		instructorStatusComboBox.setBounds(218, 66, 122, 20);
+		instructorStatusComboBox.setBounds(216, 67, 122, 20);
 		instructorAttributePanel.add(instructorStatusComboBox);
 		
 		JPanel instructorOptionsPanel = new JPanel();
