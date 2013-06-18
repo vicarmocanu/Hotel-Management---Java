@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import DBLayer.DBConnection1;
 import DBLayer.DBGuest;
@@ -52,7 +53,7 @@ public class RoomBookingCtr {
 		return roomLines;
 	}
 	
-	public ArrayList<Room> findAvailableRooms(int arrival, int departure)
+	public LinkedList<Room> findAvailableRooms(int arrival, int departure)
 	{
 		IFDBRoomBooking dbrb=new DBRoomBooking();
 		ArrayList<RoomBooking> rbl=dbrb.findRoomBookingsWithDates(arrival, departure, false);
@@ -61,7 +62,7 @@ public class RoomBookingCtr {
 		IFDBRoomLine dbrl = new DBRoomLine();
 		ArrayList<RoomLine> rll = new ArrayList<>();
 		
-		ArrayList<Room> rooms = new ArrayList<>();
+		LinkedList<Room> rooms = new LinkedList<>();
 		
 		if(rbl.isEmpty())
 		{
