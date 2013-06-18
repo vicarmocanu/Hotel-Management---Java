@@ -353,7 +353,7 @@ public class ActivityBookingCtr
 		 }
 	}
 	
-	public int updateActivityLine(int activityId, int bookingId, int facilityId, String status)
+	public int updateActivityLine(int activityId, int bookingId, int facilityId, String date, String startHour, String status)
 	{
 		IFDBActivityType dbActivityType = new DBActivityType();
 		ActivityType activityTypeObj = dbActivityType.getActivityTypeByID(activityId);
@@ -368,6 +368,8 @@ public class ActivityBookingCtr
 		activityLineObj.setActivity(activityTypeObj);
 		activityLineObj.setActivityBooking(activityBookingObj);
 		activityLineObj.setFacility(facilityObj);
+		activityLineObj.setDate(date);
+		activityLineObj.setStartHour(startHour);
 		activityLineObj.setStatus(status);
 		
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
