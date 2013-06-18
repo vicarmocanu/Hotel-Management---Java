@@ -1,6 +1,6 @@
 package GUI;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -396,7 +396,7 @@ public class RoomLineMenu {
 		btnShowAvailableRooms.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RoomBookingCtr rbCtr = new RoomBookingCtr();
-				ArrayList<Room> rooms = rbCtr.findAvailableRooms(arrival, departure);
+				LinkedList<Room> rooms = rbCtr.findAvailableRooms(arrival, departure);
 				
 				DefaultTableModel model2 = new DefaultTableModel()
 				{

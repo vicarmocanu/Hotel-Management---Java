@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -440,7 +441,7 @@ public class RoomBookingMenu {
 					int arrival=Integer.parseInt(txtArrivalDate.getText());
 					int departure=Integer.parseInt(txtDeparturedate.getText());
 					
-					ArrayList<Room> rlList=new ArrayList<Room>();
+					LinkedList<Room> rlList=new LinkedList<Room>();
 					rlList=rbCtr.findAvailableRooms(arrival, departure);
 					
 					DefaultTableModel model2 = new DefaultTableModel()
