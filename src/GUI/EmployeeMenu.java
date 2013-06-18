@@ -1131,7 +1131,7 @@ public class EmployeeMenu
 						int arrival=Integer.parseInt(txtArrivalDate);
 						int departure=Integer.parseInt(txtDeparturedate);
 						
-						ArrayList<Room> rlList=new ArrayList<Room>();
+						LinkedList<Room> rlList=new LinkedList<Room>();
 						rlList=rbCtr.findAvailableRooms(arrival, departure);
 						
 						DefaultTableModel model2 = new DefaultTableModel()
