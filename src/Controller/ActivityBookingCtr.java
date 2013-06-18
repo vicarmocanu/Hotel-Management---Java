@@ -145,12 +145,12 @@ public class ActivityBookingCtr
 		return bookingActivityLines;
 	}
 	
-	public boolean checkActivityLineInstances1(int activityId, int bookingId, int facilityId)
+	public boolean checkActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId, String status)
 	{
 		boolean check = false;
 		int instances = 0;
 		IFDBActivityLine dbActivityLine = new DBActivityLine();
-		instances = dbActivityLine.getActivityLineInstances1(activityId, bookingId, facilityId);
+		instances = dbActivityLine.getActivityLineInstances1(activityId, bookingId, date, startHour, facilityId, status);
 		
 		if(instances<1)
 		{
