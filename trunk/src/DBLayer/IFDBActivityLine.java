@@ -27,7 +27,7 @@ public interface IFDBActivityLine
 	public int deleteActivityLinesFromActivityBooking(int bookingId);
 	
 	//method to avoid activity line double booking - general
-	public int getActivityLineInstances1(int activityId, int bookingId, int facilityId);
+	public int getActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId);
 	
 	//method to avoid activity line -instructor- double booking
 	public int getActivityLineInstances2(String date, String startHour, int instructorId);

@@ -314,7 +314,7 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 
 	@Override
-	public int getActivityLineInstances1(int activityId, int bookingId, int facilityId)
+	public int getActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId)
 	{
 		int instances = 0;
 		
@@ -323,6 +323,8 @@ public class DBActivityLine implements IFDBActivityLine
 		String query = "SELECT COUNT(*) AS activityLineInstances1 FROM ActivityLine " + 
 		"WHERE activityId= '" + activityId + "' " +
 				"AND bookingId= '" +  bookingId + "' " +
+		"AND date= '" + date + "' " +
+				"AND startHour= '" + startHour + "' " +
 				"AND facilityId= '" + facilityId + "' " +
 				"AND status<>'Canceled' ";
 		System.out.println(query);
