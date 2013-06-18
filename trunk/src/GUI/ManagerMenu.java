@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -37,6 +38,8 @@ import Model.Guest;
 import Model.Instructor;
 import Model.Location;
 import Model.Person;
+import Model.Room;
+import Model.RoomType;
 import Model.TravelAgency;
 //import com.jgoodies.forms.factories.DefaultComponentFactory;
 
@@ -109,6 +112,12 @@ public class ManagerMenu
 	private JTextField employeeEmailTextField;
 	private JTextField employeePasswordTextField;
 	private JTextField employeeSalaryTextField;
+	private JTextField txtNumber;
+	private JTextField txtRoomType;
+	private JTextField txtCategory;
+	private JTextField txtPrice;
+	private JTable roomTable;
+	private JScrollPane roomScrollPane;
 	
 	public ManagerMenu()
 	{
@@ -1140,6 +1149,270 @@ public class ManagerMenu
 		tabbedPane.addTab("Room menu", null, RoomPanel, null);
 		RoomPanel.setLayout(null);
 		
+		JPanel panelRoom = new JPanel();
+		panelRoom.setBorder(new TitledBorder(null, "Room", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelRoom.setBounds(10, 11, 278, 109);
+		RoomPanel.add(panelRoom);
+		panelRoom.setLayout(null);
+		
+		JLabel lblNumber = new JLabel("Number:");
+		lblNumber.setBounds(10, 28, 55, 14);
+		panelRoom.add(lblNumber);
+		
+		txtNumber = new JTextField();
+		txtNumber.setBounds(75, 25, 86, 20);
+		panelRoom.add(txtNumber);
+		txtNumber.setColumns(10);
+		
+		JLabel lblType = new JLabel("Type:");
+		lblType.setBounds(10, 53, 46, 14);
+		panelRoom.add(lblType);
+		
+		txtRoomType = new JTextField();
+		txtRoomType.setBounds(75, 50, 86, 20);
+		panelRoom.add(txtRoomType);
+		txtRoomType.setColumns(10);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeCtr empCtr = new EmployeeCtr();
+				
+				DefaultTableModel model2 = new DefaultTableModel()
+				{
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean isCellEditable(int row, int column)
+					{
+						//all cells false
+						return false;
+					}
+				};			
+				model2.setColumnIdentifiers(new String[] {"Room No", "Room type", "Room price"});
+				
+				
+				if(!txtNumber.getText().equals(""))
+				{
+					int number = Integer.parseInt(txtNumber.getText());
+					Room room = empCtr.getRoomByNumber(number);					
+					
+					try
+					{
+						model2.addRow(new String[]
+						{
+							String.valueOf(room.getNumber()),
+							room.getRoomType().getCategory(),
+							String.valueOf(room.getRoomType().getPrice())
+						});
+						
+						roomTable.setModel(model2);
+					}				
+					catch(Exception ex)
+					{
+						System.out.println("Exception: " + ex);
+					}
+				}
+				else if(!txtRoomType.getText().equals(""))
+				{
+					String type = txtRoomType.getText();
+					LinkedList<Room> rooms = empCtr.getRoomsByType(type);
+					
+					try
+					{
+						for(Room room : rooms)
+						{
+							model2.addRow(new String[]
+								{
+									String.valueOf(room.getNumber()),
+									room.getRoomType().getCategory(),
+									String.valueOf(room.getRoomType().getPrice())
+								});
+						}
+						roomTable.setModel(model2);
+					}				
+					catch(Exception ex)
+					{
+						System.out.println("Exception: " + ex);
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Please insert number or type of the room/s.", "Error!", JOptionPane.ERROR_MESSAGE);			
+				}
+			}
+		});
+		btnSearch.setBounds(171, 11, 89, 23);
+		panelRoom.add(btnSearch);
+		
+		JButton btnCreate = new JButton("Create");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {		
+				EmployeeCtr empCtr = new EmployeeCtr();
+				
+				if(txtNumber.getText().equals("") || txtRoomType.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Please insert number and type of the room.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					int number = Integer.parseInt(txtNumber.getText());
+					String type = txtRoomType.getText();
+					
+					if(empCtr.checkRoomType(type)==true)
+					{
+						empCtr.createRoom(number, type);
+						JOptionPane.showMessageDialog(null, "Room successfully created.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Room type does not exist.", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		btnCreate.setBounds(171, 49, 89, 23);
+		panelRoom.add(btnCreate);
+		
+		JButton btnUpdate_1 = new JButton("Update");
+		btnUpdate_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeCtr empCtr = new EmployeeCtr();
+				
+				if(txtNumber.getText().equals("") && txtRoomType.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Please insert number and type of the room.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					int number = Integer.parseInt(txtNumber.getText());
+					String type = txtRoomType.getText();
+					
+					empCtr.updateRoom(number, type);
+					JOptionPane.showMessageDialog(null, "Room updated successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				DefaultTableModel tdm=(DefaultTableModel)roomTable.getModel();
+				tdm.getDataVector().removeAllElements();
+				tdm.fireTableDataChanged();
+			}
+		});
+		btnUpdate_1.setBounds(171, 75, 89, 23);
+		panelRoom.add(btnUpdate_1);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Room Type", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(298, 11, 647, 109);
+		RoomPanel.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblCategory = new JLabel("Category:");
+		lblCategory.setBounds(10, 28, 67, 14);
+		panel.add(lblCategory);
+		
+		txtCategory = new JTextField();
+		txtCategory.setBounds(87, 25, 86, 20);
+		panel.add(txtCategory);
+		txtCategory.setColumns(10);
+		
+		JLabel lblPrice = new JLabel("Price:");
+		lblPrice.setBounds(10, 53, 46, 14);
+		panel.add(lblPrice);
+		
+		txtPrice = new JTextField();
+		txtPrice.setBounds(87, 50, 86, 20);
+		panel.add(txtPrice);
+		txtPrice.setColumns(10);
+		
+		JLabel lblDescription = new JLabel("Description:");
+		lblDescription.setBounds(200, 28, 72, 14);
+		panel.add(lblDescription);
+		
+		final JTextPane txtDescription = new JTextPane();
+		txtDescription.setBounds(282, 22, 259, 66);
+		panel.add(txtDescription);
+		
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeCtr empCtr = new EmployeeCtr();
+				
+				if(txtCategory.getText().equals("") || txtPrice.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Please insert category and price.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					float price = Float.parseFloat(txtPrice.getText());
+					String category = txtCategory.getText();
+					
+					if(txtDescription.getText().equals(""))
+					{
+						empCtr.updateRoomType(category, null, price);
+						JOptionPane.showMessageDialog(null, "Room type updated successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else
+					{
+						empCtr.updateRoomType(category, txtDescription.getText(), price);
+						JOptionPane.showMessageDialog(null, "Room type updated successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		});
+		btnUpdate.setBounds(551, 76, 86, 23);
+		panel.add(btnUpdate);
+		
+		JButton btnSearchRT = new JButton("Search");
+		btnSearchRT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeCtr empCtr = new EmployeeCtr();
+				
+				if(!txtCategory.getText().equals(""))
+				{
+					String category = txtCategory.getText();
+					RoomType rt = empCtr.getRoomType(category);
+					
+					txtDescription.setText(rt.getDescription());
+					txtPrice.setText(String.valueOf(rt.getPrice()));
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Please insert category.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnSearchRT.setBounds(551, 11, 86, 23);
+		panel.add(btnSearchRT);
+		
+		JButton btnCreate_1 = new JButton("Create");
+		btnCreate_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeCtr empCtr = new EmployeeCtr();
+				
+				if(txtCategory.getText().equals("") || txtPrice.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Please insert category and price, at least.", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					String category = txtCategory.getText();
+					String description = txtDescription.getText();
+					float price = Float.parseFloat(txtPrice.getText());
+					
+					empCtr.createRoomType(category, description, price);
+					JOptionPane.showMessageDialog(null, "Room type was successfully created.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+		btnCreate_1.setBounds(551, 44, 86, 23);
+		panel.add(btnCreate_1);
+		
+		roomScrollPane = new JScrollPane();
+		roomScrollPane.setBounds(10, 131, 935, 320);
+		RoomPanel.add(roomScrollPane);
+		
+		roomTable = new JTable();
+		roomScrollPane.setViewportView(roomTable);
+		roomTable.setFillsViewportHeight(true);
 		//end room
 		
 		JPanel ActivityTypePanel = new JPanel();
