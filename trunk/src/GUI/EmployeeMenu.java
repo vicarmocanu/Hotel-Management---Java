@@ -1921,7 +1921,7 @@ public class EmployeeMenu
 							}
 							else
 							{
-								activityBookingCtr.updateActivityLine(activityId, bookingId, facilityId, "Canceled");
+								activityBookingCtr.updateActivityLine(activityId, bookingId, facilityId, insertDate, startHour, "Canceled");
 								JOptionPane.showMessageDialog(null, "Activity and facility booking has been canceled.");
 								clearActivityLinePanels();
 								clearActivityLinesTable();
