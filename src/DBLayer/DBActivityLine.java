@@ -314,7 +314,7 @@ public class DBActivityLine implements IFDBActivityLine
 	}
 
 	@Override
-	public int getActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId)
+	public int getActivityLineInstances1(int activityId, int bookingId, String date, String startHour, int facilityId, String status)
 	{
 		int instances = 0;
 		
@@ -326,7 +326,7 @@ public class DBActivityLine implements IFDBActivityLine
 		"AND date= '" + date + "' " +
 				"AND startHour= '" + startHour + "' " +
 				"AND facilityId= '" + facilityId + "' " +
-				"AND status<>'Canceled' ";
+				"AND status= '" + status + "'";
 		System.out.println(query);
 		
 		try
