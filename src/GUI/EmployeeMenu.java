@@ -1801,7 +1801,7 @@ public class EmployeeMenu
 							}
 							else
 							{
-								if(activityBookingCtr.checkActivityLineInstances1(activityId, bookingId, facilityId) != true)
+								if(activityBookingCtr.checkActivityLineInstances1(activityId, bookingId, insertDate, startHour, facilityId, "Made"))
 								{
 									JOptionPane.showMessageDialog(null, "Cannot book the same activity and facility more than once per day. Check already booked activities.", "Error!", JOptionPane.ERROR_MESSAGE);
 								}
@@ -1891,6 +1891,7 @@ public class EmployeeMenu
 					
 					String inputDate = day + "-" + month + "-" + year;
 					String time = day + "-" + month + "-" + year + " " + startHour;
+					String insertDate = year + "-" + month + "-" + day;
 					
 					String activityName = (String) allAvailableActivitiesComboBox.getSelectedItem();
 					ActivityType activityTypeObj = new ActivityType();
@@ -1914,11 +1915,18 @@ public class EmployeeMenu
 						}
 						else
 						{
-							activityBookingCtr.updateActivityLine(activityId, bookingId, facilityId, "Canceled");
-							JOptionPane.showMessageDialog(null, "Activity and facility booking has been canceled.");
-							clearActivityLinePanels();
-							clearActivityLinesTable();
-							activityLinesTable.setModel(getActivityLinesTableModel());
+							if(activityBookingCtr.checkActivityLineInstances1(activityId, bookingId, insertDate, startHour, facilityId, "Canceled") != true)
+							{
+								JOptionPane.showMessageDialog(null, "You may not cancel the same activity and facility twice.", "Error!", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								activityBookingCtr.updateActivityLine(activityId, bookingId, facilityId, "Canceled");
+								JOptionPane.showMessageDialog(null, "Activity and facility booking has been canceled.");
+								clearActivityLinePanels();
+								clearActivityLinesTable();
+								activityLinesTable.setModel(getActivityLinesTableModel());
+							}
 						}
 					}
 				}
