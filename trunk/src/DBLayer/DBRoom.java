@@ -2,8 +2,9 @@ package DBLayer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import Model.Room;
 import Model.RoomType;
@@ -20,6 +21,11 @@ public class DBRoom implements IFDBRoom {
 	public Room findRoom(int number, boolean retrieveAssociation) {
 		return singleWhere("number='"+number+"'",retrieveAssociation);
 	}
+	
+	public LinkedList<Room> findRoomsFromType(String type, boolean retrieveAssociation)
+	{
+		return miscWhere("roomType='"+type+"'", retrieveAssociation);
+	}
 
 /*	public ArrayList<Room> findAvailableRooms(int arrival, int departure,
 			String type, boolean retrieveAssociation) {
@@ -27,17 +33,79 @@ public class DBRoom implements IFDBRoom {
 				"arrivalDate>='"+arrival+"' AND departureDate<='"+departure+"'))<>number AND roomType='"+type+"'", retrieveAssociation);
 	}*/
 	
-	public ArrayList<Room> findDifferentRooms(int roomNo,
+	public LinkedList<Room> findDifferentRooms(int roomNo,
 			boolean retrieveAssociation) {
-		ArrayList<Room> rooms = new ArrayList<>();
+		LinkedList<Room> rooms = new LinkedList<>();
 		
 		rooms.addAll(miscWhere("number<>"+roomNo, retrieveAssociation));
 		return rooms;
 	}
 	
-	public ArrayList<Room> findAllRooms(boolean retrieveAssociation)
+	public LinkedList<Room> findAllRooms(boolean retrieveAssociation)
 	{
 		return miscWhere("", retrieveAssociation);
+	}
+	
+	
+	public int insertRoom(Room room) throws Exception
+	{
+		String query = "INSERT INTO Room(number, roomType)" +
+				" VALUES('" +
+				room.getNumber()+"','"+
+				room.getRoomType().getCategory()+ "')";
+		
+		int rc = -1;
+		System.out.println("insert: " + query);
+		try {
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			rc = stmt.executeUpdate(query);
+			stmt.close();
+		} catch (SQLException ex) {
+			System.out.println("Room is not inserted");
+	        throw new Exception ("Room is not inserted correctly!");
+		}
+		
+		return rc;
+	}
+	
+	public int deleteRoom(int number)
+	{
+		int rc=-1;
+		  
+	  	String query="DELETE FROM Room WHERE number=" +	number;
+                System.out.println(query);
+	  	try{ 
+	 		Statement stmt = con.createStatement();
+	 		stmt.setQueryTimeout(5);
+	 	  	rc = stmt.executeUpdate(query);
+	 	  	stmt.close();
+  		}
+   	        catch(Exception ex){
+	 	  	System.out.println("Delete exception in room db: "+ex);
+   	        }
+		return(rc);
+	}
+	
+	public int updateRoom(Room room)
+	{
+		Room r = room;
+		int rc = -1;
+		
+		String query = "UPDATE Room SET " +
+				"roomType='" + r.getRoomType().getCategory()+"' "+
+						"WHERE number='" + r.getNumber()+"'";
+		System.out.println("Update query: " + query);
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.setQueryTimeout(5);
+			rc=stmt.executeUpdate(query);
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println("Update exception in Room: " + e);
+		}		
+		return rc;
 	}
 	//end interface methods
 	
@@ -103,10 +171,10 @@ public class DBRoom implements IFDBRoom {
 		return roomObj;
 	}
 	
-	public ArrayList<Room> miscWhere(String wClause, boolean retrieveAssociation)
+	public LinkedList<Room> miscWhere(String wClause, boolean retrieveAssociation)
 	{
 		ResultSet results;
-		ArrayList<Room> roomList = new ArrayList<Room>();
+		LinkedList<Room> roomList = new LinkedList<Room>();
 		String query = buildQuery(wClause);
 		System.out.println("DBRoom Query: " + query);
 		
