@@ -249,7 +249,9 @@ public class DBActivityLine implements IFDBActivityLine
 		" status= '" + activityLine.getStatus() + "' "
 		+ "WHERE activityId= '" + activityLine.getActivity().getID() + "' " +
 		"AND bookingId= '" + activityLine.getActivityBooking().getId() + "' " + 
-		"AND facilityId= '" + activityLine.getFacility().getId() + "'";
+		"AND facilityId= '" + activityLine.getFacility().getId() + "' " +
+		"AND date= '" + activityLine.getDate() + "' " +
+		"AND startHour= '" + activityLine.getStartHour() + "' ";
 		System.out.println("Update query: " + query);
 		
 		try
