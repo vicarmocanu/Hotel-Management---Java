@@ -52,7 +52,7 @@ public class LoginMenu
 	/**
 	 * Create the application.
 	 */
-	public LoginMenu()
+	private LoginMenu()
 	{
 		initialize();
 	}
