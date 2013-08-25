@@ -123,6 +123,7 @@ public class EmployeeMenu
 	private void initialize()
 	{
 		frame = new JFrame("Employee menu");
+		frame.getContentPane().setBackground(new Color(105, 105, 105));
 		frame.setFont(new Font("Dialog", Font.PLAIN, 14));
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 1000, 660);
@@ -145,20 +146,6 @@ public class EmployeeMenu
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 11, 960, 550);
 		frame.getContentPane().add(tabbedPane);
-		
-		JPanel WelcomePanel = new JPanel();
-		tabbedPane.addTab("Main menu", null, WelcomePanel, null);
-		WelcomePanel.setLayout(null);
-		
-		JLabel welcomeLabel = new JLabel("Welcome,");
-		welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-		welcomeLabel.setBounds(42, 34, 115, 25);
-		WelcomePanel.add(welcomeLabel);
-		
-		dinamicLabel = new JLabel("EMPLOYEE");
-		dinamicLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-		dinamicLabel.setBounds(145, 34, 216, 25);
-		WelcomePanel.add(dinamicLabel);
 		
 		//delete room booking button
 		/*JButton btnDelete = new JButton("Delete");
@@ -196,7 +183,23 @@ public class EmployeeMenu
 		btnDelete.setBounds(6, 154, 110, 35);
 		panel.add(btnDelete);*/
 		
+		JPanel WelcomePanel = new JPanel();
+		WelcomePanel.setBackground(new Color(220, 220, 220));
+		tabbedPane.addTab("Main menu", null, WelcomePanel, null);
+		WelcomePanel.setLayout(null);
+		
+		JLabel welcomeLabel = new JLabel("Welcome,");
+		welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		welcomeLabel.setBounds(42, 34, 115, 25);
+		WelcomePanel.add(welcomeLabel);
+		
+		dinamicLabel = new JLabel("EMPLOYEE");
+		dinamicLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+		dinamicLabel.setBounds(145, 34, 216, 25);
+		WelcomePanel.add(dinamicLabel);
+		
 		JPanel GuestPanel = new JPanel();
+		GuestPanel.setBackground(new Color(192, 192, 192));
 		tabbedPane.addTab("Guest menu", null, GuestPanel, null);
 		GuestPanel.setLayout(null);
 		
@@ -738,6 +741,7 @@ public class EmployeeMenu
 		guestTableScrollPane.setViewportView(guestTable);
 		
 		JPanel RoomBookingPanel = new JPanel();
+		RoomBookingPanel.setBackground(new Color(169, 169, 169));
 		tabbedPane.addTab("Room booking menu", null, RoomBookingPanel, null);	
 		RoomBookingPanel.setLayout(null);
 		JPanel panel_1 = new JPanel();
@@ -1207,6 +1211,7 @@ public class EmployeeMenu
 		//end room booking panel
 		
 		JPanel ActivityBookingPanel = new JPanel();
+		ActivityBookingPanel.setBackground(new Color(169, 169, 169));
 		tabbedPane.addTab("Activity booking menu", null, ActivityBookingPanel, null);
 		ActivityBookingPanel.setLayout(null);
 		
@@ -1801,7 +1806,7 @@ public class EmployeeMenu
 							}
 							else
 							{
-								if(activityBookingCtr.checkActivityLineInstances1(activityId, bookingId, insertDate, startHour, facilityId, "Made"))
+								if(activityBookingCtr.checkActivityLineInstances1(activityId, bookingId, insertDate, startHour, facilityId, "Made") != true)
 								{
 									JOptionPane.showMessageDialog(null, "Cannot book the same activity and facility more than once per day. Check already booked activities.", "Error!", JOptionPane.ERROR_MESSAGE);
 								}
